@@ -1,12 +1,13 @@
 apply plugin: 'com.android.application'
 apply plugin: 'org.greenrobot.greendao'
+apply plugin: 'com.jakewharton.butterknife'
 
 android {
     compileSdkVersion 25
     buildToolsVersion "25.0.0"
     defaultConfig {
         applicationId "com.grandmagic.readingmate"
-        minSdkVersion 15
+        minSdkVersion 14
         targetSdkVersion 23
         versionCode 1
         versionName "1.0"
@@ -43,4 +44,7 @@ dependencies {
     compile 'com.umeng.analytics:analytics:latest.integration'
     //greendao 用于数据库操作
     compile 'org.greenrobot:greendao:3.1.0'
+    //懒人工具
+    compile 'com.jakewharton:butterknife:8.4.0'
+    annotationProcessor 'com.jakewharton:butterknife-compiler:8.4.0'
 }
