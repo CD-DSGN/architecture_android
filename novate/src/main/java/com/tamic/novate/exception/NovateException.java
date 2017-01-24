@@ -4,10 +4,11 @@ import android.net.ParseException;
 import android.util.Log;
 
 import com.google.gson.JsonParseException;
+import com.tamic.novate.Throwable;
 
 import org.apache.http.conn.ConnectTimeoutException;
 import org.json.JSONException;
-import com.tamic.novate.Throwable;
+
 import java.net.ConnectException;
 
 import retrofit2.adapter.rxjava.HttpException;
@@ -29,8 +30,12 @@ public class NovateException {
     private static final int HANDEL_ERRROR = 417;
 
     public static Throwable handleException(java.lang.Throwable e) {
-
-        Log.e("Novate", e.getMessage());
+        if (e == null) {
+            Log.e("Novate", "e == null");
+        }else{
+            Log.e("Novate", e.getMessage() + "");
+        }
+        
         Throwable ex;
         if (e instanceof HttpException) {
             HttpException httpException = (HttpException) e;
