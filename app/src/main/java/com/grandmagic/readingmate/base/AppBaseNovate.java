@@ -1,5 +1,8 @@
 package com.grandmagic.readingmate.base;
 
+import android.content.Context;
+
+import com.grandmagic.readingmate.utils.Environment;
 import com.tamic.novate.BaseApiService;
 import com.tamic.novate.Novate;
 
@@ -29,8 +32,10 @@ public class AppBaseNovate extends Novate {
      * @param callbackExecutor
      * @param validateEagerly
      */
-    String baseUrl = "";
-    AppBaseNovate(Call.Factory callFactory, String baseUrl, Map<String, String> headers, Map<String, String> parameters, BaseApiService apiManager, List<Converter.Factory> converterFactories, List<CallAdapter.Factory> adapterFactories, Executor callbackExecutor, boolean validateEagerly) {
-        super(callFactory, baseUrl, headers, parameters, apiManager, converterFactories, adapterFactories, callbackExecutor, validateEagerly);
+
+    private static String base_url = Environment.getUrl();
+
+    public AppBaseNovate(Call.Factory callFactory, Map<String, String> headers, Map<String, String> parameters, BaseApiService apiManager, List<Converter.Factory> converterFactories, List<CallAdapter.Factory> adapterFactories, Executor callbackExecutor, boolean validateEagerly, Context context) {
+        super(callFactory, base_url, headers, parameters, apiManager, converterFactories, adapterFactories, callbackExecutor, validateEagerly, context);
     }
 }

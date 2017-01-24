@@ -1,7 +1,6 @@
 package com.grandmagic.readingmate.activity;
 
 import android.os.Bundle;
-import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
 import android.view.View;
 import android.widget.Button;
@@ -11,6 +10,7 @@ import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
 import com.grandmagic.readingmate.MyAPI;
 import com.grandmagic.readingmate.R;
+import com.grandmagic.readingmate.base.AppBaseActivity;
 import com.grandmagic.readingmate.model.MovieModel;
 import com.grandmagic.readingmate.model.ResultModel;
 import com.grandmagic.readingmate.model.SouguBean;
@@ -33,7 +33,7 @@ import okhttp3.MultipartBody;
 import okhttp3.RequestBody;
 import okhttp3.ResponseBody;
 
-public class MainActivity extends AppCompatActivity {
+public class MainActivity extends AppBaseActivity {
 
     String baseUrl = "http://ip.taobao.com/";
     private Novate novate;

@@ -88,7 +88,8 @@ public class Novate {
     private static OkHttpClient.Builder okhttpBuilder;
     public static BaseApiService apiManager;
     private static OkHttpClient okHttpClient;
-    private static Context mContext;
+//    private static Context mContext;
+    private Context mContext;
     private final okhttp3.Call.Factory callFactory;
     private final String baseUrl;
     private final List<Converter.Factory> converterFactories;
@@ -105,9 +106,9 @@ public class Novate {
      * Mandatory constructor for the Novate
      */
     protected Novate(okhttp3.Call.Factory callFactory, String baseUrl, Map<String, String> headers,
-           Map<String, String> parameters, BaseApiService apiManager,
-           List<Converter.Factory> converterFactories, List<CallAdapter.Factory> adapterFactories,
-           Executor callbackExecutor, boolean validateEagerly) {
+                     Map<String, String> parameters, BaseApiService apiManager,
+                     List<Converter.Factory> converterFactories, List<CallAdapter.Factory> adapterFactories,
+                     Executor callbackExecutor, boolean validateEagerly, Context context) {
         this.callFactory = callFactory;
         this.baseUrl = baseUrl;
         this.headers = headers;
@@ -117,6 +118,7 @@ public class Novate {
         this.adapterFactories = adapterFactories;
         this.callbackExecutor = callbackExecutor;
         this.validateEagerly = validateEagerly;
+        this.mContext = context;
     }
 
     /**
@@ -609,6 +611,7 @@ public class Novate {
 
     /**
      * Novate upload Flies WithPartMap
+     *
      * @param url
      * @param partMap
      * @param file
@@ -728,7 +731,7 @@ public class Novate {
             return;
         }*/
         //NovateDownLoadManager.isDownLoading = true;
-        if(downMaps.get(key)!= null) {
+        if (downMaps.get(key) != null) {
             downMaps.get(key).compose(schedulersTransformerDown)
                     .compose(handleErrTransformer())
                     .subscribe(new DownSubscriber<ResponseBody>(key, savePath, name, callBack, mContext));
@@ -912,7 +915,6 @@ public class Novate {
 
         /**
          * Set an API base URL which can change over time.
-         *
          */
         public Builder baseUrl(String baseUrl) {
             this.baseUrl = Utils.checkNotNull(baseUrl, "baseUrl == null");
@@ -1062,8 +1064,15 @@ public class Novate {
          * @return
          */
         private Builder addCache(Cache cache, final String cacheControlValue) {
-            REWRITE_CACHE_CONTROL_INTERCEPTOR = new CacheInterceptor(mContext, cacheControlValue);
-            REWRITE_CACHE_CONTROL_INTERCEPTOR_OFFLINE = new CacheInterceptorOffline(mContext, cacheControlValue);
+            //            REWRITE_CACHE_CONTROL_INTERCEPTOR = new CacheInterceptor(mContext, cacheControlValue);
+            //            REWRITE_CACHE_CONTROL_INTERCEPTOR_OFFLINE = new CacheInterceptorOffline(mContext, cacheControlValue);
+
+            //zhangmengqi begin,这个地方主要是检查网络状态，不需要用activity的context，直接用应用的context就行
+
+            REWRITE_CACHE_CONTROL_INTERCEPTOR = new CacheInterceptor(context.getApplicationContext(), cacheControlValue);
+            REWRITE_CACHE_CONTROL_INTERCEPTOR_OFFLINE = new CacheInterceptorOffline(context.getApplicationContext(), cacheControlValue);
+
+            //zhangmengqi end
             addNetworkInterceptor(REWRITE_CACHE_CONTROL_INTERCEPTOR);
             addNetworkInterceptor(REWRITE_CACHE_CONTROL_INTERCEPTOR_OFFLINE);
             addInterceptor(REWRITE_CACHE_CONTROL_INTERCEPTOR_OFFLINE);
@@ -1090,7 +1099,7 @@ public class Novate {
                 throw new IllegalStateException("retrofitBuilder required.");
             }
             /** set Context. */
-            mContext = context;
+//            mContext = context;
             /**
              * Set a fixed API base URL.
              *
@@ -1129,7 +1138,8 @@ public class Novate {
 
 
             if (httpCacheDirectory == null) {
-                httpCacheDirectory = new File(mContext.getCacheDir(), "Novate_Http_cache");
+//                httpCacheDirectory = new File(mContext.getCacheDir(), "Novate_Http_cache");
+                httpCacheDirectory = new File(context.getCacheDir(), "Novate_Http_cache");
             }
 
             if (isCache) {
@@ -1220,7 +1230,7 @@ public class Novate {
             apiManager = retrofit.create(BaseApiService.class);
 
             return new Novate(callFactory, baseUrl, headers, parameters, apiManager, converterFactories, adapterFactories,
-                    callbackExecutor, validateEagerly);
+                    callbackExecutor, validateEagerly, context);
         }
     }
 
