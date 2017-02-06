@@ -15,12 +15,15 @@ public abstract class BaseSubscriber<T> extends Subscriber<T> {
 
     protected Context context;
 
+
     public BaseSubscriber(Context context) {
         this.context = context;
+        RxApiManager.get().add(this);
     }
 
     @Override
     final public void onError(java.lang.Throwable e) {
+        RxApiManager.get().remove(this); //从容器中移除
         Log.v("Novate", e.getMessage());
         if (e instanceof Throwable) {
             Log.e("Novate", "--> e instanceof Throwable");
@@ -42,6 +45,9 @@ public abstract class BaseSubscriber<T> extends Subscriber<T> {
     @Override
     public void onCompleted() {
         Log.v("Novate", "-->http is Complete");
+
+        RxApiManager.get().remove(this);
+
         // todo some common as  dismiss loadding
     }
 
