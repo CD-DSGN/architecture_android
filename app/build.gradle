@@ -41,22 +41,23 @@ greendao {
 
 dependencies {
     compile fileTree(include: ['*.jar'], dir: 'libs')
-    compile 'com.android.support:appcompat-v7:25.1.0'
-    testCompile 'junit:junit:4.12'
     compile project(':novate')
     //stetho用于调试
+    //加入leakCanary用于内存泄漏检测
+    //友盟
+    //greendao 用于数据库操作
+    //懒人工具
+    compile project(path: ':libzxing')
+    compile 'com.android.support:appcompat-v7:25.1.0'
     compile 'com.facebook.stetho:stetho:1.3.1'
     compile 'com.facebook.stetho:stetho-okhttp3:1.3.1'
-    //加入leakCanary用于内存泄漏检测
+    compile 'com.umeng.analytics:analytics:latest.integration'
+    compile 'org.greenrobot:greendao:3.1.0'
+    compile 'com.jakewharton:butterknife:8.4.0'
+    compile 'com.android.support:design:25.1.0'
+    compile 'com.android.support:support-v4:25.1.0'
+    testCompile 'junit:junit:4.12'
+    annotationProcessor 'com.jakewharton:butterknife-compiler:8.4.0'
     debugCompile 'com.squareup.leakcanary:leakcanary-android:1.3'
     releaseCompile 'com.squareup.leakcanary:leakcanary-android-no-op:1.3'
-    //友盟
-    compile 'com.umeng.analytics:analytics:latest.integration'
-    //greendao 用于数据库操作
-    compile 'org.greenrobot:greendao:3.1.0'
-    //懒人工具
-    compile 'com.jakewharton:butterknife:8.4.0'
-    annotationProcessor 'com.jakewharton:butterknife-compiler:8.4.0'
-    compile project(path: ':libzxing')
-    compile 'com.android.support:design:25.1.0'
 }
