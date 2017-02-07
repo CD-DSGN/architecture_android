@@ -1,5 +1,6 @@
 package com.grandmagic.readingmate.activity;
 
+import android.Manifest;
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
@@ -7,14 +8,14 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.TextView;
-
 import com.grandmagic.readingmate.R;
 import com.grandmagic.readingmate.base.AppBaseActivity;
+import com.grandmagic.readingmate.permission.CameraPermission;
+import com.tbruyelle.rxpermissions.RxPermissions;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
-
 //登录
 public class LoginActivity extends AppBaseActivity {
 
@@ -36,6 +37,7 @@ public class LoginActivity extends AppBaseActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_login);
         ButterKnife.bind(this);
+       new RxPermissions(this).request(Manifest.permission.CAMERA).subscribe(new CameraPermission(this));
     }
 
     @OnClick({R.id.phone_clear, R.id.login, R.id.forgetpass, R.id.register})

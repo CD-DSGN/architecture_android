@@ -28,11 +28,21 @@
             android:layout_weight="1">
 
             <TextView
-                android:layout_width="match_parent"
-                android:layout_height="match_parent"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
                 android:button="@null"
-                android:gravity="center"
+                android:layout_centerHorizontal="true"
+                android:layout_alignParentBottom="true"
                 android:text="首页"
+                android:id="@+id/text_home"
+                />
+            <ImageView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:src="@mipmap/ic_launcher"
+                android:layout_above="@+id/text_home"
+                android:layout_centerHorizontal="true"
+                android:id="@+id/iv_home"
                 />
         </RelativeLayout>
 
@@ -44,11 +54,21 @@
             >
 
             <TextView
-                android:layout_width="match_parent"
-                android:layout_height="match_parent"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
                 android:button="@null"
-                android:gravity="center"
+               android:layout_alignParentBottom="true"
                 android:text="阅聊"
+                android:id="@+id/text_chat"
+                android:layout_centerHorizontal="true"
+                />
+            <ImageView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:src="@mipmap/ic_launcher"
+                android:layout_above="@+id/text_chat"
+                android:layout_centerHorizontal="true"
+                android:id="@+id/iv_chat"
                 />
         </RelativeLayout>
 
@@ -60,11 +80,21 @@
             >
 
             <TextView
-                android:layout_width="match_parent"
-                android:layout_height="match_parent"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
                 android:button="@null"
-                android:gravity="center"
+               android:layout_centerHorizontal="true"
+                android:layout_alignParentBottom="true"
                 android:text="搜索"
+                android:id="@+id/text_search"
+                />
+            <ImageView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:src="@mipmap/ic_launcher"
+                android:layout_above="@+id/text_search"
+                android:layout_centerHorizontal="true"
+                android:id="@+id/iv_search"
                 />
         </RelativeLayout>
 
@@ -76,11 +106,21 @@
             >
 
             <TextView
-                android:layout_width="match_parent"
-                android:layout_height="match_parent"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
                 android:button="@null"
-                android:gravity="center"
+            android:layout_centerHorizontal="true"
+                android:layout_alignParentBottom="true"
                 android:text="我的"
+                android:id="@+id/text_person"
+                />
+            <ImageView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:src="@mipmap/ic_launcher"
+                android:layout_above="@+id/text_person"
+                android:layout_centerHorizontal="true"
+                android:id="@+id/iv_person"
                 />
         </RelativeLayout>
     </LinearLayout>

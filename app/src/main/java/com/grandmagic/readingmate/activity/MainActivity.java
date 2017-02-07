@@ -1,11 +1,12 @@
 package com.grandmagic.readingmate.activity;
 
+import android.animation.ObjectAnimator;
 import android.app.Fragment;
 import android.app.FragmentManager;
 import android.os.Bundle;
-import android.support.v7.widget.ViewUtils;
 import android.view.View;
 import android.widget.FrameLayout;
+import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
 
@@ -16,9 +17,7 @@ import com.grandmagic.readingmate.fragment.HomeFragment;
 import com.grandmagic.readingmate.fragment.PersonalFragment;
 import com.grandmagic.readingmate.fragment.SearchFragment;
 
-import java.util.ArrayList;
 import java.util.HashMap;
-import java.util.List;
 import java.util.Map;
 
 import butterknife.BindView;
@@ -41,7 +40,16 @@ public class MainActivity extends AppBaseActivity {
 
     FragmentManager mFragmentManager;
     Fragment mcurrentFragment;
+    ImageView mcurrentIV;
     Map<String, Fragment> mFragments;
+    @BindView(R.id.iv_home)
+    ImageView mIvHome;
+    @BindView(R.id.iv_chat)
+    ImageView mIvChat;
+    @BindView(R.id.iv_search)
+    ImageView mIvSearch;
+    @BindView(R.id.iv_person)
+    ImageView mIvPerson;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -58,7 +66,9 @@ public class MainActivity extends AppBaseActivity {
         if (mcurrentFragment == null) {
             Fragment mHomeFragment = createFragment(HomeFragment.class);
             mFragmentManager.beginTransaction().add(R.id.contentframe, mHomeFragment).show(mHomeFragment).commit();
-            mcurrentFragment=mHomeFragment;
+            mcurrentFragment = mHomeFragment;
+            mcurrentIV =mIvHome;
+            scalelarge();
         }
     }
 
@@ -93,6 +103,35 @@ public class MainActivity extends AppBaseActivity {
             mFragmentManager.beginTransaction().hide(mcurrentFragment).add(R.id.contentframe, to).commit();
         }
         mcurrentFragment = to;
+//        图标变化
+        if (mClass==HomeFragment.class){
+            scalesmall();
+            mcurrentIV=mIvHome;
+            scalelarge();
+        }else if (mClass==ChatFragment.class){
+            scalesmall();
+            mcurrentIV=mIvChat;
+            scalelarge();
+        }else if (mClass==SearchFragment.class){
+            scalesmall();
+            mcurrentIV=mIvSearch;
+            scalelarge();
+        }else if (mClass==PersonalFragment.class){
+            scalesmall();
+            mcurrentIV=mIvPerson;
+            scalelarge();
+        }
+
+    }
+
+    private void scalelarge() {
+        ObjectAnimator.ofFloat(mcurrentIV,"scaleX",1.0f,1.5f).start();
+        ObjectAnimator.ofFloat(mcurrentIV,"scaleY",1.0f,1.5f).start();
+    }
+
+    private void scalesmall() {
+        ObjectAnimator.ofFloat(mcurrentIV,"scaleX",1.5f,1.0f).start();
+        ObjectAnimator.ofFloat(mcurrentIV,"scaleY",1.5f,1.0f).start();
     }
 
     private Fragment createFragment(Class<?> mClass) {
@@ -103,11 +142,7 @@ public class MainActivity extends AppBaseActivity {
         }
         try {
             mInstance = (Fragment) Class.forName(mName).newInstance();
-        } catch (InstantiationException mE) {
-            mE.printStackTrace();
-        } catch (IllegalAccessException mE) {
-            mE.printStackTrace();
-        } catch (ClassNotFoundException mE) {
+        } catch (Exception mE) {
             mE.printStackTrace();
         }
         mFragments.put(mName, mInstance);
