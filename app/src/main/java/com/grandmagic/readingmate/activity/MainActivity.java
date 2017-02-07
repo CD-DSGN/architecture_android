@@ -41,7 +41,7 @@ public class MainActivity extends AppBaseActivity {
     FragmentManager mFragmentManager;
     Fragment mcurrentFragment;
     ImageView mcurrentIV;
-    Map<String, Fragment> mFragments;
+    Map<String, Fragment> mFragments;//存放fragment，如果以创建就从里面加载，不重复创建
     @BindView(R.id.iv_home)
     ImageView mIvHome;
     @BindView(R.id.iv_chat)
@@ -63,7 +63,7 @@ public class MainActivity extends AppBaseActivity {
         mFragmentManager = getFragmentManager();
         mFragments = new HashMap<>();
         mcurrentFragment = mFragmentManager.findFragmentById(R.id.contentframe);
-        if (mcurrentFragment == null) {
+        if (mcurrentFragment == null) {//初始化homefragment
             Fragment mHomeFragment = createFragment(HomeFragment.class);
             mFragmentManager.beginTransaction().add(R.id.contentframe, mHomeFragment).show(mHomeFragment).commit();
             mcurrentFragment = mHomeFragment;
@@ -94,6 +94,10 @@ public class MainActivity extends AppBaseActivity {
         }
     }
 
+    /**
+     * 切换选项
+     * @param mClass
+     */
     private void switchFragment(Class<?> mClass) {
         if (mClass == null) return;
         Fragment to = createFragment(mClass);
@@ -121,31 +125,42 @@ public class MainActivity extends AppBaseActivity {
             mcurrentIV=mIvPerson;
             scalelarge();
         }
-
     }
 
+    /**
+     * 选中项图标放大
+     */
     private void scalelarge() {
         ObjectAnimator.ofFloat(mcurrentIV,"scaleX",1.0f,1.5f).start();
         ObjectAnimator.ofFloat(mcurrentIV,"scaleY",1.0f,1.5f).start();
     }
 
+    /**
+     * 切换选中项时之前选中项图标缩回原图
+     */
     private void scalesmall() {
         ObjectAnimator.ofFloat(mcurrentIV,"scaleX",1.5f,1.0f).start();
         ObjectAnimator.ofFloat(mcurrentIV,"scaleY",1.5f,1.0f).start();
     }
 
+    /**
+     * 创建或获取选中项的fragment
+     * @param mClass
+     * @return
+     */
     private Fragment createFragment(Class<?> mClass) {
         String mName = mClass.getName();
         Fragment mInstance = null;
         if (mFragments.containsKey(mName)) {
             mInstance = mFragments.get(mName);
+        }else {
+            try {
+                mInstance = (Fragment) Class.forName(mName).newInstance();
+            } catch (Exception mE) {
+                mE.printStackTrace();
+            }
+            mFragments.put(mName, mInstance);
         }
-        try {
-            mInstance = (Fragment) Class.forName(mName).newInstance();
-        } catch (Exception mE) {
-            mE.printStackTrace();
-        }
-        mFragments.put(mName, mInstance);
         return mInstance;
     }
 }

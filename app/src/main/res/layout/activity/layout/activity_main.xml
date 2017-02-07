@@ -33,7 +33,7 @@
                 android:button="@null"
                 android:layout_centerHorizontal="true"
                 android:layout_alignParentBottom="true"
-                android:text="首页"
+                android:text="@string/home"
                 android:id="@+id/text_home"
                 />
             <ImageView
@@ -58,7 +58,7 @@
                 android:layout_height="wrap_content"
                 android:button="@null"
                android:layout_alignParentBottom="true"
-                android:text="阅聊"
+                android:text="@string/readchat"
                 android:id="@+id/text_chat"
                 android:layout_centerHorizontal="true"
                 />
@@ -85,7 +85,7 @@
                 android:button="@null"
                android:layout_centerHorizontal="true"
                 android:layout_alignParentBottom="true"
-                android:text="搜索"
+                android:text="@string/search"
                 android:id="@+id/text_search"
                 />
             <ImageView
@@ -111,7 +111,7 @@
                 android:button="@null"
             android:layout_centerHorizontal="true"
                 android:layout_alignParentBottom="true"
-                android:text="我的"
+                android:text="@string/mine"
                 android:id="@+id/text_person"
                 />
             <ImageView

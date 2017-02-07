@@ -13,7 +13,7 @@
         android:layout_gravity="center_horizontal"
         android:layout_marginRight="30dp"
         android:layout_marginTop="150dp"
-        android:text="登录"
+        android:text="@string/login"
         android:textSize="18sp"
         />
 
@@ -34,7 +34,7 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:cursorVisible="false"
-            android:hint="手机"
+            android:hint="@string/phone"
             android:maxLines="1"
             android:paddingLeft="40dp"
             android:theme="@style/et_pass"
@@ -78,7 +78,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:cursorVisible="false"
-                android:hint="密码"
+                android:hint="@string/password"
                 android:id="@+id/et_pass"
                 android:maxLines="1"
                 android:paddingLeft="40dp"
@@ -100,7 +100,7 @@
         android:layout_height="wrap_content"
         android:layout_gravity="center_horizontal"
         android:layout_marginTop="50dp"
-        android:text="登陆"
+        android:text="@string/login"
         android:id="@+id/login"
         />
 
@@ -109,7 +109,7 @@
         android:layout_height="wrap_content"
         android:layout_gravity="center_horizontal"
         android:layout_marginTop="10dp"
-        android:text="忘记密码？"
+        android:text="@string/forget_pass"
         android:id="@+id/forgetpass"
         />
 
@@ -118,7 +118,7 @@
         android:layout_height="wrap_content"
         android:layout_gravity="center_horizontal"
         android:layout_marginTop="30dp"
-        android:text="还没有账户？点我注册"
+        android:text="@string/have_not_accout"
         android:id="@+id/register"
         />
 </LinearLayout>
