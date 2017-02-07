@@ -24,6 +24,7 @@
             android:name="UMENG_CHANNEL"
             android:value="Channel ID"/>
 
+       
         <activity android:name=".activity.SplashActivity">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN"/>
@@ -31,7 +32,7 @@
                 <category android:name="android.intent.category.LAUNCHER"/>
             </intent-filter>
         </activity>
-        <activity android:name=".activity.MainActivity">
+		<activity android:name=".activity.MainActivity">
         </activity>
         <activity
             android:name=".activity.LoginActivity"
@@ -43,6 +44,6 @@
             android:label="@string/title_activity_register"
             android:theme="@style/AppTheme.NoActionBar">
         </activity>
-    </application>
+ <activity android:name=".activity.ScanActivity">    </application>
 
 </manifest>
