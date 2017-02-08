@@ -1,90 +1,104 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout
     xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical">
 
     <RelativeLayout
-        android:layout_marginTop="138px"
-       android:layout_gravity="center_horizontal"
         android:layout_width="626px"
         android:layout_height="wrap_content"
-       >
-
-        <ImageView
-            android:layout_width="34px"
-            android:layout_height="34px"
-            android:src="@drawable/phone"
-            android:layout_alignLeft="@+id/et_phone"
-android:layout_alignBottom="@id/et_phone"
-            android:layout_marginBottom="30px"
-            />
+        android:layout_gravity="center_horizontal"
+        android:layout_marginTop="138px"
+        >
 
         <EditText
             android:id="@+id/et_phone"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:layout_alignParentLeft="true"
+            android:layout_alignParentStart="true"
+            android:layout_alignParentTop="true"
+            android:background="@null"
             android:cursorVisible="false"
             android:hint="@string/phone"
             android:maxLines="1"
             android:paddingLeft="34px"
-            android:theme="@style/et_pass"
+            android:theme="@style/et_pass"/>
+
+        <ImageView
+            android:layout_width="34px"
+            android:layout_height="34px"
+            android:layout_alignBottom="@id/et_phone"
+            android:layout_alignLeft="@+id/et_phone"
+            android:src="@drawable/phone"
+
+            />
+
+        <ImageView
+            android:layout_width="match_parent"
+            android:layout_height="3px"
+            android:layout_below="@+id/et_phone"
+            android:src="@drawable/dashline"
             />
 
         <ImageView
             android:id="@+id/phone_clear"
             android:layout_width="34px"
             android:layout_height="34px"
+            android:layout_alignParentEnd="true"
             android:layout_alignParentRight="true"
-            android:layout_alignBottom="@+id/et_phone"
-            android:layout_marginBottom="35px"
-           android:src="@drawable/clear"/>
+            android:layout_alignParentTop="true"
+            android:src="@drawable/clear"/>
+
+
     </RelativeLayout>
 
     <RelativeLayout
         android:layout_width="626px"
-        android:layout_gravity="center_horizontal"
         android:layout_height="wrap_content"
+        android:layout_gravity="center_horizontal"
         android:layout_marginTop="86px"
         >
 
-        <ImageView
-            android:layout_width="34px"
-            android:layout_height="34px"
-            android:src="@drawable/pass"
-            android:layout_marginTop="40px"
-            />
-
-        <android.support.design.widget.TextInputLayout
-            android:id="@+id/inputlayout"
-            xmlns:app="http://schemas.android.com/apk/res-auto"
+        <EditText
+            android:id="@+id/et_pass"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            app:errorEnabled="true"
-            app:passwordToggleEnabled="true"
-            app:passwordToggleTint="@color/colorAccent"
-            >
-
-            <EditText
-                android:id="@+id/et_pass"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:cursorVisible="false"
-                android:hint="@string/password"
-                android:maxLines="1"
-                android:paddingLeft="40dp"
-                android:password="true"
-                />
-        </android.support.design.widget.TextInputLayout>
+            android:background="@null"
+            android:cursorVisible="false"
+            android:hint="@string/password"
+            android:maxLines="1"
+            android:paddingLeft="40dp"
+            android:password="true"
+            />
 
         <ImageView
             android:layout_width="34px"
             android:layout_height="34px"
+            android:layout_alignBottom="@id/et_pass"
+            android:src="@drawable/pass"
+            />
+
+        <android.support.design.widget.CheckableImageButton
+            android:layout_width="48dp"
+            android:layout_height="48dp"
+            android:layout_alignBottom="@id/et_pass"
             android:layout_alignParentRight="true"
-            android:layout_marginTop="-5dp"
-            android:src="@mipmap/ic_launcher"
-            android:visibility="gone"/>
+            android:id="@+id/pass_eye"
+            android:src="@drawable/design_password_eye"
+            android:background="?attr/selectableItemBackgroundBorderless"
+            />
+
+
+        <ImageView
+            android:layout_width="match_parent"
+            android:layout_height="3px"
+            android:layout_below="@+id/et_pass"
+            android:src="@drawable/dashline"
+            />
+
     </RelativeLayout>
 
     <Button
@@ -93,8 +107,9 @@ android:layout_alignBottom="@id/et_phone"
         android:layout_height="wrap_content"
         android:layout_gravity="center_horizontal"
         android:layout_marginTop="50dp"
-        android:text="@string/login"
         android:background="@drawable/bg_btn_login"
+        android:text="@string/login"
+        android:textSize="30px"
         />
 
     <TextView
@@ -104,6 +119,7 @@ android:layout_alignBottom="@id/et_phone"
         android:layout_gravity="center_horizontal"
         android:layout_marginTop="10dp"
         android:text="@string/forget_pass"
+        android:textSize="22px"
         />
 
 </LinearLayout>

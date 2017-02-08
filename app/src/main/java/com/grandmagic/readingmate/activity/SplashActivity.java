@@ -6,6 +6,7 @@ import android.widget.Toast;
 
 import com.grandmagic.readingmate.R;
 import com.grandmagic.readingmate.base.AppBaseActivity;
+import com.grandmagic.readingmate.utils.AutoUtils;
 import com.grandmagic.readingmate.utils.SPUtils;
 
 //启动页面
@@ -14,6 +15,7 @@ public class SplashActivity extends AppBaseActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        AutoUtils.setSize(this,false,750,1334);
         setContentView(R.layout.activity_splash);
         initview();
         checkfrist();

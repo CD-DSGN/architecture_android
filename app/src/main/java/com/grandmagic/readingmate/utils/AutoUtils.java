@@ -10,7 +10,7 @@ import android.view.ViewGroup;
 import android.widget.TextView;
 
 /**
- * Created by lps on 2017/2/6.
+ * Created by lps on 2017/2/6. https://github.com/zhengjingle/Autolayout/blob/master/Demo/src/com/zjl/autolayout/AutoUtils.java
  */
 
 public class AutoUtils {
