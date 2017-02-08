@@ -1,63 +1,42 @@
 package com.grandmagic.readingmate.activity;
 
-import android.Manifest;
-import android.content.Intent;
-import android.os.Bundle;
-import android.view.View;
-import android.widget.Button;
-import android.widget.EditText;
-import android.widget.ImageView;
-import android.widget.TextView;
-import com.grandmagic.readingmate.R;
-import com.grandmagic.readingmate.base.AppBaseActivity;
-import com.grandmagic.readingmate.permission.CameraPermission;
-import com.tbruyelle.rxpermissions.RxPermissions;
 
-import butterknife.BindView;
-import butterknife.ButterKnife;
-import butterknife.OnClick;
+import android.os.Bundle;
+import android.support.v4.view.ViewPager;
+import android.view.LayoutInflater;
+import android.view.View;
+import com.grandmagic.readingmate.R;
+import com.grandmagic.readingmate.adapter.LoginPagerAdapter;
+import com.grandmagic.readingmate.base.AppBaseActivity;
+import com.grandmagic.readingmate.utils.AutoUtils;
+
+import java.util.ArrayList;
+import java.util.List;
+
 //登录
 public class LoginActivity extends AppBaseActivity {
 
-    @BindView(R.id.et_phone)
-    EditText mEtPhone;
-    @BindView(R.id.phone_clear)
-    ImageView mPhoneClear;
-    @BindView(R.id.et_pass)
-    EditText mEtPass;
-    @BindView(R.id.login)
-    Button mLogin;
-    @BindView(R.id.forgetpass)
-    TextView mForgetpass;
-    @BindView(R.id.register)
-    TextView mRegister;
+
+    ViewPager mViewpager;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        AutoUtils.setSize(this,false,750,1334);
         setContentView(R.layout.activity_login);
-        ButterKnife.bind(this);
-       new RxPermissions(this).request(Manifest.permission.CAMERA).subscribe(new CameraPermission(this));
+//        AutoUtils.auto(this);
+        initview();
     }
 
-    @OnClick({R.id.phone_clear, R.id.login, R.id.forgetpass, R.id.register})
-    public void onClick(View view) {
-        switch (view.getId()) {
-            case R.id.phone_clear:
-                mEtPhone.setText("");
-                break;
-            case R.id.login:
-                // TODO: 2017/2/7 登lu验证
-                startActivity(new Intent(LoginActivity.this,MainActivity.class));
-                finish();
-                break;
-            case R.id.forgetpass:
-                // TODO: 2017/2/7 忘记密码
-                break;
-            case R.id.register:
-                startActivity(new Intent(LoginActivity.this, RegisterActivity.class));
-                finish();
-                break;
-        }
+    List<View> mViews = new ArrayList<>();
+
+    private void initview() {
+        mViewpager = (ViewPager) findViewById(R.id.viewpager);
+        View mview_register = LayoutInflater.from(this).inflate(R.layout.view_register, null);
+        View mview_login = LayoutInflater.from(this).inflate(R.layout.view_login, null);
+        mViews.add(mview_register);
+        mViews.add(mview_login);
+        mViewpager.setAdapter(new LoginPagerAdapter(mViews));
     }
+
 }

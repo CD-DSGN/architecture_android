@@ -5,120 +5,40 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical"
+    android:background="@drawable/bg_login"
     >
-
-    <TextView
+    <ImageView
+        android:layout_gravity="center_horizontal"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_gravity="center_horizontal"
-        android:layout_marginRight="30dp"
-        android:layout_marginTop="150dp"
-        android:text="@string/login"
-        android:textSize="18sp"
+        android:src="@mipmap/ic_launcher"
+        android:visibility="gone"
         />
-
-    <RelativeLayout
+    <LinearLayout
+        android:layout_marginTop="322px"
+        android:gravity="center_horizontal"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_marginLeft="50dp"
-        android:layout_marginRight="50dp">
-
-        <ImageView
-            android:layout_width="30dp"
+        android:layout_height="wrap_content">
+        <TextView
+            android:layout_marginLeft="268px"
+            android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginTop="-5dp"
-            android:src="@mipmap/ic_launcher"
+            android:text="@string/register"
+            />
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/login"
+            android:layout_marginRight="260px"
             />
 
-        <EditText
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:cursorVisible="false"
-            android:hint="@string/phone"
-            android:maxLines="1"
-            android:paddingLeft="40dp"
-            android:theme="@style/et_pass"
-            android:id="@+id/et_phone"
-            />
+    </LinearLayout>
+<android.support.v4.view.ViewPager
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:id="@+id/viewpager"
+    >
+</android.support.v4.view.ViewPager>
 
-        <ImageView
-            android:id="@+id/phone_clear"
-            android:layout_width="30dp"
-            android:layout_height="wrap_content"
-            android:layout_alignParentRight="true"
-            android:layout_marginTop="-5dp"
-            android:src="@mipmap/ic_launcher"/>
-    </RelativeLayout>
 
-    <RelativeLayout
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_marginLeft="50dp"
-        android:layout_marginRight="50dp"
-        android:layout_marginTop="30dp">
-
-        <ImageView
-            android:layout_width="30dp"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="-5dp"
-            android:src="@mipmap/ic_launcher"
-            />
-
-        <android.support.design.widget.TextInputLayout
-            xmlns:app="http://schemas.android.com/apk/res-auto"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            app:counterEnabled="true"
-            app:errorEnabled="true"
-            app:passwordToggleEnabled="true"
-            app:passwordToggleTint="@color/colorAccent"
-            >
-
-            <EditText
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:cursorVisible="false"
-                android:hint="@string/password"
-                android:id="@+id/et_pass"
-                android:maxLines="1"
-                android:paddingLeft="40dp"
-                android:password="true"
-                />
-        </android.support.design.widget.TextInputLayout>
-
-        <ImageView
-            android:layout_width="30dp"
-            android:layout_height="wrap_content"
-            android:layout_alignParentRight="true"
-            android:layout_marginTop="-5dp"
-            android:src="@mipmap/ic_launcher"
-            android:visibility="gone"/>
-    </RelativeLayout>
-
-    <Button
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_gravity="center_horizontal"
-        android:layout_marginTop="50dp"
-        android:text="@string/login"
-        android:id="@+id/login"
-        />
-
-    <TextView
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_gravity="center_horizontal"
-        android:layout_marginTop="10dp"
-        android:text="@string/forget_pass"
-        android:id="@+id/forgetpass"
-        />
-
-    <TextView
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_gravity="center_horizontal"
-        android:layout_marginTop="30dp"
-        android:text="@string/have_not_accout"
-        android:id="@+id/register"
-        />
 </LinearLayout>

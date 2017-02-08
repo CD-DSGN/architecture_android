@@ -4,10 +4,8 @@
     <modules>
       <module fileurl="file://$PROJECT_DIR$/ReadingMate.iml" filepath="$PROJECT_DIR$/ReadingMate.iml" />
       <module fileurl="file://$PROJECT_DIR$/app/app.iml" filepath="$PROJECT_DIR$/app/app.iml" />
-      <module fileurl="file://$PROJECT_DIR$/app/app.iml" filepath="$PROJECT_DIR$/app/app.iml" />
       <module fileurl="file://$PROJECT_DIR$/architecture_android.iml" filepath="$PROJECT_DIR$/architecture_android.iml" />
       <module fileurl="file://$PROJECT_DIR$/libzxing/libzxing.iml" filepath="$PROJECT_DIR$/libzxing/libzxing.iml" />
-      <module fileurl="file://$PROJECT_DIR$/novate/novate.iml" filepath="$PROJECT_DIR$/novate/novate.iml" />
       <module fileurl="file://$PROJECT_DIR$/novate/novate.iml" filepath="$PROJECT_DIR$/novate/novate.iml" />
     </modules>
   </component>
