@@ -39,6 +39,7 @@
         <activity
             android:name=".activity.LoginActivity"
             android:label="@string/title_activity_login"
+            android:windowSoftInputMode="stateVisible|adjustResize"
             android:theme="@style/fullsrceen">
         </activity>
         <activity

@@ -2,7 +2,6 @@ package com.grandmagic.readingmate.activity;
 
 
 import android.os.Bundle;
-import android.support.design.widget.CheckableImageButton;
 import android.support.v4.view.ViewPager;
 import android.text.method.PasswordTransformationMethod;
 import android.view.LayoutInflater;
@@ -10,6 +9,7 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageView;
+import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import com.grandmagic.readingmate.R;
@@ -23,7 +23,6 @@ import java.util.List;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
-import butterknife.OnClick;
 
 //登录
 public class LoginActivity extends AppBaseActivity implements View.OnClickListener {
@@ -44,15 +43,20 @@ public class LoginActivity extends AppBaseActivity implements View.OnClickListen
     ImageView mRgPhoneClear;
     @BindView(R.id.eye_pass_rg)
     ImageView mEyePassRg;
+    @BindView(R.id.send_verify)
+    TextView mSendVerify;
     @BindView(R.id.eye_pass_sure_rg)
     ImageView mEyePassSureRg;
     //login view
+
     EditText mEtPhone, mEtPass;
     ImageView mPhoneClear;
     ImageView mPassEye;
     Button mLogin;
     TextView mForgetpass;
-
+    //act view
+    View dashline_register, dashline_login;
+    RelativeLayout rela_register, rela_login;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -74,6 +78,13 @@ public class LoginActivity extends AppBaseActivity implements View.OnClickListen
         mViews.add(mview_register);
         mViews.add(mview_login);
         mViewpager.setAdapter(new LoginPagerAdapter(mViews));
+        mViewpager.addOnPageChangeListener(new ViewPager.SimpleOnPageChangeListener() {
+            @Override
+            public void onPageSelected(int position) {
+                dashline_register.setVisibility(position == 0 ? View.VISIBLE : View.GONE);
+                dashline_login.setVisibility(position == 1 ? View.VISIBLE : View.GONE);
+            }
+        });
     }
 
     private void initLoginView(View mView) {
@@ -84,6 +95,10 @@ public class LoginActivity extends AppBaseActivity implements View.OnClickListen
         mLogin = (Button) mView.findViewById(R.id.login);
         mForgetpass = (TextView) mView.findViewById(R.id.forgetpass);
         mViewpager = (ViewPager) findViewById(R.id.viewpager);
+        rela_register = (RelativeLayout) findViewById(R.id.relativelayout_register);
+        rela_login = (RelativeLayout) findViewById(R.id.rela_login);
+        dashline_login = findViewById(R.id.line_login);
+        dashline_register = findViewById(R.id.line_register);
         mForgetpass.setOnClickListener(this);
         mLogin.setOnClickListener(this);
         mPhoneClear.setOnClickListener(this);
@@ -92,12 +107,20 @@ public class LoginActivity extends AppBaseActivity implements View.OnClickListen
         mRegisterRg.setOnClickListener(this);
         mEyePassRg.setOnClickListener(this);
         mEyePassSureRg.setOnClickListener(this);
-
+        mSendVerify.setOnClickListener(this);
+        rela_login.setOnClickListener(this);
+        rela_register.setOnClickListener(this);
     }
 
 
     public void onClick(View view) {
         switch (view.getId()) {
+            case R.id.rela_login:
+                mViewpager.setCurrentItem(1);
+                break;
+            case R.id.relativelayout_register:
+                mViewpager.setCurrentItem(0);
+                break;
             case R.id.pass_eye:
                 setPasswordVisable(mEtPass, mPassEye);
                 break;
@@ -109,6 +132,9 @@ public class LoginActivity extends AppBaseActivity implements View.OnClickListen
                 break;
             case R.id.forgetpass:
                 // TODO: 2017/2/9 忘记密码
+                break;
+            case R.id.send_verify:
+                // TODO: 2017/2/9 请求验证码
                 break;
             case R.id.rg_phone_clear:
                 mEtPhoneRg.setText("");
@@ -128,6 +154,12 @@ public class LoginActivity extends AppBaseActivity implements View.OnClickListen
         }
     }
 
+    /**
+     * 密码显示切换
+     *
+     * @param et  输入框
+     * @param eye 图标
+     */
     private void setPasswordVisable(EditText et, ImageView eye) {
         eye.setSelected(!eye.isSelected());
         int selection = et.getSelectionEnd();
