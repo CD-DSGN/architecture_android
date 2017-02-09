@@ -17,6 +17,7 @@ import com.tamic.novate.exception.FormatException;
 import com.tamic.novate.exception.NovateException;
 import com.tamic.novate.exception.ServerException;
 import com.tamic.novate.request.NovateRequest;
+import com.tamic.novate.util.Environment;
 import com.tamic.novate.util.FileUtil;
 import com.tamic.novate.util.Utils;
 
@@ -58,6 +59,7 @@ import rx.Subscriber;
 import rx.android.schedulers.AndroidSchedulers;
 import rx.functions.Func1;
 import rx.schedulers.Schedulers;
+
 
 //import retrofit2.BaseUrl;
 
@@ -102,15 +104,16 @@ public class Novate {
     private Observable.Transformer exceptTransformer = null;
     public static final String TAG = "Novate";
 
+
     /**
      * Mandatory constructor for the Novate
      */
-    protected Novate(okhttp3.Call.Factory callFactory, String baseUrl, Map<String, String> headers,
+    protected Novate(okhttp3.Call.Factory callFactory, Map<String, String> headers,
                      Map<String, String> parameters, BaseApiService apiManager,
                      List<Converter.Factory> converterFactories, List<CallAdapter.Factory> adapterFactories,
                      Executor callbackExecutor, boolean validateEagerly, Context context) {
         this.callFactory = callFactory;
-        this.baseUrl = baseUrl;
+        this.baseUrl = Environment.getUrl(); //其实并没有什么卵用
         this.headers = headers;
         this.parameters = parameters;
         this.apiManager = apiManager;
@@ -119,6 +122,7 @@ public class Novate {
         this.callbackExecutor = callbackExecutor;
         this.validateEagerly = validateEagerly;
         this.mContext = context;
+
     }
 
     /**
@@ -159,16 +163,31 @@ public class Novate {
      */
     public <T> T executeGet(final String url, final Map<String, Object> maps, final ResponseCallBack<T> callBack) {
 
-        final Type[] types = callBack.getClass().getGenericInterfaces();
-        if (MethodHandler(types) == null || MethodHandler(types).size() == 0) {
+
+        final Type finalNeedType = getFinalNeedType(callBack);
+        if (finalNeedType == null) {
             return null;
         }
-        final Type finalNeedType = MethodHandler(types).get(0);
-        Log.d(TAG, "-->:" + "Type:" + types[0]);
+//        final Type finalNeedType = MethodHandler(types).get(0);
+//        Log.d(TAG, "-->:" + "Type:" + types[0]);
         return (T) apiManager.executeGet(url, maps)
                 .compose(schedulersTransformer)
                 .compose(handleErrTransformer())
                 .subscribe(new NovateSubscriber<T>(mContext, finalNeedType, callBack));
+    }
+
+    private <T> Type getFinalNeedType(final ResponseCallBack<T> callBack) {
+        Type type_super = callBack.getClass().getGenericSuperclass();
+        Type[] parentypes = null;
+        if (type_super != null && type_super instanceof ParameterizedType) {
+            parentypes  = ((ParameterizedType) type_super).getActualTypeArguments();
+        }
+
+        if (parentypes == null && parentypes.length == 0) {
+            return null;
+        }
+        return parentypes[0];
+
     }
 
     /**
@@ -321,12 +340,11 @@ public class Novate {
      * you don't need to   parse ResponseBody
      */
     public <T> T executePost(final String url, @FieldMap(encoded = true) Map<String, Object> parameters, final ResponseCallBack<T> callBack) {
-        final Type[] types = callBack.getClass().getGenericInterfaces();
-        if (MethodHandler(types) == null || MethodHandler(types).size() == 0) {
+        final Type finalNeedType = getFinalNeedType(callBack);
+        if (finalNeedType == null) {
             return null;
         }
-        final Type finalNeedType = MethodHandler(types).get(0);
-        Log.d(TAG, "-->:" + "Type:" + types[0]);
+
 
         return (T) apiManager.executePost(url, parameters)
                 .compose(schedulersTransformer)
@@ -356,12 +374,10 @@ public class Novate {
      * you don't need to   parse ResponseBody
      */
     public <T> T executeForm(final String url, final @FieldMap(encoded = true) Map<String, Object> fields, final ResponseCallBack<T> callBack) {
-        final Type[] types = callBack.getClass().getGenericInterfaces();
-        if (MethodHandler(types) == null || MethodHandler(types).size() == 0) {
+        final Type finalNeedType = getFinalNeedType(callBack);
+        if (finalNeedType == null) {
             return null;
         }
-        final Type finalNeedType = MethodHandler(types).get(0);
-        Log.d(TAG, "-->:" + "Type:" + types[0]);
 
         return (T) apiManager.postForm(url, fields)
                 .compose(schedulersTransformer)
@@ -391,12 +407,11 @@ public class Novate {
      * you don't need to   parse ResponseBody
      */
     public <T> T executeBody(final String url, final Object body, final ResponseCallBack<T> callBack) {
-        final Type[] types = callBack.getClass().getGenericInterfaces();
-        if (MethodHandler(types) == null || MethodHandler(types).size() == 0) {
+        final Type finalNeedType = getFinalNeedType(callBack);
+        if (finalNeedType == null) {
             return null;
         }
-        final Type finalNeedType = MethodHandler(types).get(0);
-        Log.d(TAG, "-->:" + "Type:" + types[0]);
+
 
         return (T) apiManager.executePostBody(url, body)
                 .compose(schedulersTransformer)
@@ -429,12 +444,11 @@ public class Novate {
      * you don't need to   parse ResponseBody
      */
     public <T> T executeJson(final String url, final String jsonStr, final ResponseCallBack<T> callBack) {
-        final Type[] types = callBack.getClass().getGenericInterfaces();
-        if (MethodHandler(types) == null || MethodHandler(types).size() == 0) {
+        final Type finalNeedType = getFinalNeedType(callBack);
+        if (finalNeedType == null) {
             return null;
         }
-        final Type finalNeedType = MethodHandler(types).get(0);
-        Log.d(TAG, "-->:" + "Type:" + types[0]);
+
         return (T) apiManager.postRequestBody(url, Utils.createJson(jsonStr))
                 .compose(schedulersTransformer)
                 .compose(handleErrTransformer())
@@ -464,12 +478,11 @@ public class Novate {
      * you don't need to   parse ResponseBody
      */
     public <T> T executeDelete(final String url, final Map<String, T> maps, final ResponseCallBack<T> callBack) {
-        final Type[] types = callBack.getClass().getGenericInterfaces();
-        if (MethodHandler(types) == null || MethodHandler(types).size() == 0) {
+        final Type finalNeedType = getFinalNeedType(callBack);
+        if (finalNeedType == null) {
             return null;
         }
-        final Type finalNeedType = MethodHandler(types).get(0);
-        Log.d(TAG, "-->:" + "Type:" + types[0]);
+
         return (T) apiManager.executeDelete(url, (Map<String, Object>) maps)
                 .compose(schedulersTransformer)
                 .compose(handleErrTransformer())
@@ -499,13 +512,11 @@ public class Novate {
      * you don't need to parse ResponseBody
      */
     public <T> T executePut(final String url, final @FieldMap(encoded = true) Map<String, T> parameters, final ResponseCallBack<T> callBack) {
-        final Type[] types = callBack.getClass().getGenericInterfaces();
-
-        if (MethodHandler(types) == null || MethodHandler(types).size() == 0) {
+        final Type finalNeedType = getFinalNeedType(callBack);
+        if (finalNeedType == null) {
             return null;
         }
-        final Type finalNeedType = MethodHandler(types).get(0);
-        Log.d(TAG, "-->:" + "Type:" + types[0]);
+
         return (T) apiManager.executePut(url, (Map<String, Object>) parameters)
                 .compose(schedulersTransformer)
                 .compose(handleErrTransformer())
@@ -750,7 +761,7 @@ public class Novate {
         private static final long caheMaxSize = 10 * 1024 * 1024;
 
         private okhttp3.Call.Factory callFactory;
-        private String baseUrl;
+        private String baseUrl = Environment.getUrl();
         private Boolean isLog = false;
         private Boolean isCookie = false;
         private Boolean isCache = true;
@@ -917,6 +928,7 @@ public class Novate {
          * Set an API base URL which can change over time.
          */
         public Builder baseUrl(String baseUrl) {
+//            this.baseUrl = Environment.getUrl();
             this.baseUrl = Utils.checkNotNull(baseUrl, "baseUrl == null");
             return this;
         }
@@ -1142,21 +1154,22 @@ public class Novate {
                 httpCacheDirectory = new File(context.getCacheDir(), "Novate_Http_cache");
             }
 
-            if (isCache) {
-                try {
-                    if (cache == null) {
-                        cache = new Cache(httpCacheDirectory, caheMaxSize);
-                    }
-
-                    addCache(cache);
-
-                } catch (Exception e) {
-                    Log.e("OKHttp", "Could not create http cache", e);
-                }
-                if (cache == null) {
-                    cache = new Cache(httpCacheDirectory, caheMaxSize);
-                }
-            }
+            //先把cache去掉，影响调试
+//            if (isCache) {
+//                try {
+//                    if (cache == null) {
+//                        cache = new Cache(httpCacheDirectory, caheMaxSize);
+//                    }
+//
+//                    addCache(cache);
+//
+//                } catch (Exception e) {
+//                    Log.e("OKHttp", "Could not create http cache", e);
+//                }
+//                if (cache == null) {
+//                    cache = new Cache(httpCacheDirectory, caheMaxSize);
+//                }
+//            }
 
             if (cache != null) {
                 okhttpBuilder.cache(cache);
@@ -1229,7 +1242,7 @@ public class Novate {
              */
             apiManager = retrofit.create(BaseApiService.class);
 
-            return new Novate(callFactory, baseUrl, headers, parameters, apiManager, converterFactories, adapterFactories,
+            return new Novate(callFactory, headers, parameters, apiManager, converterFactories, adapterFactories,
                     callbackExecutor, validateEagerly, context);
         }
     }
@@ -1240,7 +1253,7 @@ public class Novate {
      *
      * @param <T>
      */
-    class NovateSubscriber<T> extends BaseSubscriber<ResponseBody> {
+    public class NovateSubscriber<T> extends BaseSubscriber<ResponseBody> {
 
         private ResponseCallBack<T> callBack;
 
@@ -1266,6 +1279,7 @@ public class Novate {
         @Override
         public void onCompleted() {
             // todo some common as  dismiss loadding
+            super.onCompleted();
             if (callBack != null) {
                 callBack.onCompleted();
             }

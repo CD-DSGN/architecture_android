@@ -1,0 +1,52 @@
+[
+  {
+    "request" :
+    {
+      "uri" :"/user/login/",
+      "method" :"post"
+    },
+   "response" :
+      {
+        "json" :
+        {
+            "name" : "jerry",
+            "age" :"24"
+        }         
+      }
+  },
+  {
+    "request":
+    {
+        "uri" : "/"
+    },
+    "response" :
+    {
+		"headers" :
+        {
+          "content-type" : "application/json;charset=utf8"
+        },
+        "json" :
+        {
+            "code" : 200,
+			"data" : {
+				"bookName" : "从你的全是街路过"			
+			}
+        }  
+    }
+  },
+  
+  {
+    "request" :
+    {
+      "uri" :"/register_sms/",
+      "method" :"get"
+    },
+    "response" :
+      {
+        "json" :
+        {
+            "code" : 200
+        }         
+      }
+  }
+]

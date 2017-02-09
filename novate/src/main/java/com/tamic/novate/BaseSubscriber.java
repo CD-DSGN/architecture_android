@@ -18,7 +18,7 @@ public abstract class BaseSubscriber<T> extends Subscriber<T> {
 
     public BaseSubscriber(Context context) {
         this.context = context;
-        RxApiManager.get().add(this);
+        RxApiManager.get().add(this); //创建时加入容器
     }
 
     @Override

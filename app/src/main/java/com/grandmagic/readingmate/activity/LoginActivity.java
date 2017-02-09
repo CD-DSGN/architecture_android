@@ -16,6 +16,7 @@ import com.grandmagic.readingmate.R;
 import com.grandmagic.readingmate.adapter.LoginPagerAdapter;
 import com.grandmagic.readingmate.base.AppBaseActivity;
 import com.grandmagic.readingmate.dialog.HintDialog;
+import com.grandmagic.readingmate.model.VerifyModel;
 import com.grandmagic.readingmate.utils.AutoUtils;
 
 import java.util.ArrayList;
@@ -135,6 +136,7 @@ public class LoginActivity extends AppBaseActivity implements View.OnClickListen
                 break;
             case R.id.send_verify:
                 // TODO: 2017/2/9 请求验证码
+                snedVerify();
                 break;
             case R.id.rg_phone_clear:
                 mEtPhoneRg.setText("");
@@ -153,6 +155,11 @@ public class LoginActivity extends AppBaseActivity implements View.OnClickListen
 
         }
     }
+
+    private void snedVerify() {
+        VerifyModel.getVerifyCode(this, "13518143569");
+    }
+
 
     /**
      * 密码显示切换

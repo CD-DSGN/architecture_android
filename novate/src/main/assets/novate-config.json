@@ -1,8 +1,7 @@
 {
   "isFormat": "false",
   "sucessCode": [
-    "0",
-    "1001"
+    200
   ],
   "error": {
     "1001": "网络异常"
