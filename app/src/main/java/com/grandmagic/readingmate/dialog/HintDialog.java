@@ -11,13 +11,14 @@ import android.widget.TextView;
 
 import com.grandmagic.readingmate.R;
 import com.grandmagic.readingmate.utils.AutoUtils;
+import com.grandmagic.readingmate.utils.DensityUtil;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
 
 /**
- * Created by lps on 2017/2/9.
+ * Created by lps on 2017/2/9. 提示的dialo内容，一个确定或取消按钮的样式
  */
 
 public class HintDialog extends AlertDialog {
@@ -40,11 +41,11 @@ public class HintDialog extends AlertDialog {
         mMsg.setTextSize(TypedValue.COMPLEX_UNIT_PX,30);
         mSure.setTextSize(TypedValue.COMPLEX_UNIT_PX,30);
         setView(mView);
+        show();
         WindowManager.LayoutParams mAttributes = getWindow().getAttributes();
-        mAttributes.width= mWindowwidth;
+        mAttributes.width= (int) (mWindowwidth*(DensityUtil.getScreenWidth(context)*1.0f/AutoUtils.designWidth));
         getWindow().setAttributes(mAttributes);
         AutoUtils.auto(mView);
-        show();
     }
 
 

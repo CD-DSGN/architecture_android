@@ -17,8 +17,8 @@ public class AutoUtils {
     private static int displayWidth;
     private static int displayHeight;
 
-    private static int designWidth;
-    private static int designHeight;
+    public static int designWidth;
+    public static int designHeight;
 
     private static double textPixelsRate;
 

@@ -5,7 +5,7 @@ import android.content.Context;
 import android.content.SharedPreferences;
 
 /**
- * Created by lps on 2017/2/7.
+ * Created by lps on 2017/2/7.主要保存一些用户信息
  */
 
 public class SPUtils {
