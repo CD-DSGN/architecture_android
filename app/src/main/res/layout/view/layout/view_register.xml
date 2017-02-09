@@ -1,10 +1,10 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+              xmlns:tools="http://schemas.android.com/tools"
               android:layout_width="match_parent"
               android:layout_height="match_parent"
-              xmlns:tools="http://schemas.android.com/tools"
-              tools:background="@drawable/bg_login"
-              android:orientation="vertical">
+              android:orientation="vertical"
+              tools:background="@drawable/bg_login">
 
 
     <RelativeLayout
@@ -12,43 +12,46 @@
         android:layout_height="wrap_content"
         android:layout_gravity="center_horizontal"
         >
+
         <View
-            android:layout_marginTop="138px"
             android:id="@+id/rg_dashline_phone"
             android:layout_width="match_parent"
             android:layout_height="3px"
+            android:layout_marginTop="138px"
             android:background="@drawable/dashline"
             />
+
         <EditText
-            android:layout_alignBottom="@id/rg_dashline_phone"
             android:id="@+id/et_phone_rg"
             android:layout_width="626px"
             android:layout_height="wrap_content"
+            android:layout_alignBottom="@id/rg_dashline_phone"
+            android:layout_marginBottom="24px"
+            android:background="@null"
             android:cursorVisible="false"
             android:hint="@string/phone"
-            android:layout_marginBottom="24px"
             android:maxLines="1"
             android:paddingLeft="48px"
-            android:theme="@style/et_pass"
-            android:background="@null"
             android:textColor="@color/white"
             android:textColorHint="@color/white"
             android:textSize="24px"
+            android:theme="@style/et_pass"
             />
 
         <ImageView
             android:layout_width="34px"
             android:layout_height="34px"
-            android:src="@drawable/phone"
-         android:layout_alignBottom="@id/rg_dashline_phone"
+            android:layout_alignBottom="@id/rg_dashline_phone"
             android:layout_marginBottom="22px"
+            android:src="@drawable/phone"
             />
+
         <ImageView
-            android:id="@+id/phone_clear"
+            android:id="@+id/rg_phone_clear"
             android:layout_width="26px"
             android:layout_height="26px"
-       android:layout_alignRight="@id/et_phone_rg"
             android:layout_alignBottom="@id/rg_dashline_phone"
+            android:layout_alignRight="@id/et_phone_rg"
             android:layout_marginBottom="22px"
             android:src="@drawable/clear"/>
     </RelativeLayout>
@@ -57,46 +60,48 @@
         android:layout_width="626px"
         android:layout_height="wrap_content"
         android:layout_gravity="center_horizontal"
-       >
+        >
+
         <View
-            android:layout_marginTop="118px"
             android:id="@+id/rg_dashline_verify"
             android:layout_width="match_parent"
             android:layout_height="3px"
+            android:layout_marginTop="118px"
             android:background="@drawable/dashline"
             />
+
         <ImageView
             android:layout_width="34px"
             android:layout_height="34px"
-            android:src="@drawable/refresh"
             android:layout_alignBottom="@id/rg_dashline_verify"
             android:layout_marginBottom="22px"
+            android:src="@drawable/refresh"
             />
 
         <TextView
-            android:layout_marginTop="22px"
             android:layout_width="154px"
             android:layout_height="80px"
+            android:layout_alignBottom="@+id/rg_dashline_verify"
+            android:layout_alignRight="@id/rg_dashline_verify"
+            android:layout_marginBottom="22px"
+            android:layout_marginTop="22px"
             android:background="@drawable/bg_btn_login"
             android:gravity="center"
             android:text="@string/send_code"
-            android:textSize="24px"
-            android:layout_alignBottom="@+id/rg_dashline_verify"
-            android:layout_marginBottom="22px"
-            android:layout_alignRight="@id/rg_dashline_verify"
             android:textColor="@color/white"
+            android:textSize="24px"
             />
 
         <EditText
+            android:id="@+id/et_verify"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:layout_alignBottom="@id/rg_dashline_verify"
+            android:layout_marginBottom="24px"
+            android:background="@null"
             android:hint="@string/verification_code"
             android:maxLines="1"
             android:paddingLeft="48px"
-            android:layout_marginBottom="24px"
-            android:background="@null"
-            android:layout_alignBottom="@id/rg_dashline_verify"
-            android:id="@+id/et_verify"
             android:textColor="@color/white"
             android:textColorHint="@color/white"
             android:textSize="24px"
@@ -109,94 +114,101 @@
         android:layout_height="wrap_content"
         android:layout_gravity="center_horizontal"
         >
+
         <View
-            android:layout_marginTop="118px"
+            android:id="@+id/rg_dashline_pass"
             android:layout_width="match_parent"
             android:layout_height="3px"
+            android:layout_marginTop="118px"
             android:background="@drawable/dashline"
-            android:id="@+id/rg_dashline_pass"
             />
+
         <ImageView
             android:layout_width="34px"
             android:layout_height="34px"
-            android:src="@drawable/pass"
             android:layout_alignBottom="@id/rg_dashline_pass"
             android:layout_marginBottom="22px"
+            android:src="@drawable/pass"
             />
 
 
         <ImageView
-            android:layout_width="32px"
-            android:layout_height="24px"
-            android:layout_alignParentRight="true"
+            android:id="@+id/eye_pass_rg"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
             android:layout_alignBottom="@id/rg_dashline_pass"
-            android:src="@drawable/eye"
+            android:layout_alignParentRight="true"
             android:layout_marginBottom="22px"
+            android:src="@drawable/password_eye"
             />
 
         <EditText
-            android:layout_alignBottom="@id/rg_dashline_pass"
             android:id="@+id/et_pass_rg"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:hint="@string/password"
+            android:layout_alignBottom="@id/rg_dashline_pass"
             android:layout_marginBottom="24px"
+            android:background="@null"
+            android:hint="@string/password"
+            android:inputType="textPassword"
             android:maxLines="1"
             android:paddingLeft="48px"
-            android:password="true"
-            android:background="@null"
             android:textColor="@color/white"
             android:textColorHint="@color/white"
             android:textSize="24px"
+            android:layout_toLeftOf="@+id/eye_pass_rg"
             />
     </RelativeLayout>
+
     <RelativeLayout
         android:layout_width="626px"
         android:layout_height="wrap_content"
         android:layout_gravity="center_horizontal"
-      >
+        >
+
         <View
-            android:layout_marginTop="118px"
+            android:id="@+id/rg_dashline_passsure"
             android:layout_width="match_parent"
             android:layout_height="3px"
+            android:layout_marginTop="118px"
             android:background="@drawable/dashline"
-            android:id="@+id/rg_dashline_passsure"
             />
+
         <ImageView
             android:layout_width="34px"
             android:layout_height="34px"
-            android:src="@drawable/pass"
             android:layout_alignBottom="@id/rg_dashline_passsure"
             android:layout_marginBottom="22px"
+            android:src="@drawable/pass"
             />
 
 
-
-            <EditText
-                android:layout_alignBottom="@id/rg_dashline_passsure"
-                android:id="@+id/et_passsure_rg"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:cursorVisible="false"
-                android:hint="@string/passwordsure"
-                android:textColor="@color/white"
-                android:textColorHint="@color/white"
-                android:maxLines="1"
-                android:paddingLeft="48px"
-                android:layout_marginBottom="24px"
-                android:password="true"
-                android:textSize="24px"
-                android:background="@null"
-                />
+        <EditText
+            android:id="@+id/et_passsure_rg"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_alignBottom="@id/rg_dashline_passsure"
+            android:layout_marginBottom="24px"
+            android:background="@null"
+            android:hint="@string/passwordsure"
+            android:inputType="textPassword"
+            android:maxLines="1"
+            android:paddingLeft="48px"
+            android:textColor="@color/white"
+            android:textColorHint="@color/white"
+            android:textSize="24px"
+            android:layout_toLeftOf="@+id/eye_pass_sure_rg"
+            />
 
 
         <ImageView
-            android:layout_width="32px"
-            android:layout_height="24px"
-            android:layout_alignParentRight="true"
+            android:id="@+id/eye_pass_sure_rg"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
             android:layout_alignBottom="@id/rg_dashline_passsure"
-            android:src="@drawable/eye"
+            android:layout_alignParentRight="true"
             android:layout_marginBottom="22px"
+            android:src="@drawable/password_eye"
             />
     </RelativeLayout>
 
@@ -207,9 +219,9 @@
         android:layout_height="82px"
         android:layout_gravity="center_horizontal"
         android:layout_marginTop="80px"
+        android:background="@drawable/bg_btn_login"
         android:text="@string/registernow"
         android:textColor="@color/white"
         android:textSize="30px"
-        android:background="@drawable/bg_btn_login"
         />
 </LinearLayout>
