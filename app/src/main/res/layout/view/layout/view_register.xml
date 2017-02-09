@@ -1,130 +1,215 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-              android:orientation="vertical"
               android:layout_width="match_parent"
-              android:layout_height="match_parent">
+              android:layout_height="match_parent"
+              xmlns:tools="http://schemas.android.com/tools"
+              tools:background="@drawable/bg_login"
+              android:orientation="vertical">
 
 
     <RelativeLayout
-        android:layout_width="match_parent"
+        android:layout_width="626px"
         android:layout_height="wrap_content"
-        android:layout_marginLeft="50dp"
-        android:layout_marginRight="50dp">
-
-        <ImageView
-            android:layout_width="30dp"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="-5dp"
-            android:src="@mipmap/ic_launcher"
-            />
-
-        <EditText
-            android:id="@+id/et_phone_rg"
+        android:layout_gravity="center_horizontal"
+        >
+        <View
+            android:layout_marginTop="138px"
+            android:id="@+id/rg_dashline_phone"
             android:layout_width="match_parent"
+            android:layout_height="3px"
+            android:background="@drawable/dashline"
+            />
+        <EditText
+            android:layout_alignBottom="@id/rg_dashline_phone"
+            android:id="@+id/et_phone_rg"
+            android:layout_width="626px"
             android:layout_height="wrap_content"
             android:cursorVisible="false"
             android:hint="@string/phone"
+            android:layout_marginBottom="24px"
             android:maxLines="1"
-            android:paddingLeft="40dp"
+            android:paddingLeft="48px"
             android:theme="@style/et_pass"
+            android:background="@null"
+            android:textColor="@color/white"
+            android:textColorHint="@color/white"
+            android:textSize="24px"
             />
 
         <ImageView
+            android:layout_width="34px"
+            android:layout_height="34px"
+            android:src="@drawable/phone"
+         android:layout_alignBottom="@id/rg_dashline_phone"
+            android:layout_marginBottom="22px"
+            />
+        <ImageView
             android:id="@+id/phone_clear"
-            android:layout_width="30dp"
-            android:layout_height="wrap_content"
-            android:layout_alignParentRight="true"
-            android:layout_marginTop="-5dp"
-            android:src="@mipmap/ic_launcher"/>
+            android:layout_width="26px"
+            android:layout_height="26px"
+       android:layout_alignRight="@id/et_phone_rg"
+            android:layout_alignBottom="@id/rg_dashline_phone"
+            android:layout_marginBottom="22px"
+            android:src="@drawable/clear"/>
     </RelativeLayout>
 
     <RelativeLayout
-        android:layout_width="match_parent"
+        android:layout_width="626px"
         android:layout_height="wrap_content"
-        android:layout_marginLeft="50dp"
-        android:layout_marginRight="50dp"
-        android:layout_marginTop="30dp">
-
+        android:layout_gravity="center_horizontal"
+       >
+        <View
+            android:layout_marginTop="118px"
+            android:id="@+id/rg_dashline_verify"
+            android:layout_width="match_parent"
+            android:layout_height="3px"
+            android:background="@drawable/dashline"
+            />
         <ImageView
-            android:layout_width="30dp"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="-5dp"
-            android:src="@mipmap/ic_launcher"
+            android:layout_width="34px"
+            android:layout_height="34px"
+            android:src="@drawable/refresh"
+            android:layout_alignBottom="@id/rg_dashline_verify"
+            android:layout_marginBottom="22px"
             />
 
         <TextView
-
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_alignParentRight="true"
-            android:layout_centerVertical="true"
+            android:layout_marginTop="22px"
+            android:layout_width="154px"
+            android:layout_height="80px"
+            android:background="@drawable/bg_btn_login"
+            android:gravity="center"
             android:text="@string/send_code"
+            android:textSize="24px"
+            android:layout_alignBottom="@+id/rg_dashline_verify"
+            android:layout_marginBottom="22px"
+            android:layout_alignRight="@id/rg_dashline_verify"
+            android:textColor="@color/white"
             />
 
         <EditText
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_alignParentLeft="true"
-            android:layout_alignParentStart="true"
-            android:layout_alignParentTop="true"
-            android:cursorVisible="false"
             android:hint="@string/verification_code"
             android:maxLines="1"
-            android:paddingLeft="40dp"
+            android:paddingLeft="48px"
+            android:layout_marginBottom="24px"
+            android:background="@null"
+            android:layout_alignBottom="@id/rg_dashline_verify"
+            android:id="@+id/et_verify"
+            android:textColor="@color/white"
+            android:textColorHint="@color/white"
+            android:textSize="24px"
             android:theme="@style/et_pass"/>
+
     </RelativeLayout>
 
     <RelativeLayout
-        android:layout_width="match_parent"
+        android:layout_width="626px"
         android:layout_height="wrap_content"
-        android:layout_marginLeft="50dp"
-        android:layout_marginRight="50dp"
-        android:layout_marginTop="30dp">
-
+        android:layout_gravity="center_horizontal"
+        >
+        <View
+            android:layout_marginTop="118px"
+            android:layout_width="match_parent"
+            android:layout_height="3px"
+            android:background="@drawable/dashline"
+            android:id="@+id/rg_dashline_pass"
+            />
         <ImageView
-            android:layout_width="30dp"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="-5dp"
-            android:src="@mipmap/ic_launcher"
+            android:layout_width="34px"
+            android:layout_height="34px"
+            android:src="@drawable/pass"
+            android:layout_alignBottom="@id/rg_dashline_pass"
+            android:layout_marginBottom="22px"
             />
 
-        <android.support.design.widget.TextInputLayout
-            xmlns:app="http://schemas.android.com/apk/res-auto"
+
+        <ImageView
+            android:layout_width="32px"
+            android:layout_height="24px"
+            android:layout_alignParentRight="true"
+            android:layout_alignBottom="@id/rg_dashline_pass"
+            android:src="@drawable/eye"
+            android:layout_marginBottom="22px"
+            />
+
+        <EditText
+            android:layout_alignBottom="@id/rg_dashline_pass"
+            android:id="@+id/et_pass_rg"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            app:counterEnabled="true"
-            app:errorEnabled="true"
-            app:passwordToggleEnabled="true"
-            app:passwordToggleTint="@color/colorAccent"
-            >
+            android:hint="@string/password"
+            android:layout_marginBottom="24px"
+            android:maxLines="1"
+            android:paddingLeft="48px"
+            android:password="true"
+            android:background="@null"
+            android:textColor="@color/white"
+            android:textColorHint="@color/white"
+            android:textSize="24px"
+            />
+    </RelativeLayout>
+    <RelativeLayout
+        android:layout_width="626px"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center_horizontal"
+      >
+        <View
+            android:layout_marginTop="118px"
+            android:layout_width="match_parent"
+            android:layout_height="3px"
+            android:background="@drawable/dashline"
+            android:id="@+id/rg_dashline_passsure"
+            />
+        <ImageView
+            android:layout_width="34px"
+            android:layout_height="34px"
+            android:src="@drawable/pass"
+            android:layout_alignBottom="@id/rg_dashline_passsure"
+            android:layout_marginBottom="22px"
+            />
+
+
 
             <EditText
-                android:id="@+id/et_pass_rg"
+                android:layout_alignBottom="@id/rg_dashline_passsure"
+                android:id="@+id/et_passsure_rg"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:cursorVisible="false"
-                android:hint="@string/password"
+                android:hint="@string/passwordsure"
+                android:textColor="@color/white"
+                android:textColorHint="@color/white"
                 android:maxLines="1"
-                android:paddingLeft="40dp"
+                android:paddingLeft="48px"
+                android:layout_marginBottom="24px"
                 android:password="true"
+                android:textSize="24px"
+                android:background="@null"
                 />
-        </android.support.design.widget.TextInputLayout>
+
 
         <ImageView
-            android:layout_width="30dp"
-            android:layout_height="wrap_content"
+            android:layout_width="32px"
+            android:layout_height="24px"
             android:layout_alignParentRight="true"
-            android:layout_marginTop="-5dp"
-            android:src="@mipmap/ic_launcher"
-            android:visibility="gone"/>
+            android:layout_alignBottom="@id/rg_dashline_passsure"
+            android:src="@drawable/eye"
+            android:layout_marginBottom="22px"
+            />
     </RelativeLayout>
+
 
     <Button
         android:id="@+id/register_rg"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
+        android:layout_width="626px"
+        android:layout_height="82px"
         android:layout_gravity="center_horizontal"
-        android:layout_marginTop="50dp"
-        android:text="@string/register"
+        android:layout_marginTop="80px"
+        android:text="@string/registernow"
+        android:textColor="@color/white"
+        android:textSize="30px"
+        android:background="@drawable/bg_btn_login"
         />
 </LinearLayout>

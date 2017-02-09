@@ -4,43 +4,51 @@
     android:id="@+id/activity_main"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:orientation="vertical"
     android:background="@drawable/bg_login"
+    android:orientation="vertical"
     >
+
     <ImageView
-        android:layout_gravity="center_horizontal"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:layout_gravity="center_horizontal"
         android:src="@mipmap/ic_launcher"
         android:visibility="gone"
         />
 
-    <LinearLayout
-        android:layout_marginTop="322px"
-        android:gravity="center_horizontal"
+    <RelativeLayout
         android:layout_width="match_parent"
-        android:layout_height="wrap_content">
+        android:layout_height="wrap_content"
+        android:layout_marginTop="322px"
+        android:gravity="center_horizontal">
+
         <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
             android:layout_marginLeft="268px"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
             android:text="@string/register"
-            />
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="@string/login"
-            android:layout_marginRight="260px"
+            android:textSize="36px"
+            android:textColor="@color/white"
             />
 
-    </LinearLayout>
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentRight="true"
+            android:layout_marginRight="260px"
+            android:textColor="@color/white"
+            android:text="@string/login"
+            android:textSize="34px"
+            />
+
+    </RelativeLayout>
 
     <android.support.v4.view.ViewPager
-    android:layout_width="match_parent"
-    android:layout_height="wrap_content"
-    android:id="@+id/viewpager"
-    >
-</android.support.v4.view.ViewPager>
+        android:id="@+id/viewpager"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        >
+    </android.support.v4.view.ViewPager>
 
 
 </LinearLayout>
