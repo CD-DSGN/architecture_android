@@ -16,6 +16,8 @@ import com.grandmagic.readingmate.fragment.ChatFragment;
 import com.grandmagic.readingmate.fragment.HomeFragment;
 import com.grandmagic.readingmate.fragment.PersonalFragment;
 import com.grandmagic.readingmate.fragment.SearchFragment;
+import com.grandmagic.readingmate.utils.KitUtils;
+import com.grandmagic.readingmate.utils.UpdateManager;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -70,6 +72,17 @@ public class MainActivity extends AppBaseActivity {
             mcurrentIV =mIvHome;
             scalelarge();
         }
+        checkVersion();
+    }
+
+    /**
+     * 检测版本
+     */
+    private void checkVersion() {
+// TODO: 2017/2/10 从服务端获取版本号
+        int localVerionCode = KitUtils.getVersionCode(this);
+        UpdateManager mUpdateManager = new UpdateManager(this);
+mUpdateManager.getVersionCode(localVerionCode);
     }
 
     @OnClick({R.id.layout_home, R.id.layout_chat, R.id.layout_search, R.id.layout_personal})
@@ -78,6 +91,7 @@ public class MainActivity extends AppBaseActivity {
         switch (view.getId()) {
             case R.id.layout_home:
                 mClass = HomeFragment.class;
+                checkVersion();
                 break;
             case R.id.layout_chat:
                 mClass = ChatFragment.class;

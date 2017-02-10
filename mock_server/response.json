@@ -84,6 +84,24 @@
 
         }         
       }
+  },
+  {
+    "request" :
+    {
+      "uri" :"/update/",
+      "method" :"get"
+    },
+    "response" :
+    {
+      "json" :
+      {
+        "code" : 200,
+        "data" :{
+          "serversion" : "3",
+          "url":"assets/quickpic_4.5.2.apk"
+        }
+
+      }
+    }
   }
-  
 ]

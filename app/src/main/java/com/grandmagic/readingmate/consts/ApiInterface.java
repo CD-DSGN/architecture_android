@@ -8,4 +8,5 @@ public class ApiInterface {
     public  static final String  VERIFY_CODE = "/register_sms/" ;  //获取短信验证码
     public  static final String  REGISTER = "/register/" ;     //注册
     public  static final String  LOGIN = "/login/" ;     //登录
+    public  static final String  UPDATE = "/update/" ;     //登录
 }

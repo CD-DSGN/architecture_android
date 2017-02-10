@@ -229,7 +229,8 @@ public class LoginActivity extends AppBaseActivity implements View.OnClickListen
         }
 
         RegisterRequestBean registerBean = new RegisterRequestBean(pwd, phone_num, verify_code);
-        new RegisterModel(LoginActivity.this, registerBean, new AppBaseResponseCallBack<NovateResponse<RegisterResponseBean>>(LoginActivity.this) {
+        new RegisterModel(LoginActivity.this, registerBean, new AppBaseResponseCallBack<NovateResponse<RegisterResponseBean>>
+                (LoginActivity.this) {
             @Override
             public void onSuccee(NovateResponse<RegisterResponseBean> response) {
                 ViewUtils.showToast(LoginActivity.this, "注册成功" + (String)(response.getData().getToken()));
