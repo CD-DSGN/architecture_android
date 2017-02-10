@@ -17,6 +17,7 @@ import com.grandmagic.readingmate.R;
 import com.grandmagic.readingmate.adapter.LoginPagerAdapter;
 import com.grandmagic.readingmate.base.AppBaseActivity;
 import com.grandmagic.readingmate.dialog.HintDialog;
+import com.grandmagic.readingmate.model.VerifyModel;
 import com.grandmagic.readingmate.utils.AutoUtils;
 import com.grandmagic.readingmate.utils.KitUtils;
 import com.grandmagic.readingmate.utils.ViewUtils;
@@ -65,6 +66,7 @@ public class LoginActivity extends AppBaseActivity implements View.OnClickListen
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_login);
+        setTranslucentStatus(true);//状态栏透明（APi19+）
         AutoUtils.auto(this);
         initview();
     }

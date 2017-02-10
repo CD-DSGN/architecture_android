@@ -39,6 +39,7 @@ public class ResetPassActivity extends AppBaseActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_reset_pass);
         AutoUtils.auto(this);
+        setTranslucentStatus(true);
         ButterKnife.bind(this);
         initview();
     }

@@ -23,6 +23,7 @@ public class ForgetPassActivity extends AppBaseActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_forget_pass);
+        setTranslucentStatus(true);
         AutoUtils.auto(this);
         ButterKnife.bind(this);
         initview();

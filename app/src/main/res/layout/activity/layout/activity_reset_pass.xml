@@ -1,10 +1,12 @@
 <?xml version="1.0" encoding="utf-8"?>
+<!--似乎打开fitsSystemWindows的时候内容不会侵入到状态栏-->
 <LinearLayout
     xmlns:android="http://schemas.android.com/apk/res/android"
 android:orientation="vertical"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="@drawable/bg_login"
+    android:fitsSystemWindows="true"
 >
 <include layout="@layout/title_layout"></include>
     <RelativeLayout
