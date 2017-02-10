@@ -4,6 +4,7 @@ package com.grandmagic.readingmate.activity;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.v4.view.ViewPager;
+import android.text.TextUtils;
 import android.text.method.PasswordTransformationMethod;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -16,11 +17,16 @@ import android.widget.TextView;
 import com.grandmagic.readingmate.R;
 import com.grandmagic.readingmate.adapter.LoginPagerAdapter;
 import com.grandmagic.readingmate.base.AppBaseActivity;
+import com.grandmagic.readingmate.base.AppBaseResponseCallBack;
+import com.grandmagic.readingmate.bean.request.RegisterRequestBean;
+import com.grandmagic.readingmate.bean.response.RegisterResponseBean;
 import com.grandmagic.readingmate.dialog.HintDialog;
+import com.grandmagic.readingmate.model.RegisterModel;
 import com.grandmagic.readingmate.model.VerifyModel;
 import com.grandmagic.readingmate.utils.AutoUtils;
 import com.grandmagic.readingmate.utils.KitUtils;
 import com.grandmagic.readingmate.utils.ViewUtils;
+import com.tamic.novate.NovateResponse;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -139,13 +145,14 @@ public class LoginActivity extends AppBaseActivity implements View.OnClickListen
                startActivity(new Intent(LoginActivity.this,ForgetPassActivity.class));
                 break;
             case R.id.send_verify:
-                // TODO: 2017/2/9 请求验证码
+                snedVerify();
                 break;
             case R.id.rg_phone_clear:
                 mEtPhoneRg.setText("");
                 break;
             case R.id.register_rg:
-// TODO: 2017/2/9 zhuce
+                register();
+                // TODO: 2017/2/9 zhuce
                 new HintDialog(LoginActivity.this, "待实现");
                 break;
             case R.id.eye_pass_rg:
@@ -159,12 +166,56 @@ public class LoginActivity extends AppBaseActivity implements View.OnClickListen
         }
     }
 
+    private void register() {
+        //手机合法性检查
+        String phone_num = mEtPhoneRg.getText().toString();
+        if (!KitUtils.checkMobilePhone(phone_num)) {
+            ViewUtils.showToast(this, getString(R.string.mobile_invalid));
+            return;
+        }
+
+        //判断验证码是否为空
+        String verify_code = mEtVerify.getText().toString();
+        if (TextUtils.isEmpty(verify_code)) {
+            ViewUtils.showToast(this, getString(R.string.verify_code_empty));
+            return;
+        }
+
+        //判断密码和确认密码是否为空
+        String pwd = mEtPassRg.getText().toString();
+        String pwd_comfirm = mEtPasssureRg.getText().toString();
+
+        if (TextUtils.isEmpty(pwd)) {
+            ViewUtils.showToast(this, getString(R.string.password_empty));
+            return;
+        }
+
+        if (TextUtils.isEmpty(pwd_comfirm)) {
+            ViewUtils.showToast(this, getString(R.string.password_confirm_empty));
+            return;
+        }
+
+        //判断是密码和确认密码否一致
+        if (!pwd.equals(pwd_comfirm)) {
+            ViewUtils.showToast(this, getString(R.string.password_not_equal));
+            return;
+        }
+
+        RegisterRequestBean registerBean = new RegisterRequestBean(pwd, phone_num, verify_code);
+        new RegisterModel(LoginActivity.this, registerBean, new AppBaseResponseCallBack<NovateResponse<RegisterResponseBean>>(LoginActivity.this) {
+            @Override
+            public void onSuccee(NovateResponse<RegisterResponseBean> response) {
+                ViewUtils.showToast(LoginActivity.this, "注册成功" + (String)(response.getData().getToken()));
+            }
+        }).register();
+    }
 
     private void snedVerify() {
+        //判断手机合法性
         String phone_num = mEtPhoneRg.getText().toString();
         if (KitUtils.checkMobilePhone(phone_num)) {
             VerifyModel.getVerifyCode(this, phone_num);
-        }else{
+        } else {
             ViewUtils.showToast(this, getString(R.string.mobile_invalid));
         }
     }

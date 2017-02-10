@@ -5,10 +5,6 @@ package com.grandmagic.readingmate.consts;
  */
 
 public class ApiInterface {
-    public  static final String  VERIFY_CODE = "/register_sms/" ;
-
-
-
-
-
+    public  static final String  VERIFY_CODE = "/register_sms/" ;  //获取短信验证码
+    public  static final String  REGISTER = "/register/" ;     //注册
 }

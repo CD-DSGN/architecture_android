@@ -48,5 +48,24 @@
             "code" : 200
         }         
       }
+  },
+  {
+    "request" :
+    {
+      "uri" :"/register/",
+      "method" :"post"
+    },
+    "response" :
+      {
+        "json" :
+        {
+            "code" : 200,
+			"data" :{
+				"token" : "zhangmengqi"
+			}
+
+        }         
+      }
   }
+  
 ]

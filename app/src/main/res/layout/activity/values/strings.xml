@@ -20,4 +20,8 @@
     <string name="reset">重置</string>
     <string name="resetpass">重置密码</string>
     <string name="mobile_invalid">手机号不合法</string>
+    <string name="verify_code_empty">验证码不能为空</string>
+    <string name="password_empty">密码不能为空</string>
+    <string name="password_confirm_empty">请填写确认密码</string>
+    <string name="password_not_equal">密码不一致</string>
 </resources>

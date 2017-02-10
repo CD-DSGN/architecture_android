@@ -22,7 +22,7 @@ public class VerifyModel {
         novate.executeGet(ApiInterface.VERIFY_CODE, parameters, new AppBaseResponseCallBack<NovateResponse<Object>>(context) {
             @Override
             public void onSuccee(NovateResponse<Object> response) {
-               
+
             }
         });
     }
