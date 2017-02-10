@@ -66,6 +66,24 @@
 
         }         
       }
+  },
+    {
+    "request" :
+    {
+      "uri" :"/login/",
+      "method" :"post"
+    },
+    "response" :
+      {
+        "json" :
+        {
+            "code" : 200,
+			"data" :{
+				"token" : "zhangmengqi"
+			}
+
+        }         
+      }
   }
   
 ]

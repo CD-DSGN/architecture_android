@@ -18,9 +18,12 @@ import com.grandmagic.readingmate.R;
 import com.grandmagic.readingmate.adapter.LoginPagerAdapter;
 import com.grandmagic.readingmate.base.AppBaseActivity;
 import com.grandmagic.readingmate.base.AppBaseResponseCallBack;
+import com.grandmagic.readingmate.bean.request.LoginRequestBean;
 import com.grandmagic.readingmate.bean.request.RegisterRequestBean;
+import com.grandmagic.readingmate.bean.response.LoginResponseBean;
 import com.grandmagic.readingmate.bean.response.RegisterResponseBean;
 import com.grandmagic.readingmate.dialog.HintDialog;
+import com.grandmagic.readingmate.model.LoginModel;
 import com.grandmagic.readingmate.model.RegisterModel;
 import com.grandmagic.readingmate.model.VerifyModel;
 import com.grandmagic.readingmate.utils.AutoUtils;
@@ -136,7 +139,7 @@ public class LoginActivity extends AppBaseActivity implements View.OnClickListen
                 setPasswordVisable(mEtPass, mPassEye);
                 break;
             case R.id.login:
-                // TODO: 2017/2/9 登陆
+                login();
                 break;
             case R.id.phone_clear:
                 mEtPhone.setText("");
@@ -152,7 +155,6 @@ public class LoginActivity extends AppBaseActivity implements View.OnClickListen
                 break;
             case R.id.register_rg:
                 register();
-                // TODO: 2017/2/9 zhuce
                 new HintDialog(LoginActivity.this, "待实现");
                 break;
             case R.id.eye_pass_rg:
@@ -164,6 +166,31 @@ public class LoginActivity extends AppBaseActivity implements View.OnClickListen
                 break;
 
         }
+    }
+
+    private void login() {
+        String phone_num = mEtPhone.getText().toString();
+        if (!KitUtils.checkMobilePhone(phone_num)) {
+            ViewUtils.showToast(this, getString(R.string.mobile_invalid));
+            return;
+        }
+
+        String pwd = mEtPass.getText().toString();
+        if (TextUtils.isEmpty(pwd)) {
+            ViewUtils.showToast(this, getString(R.string.password_empty));
+            return;
+        }
+
+        LoginRequestBean loginRequestBean = new LoginRequestBean(phone_num, pwd);
+        new LoginModel(LoginActivity.this, loginRequestBean, new AppBaseResponseCallBack<NovateResponse<LoginResponseBean>>(LoginActivity.this) {
+            @Override
+            public void onSuccee(NovateResponse<LoginResponseBean> response) {
+                //Todo,保存token
+                //跳转到首页
+                Intent intent = new Intent(LoginActivity.this, MainActivity.class);
+                startActivity(intent);
+            }
+        }).login();
     }
 
     private void register() {
