@@ -15,4 +15,8 @@
     <string name="registernow">立即注册</string>
     <string name="verification_code">验证码</string>
     <string name="send_code">发送验证码</string>
+    <string name="next_step">下一步</string>
+    <string name="hint_forgetpass">短信验证码将发送至手机号：</string>
+    <string name="reset">重置</string>
+    <string name="resetpass">重置密码</string>
 </resources>

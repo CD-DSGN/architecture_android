@@ -8,7 +8,8 @@
     <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE"/>
     <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE"/>
     <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE"/>
-<uses-permission android:name="android.permission.CAMERA"/>
+    <uses-permission android:name="android.permission.CAMERA"/>
+
     <application
         android:name=".base.AppBaseApplication"
         android:allowBackup="true"
@@ -24,7 +25,6 @@
             android:name="UMENG_CHANNEL"
             android:value="Channel ID"/>
 
-
         <activity android:name=".activity.SplashActivity">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN"/>
@@ -32,22 +32,26 @@
                 <category android:name="android.intent.category.LAUNCHER"/>
             </intent-filter>
         </activity>
-        <activity android:name=".activity.MainActivity"
-            android:theme="@style/AppTheme.NoActionBar"
-            >
+        <activity
+            android:name=".activity.MainActivity"
+            android:theme="@style/AppTheme.NoActionBar">
         </activity>
         <activity
             android:name=".activity.LoginActivity"
             android:label="@string/title_activity_login"
-            android:windowSoftInputMode="stateVisible|adjustResize"
-            android:theme="@style/fullsrceen">
+            android:theme="@style/notitle"
+            android:windowSoftInputMode="stateVisible|adjustResize">
         </activity>
         <activity
             android:name=".activity.RegisterActivity"
             android:label="@string/title_activity_register"
-            android:theme="@style/fullsrceen">
+            android:theme="@style/notitle">
         </activity>
         <activity android:name=".activity.ScanActivity"/>
+        <activity android:name=".activity.ForgetPassActivity" android:theme="@style/notitle">
+        </activity>
+        <activity android:name=".activity.ResetPassActivity" android:theme="@style/notitle">
+        </activity>
     </application>
 
 </manifest>

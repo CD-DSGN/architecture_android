@@ -1,0 +1,82 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    android:background="@drawable/bg_login"
+>
+<include layout="@layout/title_layout" >
+
+</include>
+    <TextView
+        android:layout_width="626px"
+        android:layout_height="wrap_content"
+        android:text="@string/hint_forgetpass"
+        android:layout_gravity="center_horizontal"
+        android:textColor="@color/white"
+        android:layout_marginTop="50px"
+        android:textSize="26px"
+        />
+    <RelativeLayout
+        android:layout_width="626px"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center_horizontal"
+        >
+
+        <View
+            android:id="@+id/dashline_phone"
+            android:layout_width="match_parent"
+            android:layout_height="3px"
+            android:layout_marginTop="138px"
+            android:background="@drawable/dashline"
+            />
+
+        <EditText
+            android:id="@+id/et_phone"
+            android:layout_width="626px"
+            android:layout_height="wrap_content"
+            android:layout_alignBottom="@id/dashline_phone"
+            android:background="@null"
+            android:hint="@string/phone"
+            android:inputType="phone"
+            android:maxLines="1"
+            android:paddingBottom="24px"
+            android:paddingLeft="48px"
+            android:paddingTop="20px"
+            android:textColor="@color/white"
+            android:textColorHint="@color/white"
+            android:textSize="24px"
+            android:theme="@style/et_pass"
+            />
+
+        <ImageView
+            android:layout_width="34px"
+            android:layout_height="34px"
+            android:layout_alignBottom="@id/dashline_phone"
+            android:layout_marginBottom="22px"
+            android:src="@drawable/phone"
+            />
+
+        <ImageView
+            android:id="@+id/phone_clear"
+            android:layout_width="26px"
+            android:layout_height="26px"
+            android:layout_alignBottom="@id/dashline_phone"
+            android:layout_alignRight="@id/et_phone"
+            android:layout_marginBottom="22px"
+            android:src="@drawable/clear"/>
+    </RelativeLayout>
+    <TextView
+        android:layout_width="626px"
+        android:layout_height="82px"
+        android:text="@string/next_step"
+        android:layout_gravity="center_horizontal"
+        android:gravity="center"
+        android:background="@drawable/bg_btn_login"
+        android:layout_marginTop="128px"
+        android:textColor="@color/white"
+        android:textSize="30px"
+        android:id="@+id/tv_next"
+        />
+</LinearLayout>
