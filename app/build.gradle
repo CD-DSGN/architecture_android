@@ -61,6 +61,7 @@ dependencies {
     annotationProcessor 'com.jakewharton:butterknife-compiler:8.4.0'
     compile project(path: ':libzxing')
     compile 'com.android.support:design:25.1.0'
-//权限请求库
+    //权限请求库
     compile 'com.tbruyelle.rxpermissions:rxpermissions:0.9.1@aar'
+    compile project(':library_refresh')
 }

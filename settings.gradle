@@ -1,1 +1,1 @@
-include ':app', ':novate', ':libzxing'
+include ':app', ':novate', ':libzxing', ':library_refresh'

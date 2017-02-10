@@ -11,73 +11,44 @@ import com.tamic.novate.config.ConfigLoader;
  */
 public class NovateResponse<T> {
     //结果码
-    private int code = 1;
+    private int code;
     /*错误信息:msg, error, message*/
-    private String msg, error, message;
+    private String msg;
     /*真实数据 data或者result*/
-    private T data, result;
-
+    private T data;
 
 
     public int getCode() {
         return code;
     }
 
-    public void setCode(int code) {
-        this.code = code;
-    }
-
-    public String getError() {
-        return error;
-    }
-
-    public void setError(String error) {
-        this.error = error;
-    }
-
-    public String getMessage() {
-        return message;
-    }
-
-    public void setMessage(String message) {
-        this.message = message;
+    public void setCode(int mCode) {
+        code = mCode;
     }
 
     public String getMsg() {
         return msg;
     }
 
-    public void setMsg(String msg) {
-        this.msg = msg;
+    public void setMsg(String mMsg) {
+        msg = mMsg;
     }
 
     public T getData() {
         return data;
     }
 
-    public void setData(T data) {
-        this.data = data;
+    public void setData(T mData) {
+        data = mData;
     }
-
     public boolean isOk(Context context) {
         return ConfigLoader.checkSucess(context, getCode());
     }
-
-    public T getResult() {
-        return result;
-    }
-
-    public void setResult(T result) {
-        this.result = result;
-    }
-
     @Override
     public String toString() {
         return "NovateResponse{" +
                 "code=" + code +
                 ", msg='" + msg + '\'' +
-                ", error='" + error + '\'' +
-                ", message='" + message + '\'' +
                 ", data=" + data +
                 '}';
     }

@@ -266,7 +266,7 @@ public class Novate {
     private class HandleFuc<T> implements Func1<NovateResponse<T>, T> {
         @Override
         public T call(NovateResponse<T> response) {
-            if (response == null || (response.getData() == null && response.getResult() == null)) {
+            if (response == null || (response.getData() == null)) {
                 throw new JsonParseException("后端数据不对");
             }
             /*if (!response.isOk()) {
@@ -1313,7 +1313,7 @@ public class Novate {
                             throw new NullPointerException();
                         }
                         baseResponse = new Gson().fromJson(jsStr, finalNeedType);
-                        if (ConfigLoader.isFormat(mContext) && baseResponse.getData() == null & baseResponse.getResult() == null) {
+                        if (ConfigLoader.isFormat(mContext) && baseResponse.getData() == null) {
                             throw new FormatException();
                         }
 
@@ -1321,7 +1321,7 @@ public class Novate {
                             callBack.onSuccee((T) new Gson().fromJson(jsStr, finalNeedType));
                         } else {
                             String msg =
-                                    baseResponse.getMsg() != null ? baseResponse.getMsg() : baseResponse.getError() != null ? baseResponse.getError() : baseResponse.getMessage() != null ? baseResponse.getMessage() : "api未知异常";
+                                    baseResponse.getMsg() != null ? baseResponse.getMsg()  : "api未知异常";
 
                             ServerException serverException = new com.tamic.novate.exception.ServerException(baseResponse.getCode(), msg);
                             callBack.onError(NovateException.handleException(serverException));
