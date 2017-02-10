@@ -1,9 +1,9 @@
 package com.grandmagic.readingmate.model;
 
 import android.content.Context;
-import android.widget.Toast;
 
 import com.grandmagic.readingmate.base.AppBaseResponseCallBack;
+import com.grandmagic.readingmate.consts.ApiInterface;
 import com.tamic.novate.Novate;
 import com.tamic.novate.NovateResponse;
 
@@ -19,12 +19,11 @@ public class VerifyModel {
         Novate novate = new Novate.Builder(context).build();
         Map<String, Object> parameters = new HashMap<String, Object>();
         parameters.put("mobile_phone", phone_num);
-        novate.executeGet("/register_sms/", parameters, new AppBaseResponseCallBack<NovateResponse<Object>>(context) {
+        novate.executeGet(ApiInterface.VERIFY_CODE, parameters, new AppBaseResponseCallBack<NovateResponse<Object>>(context) {
             @Override
             public void onSuccee(NovateResponse<Object> response) {
-                Toast.makeText(context, response.getCode() +  "", Toast.LENGTH_SHORT).show();
+               
             }
         });
-
     }
 }

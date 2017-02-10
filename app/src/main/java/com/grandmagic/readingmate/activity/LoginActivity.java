@@ -18,6 +18,8 @@ import com.grandmagic.readingmate.adapter.LoginPagerAdapter;
 import com.grandmagic.readingmate.base.AppBaseActivity;
 import com.grandmagic.readingmate.dialog.HintDialog;
 import com.grandmagic.readingmate.utils.AutoUtils;
+import com.grandmagic.readingmate.utils.KitUtils;
+import com.grandmagic.readingmate.utils.ViewUtils;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -154,6 +156,17 @@ public class LoginActivity extends AppBaseActivity implements View.OnClickListen
 
         }
     }
+
+
+    private void snedVerify() {
+        String phone_num = mEtPhoneRg.getText().toString();
+        if (KitUtils.checkMobilePhone(phone_num)) {
+            VerifyModel.getVerifyCode(this, phone_num);
+        }else{
+            ViewUtils.showToast(this, getString(R.string.mobile_invalid));
+        }
+    }
+
 
     /**
      * 密码显示切换
