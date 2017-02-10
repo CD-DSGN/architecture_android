@@ -28,6 +28,7 @@ import com.grandmagic.readingmate.model.RegisterModel;
 import com.grandmagic.readingmate.model.VerifyModel;
 import com.grandmagic.readingmate.utils.AutoUtils;
 import com.grandmagic.readingmate.utils.KitUtils;
+import com.grandmagic.readingmate.utils.SPUtils;
 import com.grandmagic.readingmate.utils.ViewUtils;
 import com.tamic.novate.NovateResponse;
 
@@ -185,7 +186,8 @@ public class LoginActivity extends AppBaseActivity implements View.OnClickListen
         new LoginModel(LoginActivity.this, loginRequestBean, new AppBaseResponseCallBack<NovateResponse<LoginResponseBean>>(LoginActivity.this) {
             @Override
             public void onSuccee(NovateResponse<LoginResponseBean> response) {
-                //Todo,保存token
+                // TODO: 2017/2/10 保存token
+                SPUtils.getInstance().putBoolean(LoginActivity.this,SPUtils.IS_LOGIN,true);
                 //跳转到首页
                 Intent intent = new Intent(LoginActivity.this, MainActivity.class);
                 startActivity(intent);

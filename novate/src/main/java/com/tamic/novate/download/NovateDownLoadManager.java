@@ -90,6 +90,10 @@ public class NovateDownLoadManager {
         Log.d(TAG, "name:->" + name);
         try {
             // todo change the file location/name according to your needs
+            File mFile = new File(path);
+            if (!mFile.exists()){
+                mFile.mkdirs();
+            }
             File futureStudioIconFile = new File(path + name);
 
             InputStream inputStream = null;

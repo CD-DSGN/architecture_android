@@ -1,5 +1,6 @@
 package com.grandmagic.readingmate.activity;
 
+import android.Manifest;
 import android.animation.ObjectAnimator;
 import android.app.Fragment;
 import android.app.FragmentManager;
@@ -18,6 +19,7 @@ import com.grandmagic.readingmate.fragment.PersonalFragment;
 import com.grandmagic.readingmate.fragment.SearchFragment;
 import com.grandmagic.readingmate.utils.KitUtils;
 import com.grandmagic.readingmate.utils.UpdateManager;
+import com.tbruyelle.rxpermissions.RxPermissions;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -25,6 +27,7 @@ import java.util.Map;
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
+import rx.functions.Action1;
 
 public class MainActivity extends AppBaseActivity {
     @BindView(R.id.contentframe)
@@ -59,6 +62,12 @@ public class MainActivity extends AppBaseActivity {
         setContentView(R.layout.activity_main);
         ButterKnife.bind(this);
         initdata();
+        new RxPermissions(this).request(Manifest.permission.WRITE_EXTERNAL_STORAGE).subscribe(new Action1<Boolean>() {
+            @Override
+            public void call(Boolean mBoolean) {
+
+            }
+        });
     }
 
     private void initdata() {
