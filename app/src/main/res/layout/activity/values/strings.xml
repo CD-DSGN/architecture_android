@@ -15,4 +15,5 @@
     <string name="registernow">立即注册</string>
     <string name="verification_code">验证码</string>
     <string name="send_code">发送验证码</string>
+    <string name="mobile_invalid">手机号不合法</string>
 </resources>
