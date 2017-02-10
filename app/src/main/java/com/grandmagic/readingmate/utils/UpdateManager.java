@@ -41,13 +41,13 @@ public class UpdateManager {
         mNovate = new Novate.Builder(mContext).build();
         mNovate.executeGet(ApiInterface.UPDATE, new HashMap<String, Object>(),
                 new AppBaseResponseCallBack<NovateResponse<UpdateResponse>>(mContext) {
-            @Override
-            public void onSuccee(NovateResponse<UpdateResponse> response) {
-                if (localVersion != response.getData().getServersion()) {
-                    showUpdateDialog(response.getData().getUrl());
-                }
-            }
-        });
+                    @Override
+                    public void onSuccee(NovateResponse<UpdateResponse> response) {
+                        if (localVersion != response.getData().getServersion()) {
+                            showUpdateDialog(response.getData().getUrl());
+                        }
+                    }
+                });
     }
 
     private void showUpdateDialog(final String url) {
@@ -84,19 +84,19 @@ public class UpdateManager {
 
             @Override
             public void onProgress(String key, long fileSizeDownloaded, long totalSize) {
-                Log.e("download", "onProgress: "+fileSizeDownloaded/totalSize );
+                Log.e("download", "onProgress: " + fileSizeDownloaded / totalSize);
             }
 
             @Override
             public void onSucess(String key, String path, String name, long fileSize) {
-                File apkfile = new File(path);
+                File apkfile = new File(path + name);
                 if (!apkfile.exists()) {
                     Toast.makeText(mContext, "安装遇到问题,文件不存在?", Toast.LENGTH_SHORT).show();
                 } else {
                     Intent i = new Intent();
                     i.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
                     i.setDataAndType(Uri.parse("file://" + apkfile.getAbsolutePath()), "application/vnd.android.package-archive");
-               mContext.startActivity(i);
+                    mContext.startActivity(i);
                 }
             }
         });
