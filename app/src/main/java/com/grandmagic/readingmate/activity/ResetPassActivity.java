@@ -34,6 +34,8 @@ public class ResetPassActivity extends AppBaseActivity {
     @BindView(R.id.reset)
     TextView mReset;
 
+    private String mPhoneNum;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -42,6 +44,11 @@ public class ResetPassActivity extends AppBaseActivity {
         setTranslucentStatus(true);
         ButterKnife.bind(this);
         initview();
+        initData();
+    }
+
+    private void initData() {
+        mPhoneNum = getIntent().getStringExtra("phone_num");
     }
 
     private void initview() {
@@ -61,10 +68,20 @@ public class ResetPassActivity extends AppBaseActivity {
                 setPasswordVisable(mEtPasssure,mEyePassSure);
                 break;
             case R.id.reset:
-                // TODO: 2017/2/10 提交服务端重置
+                resetPassWord();
                 break;
         }
     }
+
+    private void resetPassWord() {
+//        ResetPasswordRequsetBean  new ResetPasswordRequsetBean()
+//        new ResetPasswordModel(ResetPassActivity.this, )
+
+
+
+
+    }
+
     /**
      * 密码显示切换
      *

@@ -242,7 +242,12 @@ public class LoginActivity extends AppBaseActivity implements View.OnClickListen
         //判断手机合法性
         String phone_num = mEtPhoneRg.getText().toString();
         if (KitUtils.checkMobilePhone(phone_num)) {
-            VerifyModel.getVerifyCode(this, phone_num);
+            new VerifyModel(LoginActivity.this, new AppBaseResponseCallBack<NovateResponse<Object>>(LoginActivity.this) {
+                @Override
+                public void onSuccee(NovateResponse<Object> response) {
+
+                }
+            }).getVerifyCode(phone_num);
         } else {
             ViewUtils.showToast(this, getString(R.string.mobile_invalid));
         }
