@@ -183,7 +183,7 @@ public class LoginActivity extends AppBaseActivity implements View.OnClickListen
         }
 
         LoginRequestBean loginRequestBean = new LoginRequestBean(phone_num, pwd);
-        new LoginModel(LoginActivity.this, loginRequestBean, new AppBaseResponseCallBack<NovateResponse<LoginResponseBean>>(LoginActivity.this) {
+        new LoginModel(LoginActivity.this, loginRequestBean, new AppBaseResponseCallBack<NovateResponse<LoginResponseBean>>(LoginActivity.this, true) {
             @Override
             public void onSuccee(NovateResponse<LoginResponseBean> response) {
                 // TODO: 2017/2/10 保存token
