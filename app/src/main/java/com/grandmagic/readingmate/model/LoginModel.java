@@ -1,11 +1,15 @@
 package com.grandmagic.readingmate.model;
 
 import android.content.Context;
+import android.text.TextUtils;
 
 import com.google.gson.Gson;
+import com.grandmagic.readingmate.R;
 import com.grandmagic.readingmate.base.AppBaseResponseCallBack;
 import com.grandmagic.readingmate.bean.request.LoginRequestBean;
 import com.grandmagic.readingmate.consts.ApiInterface;
+import com.grandmagic.readingmate.utils.KitUtils;
+import com.grandmagic.readingmate.utils.ViewUtils;
 import com.tamic.novate.Novate;
 
 /**
@@ -24,6 +28,15 @@ public class LoginModel {
     }
 
     public void login() {
+        if (!KitUtils.checkMobilePhone(mLoginRequestBean.getPhone_num())) {
+            ViewUtils.showToast(mContext, mContext.getString(R.string.mobile_invalid));
+            return;
+        }
+
+        if (TextUtils.isEmpty(mLoginRequestBean.getPassword())) {
+            ViewUtils.showToast(mContext, mContext.getString(R.string.password_empty));
+            return;
+        }
         Novate novate = new Novate.Builder(mContext).build();
         String json_str = new Gson().toJson(mLoginRequestBean);
         novate.executeJson(ApiInterface.LOGIN, json_str, mCallBack);

@@ -171,16 +171,7 @@ public class LoginActivity extends AppBaseActivity implements View.OnClickListen
 
     private void login() {
         String phone_num = mEtPhone.getText().toString();
-        if (!KitUtils.checkMobilePhone(phone_num)) {
-            ViewUtils.showToast(this, getString(R.string.mobile_invalid));
-            return;
-        }
-
         String pwd = mEtPass.getText().toString();
-        if (TextUtils.isEmpty(pwd)) {
-            ViewUtils.showToast(this, getString(R.string.password_empty));
-            return;
-        }
 
         LoginRequestBean loginRequestBean = new LoginRequestBean(phone_num, pwd);
         new LoginModel(LoginActivity.this, loginRequestBean, new AppBaseResponseCallBack<NovateResponse<LoginResponseBean>>(LoginActivity.this, true) {
@@ -196,48 +187,20 @@ public class LoginActivity extends AppBaseActivity implements View.OnClickListen
     }
 
     private void register() {
-        //手机合法性检查
         String phone_num = mEtPhoneRg.getText().toString();
-        if (!KitUtils.checkMobilePhone(phone_num)) {
-            ViewUtils.showToast(this, getString(R.string.mobile_invalid));
-            return;
-        }
-
-        //判断验证码是否为空
         String verify_code = mEtVerify.getText().toString();
-        if (TextUtils.isEmpty(verify_code)) {
-            ViewUtils.showToast(this, getString(R.string.verify_code_empty));
-            return;
-        }
 
-        //判断密码和确认密码是否为空
         String pwd = mEtPassRg.getText().toString();
         String pwd_comfirm = mEtPasssureRg.getText().toString();
 
-        if (TextUtils.isEmpty(pwd)) {
-            ViewUtils.showToast(this, getString(R.string.password_empty));
-            return;
-        }
-
-        if (TextUtils.isEmpty(pwd_comfirm)) {
-            ViewUtils.showToast(this, getString(R.string.password_confirm_empty));
-            return;
-        }
-
-        //判断是密码和确认密码否一致
-        if (!pwd.equals(pwd_comfirm)) {
-            ViewUtils.showToast(this, getString(R.string.password_not_equal));
-            return;
-        }
-
         RegisterRequestBean registerBean = new RegisterRequestBean(pwd, phone_num, verify_code);
         new RegisterModel(LoginActivity.this, registerBean, new AppBaseResponseCallBack<NovateResponse<RegisterResponseBean>>
-                (LoginActivity.this) {
+                (LoginActivity.this, true) {
             @Override
             public void onSuccee(NovateResponse<RegisterResponseBean> response) {
                 ViewUtils.showToast(LoginActivity.this, "注册成功" + (String)(response.getData().getToken()));
             }
-        }).register();
+        }, pwd_comfirm).register();
     }
 
     private void snedVerify() {
