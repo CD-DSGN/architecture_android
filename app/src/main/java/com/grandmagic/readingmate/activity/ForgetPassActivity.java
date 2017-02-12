@@ -20,6 +20,7 @@ import butterknife.ButterKnife;
 import butterknife.OnClick;
 
 public class ForgetPassActivity extends AppBaseActivity {
+    private static final int FORGET = 1;
     @BindView(R.id.title)
     TextView mTitle;
     @BindView(R.id.et_phone)
@@ -49,7 +50,6 @@ public class ForgetPassActivity extends AppBaseActivity {
                 mEtPhone.setText("");
                 break;
             case R.id.tv_next:
-                // TODO: 2017/2/10 请求服务器发送验证码 成功后跳转
                 snedVerify();
                 break;
         }
@@ -59,12 +59,12 @@ public class ForgetPassActivity extends AppBaseActivity {
         //判断手机合法性
         final String phone_num = mEtPhone.getText().toString();
         if (KitUtils.checkMobilePhone(phone_num)) {
-            new VerifyModel(ForgetPassActivity.this, new AppBaseResponseCallBack<NovateResponse<Object>>(ForgetPassActivity.this) {
+            new VerifyModel(ForgetPassActivity.this, new AppBaseResponseCallBack<NovateResponse<Object>>(ForgetPassActivity.this, true) {
                 @Override
                 public void onSuccee(NovateResponse<Object> response) {
                     Intent intent = new Intent(ForgetPassActivity.this,ResetPassActivity.class);
                     intent.putExtra("phone_num", phone_num);
-                    startActivity(intent);
+                    startActivityForResult(intent, FORGET);
                 }
             }).getVerifyCode(phone_num);
         } else {
@@ -76,6 +76,12 @@ public class ForgetPassActivity extends AppBaseActivity {
 
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
-        super.onActivityResult(requestCode, resultCode, data);
+        if (requestCode == FORGET && resultCode == ResetPassActivity.CHANG_SUCCESS) {
+            //跳转到登录页
+            ViewUtils.showToast(this, getString(R.string.reset_success));
+            Intent intent = new Intent(this, LoginActivity.class);
+            startActivity(intent);
+            finish();
+        }
     }
 }

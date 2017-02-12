@@ -1,5 +1,6 @@
 package com.grandmagic.readingmate.activity;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.text.method.PasswordTransformationMethod;
 import android.view.View;
@@ -9,13 +10,20 @@ import android.widget.TextView;
 
 import com.grandmagic.readingmate.R;
 import com.grandmagic.readingmate.base.AppBaseActivity;
+import com.grandmagic.readingmate.base.AppBaseResponseCallBack;
+import com.grandmagic.readingmate.bean.request.ResetPasswordRequsetBean;
+import com.grandmagic.readingmate.model.ResetPasswordModel;
 import com.grandmagic.readingmate.utils.AutoUtils;
+import com.grandmagic.readingmate.utils.ViewUtils;
+import com.tamic.novate.NovateResponse;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
 
+
 public class ResetPassActivity extends AppBaseActivity {
+    public static final int CHANG_SUCCESS = 1;
 
     @BindView(R.id.back)
     ImageView mBack;
@@ -74,12 +82,19 @@ public class ResetPassActivity extends AppBaseActivity {
     }
 
     private void resetPassWord() {
-//        ResetPasswordRequsetBean  new ResetPasswordRequsetBean()
-//        new ResetPasswordModel(ResetPassActivity.this, )
+        String verify = mEtVerify.getText().toString();
+        String pwd = mEtPasssure.getText().toString();
+        String pwd_confirm = mEtPass.getText().toString();
 
-
-
-
+        ResetPasswordRequsetBean resetPasswordRequsetBean =new ResetPasswordRequsetBean(pwd, mPhoneNum, verify);
+        new ResetPasswordModel(ResetPassActivity.this, resetPasswordRequsetBean,
+                new AppBaseResponseCallBack<NovateResponse<Object>>(ResetPassActivity.this, true) {
+            @Override
+            public void onSuccee(NovateResponse<Object> response) {
+                ResetPassActivity.this.setResult(CHANG_SUCCESS);
+                finish();
+            }
+        }, pwd_confirm).resetPassword();
     }
 
     /**

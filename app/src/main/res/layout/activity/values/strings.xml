@@ -24,4 +24,5 @@
     <string name="password_empty">密码不能为空</string>
     <string name="password_confirm_empty">请填写确认密码</string>
     <string name="password_not_equal">密码不一致</string>
+    <string name="reset_success">修改密码成功，请重新登录</string>
 </resources>

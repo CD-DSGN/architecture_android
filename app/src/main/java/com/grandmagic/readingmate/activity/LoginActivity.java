@@ -156,7 +156,7 @@ public class LoginActivity extends AppBaseActivity implements View.OnClickListen
                 break;
             case R.id.register_rg:
                 register();
-                new HintDialog(LoginActivity.this, "待实现");
+//                new HintDialog(LoginActivity.this, "待实现");
                 break;
             case R.id.eye_pass_rg:
                 setPasswordVisable(mEtPassRg, mEyePassRg);

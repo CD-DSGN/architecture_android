@@ -15,7 +15,7 @@ public class AppBasePostModel {
         mCallBack = callBack;
     }
 
-    protected void checkParameter() {
-
+    protected boolean checkParameter() {
+        return true;
     }
 }

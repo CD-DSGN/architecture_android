@@ -1,19 +1,5 @@
 [
-  {
-    "request" :
-    {
-      "uri" :"/user/login/",
-      "method" :"post"
-    },
-   "response" :
-      {
-        "json" :
-        {
-            "name" : "jerry",
-            "age" :"24"
-        }         
-      }
-  },
+
   {
     "request":
     {
@@ -101,6 +87,20 @@
           "url":"assets/quickpic_4.5.2.apk"
         }
 
+      }
+    }
+  },
+    {
+    "request" :
+    {
+      "uri" :"/reset_password/",
+      "method" :"post"
+    },
+    "response" :
+    {
+      "json" :
+      {
+        "code" : 200
       }
     }
   }
