@@ -6,8 +6,12 @@ import android.content.Intent;
 import android.net.Uri;
 import android.support.v7.app.AlertDialog;
 import android.util.Log;
+import android.view.LayoutInflater;
+import android.view.View;
 import android.widget.Toast;
 
+import com.daimajia.numberprogressbar.NumberProgressBar;
+import com.grandmagic.readingmate.R;
 import com.grandmagic.readingmate.base.AppBaseResponseCallBack;
 import com.grandmagic.readingmate.bean.response.UpdateResponse;
 import com.grandmagic.readingmate.consts.ApiInterface;
@@ -55,13 +59,15 @@ public class UpdateManager {
         String s = NetworkUtil.isWifi(mContext) ? "您目前在WIFI环境，是否升级" : "您目前不在在WIFI环境，是否升级";
         mDialog.setTitle("有新的版本");
         mDialog.setMessage(s);
-        mDialog.setNegativeButton("确定", new DialogInterface.OnClickListener() {
+        mDialog.setNegativeButton(R.string.confirm, new DialogInterface.OnClickListener() {
             @Override
             public void onClick(DialogInterface dialog, int which) {
                 download(url);
+                mAlertDialog.dismiss();
+
             }
         });
-        mDialog.setPositiveButton("取消", new DialogInterface.OnClickListener() {
+        mDialog.setPositiveButton(R.string.cancle, new DialogInterface.OnClickListener() {
             @Override
             public void onClick(DialogInterface dialog, int which) {
                 mAlertDialog.dismiss();
@@ -69,9 +75,23 @@ public class UpdateManager {
         });
         mAlertDialog = mDialog.create();
         mAlertDialog.show();
-        if (NetworkUtil.isWifi(mContext)) {
-            download(url);
+    }
+
+    AlertDialog progressdialog;
+    NumberProgressBar mProgressBar;
+
+    private void showProgressDialog(int progress) {
+        if (progressdialog == null) {
+            AlertDialog.Builder mBuilder = new AlertDialog.Builder(mContext);
+            View mView = LayoutInflater.from(mContext).inflate(R.layout.downloadprogress_dialog, null);
+            mProgressBar = (NumberProgressBar) mView.findViewById(R.id.down_paogress);
+            mBuilder.setView(mView);
+            mBuilder.setTitle("正在下载");
+            progressdialog = mBuilder.create();
+            progressdialog.setCanceledOnTouchOutside(false);
         }
+        progressdialog.show();
+        mProgressBar.setProgress(progress);
     }
 
     private void download(String mUrl) {
@@ -79,16 +99,22 @@ public class UpdateManager {
         mNovate1.download(mUrl, new DownLoadCallBack() {
             @Override
             public void onError(Throwable e) {
-
+                if (progressdialog != null && progressdialog.isShowing()) {
+                    progressdialog.dismiss();
+                }
             }
 
             @Override
             public void onProgress(String key, long fileSizeDownloaded, long totalSize) {
                 Log.e("download", "onProgress: " + fileSizeDownloaded / totalSize);
+                showProgressDialog((int) (100 * fileSizeDownloaded / totalSize));
             }
 
             @Override
             public void onSucess(String key, String path, String name, long fileSize) {
+                if (progressdialog != null && progressdialog.isShowing()) {
+                    progressdialog.dismiss();
+                }
                 File apkfile = new File(path + name);
                 if (!apkfile.exists()) {
                     Toast.makeText(mContext, "安装遇到问题,文件不存在?", Toast.LENGTH_SHORT).show();
