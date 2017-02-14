@@ -31,13 +31,13 @@ public class RegisterModel {
 
     public void register() {
         //手机合法性检查
-        if (!KitUtils.checkMobilePhone(mRegisterBean.getPhone_num())) {
+        if (!KitUtils.checkMobilePhone(mRegisterBean.getMobile_phone())) {
             ViewUtils.showToast(mContext, mContext.getString(R.string.mobile_invalid));
             return;
         }
 
         //判断验证码是否为空
-        if (TextUtils.isEmpty(mRegisterBean.getVerify_code())) {
+        if (TextUtils.isEmpty(mRegisterBean.getVerification_code())) {
             ViewUtils.showToast(mContext, mContext.getString(R.string.verify_code_empty));
             return;
         }

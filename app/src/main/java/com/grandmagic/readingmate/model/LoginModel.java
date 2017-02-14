@@ -28,7 +28,7 @@ public class LoginModel {
     }
 
     public void login() {
-        if (!KitUtils.checkMobilePhone(mLoginRequestBean.getPhone_num())) {
+        if (!KitUtils.checkMobilePhone(mLoginRequestBean.getMobile_phone())) {
             ViewUtils.showToast(mContext, mContext.getString(R.string.mobile_invalid));
             return;
         }

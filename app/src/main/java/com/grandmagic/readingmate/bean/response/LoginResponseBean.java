@@ -5,13 +5,13 @@ package com.grandmagic.readingmate.bean.response;
  */
 
 public class LoginResponseBean {
-    private String token;
+    private String access_token;
 
-    public String getToken() {
-        return token;
+    public String getAccess_token() {
+        return access_token;
     }
 
-    public void setToken(String token) {
-        this.token = token;
+    public void setAccess_token(String access_token) {
+        this.access_token = access_token;
     }
 }

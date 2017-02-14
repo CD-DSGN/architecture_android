@@ -5,20 +5,20 @@ package com.grandmagic.readingmate.bean.request;
  */
 
 public class LoginRequestBean  {
-    private String phone_num;
+    private String mobile_phone;
     private String password;
 
     public LoginRequestBean(String phone_num, String password) {
-        this.phone_num = phone_num;
+        this.mobile_phone = phone_num;
         this.password = password;
     }
 
-    public String getPhone_num() {
-        return phone_num;
+    public String getMobile_phone() {
+        return mobile_phone;
     }
 
-    public void setPhone_num(String phone_num) {
-        this.phone_num = phone_num;
+    public void setMobile_phone(String mobile_phone) {
+        this.mobile_phone = mobile_phone;
     }
 
     public String getPassword() {

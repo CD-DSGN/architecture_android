@@ -4,7 +4,6 @@ package com.grandmagic.readingmate.activity;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.v4.view.ViewPager;
-import android.text.TextUtils;
 import android.text.method.PasswordTransformationMethod;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -22,7 +21,6 @@ import com.grandmagic.readingmate.bean.request.LoginRequestBean;
 import com.grandmagic.readingmate.bean.request.RegisterRequestBean;
 import com.grandmagic.readingmate.bean.response.LoginResponseBean;
 import com.grandmagic.readingmate.bean.response.RegisterResponseBean;
-import com.grandmagic.readingmate.dialog.HintDialog;
 import com.grandmagic.readingmate.model.LoginModel;
 import com.grandmagic.readingmate.model.RegisterModel;
 import com.grandmagic.readingmate.model.VerifyModel;
@@ -178,7 +176,13 @@ public class LoginActivity extends AppBaseActivity implements View.OnClickListen
             @Override
             public void onSuccee(NovateResponse<LoginResponseBean> response) {
                 // TODO: 2017/2/10 保存token
-                SPUtils.getInstance().putBoolean(LoginActivity.this,SPUtils.IS_LOGIN,true);
+//                SPUtils.getInstance().putBoolean(LoginActivity.this,SPUtils.IS_LOGIN,true);
+                String token = null;
+                if (response.getData() != null) {
+                    token = response.getData().getAccess_token();
+                }
+                //保存token
+                SPUtils.getInstance().saveToken(LoginActivity.this, token);
                 //跳转到首页
                 Intent intent = new Intent(LoginActivity.this, MainActivity.class);
                 startActivity(intent);
@@ -198,7 +202,13 @@ public class LoginActivity extends AppBaseActivity implements View.OnClickListen
                 (LoginActivity.this, true) {
             @Override
             public void onSuccee(NovateResponse<RegisterResponseBean> response) {
-                ViewUtils.showToast(LoginActivity.this, "注册成功" + (String)(response.getData().getToken()));
+                String token = null;
+                if (response.getData() != null) {
+                    token = response.getData().getAccess_token();
+                }
+                //保存token
+                SPUtils.getInstance().saveToken(LoginActivity.this, token);
+                ViewUtils.showToast(LoginActivity.this, "注册成功");
             }
         }, pwd_comfirm).register();
     }

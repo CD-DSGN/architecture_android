@@ -3,6 +3,7 @@ package com.grandmagic.readingmate.utils;
 
 import android.content.Context;
 import android.content.SharedPreferences;
+import android.text.TextUtils;
 
 /**
  * Created by lps on 2017/2/7.主要保存一些用户信息
@@ -35,8 +36,20 @@ static SPUtils mSPUtils;
      * @return
      */
     public  boolean isLogin(Context mContext){
-        SharedPreferences mSharedPreferences = mContext.getSharedPreferences(DEFAULT_SP_NAME, Context.MODE_PRIVATE);
-        return mSharedPreferences.getBoolean(IS_LOGIN,false);
+        String token = getToken(mContext);
+        return !TextUtils.isEmpty(token);
+    }
+
+    //保存token
+    public void saveToken(Context context, String token) {
+        if (token != null) {
+            putString(context, "T", token);
+        }
+    }
+
+
+    public String getToken(Context context) {
+        return getString(context, "T");
     }
 
     /**

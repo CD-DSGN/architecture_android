@@ -10,11 +10,12 @@ public class Environment {
     public static final int ENVIROMENT_MOCKSERVER = 3;
 
 
-    public static final String BASEULR_PRODUCTION = "http://www.baidu.com";
-    public static final String BASEULR_DEVELOPMENT = "http://192.168.1.165";
+    public static final String BASEULR_PRODUCTION = "http://192.168.1.115/reading-partner-php/api/web/";
+    public static final String BASEULR_DEVELOPMENT = "http://192.168.1.165/";
+
 
     public static int getEnviroment() {
-        return ENVIROMENT_DEVELOPMENT;
+        return ENVIRONMENT_PRODUCTION;
     }
 
     public static String getUrl() {
