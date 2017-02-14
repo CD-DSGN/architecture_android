@@ -1,0 +1,95 @@
+<?xml version="1.0" encoding="utf-8"?>
+<merge xmlns:android="http://schemas.android.com/apk/res/android"
+              android:layout_width="match_parent"
+              android:layout_height="match_parent"
+              android:orientation="vertical">
+
+    <RelativeLayout
+        android:layout_width="720px"
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="34px"
+        >
+
+        <ImageView
+            android:id="@+id/dashline_scan"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="120px"
+            android:src="@drawable/dv_green"/>
+
+        <ImageView
+            android:id="@+id/iv_scanlist"
+            android:layout_width="34px"
+            android:layout_height="34px"
+            android:layout_alignBottom="@+id/dashline_scan"
+            android:layout_marginBottom="18px"
+            android:src="@drawable/ic_scan_list"
+            />
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignBottom="@+id/dashline_scan"
+            android:layout_marginBottom="22px"
+            android:layout_marginLeft="14px"
+            android:layout_toRightOf="@+id/iv_scanlist"
+            android:text="扫描记录"
+            android:textColor="#086651"
+            android:textSize="26px"
+
+            />
+    </RelativeLayout>
+
+    <LinearLayout
+        android:id="@+id/lin_scanhis"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        >
+
+    </LinearLayout>
+    <RelativeLayout
+        android:layout_width="720px"
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="34px"
+        >
+
+        <ImageView
+            android:id="@+id/dashline_search"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="120px"
+            android:src="@drawable/dv_green"/>
+
+        <ImageView
+            android:id="@+id/iv_searchlist"
+            android:layout_width="34px"
+            android:layout_height="34px"
+            android:layout_alignBottom="@+id/dashline_search"
+            android:layout_marginBottom="18px"
+            android:src="@drawable/ic_cam"
+            />
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignBottom="@+id/dashline_search"
+            android:layout_marginBottom="22px"
+            android:layout_marginLeft="14px"
+            android:layout_toRightOf="@+id/iv_searchlist"
+            android:text="书籍列表"
+            android:textColor="#086651"
+            android:textSize="26px"
+
+            />
+    </RelativeLayout>
+
+    <LinearLayout
+        android:id="@+id/lin_searchhis"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        >
+
+    </LinearLayout>
+</merge>

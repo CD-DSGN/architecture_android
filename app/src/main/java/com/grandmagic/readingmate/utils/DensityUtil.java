@@ -1,6 +1,8 @@
 package com.grandmagic.readingmate.utils;
 
+import android.app.Activity;
 import android.content.Context;
+import android.graphics.Rect;
 import android.util.DisplayMetrics;
 import android.view.WindowManager;
 
@@ -33,4 +35,14 @@ public class DensityUtil {
         return dm.heightPixels;
     }
 
+    /**
+     * 获取状态栏的高度
+     * @param mContext 需要为Activity
+     * @return statusbar高度
+     */
+    public static int getStatusBarHeight(Context mContext){
+    Rect mRect=new Rect();
+    ((Activity)mContext).getWindow().getDecorView().getWindowVisibleDisplayFrame(mRect);
+    return getScreenHeight(mContext)-mRect.height();
+}
 }

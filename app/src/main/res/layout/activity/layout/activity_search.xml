@@ -1,0 +1,49 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@drawable/bg_app"
+    android:orientation="vertical"
+    tools:context="com.grandmagic.readingmate.activity.SearchActivity">
+
+    <RelativeLayout
+        android:layout_width="720px"
+        android:layout_height="90px"
+        android:layout_gravity="center_horizontal"
+        android:layout_marginTop="170px"
+        android:background="@drawable/bg_white_green_board">
+
+        <ImageView
+            android:id="@+id/iv_search"
+            android:layout_width="35px"
+            android:layout_height="35px"
+            android:layout_centerVertical="true"
+            android:layout_marginLeft="52px"
+            android:src="@drawable/ic_search"
+            />
+
+        <EditText
+            android:id="@+id/et_search"
+            android:layout_width="698px"
+            android:layout_height="68px"
+            android:layout_centerVertical="true"
+            android:layout_toRightOf="@+id/iv_search"
+            android:background="@null"
+            android:hint="关键字搜索"
+            android:paddingLeft="24px"
+            android:textColor="#999999"
+            android:textColorHint="#999999"
+            android:textSize="22px"
+            />
+    </RelativeLayout>
+
+    <include layout="@layout/view_hotsearch">
+
+    </include>
+
+    <include layout="@layout/view_history"/>
+
+
+</LinearLayout>

@@ -48,9 +48,16 @@
             android:theme="@style/notitle">
         </activity>
         <activity android:name=".activity.ScanActivity"/>
-        <activity android:name=".activity.ForgetPassActivity" android:theme="@style/notitle">
+        <activity
+            android:name=".activity.ForgetPassActivity"
+            android:theme="@style/notitle">
         </activity>
-        <activity android:name=".activity.ResetPassActivity" android:theme="@style/notitle">
+        <activity
+            android:name=".activity.ResetPassActivity"
+            android:theme="@style/notitle">
+        </activity>
+        <activity android:name=".activity.SearchActivity"
+            android:theme="@style/notitle">
         </activity>
     </application>
 
