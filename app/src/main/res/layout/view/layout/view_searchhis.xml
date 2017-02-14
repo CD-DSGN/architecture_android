@@ -1,0 +1,44 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+                android:layout_width="720px"
+                android:layout_height="wrap_content"
+                android:layout_centerHorizontal="true">
+
+
+    <ImageView
+        android:id="@+id/dashline_search"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="80px"
+        android:src="@drawable/dv_green"/>
+
+
+    <TextView
+        android:id="@+id/bookname"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignBottom="@+id/dashline_search"
+        android:layout_marginBottom="22px"
+        android:layout_marginLeft="14px"
+        android:layout_toRightOf="@+id/iv_searchlist"
+        android:text="《C++》"
+        android:textColor="#086651"
+        android:textSize="26px"
+
+        />
+
+    <TextView
+        android:id="@+id/timeOrauthor"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignBottom="@+id/dashline_search"
+        android:layout_alignParentRight="true"
+        android:layout_marginBottom="22px"
+        android:layout_marginLeft="14px"
+        android:layout_toRightOf="@+id/iv_searchlist"
+        android:text="2016-12-13"
+        android:textColor="#086651"
+        android:textSize="26px"
+        />
+
+</RelativeLayout>

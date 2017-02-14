@@ -46,7 +46,7 @@
         android:layout_height="wrap_content"
         android:orientation="vertical"
         >
-
+<include layout="@layout/view_searchhis"/>
     </LinearLayout>
     <RelativeLayout
         android:layout_width="720px"
@@ -90,6 +90,9 @@
         android:layout_height="wrap_content"
         android:orientation="vertical"
         >
-
+        <include layout="@layout/view_searchhis"/>
+        <include layout="@layout/view_searchhis"/>
+        <include layout="@layout/view_searchhis"/>
+        <include layout="@layout/view_searchhis"/>
     </LinearLayout>
 </merge>

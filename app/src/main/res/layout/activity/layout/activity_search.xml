@@ -36,6 +36,7 @@
             android:textColor="#999999"
             android:textColorHint="#999999"
             android:textSize="22px"
+            android:imeOptions="actionSearch"
             />
     </RelativeLayout>
 
