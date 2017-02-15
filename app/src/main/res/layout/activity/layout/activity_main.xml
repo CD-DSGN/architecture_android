@@ -3,7 +3,7 @@
     xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-android:fitsSystemWindows="true"
+    android:fitsSystemWindows="true"
     >
 
     <FrameLayout
@@ -28,24 +28,25 @@ android:fitsSystemWindows="true"
             android:layout_weight="1">
 
             <TextView
+                android:id="@+id/text_home"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:button="@null"
-                android:layout_centerHorizontal="true"
                 android:layout_alignParentBottom="true"
+                android:layout_centerHorizontal="true"
+                android:button="@null"
                 android:text="@string/home"
-                android:id="@+id/text_home"
                 android:textSize="22px"
                 />
+
             <ImageView
-                android:layout_marginTop="6px"
-                android:layout_marginBottom="8px"
+                android:id="@+id/iv_home"
                 android:layout_width="34px"
                 android:layout_height="34px"
-                android:src="@drawable/ic_main_home"
                 android:layout_above="@+id/text_home"
                 android:layout_centerHorizontal="true"
-                android:id="@+id/iv_home"
+                android:layout_marginBottom="8px"
+                android:layout_marginTop="6px"
+                android:src="@drawable/ic_main_home"
                 />
         </RelativeLayout>
 
@@ -57,24 +58,25 @@ android:fitsSystemWindows="true"
             >
 
             <TextView
+                android:id="@+id/text_chat"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:button="@null"
-               android:layout_alignParentBottom="true"
-                android:text="@string/readchat"
-                android:id="@+id/text_chat"
-                android:textSize="22px"
+                android:layout_alignParentBottom="true"
                 android:layout_centerHorizontal="true"
+                android:button="@null"
+                android:text="@string/readchat"
+                android:textSize="22px"
                 />
+
             <ImageView
-                android:layout_marginTop="6px"
-                android:layout_marginBottom="8px"
+                android:id="@+id/iv_chat"
                 android:layout_width="34px"
                 android:layout_height="34px"
-                android:src="@drawable/ic_double_person"
                 android:layout_above="@+id/text_chat"
                 android:layout_centerHorizontal="true"
-                android:id="@+id/iv_chat"
+                android:layout_marginBottom="8px"
+                android:layout_marginTop="6px"
+                android:src="@drawable/ic_double_person"
                 />
         </RelativeLayout>
 
@@ -86,24 +88,25 @@ android:fitsSystemWindows="true"
             >
 
             <TextView
+                android:id="@+id/text_search"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:button="@null"
-               android:layout_centerHorizontal="true"
                 android:layout_alignParentBottom="true"
+                android:layout_centerHorizontal="true"
+                android:button="@null"
                 android:text="@string/search"
                 android:textSize="22px"
-                android:id="@+id/text_search"
                 />
+
             <ImageView
-                android:layout_marginTop="6px"
-                android:layout_marginBottom="8px"
+                android:id="@+id/iv_search"
                 android:layout_width="34px"
                 android:layout_height="34px"
-                android:src="@drawable/ic_book"
                 android:layout_above="@+id/text_search"
                 android:layout_centerHorizontal="true"
-                android:id="@+id/iv_search"
+                android:layout_marginBottom="8px"
+                android:layout_marginTop="6px"
+                android:src="@drawable/ic_book"
                 />
         </RelativeLayout>
 
@@ -115,25 +118,25 @@ android:fitsSystemWindows="true"
             >
 
             <TextView
+                android:id="@+id/text_person"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:button="@null"
-            android:layout_centerHorizontal="true"
                 android:layout_alignParentBottom="true"
+                android:layout_centerHorizontal="true"
+                android:button="@null"
                 android:text="@string/mine"
                 android:textSize="22px"
-                android:id="@+id/text_person"
                 />
 
             <ImageView
-                android:layout_marginTop="6px"
-                android:layout_marginBottom="8px"
+                android:id="@+id/iv_person"
                 android:layout_width="34px"
                 android:layout_height="34px"
-                android:src="@drawable/ic_single_person"
-                android:id="@+id/iv_person"
                 android:layout_alignParentTop="true"
-                android:layout_centerHorizontal="true"/>
+                android:layout_centerHorizontal="true"
+                android:layout_marginBottom="8px"
+                android:layout_marginTop="6px"
+                android:src="@drawable/ic_single_person"/>
         </RelativeLayout>
     </LinearLayout>
 </RelativeLayout>

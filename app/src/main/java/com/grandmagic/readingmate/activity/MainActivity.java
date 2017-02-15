@@ -5,8 +5,10 @@ import android.animation.ObjectAnimator;
 import android.app.Fragment;
 import android.app.FragmentManager;
 import android.graphics.Color;
+import android.os.Build;
 import android.os.Bundle;
 import android.view.View;
+import android.view.WindowManager;
 import android.widget.FrameLayout;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
@@ -74,7 +76,6 @@ public class MainActivity extends AppBaseActivity {
         setContentView(R.layout.activity_main);
         ButterKnife.bind(this);
         AutoUtils.auto(this);
-        setTranslucentStatus(true);
         initdata();
         new RxPermissions(this).request(Manifest.permission.WRITE_EXTERNAL_STORAGE).subscribe(new Action1<Boolean>() {
             @Override
@@ -82,6 +83,7 @@ public class MainActivity extends AppBaseActivity {
 
             }
         });
+
     }
 
     private void initdata() {
@@ -115,7 +117,6 @@ public class MainActivity extends AppBaseActivity {
         switch (view.getId()) {
             case R.id.layout_home:
                 mClass = HomeFragment.class;
-                checkVersion();
                 break;
             case R.id.layout_chat:
                 mClass = ChatFragment.class;

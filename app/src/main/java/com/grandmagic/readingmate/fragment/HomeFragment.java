@@ -1,30 +1,55 @@
 package com.grandmagic.readingmate.fragment;
 
 
+import android.content.Context;
 import android.content.Intent;
-import android.graphics.drawable.BitmapDrawable;
+import android.graphics.Color;
 import android.os.Bundle;
-import android.os.Handler;
-import android.view.Gravity;
+import android.support.v7.widget.LinearLayoutManager;
+import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.view.WindowManager;
+import android.widget.FrameLayout;
+import android.widget.ImageView;
 import android.widget.PopupWindow;
+import android.widget.TextView;
 
 import com.grandmagic.readingmate.R;
+import com.grandmagic.readingmate.activity.CaptureActivity;
+import com.grandmagic.readingmate.activity.MainActivity;
 import com.grandmagic.readingmate.activity.SearchActivity;
 import com.grandmagic.readingmate.base.AppBaseFragment;
 import com.grandmagic.readingmate.utils.AutoUtils;
-import com.grandmagic.readingmate.utils.DensityUtil;
+import com.zhy.adapter.recyclerview.CommonAdapter;
+import com.zhy.adapter.recyclerview.base.ViewHolder;
 
+import java.util.ArrayList;
+import java.util.List;
+
+import butterknife.BindView;
 import butterknife.ButterKnife;
+import butterknife.OnClick;
 
-/**
- * A simple {@link Fragment} subclass.
- */
+
 public class HomeFragment extends AppBaseFragment {
+    protected Context mContext;
+
     PopupWindow mPopupWindow;
+    @BindView(R.id.recyclerview)
+    RecyclerView mRecyclerview;
+    @BindView(R.id.pop_scan)
+    TextView mPopScan;
+    @BindView(R.id.pop_search)
+    TextView mPopSearch;
+    @BindView(R.id.layout_nobook)
+    FrameLayout mLayoutNobook;
+    @BindView(R.id.tv_title)
+    TextView mTvTitle;
+    @BindView(R.id.iv_search)
+    ImageView mIvSearch;
+    @BindView(R.id.iv_camera)
+    ImageView mIvCamera;
     private View rootview;
 
     @Override
@@ -34,48 +59,60 @@ public class HomeFragment extends AppBaseFragment {
         rootview = inflater.inflate(R.layout.fragment_home, container, false);
         AutoUtils.auto(rootview);
         ButterKnife.bind(this, rootview);
+        mContext = getActivity();
+        showRecyclerView();
+//        showEmptyView();
         return rootview;
     }
 
-
-    @Override
-    public void onActivityCreated(Bundle savedInstanceState) {
-        super.onActivityCreated(savedInstanceState);
-        new Handler().postDelayed(new Runnable() {
-            @Override
-            public void run() {
-                showPopUpWindow();
-            }
-        }, 300);
+    private void showEmptyView() {
+        mRecyclerview.setVisibility(View.GONE);
+        mLayoutNobook.setVisibility(View.VISIBLE);
+        rootview.setBackgroundResource(R.drawable.bg_app_deep);
+        mTvTitle.setTextColor(mContext.getResources().getColor(R.color.white));
+        mIvCamera.setVisibility(View.GONE);
+        mIvSearch.setVisibility(View.GONE);
+        ((MainActivity) getActivity()).setSystemBarColor(R.color.bg);
     }
 
-    private void showPopUpWindow() {
-        View popView = LayoutInflater.from(getActivity()).inflate(R.layout.pop_scanandsearch, null);
-        AutoUtils.auto(popView);
-        popView.findViewById(R.id.pop_search).setOnClickListener(new View.OnClickListener() {
+    private void showRecyclerView() {
+        ((MainActivity) mContext).setSystemBarColor(R.color.white);
+        mIvCamera.setVisibility(View.VISIBLE);
+        mIvSearch.setVisibility(View.VISIBLE);
+        rootview.setBackgroundColor(0xff0000);
+        mTvTitle.setTextColor(mContext.getResources().getColor(R.color.bg));
+        mRecyclerview.setVisibility(View.VISIBLE);
+        mLayoutNobook.setVisibility(View.GONE);
+        mRecyclerview.setLayoutManager(new LinearLayoutManager(mContext));
+        List<String> mStrings = new ArrayList<>();
+        for (int i = 0; i < 120; i++) {
+            mStrings.add(i + "helloworld");
+        }
+        mRecyclerview.setAdapter(new CommonAdapter<String>(mContext, R.layout.item_simpletext, mStrings) {
+
             @Override
-            public void onClick(View v) {
+            protected void convert(ViewHolder holder, String mS, int position) {
+
+            }
+        });
+    }
+
+    @OnClick({R.id.pop_scan, R.id.pop_search, R.id.tv_title})
+    public void onClick(View view) {
+        switch (view.getId()) {
+            case R.id.pop_scan:
+                startActivity(new Intent(getActivity(), CaptureActivity.class));
+                break;
+            case R.id.pop_search:
                 startActivity(new Intent(getActivity(), SearchActivity.class));
-            }
-        });
-        popView.findViewById(R.id.pop_scan).setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                // TODO: 2017/2/14 跳转到扫描
-            }
-        });
-        mPopupWindow = new PopupWindow(popView, WindowManager.LayoutParams.MATCH_PARENT, WindowManager.LayoutParams.MATCH_PARENT, true);
-        mPopupWindow.setClippingEnabled(false);
-        mPopupWindow.setBackgroundDrawable(new BitmapDrawable());
-        mPopupWindow.showAtLocation(rootview, Gravity.TOP | Gravity.START, 0, DensityUtil.getStatusBarHeight(getActivity()));
-        rootview.setAlpha(0.5f);
-        mPopupWindow.setOutsideTouchable(true);
-        mPopupWindow.setOnDismissListener(new PopupWindow.OnDismissListener() {
-            @Override
-            public void onDismiss() {
-                rootview.setAlpha(1.0f);
-            }
-        });
+                break;
+            case R.id.tv_title:
+                if (mRecyclerview.getVisibility() == View.GONE) {
+                    showRecyclerView();
+                } else {
+                    showEmptyView();
+                }
+                break;
+        }
     }
-
 }

@@ -60,7 +60,7 @@ public class AppBaseActivity extends AppCompatActivity {
      * 状态栏着色
      * @param color
      */
-    protected void setSystemBarColor(int color) {
+    public void setSystemBarColor(int color) {
 
     if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.KITKAT) {
         setTranslucentStatus(true);
@@ -76,7 +76,7 @@ public class AppBaseActivity extends AppCompatActivity {
      * @param on
      */
     @TargetApi(19)
-    protected void setTranslucentStatus(boolean on) {
+    public void setTranslucentStatus(boolean on) {
         Window win = getWindow();
         WindowManager.LayoutParams winParams = win.getAttributes();
         final int bits = WindowManager.LayoutParams.FLAG_TRANSLUCENT_STATUS;
