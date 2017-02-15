@@ -56,7 +56,11 @@
             android:name=".activity.ResetPassActivity"
             android:theme="@style/notitle">
         </activity>
-        <activity android:name=".activity.SearchActivity"
+        <activity
+            android:name=".activity.SearchActivity"
+            android:theme="@style/notitle">
+        </activity>
+        <activity android:name=".activity.CaptureActivity"
             android:theme="@style/notitle">
         </activity>
     </application>

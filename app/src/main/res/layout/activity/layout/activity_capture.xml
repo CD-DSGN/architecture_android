@@ -1,0 +1,111 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/activity_capture"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context="com.grandmagic.readingmate.activity.CaptureActivity"
+    android:background="@drawable/bg_app">
+
+    <SurfaceView
+        android:id="@+id/capture_preview"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"/>
+
+    <RelativeLayout
+        android:id="@+id/capture_container"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_alignParentTop="true"
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentStart="true">
+
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="64px"
+            android:id="@+id/rl_capture_title">
+            <ImageView
+                android:layout_width="32px"
+                android:layout_height="22px"
+                android:src="@drawable/ic_left_arrow"
+                android:layout_marginLeft="20px"
+                android:layout_centerVertical="true"
+                android:id="@+id/iv_capture_left_arrow"/>
+
+            <TextView
+                android:layout_width="244px"
+                android:layout_height="46px"
+                android:textColor="#ffffff"
+                android:text="@string/scan_bar"
+                android:layout_toRightOf="@id/iv_capture_left_arrow"
+                android:layout_marginLeft="208px"
+                android:gravity="center"
+                android:textSize="48px"/>
+        </RelativeLayout>
+
+        <RelativeLayout
+            android:id="@+id/capture_crop_view"
+            android:layout_marginTop="244px"
+            android:layout_width="506px"
+            android:layout_height="506px"
+            android:layout_below="@id/rl_capture_title"
+            android:layout_centerHorizontal="true"
+            android:background="@drawable/ic_scan_scope">
+
+            <ImageView
+                android:id="@+id/capture_scan_line"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_alignParentTop="true"
+                android:layout_marginBottom="10px"
+                android:layout_marginTop="10px"
+                android:src="@drawable/ic_scan_line"
+                />
+
+        </RelativeLayout>
+
+        <RelativeLayout
+            android:layout_width="wrap_content"
+            android:layout_height="66px"
+            android:layout_marginTop="56px"
+            android:layout_centerHorizontal="true"
+            android:id="@+id/rl_capture_hint"
+            android:layout_below="@id/capture_crop_view"
+
+            >
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:textColor="#999999"
+                android:textSize="24px"
+                android:text="@string/put_bar_into_scan_scope"
+                android:gravity="center"
+                android:layout_alignParentTop="true"
+                />
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:textColor="#999999"
+                android:textSize="24px"
+                android:text="@string/scan_immediately"
+                android:gravity="center"
+                android:layout_alignParentBottom="true"/>
+        </RelativeLayout>
+
+        <Button
+            android:layout_width="626px"
+            android:layout_height="82px"
+            android:text="@string/input_scanbar_manually"
+            android:textSize="30px"
+            android:textColor="#ffffff"
+            android:layout_below="@id/rl_capture_hint"
+            android:gravity="center"
+            android:layout_centerHorizontal="true"
+            android:background="@drawable/bg_green_white_board"/>
+
+    </RelativeLayout>
+
+</RelativeLayout>

@@ -1,5 +1,6 @@
 package com.grandmagic.readingmate.activity;
 
+import android.Manifest;
 import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
@@ -14,8 +15,10 @@ import android.widget.Toast;
 
 import com.grandmagic.readingmate.R;
 import com.grandmagic.readingmate.base.AppBaseActivity;
-import com.xys.libzxing.zxing.activity.CaptureActivity;
+import com.tbruyelle.rxpermissions.RxPermissions;
 import com.xys.libzxing.zxing.encoding.EncodingUtils;
+
+import rx.functions.Action1;
 
 /**
  * 这个界面没什么作用，仅用于扫码测试，到时候美工出图后，删掉
@@ -33,6 +36,13 @@ public class ScanActivity extends AppBaseActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_scan);
 
+        new RxPermissions(this).request(Manifest.permission.CAMERA).subscribe(new Action1<Boolean>() {
+            @Override
+            public void call(Boolean mBoolean) {
+
+            }
+        });
+
         resultTextView = (TextView) this.findViewById(R.id.tv_scan_result);
         qrStrEditText = (EditText) this.findViewById(R.id.et_qr_string);
         qrImgImageView = (ImageView) this.findViewById(R.id.iv_qr_image);
@@ -44,7 +54,7 @@ public class ScanActivity extends AppBaseActivity {
             @Override
             public void onClick(View v) {
                 //打开扫描界面扫描条形码或二维码
-                Intent openCameraIntent = new Intent(ScanActivity.this, CaptureActivity.class);
+                Intent openCameraIntent = new Intent(ScanActivity.this, com.grandmagic.readingmate.activity.CaptureActivity.class);
                 startActivityForResult(openCameraIntent, 0);
             }
         });

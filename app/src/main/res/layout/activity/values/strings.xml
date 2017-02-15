@@ -27,5 +27,9 @@
     <string name="reset_success">修改密码成功，请重新登录</string>
     <string name="cancle">取消</string>
     <string name="confirm">确定</string>
+    <string name="scan_bar">扫描条形码</string>
+    <string name="put_bar_into_scan_scope">将条形码放入扫描框内</string>
+    <string name="scan_immediately">即可扫描</string>
+    <string name="input_scanbar_manually">手动输入条形码</string>
 
 </resources>
