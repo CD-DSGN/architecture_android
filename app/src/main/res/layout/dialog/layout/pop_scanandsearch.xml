@@ -7,18 +7,16 @@
     android:orientation="vertical">
 
     <ImageView
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginLeft="314px"
-        android:layout_marginRight="314px"
+        android:layout_width="350px"
+        android:layout_height="30px"
         android:layout_marginTop="246px"
         android:src="@drawable/txt_main_start_read"
         />
 
     <ImageView
         android:src="@drawable/ic_camera_large"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
+        android:layout_width="122px"
+        android:layout_height="96px"
         android:layout_marginBottom="32px"
         android:layout_marginTop="96px"
         />
@@ -29,19 +27,25 @@
         android:background="@drawable/bg_btn_login"
         android:gravity="center"
         android:text="立即扫描"
+        android:textColor="@color/white"
+        android:textSize="30px"
         android:id="@+id/pop_scan"
         />
-<ImageView
+
+    <ImageView
     android:layout_width="wrap_content"
     android:layout_height="406px"
     android:src="@drawable/ic_main_bar"
     />
+
     <TextView
         android:id="@+id/pop_search"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
+        android:layout_width="86px"
+        android:layout_height="86px"
         android:background="@drawable/bg_search"
         android:gravity="center"
+        android:textSize="30px"
+        android:textColor="#fefeff"
         android:text="@string/search"
         />
 </LinearLayout>

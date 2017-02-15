@@ -3,7 +3,7 @@
     xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-
+android:fitsSystemWindows="true"
     >
 
     <FrameLayout
@@ -17,7 +17,7 @@
     <LinearLayout
         android:id="@+id/bottomlayout"
         android:layout_width="match_parent"
-        android:layout_height="60dp"
+        android:layout_height="88px"
         android:layout_alignParentBottom="true"
         android:orientation="horizontal">
 
@@ -35,11 +35,14 @@
                 android:layout_alignParentBottom="true"
                 android:text="@string/home"
                 android:id="@+id/text_home"
+                android:textSize="22px"
                 />
             <ImageView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:src="@mipmap/ic_launcher"
+                android:layout_marginTop="6px"
+                android:layout_marginBottom="8px"
+                android:layout_width="34px"
+                android:layout_height="34px"
+                android:src="@drawable/ic_main_home"
                 android:layout_above="@+id/text_home"
                 android:layout_centerHorizontal="true"
                 android:id="@+id/iv_home"
@@ -60,12 +63,15 @@
                android:layout_alignParentBottom="true"
                 android:text="@string/readchat"
                 android:id="@+id/text_chat"
+                android:textSize="22px"
                 android:layout_centerHorizontal="true"
                 />
             <ImageView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:src="@mipmap/ic_launcher"
+                android:layout_marginTop="6px"
+                android:layout_marginBottom="8px"
+                android:layout_width="34px"
+                android:layout_height="34px"
+                android:src="@drawable/ic_double_person"
                 android:layout_above="@+id/text_chat"
                 android:layout_centerHorizontal="true"
                 android:id="@+id/iv_chat"
@@ -86,12 +92,15 @@
                android:layout_centerHorizontal="true"
                 android:layout_alignParentBottom="true"
                 android:text="@string/search"
+                android:textSize="22px"
                 android:id="@+id/text_search"
                 />
             <ImageView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:src="@mipmap/ic_launcher"
+                android:layout_marginTop="6px"
+                android:layout_marginBottom="8px"
+                android:layout_width="34px"
+                android:layout_height="34px"
+                android:src="@drawable/ic_book"
                 android:layout_above="@+id/text_search"
                 android:layout_centerHorizontal="true"
                 android:id="@+id/iv_search"
@@ -112,16 +121,19 @@
             android:layout_centerHorizontal="true"
                 android:layout_alignParentBottom="true"
                 android:text="@string/mine"
+                android:textSize="22px"
                 android:id="@+id/text_person"
                 />
+
             <ImageView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:src="@mipmap/ic_launcher"
-                android:layout_above="@+id/text_person"
-                android:layout_centerHorizontal="true"
+                android:layout_marginTop="6px"
+                android:layout_marginBottom="8px"
+                android:layout_width="34px"
+                android:layout_height="34px"
+                android:src="@drawable/ic_single_person"
                 android:id="@+id/iv_person"
-                />
+                android:layout_alignParentTop="true"
+                android:layout_centerHorizontal="true"/>
         </RelativeLayout>
     </LinearLayout>
 </RelativeLayout>

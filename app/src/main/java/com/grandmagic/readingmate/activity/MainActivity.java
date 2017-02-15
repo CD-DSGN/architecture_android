@@ -4,12 +4,14 @@ import android.Manifest;
 import android.animation.ObjectAnimator;
 import android.app.Fragment;
 import android.app.FragmentManager;
+import android.graphics.Color;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.FrameLayout;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
+import android.widget.TextView;
 
 import com.grandmagic.readingmate.R;
 import com.grandmagic.readingmate.base.AppBaseActivity;
@@ -17,6 +19,7 @@ import com.grandmagic.readingmate.fragment.ChatFragment;
 import com.grandmagic.readingmate.fragment.HomeFragment;
 import com.grandmagic.readingmate.fragment.PersonalFragment;
 import com.grandmagic.readingmate.fragment.SearchFragment;
+import com.grandmagic.readingmate.utils.AutoUtils;
 import com.grandmagic.readingmate.utils.KitUtils;
 import com.grandmagic.readingmate.utils.UpdateManager;
 import com.tbruyelle.rxpermissions.RxPermissions;
@@ -46,6 +49,7 @@ public class MainActivity extends AppBaseActivity {
     FragmentManager mFragmentManager;
     Fragment mcurrentFragment;
     ImageView mcurrentIV;
+    TextView mcurrentTV;
     Map<String, Fragment> mFragments;//存放fragment，如果以创建就从里面加载，不重复创建
     @BindView(R.id.iv_home)
     ImageView mIvHome;
@@ -55,12 +59,22 @@ public class MainActivity extends AppBaseActivity {
     ImageView mIvSearch;
     @BindView(R.id.iv_person)
     ImageView mIvPerson;
+    @BindView(R.id.text_home)
+    TextView mTextHome;
+    @BindView(R.id.text_chat)
+    TextView mTextChat;
+    @BindView(R.id.text_search)
+    TextView mTextSearch;
+    @BindView(R.id.text_person)
+    TextView mTextPerson;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
         ButterKnife.bind(this);
+        AutoUtils.auto(this);
+        setTranslucentStatus(true);
         initdata();
         new RxPermissions(this).request(Manifest.permission.WRITE_EXTERNAL_STORAGE).subscribe(new Action1<Boolean>() {
             @Override
@@ -78,7 +92,8 @@ public class MainActivity extends AppBaseActivity {
             Fragment mHomeFragment = createFragment(HomeFragment.class);
             mFragmentManager.beginTransaction().add(R.id.contentframe, mHomeFragment).show(mHomeFragment).commit();
             mcurrentFragment = mHomeFragment;
-            mcurrentIV =mIvHome;
+            mcurrentIV = mIvHome;
+            mcurrentTV = mTextHome;
             scalelarge();
         }
         checkVersion();
@@ -91,7 +106,7 @@ public class MainActivity extends AppBaseActivity {
 // TODO: 2017/2/10 从服务端获取版本号
         int localVerionCode = KitUtils.getVersionCode(this);
         UpdateManager mUpdateManager = new UpdateManager(this);
-mUpdateManager.getVersionCode(localVerionCode);
+        mUpdateManager.getVersionCode(localVerionCode);
     }
 
     @OnClick({R.id.layout_home, R.id.layout_chat, R.id.layout_search, R.id.layout_personal})
@@ -119,6 +134,7 @@ mUpdateManager.getVersionCode(localVerionCode);
 
     /**
      * 切换选项
+     *
      * @param mClass
      */
     private void switchFragment(Class<?> mClass) {
@@ -131,21 +147,25 @@ mUpdateManager.getVersionCode(localVerionCode);
         }
         mcurrentFragment = to;
 //        图标变化
-        if (mClass==HomeFragment.class){
+        if (mClass == HomeFragment.class) {
             scalesmall();
-            mcurrentIV=mIvHome;
+            mcurrentIV = mIvHome;
+            mcurrentTV=mTextHome;
             scalelarge();
-        }else if (mClass==ChatFragment.class){
+        } else if (mClass == ChatFragment.class) {
             scalesmall();
-            mcurrentIV=mIvChat;
+            mcurrentIV = mIvChat;
+            mcurrentTV=mTextChat;
             scalelarge();
-        }else if (mClass==SearchFragment.class){
+        } else if (mClass == SearchFragment.class) {
             scalesmall();
-            mcurrentIV=mIvSearch;
+            mcurrentIV = mIvSearch;
+            mcurrentTV=mTextSearch;
             scalelarge();
-        }else if (mClass==PersonalFragment.class){
+        } else if (mClass == PersonalFragment.class) {
             scalesmall();
-            mcurrentIV=mIvPerson;
+            mcurrentIV = mIvPerson;
+            mcurrentTV=mTextPerson;
             scalelarge();
         }
     }
@@ -154,20 +174,23 @@ mUpdateManager.getVersionCode(localVerionCode);
      * 选中项图标放大
      */
     private void scalelarge() {
-        ObjectAnimator.ofFloat(mcurrentIV,"scaleX",1.0f,1.5f).start();
-        ObjectAnimator.ofFloat(mcurrentIV,"scaleY",1.0f,1.5f).start();
+        ObjectAnimator.ofFloat(mcurrentIV, "scaleX", 1.0f, 1.3f).start();
+        ObjectAnimator.ofFloat(mcurrentIV, "scaleY", 1.0f, 1.3f).start();
+        mcurrentTV.setTextColor(Color.parseColor("#1cc9a2"));
     }
 
     /**
      * 切换选中项时之前选中项图标缩回原图
      */
     private void scalesmall() {
-        ObjectAnimator.ofFloat(mcurrentIV,"scaleX",1.5f,1.0f).start();
-        ObjectAnimator.ofFloat(mcurrentIV,"scaleY",1.5f,1.0f).start();
+        ObjectAnimator.ofFloat(mcurrentIV, "scaleX", 1.3f, 1.0f).start();
+        ObjectAnimator.ofFloat(mcurrentIV, "scaleY", 1.3f, 1.0f).start();
+        mcurrentTV.setTextColor(Color.parseColor("#666666"));
     }
 
     /**
      * 创建或获取选中项的fragment
+     *
      * @param mClass
      * @return
      */
@@ -176,7 +199,7 @@ mUpdateManager.getVersionCode(localVerionCode);
         Fragment mInstance = null;
         if (mFragments.containsKey(mName)) {
             mInstance = mFragments.get(mName);
-        }else {
+        } else {
             try {
                 mInstance = (Fragment) Class.forName(mName).newInstance();
             } catch (Exception mE) {

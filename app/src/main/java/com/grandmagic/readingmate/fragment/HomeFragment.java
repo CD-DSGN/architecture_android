@@ -34,7 +34,6 @@ public class HomeFragment extends AppBaseFragment {
         rootview = inflater.inflate(R.layout.fragment_home, container, false);
         AutoUtils.auto(rootview);
         ButterKnife.bind(this, rootview);
-
         return rootview;
     }
 
@@ -70,6 +69,7 @@ public class HomeFragment extends AppBaseFragment {
         mPopupWindow.setBackgroundDrawable(new BitmapDrawable());
         mPopupWindow.showAtLocation(rootview, Gravity.TOP | Gravity.START, 0, DensityUtil.getStatusBarHeight(getActivity()));
         rootview.setAlpha(0.5f);
+        mPopupWindow.setOutsideTouchable(true);
         mPopupWindow.setOnDismissListener(new PopupWindow.OnDismissListener() {
             @Override
             public void onDismiss() {

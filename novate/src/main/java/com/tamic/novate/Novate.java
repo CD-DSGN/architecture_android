@@ -7,7 +7,9 @@ import android.util.Log;
 import com.facebook.stetho.okhttp3.StethoInterceptor;
 import com.google.gson.Gson;
 import com.google.gson.JsonParseException;
+import com.google.gson.reflect.TypeToken;
 import com.tamic.novate.cache.CookieCacheImpl;
+import com.tamic.novate.config.Config;
 import com.tamic.novate.config.ConfigLoader;
 import com.tamic.novate.cookie.NovateCookieManager;
 import com.tamic.novate.cookie.SharedPrefsCookiePersistor;
@@ -20,6 +22,8 @@ import com.tamic.novate.request.NovateRequest;
 import com.tamic.novate.util.Environment;
 import com.tamic.novate.util.FileUtil;
 import com.tamic.novate.util.Utils;
+
+import org.json.JSONObject;
 
 import java.io.File;
 import java.io.InputStream;
@@ -1306,27 +1310,17 @@ public class Novate {
                          *  callBack.onSuccee((T) JSON.parseArray(jsStr, (Class<Object>) finalNeedType));
                          *  Type finalNeedType = needChildType;
                          */
-
                         NovateResponse<T> baseResponse = null;
-
-                        if (new Gson().fromJson(jsStr, finalNeedType) == null) {
-                            throw new NullPointerException();
-                        }
-                        baseResponse = new Gson().fromJson(jsStr, finalNeedType);
-                        if (ConfigLoader.isFormat(mContext) && baseResponse.getData() == null) {
-                            throw new FormatException();
-                        }
-
-                        if (baseResponse.isOk(mContext)) {
+                        JSONObject mJSONObject=new JSONObject(jsStr);
+                        int mCode = mJSONObject.optInt("code");
+                        if (ConfigLoader.checkSucess(mContext,mCode)){
                             callBack.onSuccee((T) new Gson().fromJson(jsStr, finalNeedType));
-                        } else {
-                            String msg =
-                                    baseResponse.getMessage() != null ? baseResponse.getMessage()  : "api未知异常";
-
+                        }else {
+                            baseResponse=new Gson().fromJson(jsStr, new TypeToken<NovateResponse>(){}.getType());
+                            String msg = baseResponse.getMessage() != null ? baseResponse.getMessage()  : "api未知异常";
                             ServerException serverException = new com.tamic.novate.exception.ServerException(baseResponse.getCode(), msg);
                             callBack.onError(NovateException.handleException(serverException));
                         }
-
                     } catch (Exception e) {
                         e.printStackTrace();
                         if (callBack != null) {
