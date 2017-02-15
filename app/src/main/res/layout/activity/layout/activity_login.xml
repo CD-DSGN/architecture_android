@@ -9,32 +9,34 @@
     >
 
     <ImageView
+        android:id="@+id/iv_logo"
         android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
+        android:layout_height="94px"
         android:layout_gravity="center_horizontal"
+        android:layout_marginTop="120px"
         android:src="@mipmap/ic_launcher"
-        android:visibility="gone"
+        android:visibility="visible"
         />
+
 
     <RelativeLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginTop="322px"
+        android:layout_marginTop="90px"
         android:gravity="center_horizontal">
 
         <RelativeLayout
             android:id="@+id/relativelayout_register"
-            android:layout_marginLeft="268px"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_alignParentLeft="true"
+            android:layout_marginLeft="268px"
             >
 
             <TextView
                 android:id="@+id/title_register"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-
                 android:text="@string/register"
                 android:textColor="@color/white"
                 android:textSize="36px"
@@ -52,12 +54,12 @@
         </RelativeLayout>
 
         <RelativeLayout
-            android:layout_toRightOf="@id/relativelayout_register"
-            android:layout_alignParentRight="true"
             android:id="@+id/rela_login"
-            android:layout_marginRight="260px"
             android:layout_width="wrap_content"
-            android:layout_height="wrap_content">
+            android:layout_height="wrap_content"
+            android:layout_alignParentRight="true"
+            android:layout_marginRight="260px"
+            android:layout_toRightOf="@id/relativelayout_register">
 
             <TextView
                 android:id="@+id/title_login"
@@ -77,7 +79,7 @@
                 android:layout_alignLeft="@+id/title_login"
                 android:layout_below="@+id/title_login"
                 android:background="@drawable/dashline"
-android:visibility="gone"
+                android:visibility="gone"
                 />
         </RelativeLayout>
     </RelativeLayout>
@@ -88,6 +90,5 @@ android:visibility="gone"
         android:layout_height="wrap_content"
         >
     </android.support.v4.view.ViewPager>
-
 
 </LinearLayout>

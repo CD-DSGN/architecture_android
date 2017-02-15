@@ -2,14 +2,19 @@ package com.grandmagic.readingmate.activity;
 
 
 import android.content.Intent;
+import android.graphics.Rect;
 import android.os.Bundle;
+import android.os.CountDownTimer;
 import android.support.v4.view.ViewPager;
+import android.text.TextUtils;
 import android.text.method.PasswordTransformationMethod;
 import android.view.LayoutInflater;
 import android.view.View;
+import android.view.ViewTreeObserver;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 
@@ -21,10 +26,12 @@ import com.grandmagic.readingmate.bean.request.LoginRequestBean;
 import com.grandmagic.readingmate.bean.request.RegisterRequestBean;
 import com.grandmagic.readingmate.bean.response.LoginResponseBean;
 import com.grandmagic.readingmate.bean.response.RegisterResponseBean;
+import com.grandmagic.readingmate.dialog.HintDialog;
 import com.grandmagic.readingmate.model.LoginModel;
 import com.grandmagic.readingmate.model.RegisterModel;
 import com.grandmagic.readingmate.model.VerifyModel;
 import com.grandmagic.readingmate.utils.AutoUtils;
+import com.grandmagic.readingmate.utils.DensityUtil;
 import com.grandmagic.readingmate.utils.KitUtils;
 import com.grandmagic.readingmate.utils.SPUtils;
 import com.grandmagic.readingmate.utils.ViewUtils;
@@ -62,13 +69,14 @@ public class LoginActivity extends AppBaseActivity implements View.OnClickListen
     //login view
 
     EditText mEtPhone, mEtPass;
-    ImageView mPhoneClear;
+    ImageView mPhoneClear, mIVLogo;
     ImageView mPassEye;
     Button mLogin;
     TextView mForgetpass;
     //act view
     View dashline_register, dashline_login;
     RelativeLayout rela_register, rela_login;
+    LinearLayout mActivityMain;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -77,6 +85,19 @@ public class LoginActivity extends AppBaseActivity implements View.OnClickListen
         setTranslucentStatus(true);//状态栏透明（APi19+）
         AutoUtils.auto(this);
         initview();
+        keybordlistener();
+    }
+
+    private void keybordlistener() {
+        mActivityMain.getViewTreeObserver().addOnGlobalLayoutListener(new ViewTreeObserver.OnGlobalLayoutListener() {
+            @Override
+            public void onGlobalLayout() {
+                Rect mRect = new Rect();
+                mActivityMain.getWindowVisibleDisplayFrame(mRect);
+                int keyHeight = DensityUtil.getScreenHeight(LoginActivity.this) - (mRect.bottom - mRect.top);
+                mIVLogo.setVisibility(keyHeight > 200 ? View.GONE : View.VISIBLE);
+            }
+        });
     }
 
     List<View> mViews = new ArrayList<>();
@@ -112,6 +133,8 @@ public class LoginActivity extends AppBaseActivity implements View.OnClickListen
         rela_login = (RelativeLayout) findViewById(R.id.rela_login);
         dashline_login = findViewById(R.id.line_login);
         dashline_register = findViewById(R.id.line_register);
+        mActivityMain = (LinearLayout) findViewById(R.id.activity_main);
+        mIVLogo = (ImageView) findViewById(R.id.iv_logo);
         mForgetpass.setOnClickListener(this);
         mLogin.setOnClickListener(this);
         mPhoneClear.setOnClickListener(this);
@@ -144,9 +167,11 @@ public class LoginActivity extends AppBaseActivity implements View.OnClickListen
                 mEtPhone.setText("");
                 break;
             case R.id.forgetpass:
-               startActivity(new Intent(LoginActivity.this,ForgetPassActivity.class));
+                startActivity(new Intent(LoginActivity.this, ForgetPassActivity.class));
                 break;
             case R.id.send_verify:
+                mSendVerify.setEnabled(false);
+                mCountDownTimer.start();
                 snedVerify();
                 break;
             case R.id.rg_phone_clear:
@@ -209,6 +234,7 @@ public class LoginActivity extends AppBaseActivity implements View.OnClickListen
                 //保存token
                 SPUtils.getInstance().saveToken(LoginActivity.this, token);
                 ViewUtils.showToast(LoginActivity.this, "注册成功");
+                startActivity(new Intent(LoginActivity.this,MainActivity.class));
             }
         }, pwd_comfirm).register();
     }
@@ -242,4 +268,17 @@ public class LoginActivity extends AppBaseActivity implements View.OnClickListen
                 PasswordTransformationMethod.getInstance() : null);
         et.setSelection(selection);
     }
+
+    CountDownTimer mCountDownTimer = new CountDownTimer(60000, 1000) {
+        @Override
+        public void onTick(long millisUntilFinished) {
+            mSendVerify.setText((millisUntilFinished) / 1000 + "s重新发送");
+        }
+
+        @Override
+        public void onFinish() {
+            mSendVerify.setText("发送验证码");
+            mSendVerify.setEnabled(true);
+        }
+    };
 }

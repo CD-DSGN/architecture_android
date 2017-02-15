@@ -13,7 +13,7 @@ public class NovateResponse<T> {
     //结果码
     private int code;
     /*错误信息:msg, error, message*/
-    private String msg;
+    private String message;
     /*真实数据 data或者result*/
     private T data;
 
@@ -26,12 +26,12 @@ public class NovateResponse<T> {
         code = mCode;
     }
 
-    public String getMsg() {
-        return msg;
+    public String getMessage() {
+        return message;
     }
 
-    public void setMsg(String mMsg) {
-        msg = mMsg;
+    public void setMessage(String mMessage) {
+        message = mMessage;
     }
 
     public T getData() {
@@ -44,11 +44,12 @@ public class NovateResponse<T> {
     public boolean isOk(Context context) {
         return ConfigLoader.checkSucess(context, getCode());
     }
+
     @Override
     public String toString() {
         return "NovateResponse{" +
                 "code=" + code +
-                ", msg='" + msg + '\'' +
+                ", message='" + message + '\'' +
                 ", data=" + data +
                 '}';
     }

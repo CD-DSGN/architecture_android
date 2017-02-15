@@ -1321,7 +1321,7 @@ public class Novate {
                             callBack.onSuccee((T) new Gson().fromJson(jsStr, finalNeedType));
                         } else {
                             String msg =
-                                    baseResponse.getMsg() != null ? baseResponse.getMsg()  : "api未知异常";
+                                    baseResponse.getMessage() != null ? baseResponse.getMessage()  : "api未知异常";
 
                             ServerException serverException = new com.tamic.novate.exception.ServerException(baseResponse.getCode(), msg);
                             callBack.onError(NovateException.handleException(serverException));
