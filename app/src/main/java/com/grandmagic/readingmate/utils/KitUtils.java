@@ -52,11 +52,4 @@ public class KitUtils {
         return pi;
     }
 
-    //post请求拼url,带上token参数
-    public static String getUrlWithToken(String url, String token) {
-        if (url == null && token == null) {
-            return "";
-        }
-        return url + "?" + "access_token=" + token;
-    }
 }

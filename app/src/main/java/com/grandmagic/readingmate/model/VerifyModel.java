@@ -2,7 +2,7 @@ package com.grandmagic.readingmate.model;
 
 import android.content.Context;
 
-import com.grandmagic.readingmate.base.AppBaseGetModel;
+import com.grandmagic.readingmate.base.AppBaseModel;
 import com.grandmagic.readingmate.base.AppBaseResponseCallBack;
 import com.grandmagic.readingmate.consts.ApiInterface;
 import com.tamic.novate.Novate;
@@ -14,7 +14,7 @@ import java.util.Map;
  * Created by zhangmengqi on 2017/2/9.
  */
 
-public class VerifyModel extends AppBaseGetModel{
+public class VerifyModel extends AppBaseModel {
 //    private Context mContext;
 //    private AppBaseResponseCallBack mCallBack;
 

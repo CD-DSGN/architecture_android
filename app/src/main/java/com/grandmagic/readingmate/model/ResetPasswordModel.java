@@ -5,7 +5,7 @@ import android.text.TextUtils;
 
 import com.google.gson.Gson;
 import com.grandmagic.readingmate.R;
-import com.grandmagic.readingmate.base.AppBasePostModel;
+import com.grandmagic.readingmate.base.AppBaseModel;
 import com.grandmagic.readingmate.base.AppBaseResponseCallBack;
 import com.grandmagic.readingmate.bean.request.ResetPasswordRequsetBean;
 import com.grandmagic.readingmate.consts.ApiInterface;
@@ -17,7 +17,7 @@ import com.tamic.novate.Novate;
  * Created by zhangmengqi on 2017/2/10.
  */
 
-public class ResetPasswordModel extends AppBasePostModel{
+public class ResetPasswordModel extends AppBaseModel {
     private ResetPasswordRequsetBean mResetPasswordRequsetBean;
     private String mPwd_confirm;
 
@@ -36,7 +36,7 @@ public class ResetPasswordModel extends AppBasePostModel{
         }
     }
 
-    @Override
+
     protected boolean checkParameter() {
         //手机不合法
         if (!KitUtils.checkMobilePhone(mResetPasswordRequsetBean.getPhone_num())) {

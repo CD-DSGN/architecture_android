@@ -9,7 +9,6 @@ import com.google.gson.Gson;
 import com.google.gson.JsonParseException;
 import com.google.gson.reflect.TypeToken;
 import com.tamic.novate.cache.CookieCacheImpl;
-import com.tamic.novate.config.Config;
 import com.tamic.novate.config.ConfigLoader;
 import com.tamic.novate.cookie.NovateCookieManager;
 import com.tamic.novate.cookie.SharedPrefsCookiePersistor;
@@ -172,13 +171,31 @@ public class Novate {
         if (finalNeedType == null) {
             return null;
         }
-//        final Type finalNeedType = MethodHandler(types).get(0);
-//        Log.d(TAG, "-->:" + "Type:" + types[0]);
+
         return (T) apiManager.executeGet(url, maps)
                 .compose(schedulersTransformer)
                 .compose(handleErrTransformer())
                 .subscribe(new NovateSubscriber<T>(mContext, finalNeedType, callBack));
     }
+
+    public <T> T executeGet(final String url, final Map<String, Object> maps, final ResponseCallBack<T> callBack, String token) {
+
+        final Type finalNeedType = getFinalNeedType(callBack);
+        if (finalNeedType == null) {
+            return null;
+        }
+
+        maps.put("access-token", token);
+        return (T) apiManager.executeGet(url, maps)
+                .compose(schedulersTransformer)
+                .compose(handleErrTransformer())
+                .subscribe(new NovateSubscriber<T>(mContext, finalNeedType, callBack));
+    }
+
+
+
+
+
 
     private <T> Type getFinalNeedType(final ResponseCallBack<T> callBack) {
         Type type_super = callBack.getClass().getGenericSuperclass();
@@ -454,6 +471,18 @@ public class Novate {
         }
 
         return (T) apiManager.postRequestBody(url, Utils.createJson(jsonStr))
+                .compose(schedulersTransformer)
+                .compose(handleErrTransformer())
+                .subscribe(new NovateSubscriber<T>(mContext, finalNeedType, callBack));
+    }
+
+    public <T> T executeJson(final String url, final String jsonStr, final ResponseCallBack<T> callBack, String token) {
+        final Type finalNeedType = getFinalNeedType(callBack);
+        if (finalNeedType == null) {
+            return null;
+        }
+
+        return (T) apiManager.postRequestBody(Utils.getUrlWithToken(url, token), Utils.createJson(jsonStr))
                 .compose(schedulersTransformer)
                 .compose(handleErrTransformer())
                 .subscribe(new NovateSubscriber<T>(mContext, finalNeedType, callBack));
@@ -1273,7 +1302,7 @@ public class Novate {
         @Override
         public void onStart() {
             super.onStart();
-            // todo some common as show loadding  and check netWork is NetworkAvailable
+            // todo some common as show loadding   and check netWork is NetworkAvailable
             if (callBack != null) {
                 callBack.onStart();
             }
@@ -1352,6 +1381,14 @@ public class Novate {
         public abstract void onSuccee(T response);
 
     }
+
+
+
+
+
+
+
+
 }
 
 
