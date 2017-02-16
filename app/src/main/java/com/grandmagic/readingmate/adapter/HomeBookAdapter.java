@@ -38,12 +38,13 @@ public   String TRANSLATION_Y ="translationY";
 public   String SCALE_X ="scaleX";
 public   String SCALE_Y ="scaleY";
 
+    //其他特效暂时不用
 
     public Animator[] getAnimators(@NonNull View view) {
 //        return new Animator[]{ObjectAnimator.ofFloat(view, "translationX", mRecyclerView.getLayoutManager().getWidth()/2, 0)};
 
-
-       return new Animator[]{ObjectAnimator.ofFloat(view, TRANSLATION_X, 0 - mRecyclerView.getLayoutManager().getWidth(), 0)};
+return new Animator[]{};
+//       return new Animator[]{ObjectAnimator.ofFloat(view, TRANSLATION_X, 0 - mRecyclerView.getLayoutManager().getWidth(), 0)};
 //        return new Animator[]{ObjectAnimator.ofFloat(view, TRANSLATION_Y, mRecyclerView.getMeasuredHeight() >> 1, 0)};
 //
 //        ObjectAnimator scaleX = ObjectAnimator.ofFloat(view, SCALE_X, 0.5f, 1f);

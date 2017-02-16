@@ -20,7 +20,6 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginLeft="287px"
-            android:layout_marginTop="36px"
             android:text="从你的全世界路过"
             android:textColor="#181e1d"
             android:textSize="32px"
@@ -66,6 +65,7 @@
             android:layout_below="@+id/ratingbar"
             android:layout_marginTop="16px"
             android:text="9分（2.3万人评）"
+            android:textSize="22px"
             />
 
         <TextView

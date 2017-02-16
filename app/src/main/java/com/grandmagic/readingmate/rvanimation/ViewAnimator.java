@@ -58,12 +58,12 @@ public class ViewAnimator {
     /**
      * The default delay in millis between view animations.
      */
-    private static final int DEFAULT_ANIMATION_DELAY_MILLIS = 100;
+    private static final int DEFAULT_ANIMATION_DELAY_MILLIS = 20;
 
     /**
      * The default duration in millis of the animations.
      */
-    private static final int DEFAULT_ANIMATION_DURATION_MILLIS = 300;
+    private static final int DEFAULT_ANIMATION_DURATION_MILLIS = 150;
 
     /* Fields */
 

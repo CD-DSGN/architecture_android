@@ -67,8 +67,9 @@ public class HomeFragment extends AppBaseFragment {
         return rootview;
     }
 
-    private static final String TRANSLATION_Y = "translationY";
-
+    /**
+     * 显示没有书的时候的页面
+     */
     private void showEmptyView() {
         mRelaTitle.setBackgroundColor(getResources().getColor(android.R.color.transparent));
         mRecyclerview.setVisibility(View.GONE);
@@ -80,6 +81,9 @@ public class HomeFragment extends AppBaseFragment {
         ((MainActivity) getActivity()).setSystemBarColor(R.color.bg);
     }
 
+    /**
+     * 有书展示的
+     */
     private void showRecyclerView() {
         mRelaTitle.setBackgroundColor(Color.WHITE);
         ((MainActivity) mContext).setSystemBarColor(R.color.white);
