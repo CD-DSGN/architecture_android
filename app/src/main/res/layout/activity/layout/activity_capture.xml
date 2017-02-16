@@ -95,18 +95,6 @@
                 android:layout_alignParentBottom="true"/>
         </RelativeLayout>
 
-        <Button
-            android:layout_marginTop="112px"
-            android:layout_width="626px"
-            android:layout_height="82px"
-            android:text="@string/input_scanbar_manually"
-            android:textSize="30px"
-            android:textColor="#ffffff"
-            android:layout_below="@id/rl_capture_hint"
-            android:gravity="center"
-            android:layout_centerHorizontal="true"
-            android:background="@drawable/bg_green_white_board"/>
-
     </RelativeLayout>
 
 </RelativeLayout>

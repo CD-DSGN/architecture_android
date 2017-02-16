@@ -57,6 +57,6 @@ public class KitUtils {
         if (url == null && token == null) {
             return "";
         }
-        return url + "?" + "access_token=" + token;
+        return url + "?" + "access-token=" + token;
     }
 }

@@ -55,6 +55,13 @@ public class SPUtils {
         return getString(context, "T");
     }
 
+    public void clearToken(Context context) {
+        SharedPreferences mSharedPreferences = context.getSharedPreferences(DEFAULT_SP_NAME, Context.MODE_PRIVATE);
+        SharedPreferences.Editor mEditor = mSharedPreferences.edit();
+        mEditor.remove("T");
+        mEditor.apply();
+    }
+
     /**
      * 向DEFAULT_SP_NAME中putstring
      *
