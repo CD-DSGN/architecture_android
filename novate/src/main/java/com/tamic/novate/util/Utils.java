@@ -94,4 +94,12 @@ public class Utils {
         // MultipartBody.Part is used to send also the actual file name
         return MultipartBody.Part.createFormData(partName, file.getName(), requestFile);
     }
+
+    //post请求拼url,带上token参数
+    public static String getUrlWithToken(String url, String token) {
+        if (url == null && token == null) {
+            return "";
+        }
+        return url + "?" + "access-token=" + token;
+    }
 }

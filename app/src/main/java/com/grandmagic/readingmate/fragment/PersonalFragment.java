@@ -14,6 +14,8 @@ import com.grandmagic.readingmate.R;
 import com.grandmagic.readingmate.activity.LoginActivity;
 import com.grandmagic.readingmate.base.AppBaseFragment;
 import com.grandmagic.readingmate.base.AppBaseResponseCallBack;
+import com.grandmagic.readingmate.bean.request.FeedBackRequestBean;
+import com.grandmagic.readingmate.model.FeedBackModel;
 import com.grandmagic.readingmate.model.LoginModel;
 import com.grandmagic.readingmate.utils.ViewUtils;
 import com.tamic.novate.NovateResponse;
@@ -72,15 +74,28 @@ public class PersonalFragment extends AppBaseFragment {
         startActivity(intent);
     }
 
-    @OnClick(R.id.logout)
+    @OnClick({R.id.logout, R.id.feed_back})
     public void onClick(View v) {
         //退出账户
         switch (v.getId()) {
             case R.id.logout:
                 logout();
                 break;
+            case R.id.feed_back:
+                feedback();
             default:
                 break;
         }
+    }
+
+    //处理用户反馈
+    private void feedback() {
+        new FeedBackModel(mContext, new FeedBackRequestBean("缺少某功能"),
+                new AppBaseResponseCallBack<NovateResponse<Object>>(mContext, true) {
+            @Override
+            public void onSuccee(NovateResponse<Object> response) {
+
+            }
+        }).feedBack();
     }
 }

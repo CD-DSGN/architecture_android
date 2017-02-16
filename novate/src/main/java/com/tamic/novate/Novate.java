@@ -476,6 +476,18 @@ public class Novate {
                 .subscribe(new NovateSubscriber<T>(mContext, finalNeedType, callBack));
     }
 
+    public <T> T executeJson(final String url, final String jsonStr, final ResponseCallBack<T> callBack, String token) {
+        final Type finalNeedType = getFinalNeedType(callBack);
+        if (finalNeedType == null) {
+            return null;
+        }
+
+        return (T) apiManager.postRequestBody(Utils.getUrlWithToken(url, token), Utils.createJson(jsonStr))
+                .compose(schedulersTransformer)
+                .compose(handleErrTransformer())
+                .subscribe(new NovateSubscriber<T>(mContext, finalNeedType, callBack));
+    }
+
     /**
      * Novate delete
      *
