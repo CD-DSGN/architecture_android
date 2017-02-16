@@ -11,5 +11,5 @@ public class ApiInterface {
     public  static final String  UPDATE = "update" ;     //更新
     public  static final String  RESET_PWD = "register/resetpwd"; //修改密码
     public  static final String  LOGOUT = "logout/exit"; //退出账户
-    public  static final String  FEEDBACK = "/suggest"; //用户反馈
+    public  static final String  FEEDBACK = "suggest"; //用户反馈
 }

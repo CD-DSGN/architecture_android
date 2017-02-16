@@ -8,7 +8,7 @@ import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.Button;
+import android.widget.TextView;
 
 import com.grandmagic.readingmate.R;
 import com.grandmagic.readingmate.activity.LoginActivity;
@@ -29,8 +29,12 @@ import butterknife.OnClick;
  * A simple {@link Fragment} subclass.
  */
 public class PersonalFragment extends AppBaseFragment {
+
+
+    @BindView(R.id.feed_back)
+    TextView mFeedBack;
     @BindView(R.id.logout)
-    Button mLogout;
+    TextView mLogout;
     private Context mContext;
 
     public PersonalFragment() {
@@ -74,28 +78,29 @@ public class PersonalFragment extends AppBaseFragment {
         startActivity(intent);
     }
 
-    @OnClick({R.id.logout, R.id.feed_back})
-    public void onClick(View v) {
-        //退出账户
-        switch (v.getId()) {
-            case R.id.logout:
-                logout();
-                break;
-            case R.id.feed_back:
-                feedback();
-            default:
-                break;
-        }
-    }
 
     //处理用户反馈
     private void feedback() {
         new FeedBackModel(mContext, new FeedBackRequestBean("缺少某功能"),
                 new AppBaseResponseCallBack<NovateResponse<Object>>(mContext, true) {
-            @Override
-            public void onSuccee(NovateResponse<Object> response) {
+                    @Override
+                    public void onSuccee(NovateResponse<Object> response) {
+                        ViewUtils.showToast(mContext, getString(R.string.feedback_success));
+                    }
+                }).feedBack();
+    }
 
-            }
-        }).feedBack();
+    @OnClick({R.id.feed_back, R.id.logout})
+    public void onClick(View view) {
+        switch (view.getId()) {
+            case R.id.feed_back:
+                feedback();
+                break;
+            case R.id.logout:
+                logout();
+                break;
+            default:
+                break;
+        }
     }
 }

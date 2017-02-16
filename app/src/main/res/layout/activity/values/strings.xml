@@ -35,5 +35,21 @@
     <string name="password_check2">之间</string>
     <string name="login_out">退出账户</string>
     <string name="feed_back">用户反馈</string>
+    <string name="settings">设置</string>
+    <string name="my_account">我的账号</string>
+    <string name="account">账号</string>
+    <string name="reading_account">阅:</string>
+    <string name="bind_mobile">绑定手机</string>
+    <string name="current_point">当前积分</string>
+    <string name="receive_notice">推送通知</string>
+    <string name="on">on</string>
+    <string name="off">off</string>
+    <string name="font_size">字体大小</string>
+    <string name="without_wifi">非wifi网络流量</string>
+    <string name="clear_cache">清理缓存</string>
+    <string name="about_us">关于我们</string>
+    <string name="share">分享阅阅</string>
+    <string name="feedback_success">反馈意见提交成功，谢谢您的支持</string>
+
 
 </resources>
