@@ -50,6 +50,7 @@
     <string name="about_us">关于我们</string>
     <string name="share">分享阅阅</string>
     <string name="feedback_success">反馈意见提交成功，谢谢您的支持</string>
+    <string name="current_version">当前版本</string>
 
 
 </resources>

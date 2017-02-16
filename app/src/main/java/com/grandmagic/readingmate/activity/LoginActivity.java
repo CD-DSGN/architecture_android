@@ -6,7 +6,6 @@ import android.graphics.Rect;
 import android.os.Bundle;
 import android.os.CountDownTimer;
 import android.support.v4.view.ViewPager;
-import android.text.TextUtils;
 import android.text.method.PasswordTransformationMethod;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -26,7 +25,6 @@ import com.grandmagic.readingmate.bean.request.LoginRequestBean;
 import com.grandmagic.readingmate.bean.request.RegisterRequestBean;
 import com.grandmagic.readingmate.bean.response.LoginResponseBean;
 import com.grandmagic.readingmate.bean.response.RegisterResponseBean;
-import com.grandmagic.readingmate.dialog.HintDialog;
 import com.grandmagic.readingmate.model.LoginModel;
 import com.grandmagic.readingmate.model.RegisterModel;
 import com.grandmagic.readingmate.model.VerifyModel;
@@ -211,6 +209,7 @@ public class LoginActivity extends AppBaseActivity implements View.OnClickListen
                 //跳转到首页
                 Intent intent = new Intent(LoginActivity.this, MainActivity.class);
                 startActivity(intent);
+                finish();
             }
         }).login();
     }
@@ -235,6 +234,7 @@ public class LoginActivity extends AppBaseActivity implements View.OnClickListen
                 SPUtils.getInstance().saveToken(LoginActivity.this, token);
                 ViewUtils.showToast(LoginActivity.this, "注册成功");
                 startActivity(new Intent(LoginActivity.this,MainActivity.class));
+                finish();
             }
         }, pwd_comfirm).register();
     }

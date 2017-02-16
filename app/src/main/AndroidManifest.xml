@@ -34,11 +34,13 @@
         </activity>
         <activity
             android:name=".activity.MainActivity"
+            android:launchMode="singleTask"
             android:theme="@style/AppTheme.NoActionBar">
         </activity>
         <activity
             android:name=".activity.LoginActivity"
             android:label="@string/title_activity_login"
+            android:launchMode="singleTask"
             android:theme="@style/notitle"
             android:windowSoftInputMode="stateVisible|adjustResize">
         </activity>
@@ -60,7 +62,11 @@
             android:name=".activity.SearchActivity"
             android:theme="@style/notitle">
         </activity>
-        <activity android:name=".activity.CaptureActivity"
+        <activity
+            android:name=".activity.CaptureActivity"
+            android:theme="@style/notitle">
+        </activity>
+        <activity android:name=".activity.SettingActivity"
             android:theme="@style/notitle">
         </activity>
     </application>

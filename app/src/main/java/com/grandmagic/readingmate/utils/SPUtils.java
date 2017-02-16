@@ -114,4 +114,20 @@ public class SPUtils {
         mEditor.apply();
     }
 
+    public boolean getBoolean(Context context, String key, boolean defaut_value) {
+        SharedPreferences mSharedPreferences = context.getSharedPreferences(DEFAULT_SP_NAME, Context.MODE_PRIVATE);
+        return mSharedPreferences.getBoolean(key, defaut_value);
+    }
+
+    //判断推送开关是否打开
+    public boolean getPushSetting(Context context) {
+        return getBoolean(context, "push_button_on", true);
+    }
+
+    //保存推送开关状态
+    public void setPushSetting(Context context, boolean value) {
+        putBoolean(context,"push_button_on", value);
+    }
+
+
 }
