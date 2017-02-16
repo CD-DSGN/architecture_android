@@ -1,0 +1,80 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:layout_marginTop="32px"
+    android:background="@drawable/ic_white_lack_circle"
+    android:orientation="vertical"
+    android:paddingLeft="26px"
+    android:paddingRight="26px"
+    >
+
+    <com.grandmagic.readingmate.view.IrregularImageView
+        android:id="@+id/iv_conver"
+        android:layout_width="209px"
+        android:layout_height="280px"
+        android:layout_marginLeft="62px"
+        android:src="@drawable/bg_app"
+        />
+
+    <TextView
+        android:id="@+id/bookname"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="32px"
+        android:layout_toRightOf="@+id/iv_conver"
+        android:text="从你的全世界路过"
+        android:textColor="#181e1d"
+        android:textSize="32px"
+        />
+
+    <ImageView
+        android:id="@+id/avatar"
+        android:layout_width="82px"
+        android:layout_height="82px"
+        android:layout_alignLeft="@+id/bookname"
+        android:layout_below="@+id/bookname"
+        />
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/bookname"
+        android:layout_marginTop="40px"
+        android:layout_toRightOf="@+id/avatar"
+        android:text="张嘉jia"
+        android:textColor="#181e1d"
+        android:textSize="26px"
+
+        />
+
+    <android.support.v7.widget.AppCompatRatingBar
+        android:id="@+id/ratingbar"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignLeft="@id/avatar"
+        android:layout_below="@+id/avatar"
+        android:numStars="5"
+        android:rating="4.5"
+        />
+
+    <TextView
+        android:id="@+id/score"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignLeft="@+id/avatar"
+        android:layout_below="@+id/ratingbar"
+        android:text="9分（2.3万人评）"
+        />
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/iv_conver"
+        android:text="读过睡前故事的人都知道，这是一本纷杂凌乱的书，像朋友
+在深夜跟你叙述，叙述他走过的千山万水。那么多篇章，有温暖的，有落单的
+有疯狂的。"
+        />
+
+</RelativeLayout>
