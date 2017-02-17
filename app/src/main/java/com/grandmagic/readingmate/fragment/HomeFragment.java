@@ -5,6 +5,8 @@ import android.content.Context;
 import android.content.Intent;
 import android.graphics.Color;
 import android.os.Bundle;
+import android.os.Handler;
+import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
@@ -22,6 +24,7 @@ import com.grandmagic.readingmate.activity.MainActivity;
 import com.grandmagic.readingmate.activity.SearchActivity;
 import com.grandmagic.readingmate.adapter.HomeBookAdapter;
 import com.grandmagic.readingmate.base.AppBaseFragment;
+import com.grandmagic.readingmate.dialog.HintDialog;
 import com.grandmagic.readingmate.utils.AutoUtils;
 
 import java.util.ArrayList;
@@ -30,9 +33,11 @@ import java.util.List;
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
+import cn.bingoogolapple.refreshlayout.BGARefreshLayout;
+import cn.bingoogolapple.refreshlayout.BGAStickinessRefreshViewHolder;
 
 
-public class HomeFragment extends AppBaseFragment {
+public class HomeFragment extends AppBaseFragment implements HomeBookAdapter.ClickListener {
     protected Context mContext;
 
     PopupWindow mPopupWindow;
@@ -52,6 +57,8 @@ public class HomeFragment extends AppBaseFragment {
     ImageView mIvCamera;
     @BindView(R.id.rela_title)
     RelativeLayout mRelaTitle;
+    @BindView(R.id.refreshLayout)
+    BGARefreshLayout mRefreshLayout;
     private View rootview;
 
     @Override
@@ -84,6 +91,8 @@ public class HomeFragment extends AppBaseFragment {
     /**
      * 有书展示的
      */
+    HomeBookAdapter mBookAdapter;
+
     private void showRecyclerView() {
         mRelaTitle.setBackgroundColor(Color.WHITE);
         ((MainActivity) mContext).setSystemBarColor(R.color.white);
@@ -95,10 +104,43 @@ public class HomeFragment extends AppBaseFragment {
         mLayoutNobook.setVisibility(View.GONE);
         mRecyclerview.setLayoutManager(new LinearLayoutManager(mContext));
         List<String> mStrings = new ArrayList<>();
-        for (int i = 0; i < 120; i++) {
+        for (int i = 0; i < 12; i++) {
             mStrings.add(i + "helloworld");
         }
-        mRecyclerview.setAdapter(new HomeBookAdapter(getActivity(), mStrings, mRecyclerview));
+        mBookAdapter = new HomeBookAdapter(mContext, mStrings, mRecyclerview);
+        mBookAdapter.setClickListener(this);
+        mRecyclerview.setAdapter(mBookAdapter);
+
+        BGAStickinessRefreshViewHolder mRefreshViewHolder = new BGAStickinessRefreshViewHolder(mContext, true);
+        mRefreshViewHolder.setStickinessColor(R.color.colorAccent);
+        mRefreshViewHolder.setRotateImage(R.drawable.bga_refresh_stickiness);
+//        mRefreshLayout.offsetTopAndBottom(88);
+        mRefreshLayout.setRefreshViewHolder(mRefreshViewHolder);
+        mRefreshLayout.setDelegate(new BGARefreshLayout.BGARefreshLayoutDelegate() {
+            @Override
+            public void onBGARefreshLayoutBeginRefreshing(BGARefreshLayout refreshLayout) {
+
+                new Handler().postDelayed(new Runnable() {
+                    @Override
+                    public void run() {
+                        mRefreshLayout.endRefreshing();
+                    }
+                }, 2000);
+
+            }
+
+            @Override
+            public boolean onBGARefreshLayoutBeginLoadingMore(BGARefreshLayout refreshLayout) {
+
+                new Handler().postDelayed(new Runnable() {
+                    @Override
+                    public void run() {
+                        mRefreshLayout.endLoadingMore();
+                    }
+                }, 2000);
+                return true;
+            }
+        });
     }
 
     @OnClick({R.id.pop_scan, R.id.pop_search, R.id.tv_title, R.id.iv_camera, R.id.iv_search})
@@ -122,5 +164,17 @@ public class HomeFragment extends AppBaseFragment {
 
 
         }
+    }
+
+    @Override
+    public void bookShare(int position) {
+        // TODO: 2017/2/16 分享
+        new HintDialog(mContext, "分享功能还没写");
+    }
+
+    @Override
+    public void onItemClickListener(int position) {
+// TODO: 2017/2/16 跳转到详情
+        new HintDialog(mContext, "详情页依然还没写");
     }
 }
