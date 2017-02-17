@@ -3,25 +3,31 @@ package com.grandmagic.readingmate.fragment;
 
 import android.Manifest;
 import android.os.Bundle;
+import android.os.Handler;
+import android.os.Message;
 import android.support.v4.app.Fragment;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Button;
 import android.widget.ImageView;
+import android.widget.TextView;
+import android.widget.Toast;
 
 import com.baidu.location.BDLocation;
 import com.baidu.location.BDLocationListener;
 import com.baidu.location.LocationClient;
 import com.baidu.location.LocationClientOption;
 import com.baidu.location.Poi;
-import com.bumptech.glide.Glide;
 import com.grandmagic.readingmate.R;
 import com.grandmagic.readingmate.base.AppBaseFragment;
+import com.grandmagic.readingmate.listener.LocationListener;
 import com.grandmagic.readingmate.view.IrregularImageView;
 import com.tbruyelle.rxpermissions.RxPermissions;
 
 import java.util.List;
+import java.util.StringTokenizer;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
@@ -34,109 +40,12 @@ import rx.functions.Action1;
 public class SearchFragment extends AppBaseFragment {
 
     LocationClient mLocationClient;
-    BDLocationListener mBDLocationListener = new BDLocationListener() {
-        @Override
-        public void onReceiveLocation(BDLocation location) {
-            //获取定位结果
-            StringBuffer sb = new StringBuffer(256);
-
-            sb.append("time : ");
-            sb.append(location.getTime());    //获取定位时间
-
-            sb.append("\nerror code : ");
-            sb.append(location.getLocType());    //获取类型类型
-
-            sb.append("\nlatitude : ");
-            sb.append(location.getLatitude());    //获取纬度信息
-
-            sb.append("\nlontitude : ");
-            sb.append(location.getLongitude());    //获取经度信息
-
-            sb.append("\nradius : ");
-            sb.append(location.getRadius());    //获取定位精准度
-sb.append("\ngetLocTypeDescription"+location.getLocTypeDescription());
-sb.append("\ngetLocationDescribe"+location.getLocationDescribe());
-            if (location.getLocType() == BDLocation.TypeGpsLocation) {
-
-                // GPS定位结果
-                sb.append("\nspeed : ");
-                sb.append(location.getSpeed());    // 单位：公里每小时
-
-                sb.append("\nsatellite : ");
-                sb.append(location.getSatelliteNumber());    //获取卫星数
-
-                sb.append("\nheight : ");
-                sb.append(location.getAltitude());    //获取海拔高度信息，单位米
-
-                sb.append("\ndirection : ");
-                sb.append(location.getDirection());    //获取方向信息，单位度
-
-                sb.append("\naddr : ");
-                sb.append(location.getAddrStr());    //获取地址信息
-
-                sb.append("\ndescribe : ");
-                sb.append("gps定位成功");
-
-            } else if (location.getLocType() == BDLocation.TypeNetWorkLocation) {
-
-                // 网络定位结果
-                sb.append("\naddr : ");
-                sb.append(location.getAddrStr());    //获取地址信息
-
-                sb.append("\noperationers : ");
-                sb.append(location.getOperators());    //获取运营商信息
-
-                sb.append("\ndescribe : ");
-                sb.append("网络定位成功");
-
-            } else if (location.getLocType() == BDLocation.TypeOffLineLocation) {
-
-                // 离线定位结果
-                sb.append("\ndescribe : ");
-                sb.append("离线定位成功，离线定位结果也是有效的");
-
-            } else if (location.getLocType() == BDLocation.TypeServerError) {
-
-                sb.append("\ndescribe : ");
-                sb.append("服务端网络定位失败，可以反馈IMEI号和大体定位时间到loc-bugs@baidu.com，会有人追查原因");
-
-            } else if (location.getLocType() == BDLocation.TypeNetWorkException) {
-
-                sb.append("\ndescribe : ");
-                sb.append("网络不同导致定位失败，请检查网络是否通畅");
-
-            } else if (location.getLocType() == BDLocation.TypeCriteriaException) {
-
-                sb.append("\ndescribe : ");
-                sb.append("无法获取有效定位依据导致定位失败，一般是由于手机的原因，处于飞行模式下一般会造成这种结果，可以试着重启手机");
-
-            }
-
-            sb.append("\nlocationdescribe : ");
-            sb.append(location.getLocationDescribe());    //位置语义化信息
-
-            List<Poi> list = location.getPoiList();    // POI数据
-            if (list != null) {
-                sb.append("\npoilist size = : ");
-                sb.append(list.size());
-                for (Poi p : list) {
-                    sb.append("\npoi= : ");
-                    sb.append(p.getId() + " " + p.getName() + " " + p.getRank());
-                }
-            }
-
-            Log.i("BaiduLocationApiDem", sb.toString());
-        }
-
-        @Override
-        public void onConnectHotSpotMessage(String mS, int mI) {
-
-        }
-    };
-    @BindView(R.id.testimage)
-    IrregularImageView mTestimage;
-    @BindView(R.id.img)
-    ImageView mImg;
+    BDLocationListener mBDLocationListener;
+    Handler mLocationHandler;
+    @BindView(R.id.btn_location)
+    Button mBtnLocation;
+    @BindView(R.id.location)
+    TextView mTVLocation;
 
 
     @Override
@@ -145,19 +54,37 @@ sb.append("\ngetLocationDescribe"+location.getLocationDescribe());
         // Inflate the layout for this fragment
         View view = inflater.inflate(R.layout.fragment_search, container, false);
         ButterKnife.bind(this, view);
-        Glide.with(this).load("http://inthecheesefactory.com/uploads/source/glidepicasso/cover.jpg")
-
-                .into(mTestimage);
-        Glide.with(this).load("http://inthecheesefactory.com/uploads/source/glidepicasso/cover.jpg")
-
-
-                .into(mImg);
-
+        mLocationClient = new LocationClient(getActivity());
+        initdata();
+        initoption();
         return view;
     }
 
-    public void getloacation() {
-        mLocationClient = new LocationClient(getActivity());
+    private void initdata() {
+        mLocationHandler = new Handler() {
+            int i = 0;
+
+            @Override
+            public void handleMessage(Message msg) {
+                String location = (String) msg.obj;
+                if (!location.contains("161") && i < 5) {
+                    mLocationClient.stop();
+                    Toast.makeText(getActivity(), "获取位置信息失败", Toast.LENGTH_SHORT).show();
+                    mLocationClient.start();
+                    mTVLocation.setText(location);
+
+                    i++;
+                } else {
+                    mTVLocation.setText(location);
+                    mLocationClient.stop();
+                }
+            }
+        };
+        mBDLocationListener = new LocationListener(mLocationHandler);
+    }
+
+    public void initoption() {
+
         LocationClientOption option = new LocationClientOption();
         option.setLocationMode(LocationClientOption.LocationMode.Hight_Accuracy);
         //可选，默认高精度，设置定位模式，高精度，低功耗，仅设备
@@ -184,7 +111,7 @@ sb.append("\ngetLocationDescribe"+location.getLocationDescribe());
         option.setIsNeedLocationPoiList(true);
         //可选，默认false，设置是否需要POI结果，可以在BDLocation.getPoiList里得到
 
-        option.setIgnoreKillProcess(true);
+        option.setIgnoreKillProcess(false);
         //可选，默认true，定位SDK内部是一个SERVICE，并放到了独立进程，设置是否在stop的时候杀死这个进程，默认不杀死
 
         option.SetIgnoreCacheException(false);
@@ -195,7 +122,6 @@ sb.append("\ngetLocationDescribe"+location.getLocationDescribe());
 
         mLocationClient.setLocOption(option);
         mLocationClient.registerLocationListener(mBDLocationListener);
-        mLocationClient.start();
     }
 
     @Override
@@ -204,26 +130,20 @@ sb.append("\ngetLocationDescribe"+location.getLocationDescribe());
         mLocationClient.stop();
     }
 
-    @OnClick({R.id.testimage, R.id.img})
-    public void onClick(View view) {
-        switch (view.getId()) {
-            case R.id.testimage:
-                new RxPermissions(getActivity()).request(Manifest.permission.READ_PHONE_STATE,
-                        Manifest.permission.ACCESS_COARSE_LOCATION,
-                        Manifest.permission.ACCESS_FINE_LOCATION,
-                        Manifest.permission.READ_EXTERNAL_STORAGE,
-                        Manifest.permission.WRITE_EXTERNAL_STORAGE
-                ).subscribe(new Action1<Boolean>() {
-                    @Override
-                    public void call(Boolean mBoolean) {
-                        if (mBoolean) {
-                            getloacation();
-                        }
-                    }
-                });
-                break;
-            case R.id.img:
-                break;
-        }
+    @OnClick(R.id.btn_location)
+    public void onClick() {
+        new RxPermissions(getActivity()).request(Manifest.permission.READ_PHONE_STATE,
+                Manifest.permission.ACCESS_COARSE_LOCATION,
+                Manifest.permission.ACCESS_FINE_LOCATION,
+                Manifest.permission.READ_EXTERNAL_STORAGE,
+                Manifest.permission.WRITE_EXTERNAL_STORAGE
+        ).subscribe(new Action1<Boolean>() {
+            @Override
+            public void call(Boolean mBoolean) {
+                if (mBoolean) {
+                    mLocationClient.start();
+                }
+            }
+        });
     }
 }

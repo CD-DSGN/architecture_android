@@ -5,18 +5,18 @@
               android:orientation="vertical"
               tools:context="com.grandmagic.readingmate.fragment.SearchFragment">
 
-    <com.grandmagic.readingmate.view.IrregularImageView
-        android:id="@+id/testimage"
-        android:layout_width="396px"
-        android:layout_height="518px"
-        android:scaleType="centerCrop"
+    <Button
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:id="@+id/btn_location"
+        android:text="定位"
+        />
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:id="@+id/location"
         />
 
-    <ImageView
-        android:id="@+id/img"
-        android:layout_width="match_parent"
-        android:layout_height="500px"
-        android:layout_marginTop="36dp"
-        />
+
 
 </LinearLayout>

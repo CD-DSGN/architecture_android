@@ -21,7 +21,7 @@ import java.util.List;
 
 public abstract class AnimationAdapter<T> extends CommonAdapter<T> {
    protected RecyclerView mRecyclerView;
-    protected boolean isUseanimation=false;
+    protected boolean isUseanimation=true;
     public AnimationAdapter(Context context, int layoutId, List<T> datas, RecyclerView mRecyclerView) {
         super(context, layoutId, datas);
         this.mRecyclerView=mRecyclerView;
@@ -38,7 +38,7 @@ public abstract class AnimationAdapter<T> extends CommonAdapter<T> {
 
     private ViewAnimator mViewAnimator;
     private void animateView(final View view, final int position) {
-        if (mRecyclerView==null||isUseanimation)return;
+        if (mRecyclerView==null||!isUseanimation)return;
         mViewAnimator=new ViewAnimator(mRecyclerView);
         Animator[] animators = getAnimators(view);
         Animator alphaAnimator = ObjectAnimator.ofFloat(view, "alpha", 0.5f, 1);
