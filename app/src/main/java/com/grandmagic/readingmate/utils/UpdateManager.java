@@ -15,7 +15,6 @@ import com.grandmagic.readingmate.R;
 import com.grandmagic.readingmate.base.AppBaseResponseCallBack;
 import com.grandmagic.readingmate.bean.response.UpdateResponse;
 import com.grandmagic.readingmate.consts.ApiInterface;
-import com.grandmagic.readingmate.dialog.HintDialog;
 import com.tamic.novate.Novate;
 import com.tamic.novate.NovateResponse;
 import com.tamic.novate.Throwable;
@@ -67,7 +66,7 @@ public class UpdateManager {
 
             }
         });
-        mDialog.setPositiveButton(R.string.cancle, new DialogInterface.OnClickListener() {
+        mDialog.setPositiveButton(R.string.cancel, new DialogInterface.OnClickListener() {
             @Override
             public void onClick(DialogInterface dialog, int which) {
                 mAlertDialog.dismiss();

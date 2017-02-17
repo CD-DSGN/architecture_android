@@ -25,7 +25,7 @@
     <string name="password_confirm_empty">请填写确认密码</string>
     <string name="password_not_equal">密码不一致</string>
     <string name="reset_success">修改密码成功，请重新登录</string>
-    <string name="cancle">取消</string>
+    <string name="cancel">取消</string>
     <string name="confirm">确定</string>
     <string name="scan_bar">扫描条形码</string>
     <string name="put_bar_into_scan_scope">将条形码放入扫描框内</string>
@@ -51,6 +51,9 @@
     <string name="share">分享阅阅</string>
     <string name="feedback_success">反馈意见提交成功，谢谢您的支持</string>
     <string name="current_version">当前版本</string>
+    <string name="logout_success">退出成功</string>
+    <string name="your_feedback">您的投诉/建议</string>
+    <string name="feedback_content_empty">反馈内容不能为空</string>
 
 
 </resources>

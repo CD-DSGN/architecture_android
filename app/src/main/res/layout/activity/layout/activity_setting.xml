@@ -75,7 +75,8 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_alignParentRight="true"
-            android:text="@string/reading_account"/>
+            android:text="@string/reading_account"
+            android:id="@+id/tv_setting_account"/>
 
     </RelativeLayout>
 
@@ -94,7 +95,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_alignParentRight="true"
-            android:text="13518143569"/>
+            android:id="@+id/tv_setting_mobile"/>
 
     </RelativeLayout>
 
@@ -113,7 +114,8 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_alignParentRight="true"
-            android:text="2200"/>
+            android:text="2200"
+            android:id="@+id/tv_seeting_points"/>
 
     </RelativeLayout>
 
@@ -282,6 +284,13 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="@string/login_out"
+        android:layout_gravity="center_horizontal"/>
+
+    <Button
+        android:id="@+id/test"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="测试"
         android:layout_gravity="center_horizontal"/>
 
 </LinearLayout>
