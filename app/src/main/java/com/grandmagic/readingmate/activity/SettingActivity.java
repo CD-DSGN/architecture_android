@@ -6,6 +6,7 @@ import android.support.v7.widget.SwitchCompat;
 import android.text.TextUtils;
 import android.view.View;
 import android.widget.CompoundButton;
+import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.grandmagic.readingmate.R;
@@ -15,11 +16,14 @@ import com.grandmagic.readingmate.bean.request.FeedBackRequestBean;
 import com.grandmagic.readingmate.model.FeedBackModel;
 import com.grandmagic.readingmate.model.LoginModel;
 import com.grandmagic.readingmate.ui.CustomDialog;
+import com.grandmagic.readingmate.ui.ListDialog;
 import com.grandmagic.readingmate.utils.KitUtils;
 import com.grandmagic.readingmate.utils.SPUtils;
 import com.grandmagic.readingmate.utils.ViewUtils;
 import com.tamic.novate.NovateResponse;
 import com.tamic.novate.Throwable;
+
+import java.util.ArrayList;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
@@ -40,6 +44,8 @@ public class SettingActivity extends AppBaseActivity implements CompoundButton.O
     TextView mTvSettingMobile;
     @BindView(R.id.tv_seeting_points)
     TextView mTvSeetingPoints;
+    @BindView(R.id.ib_settings_non_wifi)
+    ImageView mIvSettingsNonWifi;
 
 
     @Override
@@ -124,7 +130,7 @@ public class SettingActivity extends AppBaseActivity implements CompoundButton.O
                 if (TextUtils.isEmpty(content)) {
                     ViewUtils.showToast(SettingActivity.this, getString(R.string.feedback_content_empty));
                     return;
-                }else{
+                } else {
                     sendfeedBackNetworkData(content);
                 }
                 customDialog.dismiss();
@@ -139,7 +145,7 @@ public class SettingActivity extends AppBaseActivity implements CompoundButton.O
     }
 
 
-    @OnClick({R.id.feed_back, R.id.logout})
+    @OnClick({R.id.feed_back, R.id.logout, R.id.ib_settings_non_wifi})
     public void onClick(View view) {
         switch (view.getId()) {
             case R.id.feed_back:
@@ -148,9 +154,21 @@ public class SettingActivity extends AppBaseActivity implements CompoundButton.O
             case R.id.logout:
                 logout();
                 break;
+            case R.id.ib_settings_non_wifi:
+                show_set_wifi_dlg();
+                break;
             default:
                 break;
         }
+    }
+
+    private void show_set_wifi_dlg() {
+        ArrayList<String> data = new ArrayList<String>();
+        data.add("最佳效果 (下载大图)");
+        data.add("较省流量 (阅能下载)");
+        data.add("极省流量 (不下载图)");
+        ListDialog listDialog = new ListDialog(this, data);
+        listDialog.show();
     }
 
 
@@ -162,4 +180,5 @@ public class SettingActivity extends AppBaseActivity implements CompoundButton.O
             SPUtils.getInstance().setPushSetting(SettingActivity.this, isChecked);
         }
     }
+
 }
