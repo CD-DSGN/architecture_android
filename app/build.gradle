@@ -13,12 +13,24 @@ android {
         versionName "1.0.0"
         testInstrumentationRunner "android.support.test.runner.AndroidJUnitRunner"
     }
+    signingConfigs {
+        debug {
+            storeFile file('../test.jks')//签名文件路径
+            storePassword "123456"
+            keyAlias "test"
+            keyPassword "123456"  //签名密码
+        }
+    }
     buildTypes {
+        debug {
+            signingConfig signingConfigs.debug
+        }
         release {
             minifyEnabled false
             proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
         }
     }
+
     sourceSets {
         main {
             res.srcDirs =
@@ -30,7 +42,9 @@ android {
                             'src/main/res/layout/item',
                             'src/main/res/layout',
                             'src/main/res'
+
                     ]
+            jniLibs.srcDirs = ['libs']
         }
     }
 }
