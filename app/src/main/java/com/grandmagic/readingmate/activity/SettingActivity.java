@@ -5,7 +5,6 @@ import android.os.Bundle;
 import android.support.v7.widget.SwitchCompat;
 import android.text.TextUtils;
 import android.view.View;
-import android.widget.Button;
 import android.widget.CompoundButton;
 import android.widget.TextView;
 
@@ -35,8 +34,6 @@ public class SettingActivity extends AppBaseActivity implements CompoundButton.O
     TextView mTvSettingCurrentVersion;
 
     SwitchCompat mSwitchSettingPush;
-    @BindView(R.id.test)
-    Button mTest;
     @BindView(R.id.tv_setting_account)
     TextView mTvSettingAccount;
     @BindView(R.id.tv_setting_mobile)
@@ -142,7 +139,7 @@ public class SettingActivity extends AppBaseActivity implements CompoundButton.O
     }
 
 
-    @OnClick({R.id.feed_back, R.id.logout, R.id.test})
+    @OnClick({R.id.feed_back, R.id.logout})
     public void onClick(View view) {
         switch (view.getId()) {
             case R.id.feed_back:
@@ -150,10 +147,6 @@ public class SettingActivity extends AppBaseActivity implements CompoundButton.O
                 break;
             case R.id.logout:
                 logout();
-                break;
-            case R.id.test:
-                boolean checked = SPUtils.getInstance().getPushSetting(SettingActivity.this);
-                ViewUtils.showToast(SettingActivity.this, "checked:" + checked);
                 break;
             default:
                 break;
