@@ -13,9 +13,11 @@ import com.umeng.analytics.MobclickAgent;
  */
 
 public class AppBaseApplication extends Application {
+    public static AppBaseApplication ctx;
     @Override
     public void onCreate() {
         super.onCreate();
+        ctx = this;
         Stetho.initializeWithDefaults(this);  //初始化facebook调试工具stetho
         LeakCanary.install(this);    //内存泄漏检测
         MobclickAgent.setCatchUncaughtExceptions(true); //友盟异常捕捉

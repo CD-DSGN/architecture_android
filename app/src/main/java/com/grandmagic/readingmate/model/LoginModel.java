@@ -39,18 +39,18 @@ public class LoginModel {
 
     public void login() {
         if (!KitUtils.checkMobilePhone(mLoginRequestBean.getMobile_phone())) {
-            ViewUtils.showToast(mContext, mContext.getString(R.string.mobile_invalid));
+            ViewUtils.showToast(mContext.getString(R.string.mobile_invalid));
             return;
         }
 
         if (TextUtils.isEmpty(mLoginRequestBean.getPassword())) {
-            ViewUtils.showToast(mContext, mContext.getString(R.string.password_empty));
+            ViewUtils.showToast(mContext.getString(R.string.password_empty));
             return;
         }
 
         int passwd_len = mLoginRequestBean.getPassword().length();
         if (passwd_len < PASSWORD_MIN_LEN && passwd_len > PASSWORD_MAX_LEN) {
-            ViewUtils.showToast(mContext, mContext.getString(R.string.password_len_check1) + PASSWORD_MIN_LEN + "-"
+            ViewUtils.showToast(mContext.getString(R.string.password_len_check1) + PASSWORD_MIN_LEN + "-"
                     + PASSWORD_MAX_LEN + mContext.getString(R.string.password_check2));
         }
 

@@ -83,7 +83,7 @@ public class SettingActivity extends AppBaseActivity implements CompoundButton.O
                 new AppBaseResponseCallBack<NovateResponse<Object>>(SettingActivity.this, true) {
                     @Override
                     public void onSuccee(NovateResponse<Object> response) {
-                        ViewUtils.showToast(SettingActivity.this,
+                        ViewUtils.showToast(
                                 getString(R.string.logout_success));
                         jumpToLoginActivity();
                     }
@@ -115,7 +115,7 @@ public class SettingActivity extends AppBaseActivity implements CompoundButton.O
                 new AppBaseResponseCallBack<NovateResponse<Object>>(SettingActivity.this, true) {
                     @Override
                     public void onSuccee(NovateResponse<Object> response) {
-                        ViewUtils.showToast(SettingActivity.this, getString(R.string.feedback_success));
+                        ViewUtils.showToast(getString(R.string.feedback_success));
                     }
                 }).feedBack();
     }
@@ -128,7 +128,7 @@ public class SettingActivity extends AppBaseActivity implements CompoundButton.O
             public void onYesClick() {
                 String content = customDialog.getMessage();
                 if (TextUtils.isEmpty(content)) {
-                    ViewUtils.showToast(SettingActivity.this, getString(R.string.feedback_content_empty));
+                    ViewUtils.showToast(getString(R.string.feedback_content_empty));
                     return;
                 } else {
                     sendfeedBackNetworkData(content);
@@ -167,7 +167,25 @@ public class SettingActivity extends AppBaseActivity implements CompoundButton.O
         data.add("最佳效果 (下载大图)");
         data.add("较省流量 (阅能下载)");
         data.add("极省流量 (不下载图)");
-        ListDialog listDialog = new ListDialog(this, data);
+        ListDialog listDialog = new ListDialog(this, data, "非wifi网络流量");
+        listDialog.setOnitemClickListener(new ListDialog.OnitemClickListener() {
+            @Override
+            public void onClick(int postion) {
+                switch(postion) {
+                    case 0:
+                        ViewUtils.showToast("显示大图");
+                        break;
+                    case 1:
+                        ViewUtils.showToast("显示中图");
+                        break;
+                    case 2:
+                        ViewUtils.showToast("无图");
+                        break;
+                    default:
+                        break;
+                }
+            }
+        });
         listDialog.show();
     }
 
@@ -176,7 +194,7 @@ public class SettingActivity extends AppBaseActivity implements CompoundButton.O
     public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
         if (buttonView.getId() == R.id.switch_setting_push) {
             //        保存开关状态
-            ViewUtils.showToast(SettingActivity.this, "开关状态" + isChecked);
+            ViewUtils.showToast("开关状态" + isChecked);
             SPUtils.getInstance().setPushSetting(SettingActivity.this, isChecked);
         }
     }

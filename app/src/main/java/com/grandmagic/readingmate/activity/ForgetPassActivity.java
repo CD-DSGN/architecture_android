@@ -68,7 +68,7 @@ public class ForgetPassActivity extends AppBaseActivity {
                 }
             }).getVerifyCode(phone_num);
         } else {
-            ViewUtils.showToast(this, getString(R.string.mobile_invalid));
+            ViewUtils.showToast( getString(R.string.mobile_invalid));
         }
 
 
@@ -78,7 +78,7 @@ public class ForgetPassActivity extends AppBaseActivity {
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         if (requestCode == FORGET && resultCode == ResetPassActivity.CHANG_SUCCESS) {
             //跳转到登录页
-            ViewUtils.showToast(this, getString(R.string.reset_success));
+            ViewUtils.showToast( getString(R.string.reset_success));
             Intent intent = new Intent(this, LoginActivity.class);
             startActivity(intent);
             finish();
