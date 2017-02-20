@@ -15,6 +15,7 @@ import android.widget.Toast;
 
 import com.grandmagic.readingmate.R;
 import com.grandmagic.readingmate.base.AppBaseActivity;
+import com.grandmagic.readingmate.utils.ViewUtils;
 import com.tbruyelle.rxpermissions.RxPermissions;
 import com.xys.libzxing.zxing.encoding.EncodingUtils;
 
@@ -39,7 +40,10 @@ public class ScanActivity extends AppBaseActivity {
         new RxPermissions(this).request(Manifest.permission.CAMERA).subscribe(new Action1<Boolean>() {
             @Override
             public void call(Boolean mBoolean) {
+                if (!mBoolean) {
+                    ViewUtils.showToast("相机权限被禁用，将导致扫码功能不可用，请去应用设置相应权限");
 
+                }
             }
         });
 

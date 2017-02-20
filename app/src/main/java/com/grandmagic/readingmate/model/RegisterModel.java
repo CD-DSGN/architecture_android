@@ -32,30 +32,30 @@ public class RegisterModel {
     public void register() {
         //手机合法性检查
         if (!KitUtils.checkMobilePhone(mRegisterBean.getMobile_phone())) {
-            ViewUtils.showToast(mContext, mContext.getString(R.string.mobile_invalid));
+            ViewUtils.showToast( mContext.getString(R.string.mobile_invalid));
             return;
         }
 
         //判断验证码是否为空
         if (TextUtils.isEmpty(mRegisterBean.getVerification_code())) {
-            ViewUtils.showToast(mContext, mContext.getString(R.string.verify_code_empty));
+            ViewUtils.showToast( mContext.getString(R.string.verify_code_empty));
             return;
         }
 
         String pwd = mRegisterBean.getPassword();
         if (TextUtils.isEmpty(pwd)) {
-            ViewUtils.showToast(mContext, mContext.getString(R.string.password_empty));
+            ViewUtils.showToast( mContext.getString(R.string.password_empty));
             return;
         }
 
         if (TextUtils.isEmpty(pwd_comfirm)) {
-            ViewUtils.showToast(mContext, mContext.getString(R.string.password_confirm_empty));
+            ViewUtils.showToast( mContext.getString(R.string.password_confirm_empty));
             return;
         }
 
         //判断是密码和确认密码否一致
         if (!pwd.equals(pwd_comfirm)) {
-            ViewUtils.showToast(mContext, mContext.getString(R.string.password_not_equal));
+            ViewUtils.showToast( mContext.getString(R.string.password_not_equal));
             return;
         }
 

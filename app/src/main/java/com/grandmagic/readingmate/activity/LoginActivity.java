@@ -232,7 +232,7 @@ public class LoginActivity extends AppBaseActivity implements View.OnClickListen
                 }
                 //保存token
                 SPUtils.getInstance().saveToken(LoginActivity.this, token);
-                ViewUtils.showToast(LoginActivity.this, "注册成功");
+                ViewUtils.showToast("注册成功");
                 startActivity(new Intent(LoginActivity.this,MainActivity.class));
                 finish();
             }
@@ -250,7 +250,7 @@ public class LoginActivity extends AppBaseActivity implements View.OnClickListen
                 }
             }).getVerifyCode(phone_num);
         } else {
-            ViewUtils.showToast(this, getString(R.string.mobile_invalid));
+            ViewUtils.showToast( getString(R.string.mobile_invalid));
         }
     }
 

@@ -40,30 +40,30 @@ public class ResetPasswordModel extends AppBaseModel {
     protected boolean checkParameter() {
         //手机不合法
         if (!KitUtils.checkMobilePhone(mResetPasswordRequsetBean.getPhone_num())) {
-            ViewUtils.showToast(mContext, mContext.getString(R.string.mobile_invalid));
+            ViewUtils.showToast( mContext.getString(R.string.mobile_invalid));
             return false;
         }
 
         //验证码合法性判断
         if (TextUtils.isEmpty(mResetPasswordRequsetBean.getVerify_code())) {
-            ViewUtils.showToast(mContext, mContext.getString(R.string.verify_code_empty));
+            ViewUtils.showToast( mContext.getString(R.string.verify_code_empty));
             return false;
         }
 
         String pwd = mResetPasswordRequsetBean.getPassword();
         //密码空判断
         if (TextUtils.isEmpty(pwd)) {
-            ViewUtils.showToast(mContext, mContext.getString(R.string.password_empty));
+            ViewUtils.showToast( mContext.getString(R.string.password_empty));
             return false;
         }
         //确认密码
         if (TextUtils.isEmpty(mPwd_confirm)) {
-            ViewUtils.showToast(mContext, mContext.getString(R.string.password_confirm_empty));
+            ViewUtils.showToast( mContext.getString(R.string.password_confirm_empty));
             return false;
         }
 
         if (!pwd.equals(mPwd_confirm)) {
-            ViewUtils.showToast(mContext, mContext.getString(R.string.password_not_equal));
+            ViewUtils.showToast( mContext.getString(R.string.password_not_equal));
             return false;
         }
 

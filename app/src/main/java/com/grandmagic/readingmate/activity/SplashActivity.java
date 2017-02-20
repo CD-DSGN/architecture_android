@@ -18,8 +18,8 @@ public class SplashActivity extends AppBaseActivity {
         AutoUtils.setSize(this,false,750,1334);
         setContentView(R.layout.activity_splash);
         initview();
-        checkfrist();
-//        startActivity(new Intent(SplashActivity.this,SettingActivity.class));
+//        checkfrist();
+        startActivity(new Intent(SplashActivity.this,SettingActivity.class));
     }
 
     /**
