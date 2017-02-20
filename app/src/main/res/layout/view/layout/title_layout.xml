@@ -2,23 +2,28 @@
 <RelativeLayout
     xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
-    android:layout_height="50px"
+    android:layout_height="wrap_content"
     android:layout_marginTop="20px"
-  >
-<ImageView
-    android:layout_width="wrap_content"
-    android:layout_height="match_parent"
-    android:src="@android:drawable/ic_menu_close_clear_cancel"
-    android:id="@+id/back"
-    />
+    >
+
+    <ImageView
+        android:id="@+id/back"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="26px"
+        android:src="@drawable/ic_back_gray"
+        android:layout_centerVertical="true"
+        />
+
     <TextView
+        android:id="@+id/title"
+
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_centerHorizontal="true"
-        android:text="标题"
-        android:id="@+id/title"
-        android:textSize="48px"
-        android:textColor="@color/white"
         android:layout_centerVertical="true"
+        android:text="标题"
+        android:textColor="#181e1d"
+        android:textSize="48px"
         />
 </RelativeLayout>

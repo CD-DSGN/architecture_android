@@ -1,0 +1,73 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:fitsSystemWindows="true"
+    android:orientation="vertical"
+    tools:context="com.grandmagic.readingmate.activity.FriendActivity">
+
+    <include layout="@layout/title_layout"/>
+
+    <RelativeLayout
+        android:layout_marginTop="50px"
+        android:id="@+id/new_friend"
+        android:layout_width="710px"
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="26px"
+        >
+
+        <View
+            android:id="@+id/dashline"
+            android:layout_width="match_parent"
+            android:layout_height="2px"
+            android:background="@drawable/dashline">
+        </View>
+
+        <ImageView
+            android:id="@+id/iv_newmessage"
+            android:layout_width="86px"
+            android:layout_height="86px"
+            android:layout_marginBottom="36px"
+            android:layout_marginTop="36px"
+            android:background="@drawable/bg_green_circle"
+            android:paddingBottom="18px"
+            android:paddingLeft="28px"
+            android:paddingRight="28px"
+            android:paddingTop="18px"
+            android:src="@drawable/ic_newmessage"
+            />
+
+        <TextView
+            android:layout_width="36px"
+            android:layout_height="36px"
+            android:layout_marginLeft="68px"
+            android:layout_marginTop="30px"
+            android:background="@drawable/red_point"
+            android:gravity="center"
+            android:text="2"
+            android:textColor="@color/white"
+            android:textSize="22px"
+            />
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerVertical="true"
+            android:layout_marginLeft="36px"
+            android:layout_toRightOf="@+id/iv_newmessage"
+            android:text="新阅友"
+            android:textColor="#181e1d"
+            android:textSize="32px"
+            />
+    </RelativeLayout>
+
+    <android.support.v7.widget.RecyclerView
+        android:id="@+id/recyclerview_friend"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+
+    </android.support.v7.widget.RecyclerView>
+
+</LinearLayout>

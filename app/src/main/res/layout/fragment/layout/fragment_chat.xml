@@ -1,13 +1,48 @@
-<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
-             xmlns:tools="http://schemas.android.com/tools"
-             android:layout_width="match_parent"
-             android:layout_height="match_parent"
-             tools:context="com.grandmagic.readingmate.fragment.ChatFragment">
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+              xmlns:tools="http://schemas.android.com/tools"
+              android:layout_width="match_parent"
+              android:layout_height="match_parent"
+              android:orientation="vertical"
+              tools:context="com.grandmagic.readingmate.fragment.ChatFragment">
 
-    <!-- TODO: Update blank fragment layout -->
-    <TextView
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:text="chat"/>
+    <RelativeLayout
+        android:layout_marginTop="46px"
+        android:id="@+id/rela_friend"
+        android:layout_width="721px"
+        android:layout_height="88px"
+        android:layout_gravity="center_horizontal"
+        android:background="@drawable/bg_friend"
+        >
 
-</FrameLayout>
+        <TextView
+            android:id="@+id/tv_friend"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerInParent="true"
+            android:text="阅友"
+            android:textColor="#1cc9a2"
+            android:textSize="40px"
+            />
+
+        <ImageView
+            android:id="@+id/iv_friend"
+            android:layout_width="38px"
+            android:layout_height="34px"
+            android:layout_centerVertical="true"
+            android:layout_marginLeft="15px"
+            android:layout_toRightOf="@+id/tv_friend"
+            android:src="@drawable/ic_attachment"
+            />
+
+        <ImageView
+            android:layout_width="16px"
+            android:layout_height="16px"
+            android:layout_alignTop="@id/iv_friend"
+            android:layout_marginRight="-8px"
+            android:layout_marginTop="-6px"
+            android:layout_toRightOf="@+id/iv_friend"
+            android:src="@drawable/red_point"
+            />
+    </RelativeLayout>
+
+</LinearLayout>
