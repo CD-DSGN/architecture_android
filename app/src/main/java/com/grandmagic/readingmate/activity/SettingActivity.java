@@ -167,7 +167,25 @@ public class SettingActivity extends AppBaseActivity implements CompoundButton.O
         data.add("最佳效果 (下载大图)");
         data.add("较省流量 (阅能下载)");
         data.add("极省流量 (不下载图)");
-        ListDialog listDialog = new ListDialog(this, data);
+        ListDialog listDialog = new ListDialog(this, data, "非wifi网络流量");
+        listDialog.setOnitemClickListener(new ListDialog.OnitemClickListener() {
+            @Override
+            public void onClick(int postion) {
+                switch(postion) {
+                    case 0:
+                        ViewUtils.showToast(SettingActivity.this, "显示大图");
+                        break;
+                    case 1:
+                        ViewUtils.showToast(SettingActivity.this, "显示中图");
+                        break;
+                    case 2:
+                        ViewUtils.showToast(SettingActivity.this, "无图");
+                        break;
+                    default:
+                        break;
+                }
+            }
+        });
         listDialog.show();
     }
 

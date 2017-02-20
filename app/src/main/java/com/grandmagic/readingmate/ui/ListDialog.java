@@ -15,6 +15,7 @@ import java.util.ArrayList;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
+import butterknife.OnClick;
 
 /**
  * Created by zhangmengqi on 2017/2/17.
@@ -37,10 +38,17 @@ public class ListDialog extends Dialog {
 
     private Context mContext;
 
-    public ListDialog(Context context, ArrayList data) {
+    public void setOnitemClickListener(OnitemClickListener onitemClickListener) {
+        mOnitemClickListener = onitemClickListener;
+    }
+
+    private OnitemClickListener mOnitemClickListener;
+
+    public ListDialog(Context context, ArrayList data, String title) {
         super(context, R.style.CustomDialog);
         mContext = context;
         mData = data;
+        mTitleStr = title;
     }
 
     @Override
@@ -53,13 +61,33 @@ public class ListDialog extends Dialog {
 
     //根据数组元素，动态添加
     private void initView() {
+        mTitle.setText(mTitleStr);
         if (mData != null && mData.size() > 0) {
-            for (String str : mData) {
+            for (int i = 0 ; i < mData.size(); i++) {
                 View v = LayoutInflater.from(mContext).inflate(R.layout.item_list_dlg_basic, null);
                 mTvItemDlg = (TextView) v.findViewById(R.id.tv_item_dlg);
-                mTvItemDlg.setText(str + "");
+                mTvItemDlg.setText(mData.get(i) + "");
                 mLlContent.addView(v);
+                final int index = i;
+                v.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+                        mOnitemClickListener.onClick(index);
+                    }
+                });
             }
         }
     }
+
+    @OnClick(R.id.no)
+    public void onClick() {
+        dismiss();
+    }
+
+
+    public interface OnitemClickListener {
+        public void onClick(int postion);
+    }
+
+
 }
