@@ -210,11 +210,12 @@
             android:layout_alignParentLeft="true"
             android:text="@string/without_wifi"/>
 
-        <ImageView
+        <ImageButton
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_alignParentRight="true"
-            android:src="@android:drawable/arrow_down_float"/>
+            android:src="@android:drawable/arrow_down_float"
+            android:id="@+id/ib_settings_non_wifi"/>
 
     </RelativeLayout>
 
