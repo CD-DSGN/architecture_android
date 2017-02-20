@@ -4,14 +4,18 @@ package com.grandmagic.readingmate.fragment;
 import android.content.Context;
 import android.content.Intent;
 import android.graphics.Color;
+import android.graphics.drawable.BitmapDrawable;
+import android.graphics.drawable.ColorDrawable;
 import android.os.Bundle;
 import android.os.Handler;
 import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.WindowManager;
 import android.widget.FrameLayout;
 import android.widget.ImageView;
 import android.widget.PopupWindow;
@@ -26,6 +30,7 @@ import com.grandmagic.readingmate.adapter.HomeBookAdapter;
 import com.grandmagic.readingmate.base.AppBaseFragment;
 import com.grandmagic.readingmate.dialog.HintDialog;
 import com.grandmagic.readingmate.utils.AutoUtils;
+import com.grandmagic.readingmate.utils.DensityUtil;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -40,7 +45,7 @@ import cn.bingoogolapple.refreshlayout.BGAStickinessRefreshViewHolder;
 public class HomeFragment extends AppBaseFragment implements HomeBookAdapter.ClickListener {
     protected Context mContext;
 
-    PopupWindow mPopupWindow;
+
     @BindView(R.id.recyclerview)
     RecyclerView mRecyclerview;
     @BindView(R.id.pop_scan)
@@ -166,10 +171,31 @@ public class HomeFragment extends AppBaseFragment implements HomeBookAdapter.Cli
         }
     }
 
+    PopupWindow mPopupWindow;
+
     @Override
     public void bookShare(int position) {
         // TODO: 2017/2/16 分享
-        new HintDialog(mContext, "分享功能还没写");
+        if (mPopupWindow == null) {
+            View mpopview = LayoutInflater.from(mContext).inflate(R.layout.view_sharepop, null);
+            AutoUtils.auto(mpopview);
+            mPopupWindow = new PopupWindow(mpopview, WindowManager.LayoutParams.MATCH_PARENT, WindowManager.LayoutParams.WRAP_CONTENT,true);
+            mPopupWindow.setBackgroundDrawable(new BitmapDrawable());
+            mPopupWindow.setClippingEnabled(true);
+            mPopupWindow.setOutsideTouchable(true);
+            mPopupWindow.setOnDismissListener(new PopupWindow.OnDismissListener() {
+                @Override
+                public void onDismiss() {
+                    WindowManager.LayoutParams params=getActivity().getWindow().getAttributes();
+                    params.alpha=1.0f;
+                    getActivity().getWindow().setAttributes(params);
+                }
+            });
+        }
+        mPopupWindow.showAtLocation(rootview, Gravity.BOTTOM, 0, 0);
+        WindowManager.LayoutParams params=getActivity().getWindow().getAttributes();
+        params.alpha=0.7f;
+        getActivity().getWindow().setAttributes(params);
     }
 
     @Override

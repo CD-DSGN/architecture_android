@@ -83,9 +83,9 @@
 
         <RelativeLayout
             android:layout_width="match_parent"
-            android:layout_height="28px"
+            android:layout_height="48px"
             android:layout_below="@+id/about"
-            android:layout_marginBottom="20px"
+
             android:layout_marginTop="20px">
 
             <LinearLayout
@@ -141,6 +141,7 @@
             </LinearLayout>
 
             <LinearLayout
+             android:padding="10px"
                 android:id="@+id/linear_share"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"

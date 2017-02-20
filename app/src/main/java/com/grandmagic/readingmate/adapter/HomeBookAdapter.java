@@ -24,6 +24,7 @@ public class HomeBookAdapter extends AnimationAdapter<String> {
 
     public HomeBookAdapter(Context context, List<String> datas, RecyclerView mRecyclerView) {
         super(context, R.layout.item_homepage, datas, mRecyclerView);
+        setUseanimation(false);
     }
 
     @Override

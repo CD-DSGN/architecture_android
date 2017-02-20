@@ -1,0 +1,104 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="268px"
+    android:background="@color/white"
+    android:orientation="horizontal">
+
+    <LinearLayout
+        android:layout_width="wrap_content"
+        android:layout_height="268px"
+        android:orientation="vertical"
+        android:layout_marginLeft="64px"
+        >
+
+        <ImageView
+            android:layout_width="110px"
+            android:layout_height="110px"
+            android:layout_marginBottom="22px"
+            android:layout_marginTop="52px"
+            android:src="@drawable/ic_wechat"
+            />
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="微信好友"
+            android:textColor="#191921"
+            android:textSize="24px"
+            />
+    </LinearLayout>
+
+    <LinearLayout
+    android:layout_width="wrap_content"
+    android:layout_height="268px"
+    android:orientation="vertical"
+    android:layout_marginLeft="62px"
+    >
+
+    <ImageView
+        android:layout_width="110px"
+        android:layout_height="110px"
+        android:layout_marginBottom="22px"
+        android:layout_marginTop="52px"
+        android:src="@drawable/ic_friends_circle"
+        />
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="微信朋友圈"
+        android:textColor="#191921"
+        android:textSize="24px"
+        />
+</LinearLayout>
+
+    <LinearLayout
+        android:layout_width="wrap_content"
+        android:layout_height="268px"
+        android:orientation="vertical"
+        android:layout_marginLeft="62px"
+        >
+
+        <ImageView
+            android:layout_width="110px"
+            android:layout_height="110px"
+            android:layout_marginBottom="22px"
+            android:layout_marginTop="52px"
+            android:src="@drawable/ic_sina"
+            />
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="新浪微博"
+            android:textColor="#191921"
+            android:textSize="24px"
+            />
+    </LinearLayout>
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="268px"
+        android:orientation="horizontal"
+        android:layout_marginLeft="70px"
+        >
+
+        <ImageView
+            android:layout_width="2px"
+            android:layout_height="80px"
+           android:layout_gravity="center_vertical"
+            android:src="@drawable/ic_main_bar_two"
+            />
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/cancel"
+            android:textColor="#191921"
+            android:textSize="30px"
+            android:layout_marginLeft="36px"
+            android:layout_marginTop="110px"
+            />
+    </LinearLayout>
+</LinearLayout>
