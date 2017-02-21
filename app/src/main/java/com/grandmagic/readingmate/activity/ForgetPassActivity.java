@@ -1,6 +1,7 @@
 package com.grandmagic.readingmate.activity;
 
 import android.content.Intent;
+import android.graphics.Color;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.EditText;
@@ -38,6 +39,7 @@ public class ForgetPassActivity extends AppBaseActivity {
 
     private void initview() {
         mTitle.setText(R.string.resetpass);
+        mTitle.setTextColor(Color.parseColor("#ffffff"));
     }
 
     @OnClick({R.id.back, R.id.phone_clear, R.id.tv_next})

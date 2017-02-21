@@ -1,0 +1,88 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<RelativeLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="710px"
+    android:layout_height="152px"
+
+    android:paddingLeft="20px"
+    android:paddingRight="20px"
+    >
+
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="1px"
+        android:background="@drawable/dashline"
+        />
+
+    <ImageView
+        android:id="@id/avatar"
+        android:layout_width="100px"
+        android:layout_height="100px"
+        android:layout_marginTop="26px"
+        />
+
+    <TextView
+        android:id="@+id/name"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="26px"
+        android:layout_marginTop="40px"
+        android:layout_toRightOf="@+id/avatar"
+        android:textColor="#191921"
+        android:textSize="36px"
+        tools:text="张三"
+
+        />
+
+    <TextView
+        android:id="@+id/verify"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentBottom="true"
+        android:layout_marginBottom="40px"
+        android:layout_marginLeft="26px"
+        android:layout_toRightOf="@+id/avatar"
+        android:textColor="#cc191921"
+        android:textSize="28px"
+        tools:text="nihao"
+
+        />
+
+    <TextView
+        android:id="@+id/state_deal"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentRight="true"
+        android:layout_centerVertical="true"
+        android:layout_marginRight="20px"
+        android:text="已添加"
+        android:textColor="#cc191921"
+        android:textSize="28px"
+        />
+
+    <TextView
+        android:id="@+id/state_todo"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentRight="true"
+        android:layout_centerVertical="true"
+        android:layout_marginRight="20px"
+        android:background="@drawable/bg_accept_btn"
+        android:gravity="center"
+        android:text="已添加"
+        android:textColor="#cc191921"
+        android:textSize="28px"
+        android:visibility="gone"
+
+        />
+
+    <View
+        android:id="@+id/bottomline"
+        android:layout_width="match_parent"
+        android:layout_height="1px"
+        android:layout_alignParentBottom="true"
+        android:background="@drawable/dashline"
+        />
+</RelativeLayout>

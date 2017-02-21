@@ -1,10 +1,15 @@
 package com.grandmagic.readingmate.adapter;
 
+import android.app.Activity;
 import android.content.Context;
+import android.content.Intent;
+import android.view.View;
 import android.widget.ImageView;
 
 import com.bumptech.glide.Glide;
 import com.grandmagic.readingmate.R;
+import com.grandmagic.readingmate.activity.FriendActivity;
+import com.grandmagic.readingmate.activity.FriendRequestActivity;
 import com.grandmagic.readingmate.bean.response.Contacts;
 import com.zhy.adapter.recyclerview.base.ItemViewDelegate;
 import com.zhy.adapter.recyclerview.base.ViewHolder;
@@ -33,7 +38,13 @@ public class ContactNewFriendDelagate implements ItemViewDelegate<Contacts> {
 
     @Override
     public void convert(ViewHolder holder, Contacts mContacts, int position) {
-
+        holder.getConvertView().setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                ((Activity) mContext).startActivityForResult(new Intent(mContext, FriendRequestActivity.class)
+                , FriendActivity.REQUEST_NEWFRIEND);
+            }
+        });
 
     }
 }

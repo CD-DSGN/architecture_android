@@ -1,10 +1,10 @@
 package com.grandmagic.readingmate.activity;
 
 import android.content.Context;
+import android.content.Intent;
 import android.graphics.Color;
 import android.os.Bundle;
 import android.support.v7.widget.LinearLayoutManager;
-import android.support.v7.widget.RecyclerView;
 import android.view.View;
 import android.widget.ImageView;
 import android.widget.RelativeLayout;
@@ -23,7 +23,6 @@ import com.grandmagic.readingmate.utils.AutoUtils;
 import com.grandmagic.readingmate.view.IndexBar;
 import com.grandmagic.readingmate.view.SwipRecycleView;
 
-
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Comparator;
@@ -34,7 +33,7 @@ import butterknife.ButterKnife;
 import butterknife.OnClick;
 
 public class FriendActivity extends AppBaseActivity {
-
+public static final int REQUEST_NEWFRIEND=1;
     @BindView(R.id.back)
     ImageView mBack;
     @BindView(R.id.title)
@@ -47,6 +46,8 @@ public class FriendActivity extends AppBaseActivity {
     @BindView(R.id.hintText)
     TextView mHintText;
     List<Contacts> mAdapterData = new ArrayList<>();
+    @BindView(R.id.titlelayout)
+    RelativeLayout mTitlelayout;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -68,11 +69,14 @@ public class FriendActivity extends AppBaseActivity {
         initadapterData();
     }
 
+    /**
+     * 生成adapter需要的list
+     */
     private void initadapterData() {
         mAdapterData.add(new Contacts(Contacts.TYPE.TYPE_NEWFRIEND));//新朋友的头部
         for (int i = 0; i < mLetters.size(); i++) {
             String letter = mLetters.get(i);
-            mAdapterData.get(mAdapterData.size()-1).setNeedline(false);
+            mAdapterData.get(mAdapterData.size() - 1).setNeedline(false);
             Contacts mContacts = new Contacts(Contacts.TYPE.TYPE_LETTER, letter);
             mAdapterData.add(mContacts);
             for (int j = 0; j < mSouseDatas.size(); j++) {
@@ -82,6 +86,9 @@ public class FriendActivity extends AppBaseActivity {
         }
     }
 
+    /**
+     * 对名字进行转化和排序处理
+     */
     private void initsouseData() {
         int mSize = mSouseDatas.size();
         for (int i = 0; i < mSize; i++) {
@@ -153,15 +160,18 @@ public class FriendActivity extends AppBaseActivity {
     private void initview() {
         mContext = this;
         mTitle.setText(R.string.read_friend);
+        mTitlelayout.setBackgroundColor(Color.parseColor("#ffffff"));
         mTitle.setTextColor(Color.parseColor("#181e1d"));
         LinearLayoutManager mLinearLayoutManager = new LinearLayoutManager(mContext);
         mRecyclerviewFriend.setLayoutManager(mLinearLayoutManager);
         mAdapter = new MultiItemTypeAdapter(mContext, mAdapterData);
-        mAdapter.addItemViewDelegate(new ContactItemDelagate(mContext));
-        mAdapter.addItemViewDelegate(new ContactLetterDelagate());
-        mAdapter.addItemViewDelegate(new ContactNewFriendDelagate(mContext));
+        mAdapter.addItemViewDelegate(new ContactItemDelagate(mContext)).
+                addItemViewDelegate(new ContactLetterDelagate()).
+                addItemViewDelegate(new ContactNewFriendDelagate(mContext));
         mRecyclerviewFriend.setAdapter(mAdapter);
-        mIndexbar.setLayoutmanager(mLinearLayoutManager).setSouseData(mSouseDatas).setHintTextView(mHintText);
+        mIndexbar.setLayoutmanager(mLinearLayoutManager).
+                setSouseData(mSouseDatas).
+                setHintTextView(mHintText);
 
     }
 
@@ -169,12 +179,15 @@ public class FriendActivity extends AppBaseActivity {
     public void onClick(View view) {
         switch (view.getId()) {
             case R.id.back:
+                finish();
                 break;
             case R.id.title:
                 break;
-
         }
     }
 
-
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+    }
 }
