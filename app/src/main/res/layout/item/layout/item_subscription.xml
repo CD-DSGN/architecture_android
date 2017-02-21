@@ -1,0 +1,93 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+                xmlns:tools="http://schemas.android.com/tools"
+                android:layout_width="match_parent"
+                android:layout_height="156px"
+    >
+
+    <ImageView
+        android:id="@+id/iv_subscription_plus"
+        android:layout_width="36px"
+        android:layout_height="36px"
+        android:layout_centerVertical="true"
+        android:layout_marginLeft="20px"
+        android:src="@drawable/iv_plus"/>
+
+    <ImageView
+        android:id="@+id/iv_subscription_header"
+        android:layout_width="100px"
+        android:layout_height="100px"
+        android:layout_marginBottom="28px"
+        android:layout_marginLeft="24px"
+        android:layout_marginTop="28px"
+        android:layout_toRightOf="@id/iv_subscription_plus"
+        android:src="@mipmap/ic_launcher"/>
+
+    <RelativeLayout
+        android:id="@+id/ll_subscription_name_sign"
+        android:layout_width="wrap_content"
+        android:layout_height="match_parent"
+        android:layout_marginLeft="24px"
+        android:layout_alignParentTop="true"
+        android:layout_toRightOf="@+id/iv_subscription_header"
+        >
+
+        <TextView
+            android:id="@+id/tv_subscription_name"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="44px"
+            android:textColor="#191921"
+            android:textSize="36px"
+            android:text="张删"
+            />
+
+        <TextView
+            android:id="@+id/tv_sign"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textColor="#cc191921"
+            android:text="个性签名"
+            android:textSize="28px"
+            android:layout_alignParentBottom="true"
+            android:layout_marginBottom="34px"
+            />
+    </RelativeLayout>
+
+    <RelativeLayout
+        android:layout_width="wrap_content"
+        android:layout_height="match_parent"
+        android:layout_alignParentRight="true"
+        android:layout_marginRight="20px"
+        >
+
+        <TextView
+            android:id="@+id/tv_subscription_date"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="44px"
+            android:text="2017/01/03"
+            android:textColor="#80191921"
+            android:textSize="20px"
+            />
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="取消关注"
+            android:textColor="#e73636"
+            android:textSize="26px"
+            android:layout_alignParentBottom="true"
+            android:layout_marginBottom="34px"
+            android:id="@+id/cancel_subscription"
+            />
+    </RelativeLayout>
+
+    <View
+        android:id="@+id/dashline"
+        android:layout_width="match_parent"
+        android:layout_height="1px"
+        android:layout_alignParentBottom="true"
+        android:background="@drawable/dashline"/>
+
+</RelativeLayout>

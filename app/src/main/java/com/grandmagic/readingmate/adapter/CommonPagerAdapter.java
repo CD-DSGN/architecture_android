@@ -10,10 +10,10 @@ import java.util.List;
  * Created by lps on 2017/2/8.
  */
 
-public class LoginPagerAdapter extends PagerAdapter{
+public class CommonPagerAdapter extends PagerAdapter{
     private List<View> mViews;
 
-    public LoginPagerAdapter(List<View> mViews) {
+    public CommonPagerAdapter(List<View> mViews) {
 
         this.mViews = mViews;
     }

@@ -18,7 +18,7 @@ import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import com.grandmagic.readingmate.R;
-import com.grandmagic.readingmate.adapter.LoginPagerAdapter;
+import com.grandmagic.readingmate.adapter.CommonPagerAdapter;
 import com.grandmagic.readingmate.base.AppBaseActivity;
 import com.grandmagic.readingmate.base.AppBaseResponseCallBack;
 import com.grandmagic.readingmate.bean.request.LoginRequestBean;
@@ -109,7 +109,7 @@ public class LoginActivity extends AppBaseActivity implements View.OnClickListen
         AutoUtils.auto(mview_register);
         mViews.add(mview_register);
         mViews.add(mview_login);
-        mViewpager.setAdapter(new LoginPagerAdapter(mViews));
+        mViewpager.setAdapter(new CommonPagerAdapter(mViews));
         mViewpager.addOnPageChangeListener(new ViewPager.SimpleOnPageChangeListener() {
             @Override
             public void onPageSelected(int position) {
