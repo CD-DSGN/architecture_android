@@ -1,6 +1,7 @@
 package com.grandmagic.readingmate.adapter;
 
 import android.content.Context;
+import android.support.v7.widget.RecyclerView;
 import android.widget.ImageView;
 
 import com.bumptech.glide.Glide;
@@ -14,7 +15,7 @@ import com.zhy.adapter.recyclerview.base.ViewHolder;
  * Created by lps on 2017/2/21.
  */
 
-public class ContactItemDelagate implements ItemViewDelegate<Contacts> {
+public class ContactItemDelagate implements ItemViewDelegate<Contacts>  {
     private Context mContext;
 
     public ContactItemDelagate(Context mContext) {

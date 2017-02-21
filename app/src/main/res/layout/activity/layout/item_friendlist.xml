@@ -1,27 +1,47 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-              android:layout_width="match_parent"
-              android:layout_height="156px"
-              android:orientation="horizontal"
-              android:paddingBottom="28px"
-
-              android:paddingTop="28px">
-
-    <ImageView
-        android:id="@+id/avatar"
-        android:layout_width="100px"
-        android:layout_height="100px"
-        android:layout_marginLeft="20px"
-        android:background="@drawable/shape_round_imageview"
-        />
+<com.grandmagic.readingmate.view.SwipeItemLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="156px"
+    android:background="@color/white"
+    >
 
     <TextView
-        android:id="@+id/name"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_gravity="center_vertical"
-        android:layout_marginLeft="26px"
-        android:textColor="#181e1d"
-        android:textSize="32px"
+        android:layout_width="148px"
+        android:layout_height="match_parent"
+        android:layout_gravity="right"
+        android:background="#c2c2c2"
+        android:gravity="center"
+        android:text="备注"
+        android:textColor="@color/white"
         />
-</LinearLayout>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="156px"
+        android:background="@color/white"
+        android:orientation="horizontal"
+        android:paddingBottom="28px"
+        android:paddingTop="28px">
+
+        <ImageView
+            android:id="@+id/avatar"
+            android:layout_width="100px"
+            android:layout_height="100px"
+            android:layout_marginLeft="20px"
+            android:background="@drawable/shape_round_imageview"
+            />
+
+        <TextView
+            android:id="@+id/name"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center_vertical"
+            android:layout_marginLeft="26px"
+            android:textColor="#181e1d"
+            android:textSize="32px"
+            />
+    </LinearLayout>
+
+
+</com.grandmagic.readingmate.view.SwipeItemLayout>

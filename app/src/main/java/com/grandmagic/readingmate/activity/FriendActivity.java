@@ -21,6 +21,7 @@ import com.grandmagic.readingmate.bean.response.Contacts;
 import com.grandmagic.readingmate.bean.response.DataBean;
 import com.grandmagic.readingmate.utils.AutoUtils;
 import com.grandmagic.readingmate.view.IndexBar;
+import com.grandmagic.readingmate.view.SwipRecycleView;
 
 
 import java.util.ArrayList;
@@ -39,7 +40,7 @@ public class FriendActivity extends AppBaseActivity {
     @BindView(R.id.title)
     TextView mTitle;
     @BindView(R.id.recyclerview_friend)
-    RecyclerView mRecyclerviewFriend;
+    SwipRecycleView mRecyclerviewFriend;
     Context mContext;
     @BindView(R.id.indexbar)
     IndexBar mIndexbar;

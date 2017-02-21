@@ -148,7 +148,7 @@ public class IndexBar extends View {
     public boolean onTouchEvent(MotionEvent event) {
         switch (event.getAction()) {
             case MotionEvent.ACTION_DOWN:
-                setBackgroundColor(pressBackground);
+//                setBackgroundColor(pressBackground);
                 break;
             case MotionEvent.ACTION_MOVE:
                 float y = event.getY();
@@ -166,7 +166,7 @@ public class IndexBar extends View {
             case MotionEvent.ACTION_UP:
             case MotionEvent.ACTION_CANCEL:
             default:
-                setBackgroundResource(android.R.color.transparent);
+//                setBackgroundResource(android.R.color.transparent);
                 if (listener != null) {
                     listener.up();
                 }
