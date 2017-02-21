@@ -11,17 +11,16 @@
     <include layout="@layout/title_layout"/>
 
     <RelativeLayout
-        android:layout_marginTop="50px"
         android:layout_width="match_parent"
-        android:layout_height="match_parent">
-
+        android:layout_height="match_parent"
+        android:layout_marginTop="50px">
 
 
         <com.grandmagic.readingmate.view.SwipRecycleView
             android:id="@+id/recyclerview_friend"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-         >
+            >
 
         </com.grandmagic.readingmate.view.SwipRecycleView>
 
@@ -37,8 +36,13 @@
             android:id="@+id/hintText"
             android:layout_width="80px"
             android:layout_height="80px"
-            android:layout_centerInParent="true"
-            android:textColor="@color/colorAccent"
+            android:layout_alignParentRight="true"
+            android:layout_marginRight="50px"
+            android:layout_marginTop="50px"
+            android:background="@drawable/bg_hinttext"
+            android:textColor="@color/white"
+            android:visibility="gone"
+            android:gravity="center"
             />
     </RelativeLayout>
 </LinearLayout>

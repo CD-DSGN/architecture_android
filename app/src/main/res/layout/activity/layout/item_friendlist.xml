@@ -16,18 +16,17 @@
         android:textColor="@color/white"
         />
 
-    <LinearLayout
+    <RelativeLayout
         android:layout_width="match_parent"
         android:layout_height="156px"
         android:background="@color/white"
-        android:orientation="horizontal"
-        android:paddingBottom="28px"
-        android:paddingTop="28px">
+        >
 
         <ImageView
             android:id="@+id/avatar"
             android:layout_width="100px"
             android:layout_height="100px"
+            android:layout_centerVertical="true"
             android:layout_marginLeft="20px"
             android:background="@drawable/shape_round_imageview"
             />
@@ -36,12 +35,21 @@
             android:id="@+id/name"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_gravity="center_vertical"
+            android:layout_centerVertical="true"
             android:layout_marginLeft="26px"
+            android:layout_toRightOf="@+id/avatar"
             android:textColor="#181e1d"
             android:textSize="32px"
             />
-    </LinearLayout>
+
+        <View
+            android:id="@+id/dashline"
+            android:layout_width="match_parent"
+            android:layout_height="1px"
+            android:layout_alignParentBottom="true"
+            android:layout_marginLeft="26px"
+            android:background="@drawable/dashline"/>
+    </RelativeLayout>
 
 
 </com.grandmagic.readingmate.view.SwipeItemLayout>

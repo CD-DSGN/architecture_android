@@ -5,15 +5,32 @@ package com.grandmagic.readingmate.bean.response;
  */
 
 public class Contacts {
-      TYPE type;
-  public   enum  TYPE{
+  private   TYPE type;
+
+    public enum TYPE {
         TYPE_LETTER,//字母索引
         TYPE_NEWFRIEND,//新朋友的头部
         TYPE_FRIEND//普通的好友
     }
-    String text;
+
+   private String text;
+   private boolean needline=true;//是否需要下划线
+
+    public boolean isNeedline() {
+        return needline;
+    }
+
+    public void setNeedline(boolean mNeedline) {
+        needline = mNeedline;
+    }
 
     public Contacts() {
+    }
+
+    public Contacts(TYPE mType, String mText, boolean mNeedline) {
+        needline = mNeedline;
+        text = mText;
+        type = mType;
     }
 
     public Contacts(String mText) {
