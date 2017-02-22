@@ -7,6 +7,7 @@
     >
 
     <TextView
+        android:id="@+id/notename"
         android:layout_width="148px"
         android:layout_height="match_parent"
         android:layout_gravity="right"

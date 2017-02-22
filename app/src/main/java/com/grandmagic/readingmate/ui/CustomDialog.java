@@ -3,9 +3,11 @@ package com.grandmagic.readingmate.ui;
 import android.app.Dialog;
 import android.content.Context;
 import android.os.Bundle;
+import android.support.annotation.StyleRes;
 import android.text.Editable;
 import android.text.TextUtils;
 import android.text.TextWatcher;
+import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
@@ -13,6 +15,7 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.grandmagic.readingmate.R;
+import com.grandmagic.readingmate.utils.AutoUtils;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
@@ -43,6 +46,7 @@ public class CustomDialog extends Dialog {
     private String noStr;
 
     private int max_num;
+    private boolean needTextLimit = true;//是否需要字数限制
 
     /**
      * 设置取消按钮的显示内容和监听
@@ -58,11 +62,19 @@ public class CustomDialog extends Dialog {
         noStr = context.getString(R.string.cancel);
     }
 
+    public CustomDialog(Context context, @StyleRes int style) {
+        super(context, style);
+        yesStr = context.getString(R.string.confirm);
+        noStr = context.getString(R.string.cancel);
+    }
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.custome_dialog_edittext_layout);
+        View mView= LayoutInflater.from(getContext()).inflate(R.layout.custome_dialog_edittext_layout,null);
+        AutoUtils.auto(mView);
+        setContentView(mView);
+
         ButterKnife.bind(this);
         //按空白处不能取消动画
         setCanceledOnTouchOutside(false);
@@ -73,7 +85,7 @@ public class CustomDialog extends Dialog {
 
     private void initView() {
         //跟踪字数变化
-        mNumHint.setText(max_num+ "/" + max_num);
+        mNumHint.setText(max_num + "/" + max_num);
         messageEt.addTextChangedListener(new TextWatcher() {
             private CharSequence temp;
             private int selectionStart;
@@ -143,6 +155,10 @@ public class CustomDialog extends Dialog {
         titleStr = title;
     }
 
+    public void setYesStr(String mYesStr) {
+        yesStr = mYesStr;
+    }
+
     /**
      * 从外界Activity为Dialog设置dialog的message
      *
@@ -179,12 +195,21 @@ public class CustomDialog extends Dialog {
         }
     }
 
+    public CustomDialog setNeedTextLimit(boolean mNeedTextLimit) {
+        needTextLimit = mNeedTextLimit;
+        if (!needTextLimit) {
+            mNumHint.setVisibility(View.GONE);
+            setMaxNum(Integer.MAX_VALUE);
+        }
+        return this;
+    }
 
     /**
      * 设置确定按钮和取消被点击的接口
      */
     public interface BtnOnclickListener {
         public void onYesClick();
+
         public void onNoClick();
     }
 
