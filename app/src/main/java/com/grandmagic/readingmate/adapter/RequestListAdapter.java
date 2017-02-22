@@ -28,6 +28,5 @@ public class RequestListAdapter extends CommonAdapter<FriendRequestBean> {
         holder.setVisible(R.id.bottomline, position == mDatas.size() - 1);
         holder.setVisible(R.id.state_deal, data.getState()==0);
         holder.setVisible(R.id.state_todo, data.getState()==1);
-
     }
 }
