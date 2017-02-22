@@ -98,19 +98,21 @@
             android:enabled="true"
             android:process=":remote">
         </service>
+
         <activity
             android:name=".activity.FriendActivity"
             android:theme="@style/notitle">
         </activity>
-
-        <activity android:name=".activity.SubscriptionActivity"
+        <activity
+            android:name=".activity.SubscriptionActivity"
             android:theme="@style/notitle">
-        </activity>   
-        <activity android:name=".activity.FriendRequestActivity" android:theme="@style/notitle">
+        </activity>
+        <activity
+            android:name=".activity.FriendRequestActivity"
+            android:theme="@style/notitle">
+        </activity>
+        <activity android:name=".activity.ChatActivity">
         </activity>
     </application>
-
-
-
 
 </manifest>

@@ -120,4 +120,7 @@ public class SwipeItemLayout extends FrameLayout{
             invalidate();
         }
     }
+    public void setOnClickListener(OnClickListener mListener){
+        mContentView.setOnClickListener(mListener);
+    }
 }
