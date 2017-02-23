@@ -2,6 +2,7 @@ package com.grandmagic.readingmate.bean.response;
 
 /**
  * Created by lps on 2017/2/21.
+ * 通讯录的好友列表
  */
 
 public class Contacts {

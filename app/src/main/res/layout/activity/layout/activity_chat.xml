@@ -40,6 +40,7 @@
             android:layout_height="wrap_content"
             android:layout_toLeftOf="@+id/voice"
             android:imeOptions="actionSend"
+            android:inputType="text"
             android:layout_toRightOf="@id/iv_select_img"/>
 
         <ImageView

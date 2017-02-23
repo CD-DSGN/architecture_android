@@ -16,14 +16,14 @@ import com.bumptech.glide.load.resource.bitmap.BitmapTransformation;
  */
 
 public class GlideRoundTransform extends BitmapTransformation {
-    int radius;
+    float radius;
 
     public GlideRoundTransform(Context context) {
         super(context);
-        radius = 10;
+        radius = 10f;
     }
 
-    public GlideRoundTransform(Context context, int mRadius) {
+    public GlideRoundTransform(Context context, float mRadius) {
         super(context);
         radius = mRadius;
     }

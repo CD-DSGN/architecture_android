@@ -7,6 +7,7 @@ import android.widget.ImageView;
 import com.bumptech.glide.Glide;
 import com.grandmagic.readingmate.R;
 import com.grandmagic.readingmate.bean.response.FriendRequestBean;
+import com.grandmagic.readingmate.utils.ImageLoader;
 import com.zhy.adapter.recyclerview.base.ViewHolder;
 
 import java.util.List;
@@ -24,7 +25,7 @@ public class RequestListAdapter extends CommonAdapter<FriendRequestBean> {
 
     @Override
     protected void convert(ViewHolder holder, FriendRequestBean data, int position) {
-        Glide.with(mContext).load(data.getAvatar()).into((ImageView) holder.getView(R.id.avatar));
+        ImageLoader.loadRoundImage(mContext,data.getAvatar(), (ImageView) holder.getView(R.id.avatar));
         holder.setVisible(R.id.bottomline, position == mDatas.size() - 1);
         holder.setVisible(R.id.state_deal, data.getState()==0);
         holder.setVisible(R.id.state_todo, data.getState()==1);

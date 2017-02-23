@@ -12,6 +12,7 @@ import com.bumptech.glide.Glide;
 import com.grandmagic.readingmate.R;
 import com.grandmagic.readingmate.rvanimation.AnimationAdapter;
 
+import com.grandmagic.readingmate.utils.ImageLoader;
 import com.zhy.adapter.recyclerview.base.ViewHolder;
 
 import java.util.List;
@@ -29,10 +30,11 @@ public class HomeBookAdapter extends AnimationAdapter<String> {
 
     @Override
     protected void convert(ViewHolder holder, String mS, final int position) {
-        Glide.with(mContext).load("https://ss1.baidu.com/6ONXsjip0QIZ8tyhnq/it/u=1937046046,1905495319&fm=58")
-                .into((ImageView) holder.getView(R.id.iv_conver));
-        Glide.with(mContext).load("https://ss2.baidu.com/6ONYsjip0QIZ8tyhnq/it/u=1460995985,2991423940&fm=58")
-                .into((ImageView) holder.getView(R.id.avatar));
+
+        ImageLoader.loadImage(mContext,"https://ss1.baidu.com/6ONXsjip0QIZ8tyhnq/it/u=1937046046,1905495319&fm=58", (ImageView) holder.getView(R.id.iv_conver));
+
+        ImageLoader.loadCircleImage(mContext,"https://ss2.baidu.com/6ONYsjip0QIZ8tyhnq/it/u=1460995985,2991423940&fm=58", (ImageView) holder.getView(R.id.avatar));
+
         holder.setOnClickListener(R.id.linear_share, new View.OnClickListener() {
             @Override
             public void onClick(View v) {

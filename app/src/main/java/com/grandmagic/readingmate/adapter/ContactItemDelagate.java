@@ -10,6 +10,7 @@ import com.grandmagic.readingmate.R;
 import com.grandmagic.readingmate.bean.response.Contacts;
 import com.grandmagic.readingmate.ui.CustomDialog;
 import com.grandmagic.readingmate.utils.AutoUtils;
+import com.grandmagic.readingmate.utils.ImageLoader;
 import com.zhy.adapter.recyclerview.base.ItemViewDelegate;
 import com.zhy.adapter.recyclerview.base.ViewHolder;
 
@@ -39,8 +40,8 @@ public class ContactItemDelagate implements ItemViewDelegate<Contacts>, CustomDi
     public void convert(ViewHolder holder, Contacts mContacts, int position) {
         holder.setVisible(R.id.dashline, mContacts.isNeedline());
         holder.setText(R.id.name, mContacts.getText());
-        Glide.with(mContext).load("https://ss0.bdstatic.com/70cFvHSh_Q1YnxGkpoWK1HF6hhy/it/u=3845314423,334172753&fm=21&gp=0.jpg")
-                .into((ImageView) holder.getView(R.id.avatar));
+        ImageLoader.loadRoundImage(mContext, "https://ss0.bdstatic.com/70cFvHSh_Q1YnxGkpoWK1HF6hhy/it/u=3845314423,334172753&fm=21&gp=0.jpg",
+                (ImageView) holder.getView(R.id.avatar));
         holder.setOnClickListener(R.id.notename, new View.OnClickListener() {
             @Override
             public void onClick(View v) {

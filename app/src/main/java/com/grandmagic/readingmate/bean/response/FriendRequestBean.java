@@ -2,6 +2,7 @@ package com.grandmagic.readingmate.bean.response;
 
 /**
  * Created by lps on 2017/2/21.
+ * 模拟的好友请求数据
  */
 public class FriendRequestBean {
     private String avatar;

@@ -1,7 +1,8 @@
 package com.grandmagic.readingmate.bean.response;
 
 /**
- * Created by dangxiaohui on 2017/1/11.
+ * Created by lps on 2017/1/11.
+ * 模拟的服务端返回的好友列表的假数据
  */
 
 public class DataBean {

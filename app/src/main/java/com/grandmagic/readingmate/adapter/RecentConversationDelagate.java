@@ -10,6 +10,8 @@ import com.bumptech.glide.Glide;
 import com.grandmagic.readingmate.R;
 import com.grandmagic.readingmate.activity.ChatActivity;
 import com.grandmagic.readingmate.bean.response.RecentConversation;
+import com.grandmagic.readingmate.utils.GlideRoundTransform;
+import com.grandmagic.readingmate.utils.ImageLoader;
 import com.zhy.adapter.recyclerview.base.ItemViewDelegate;
 import com.zhy.adapter.recyclerview.base.ViewHolder;
 
@@ -37,7 +39,7 @@ public class RecentConversationDelagate implements ItemViewDelegate<RecentConver
 
     @Override
     public void convert(ViewHolder holder, final RecentConversation data, int position) {
-        Glide.with(mContext).load(data.getAvatar()).into((ImageView) holder.getView(R.id.avatar));
+        ImageLoader.loadRoundImage(mContext,data.getAvatar(), (ImageView) holder.getView(R.id.avatar));
         holder.setText(R.id.name, data.getName());
         holder.setText(R.id.content, data.getContent());
         holder.setText(R.id.time, data.getTime());

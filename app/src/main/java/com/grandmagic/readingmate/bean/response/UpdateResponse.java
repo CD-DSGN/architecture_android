@@ -2,6 +2,7 @@ package com.grandmagic.readingmate.bean.response;
 
 /**
  * Created by lps on 2017/2/10.
+ * 版本更新的模拟数据
  */
 
 public class UpdateResponse {
