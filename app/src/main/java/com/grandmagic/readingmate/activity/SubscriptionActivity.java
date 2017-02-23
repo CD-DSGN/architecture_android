@@ -121,7 +121,7 @@ public class SubscriptionActivity extends AppBaseActivity {
                 new CommonAdapter<String>(SubscriptionActivity.this, R.layout.item_subscription, data) {
                     @Override
                     protected void convert(ViewHolder holder, String o, int position) {
-                        ((TextView) holder.getView(R.id.cancel_subscription)).setText(R.string.subscription);
+
                         if (position != data.size() - 1) {
                             holder.getView(R.id.dashline).setVisibility(View.INVISIBLE);
                         }else{
