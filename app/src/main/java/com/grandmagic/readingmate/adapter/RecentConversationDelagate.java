@@ -41,7 +41,12 @@ public class RecentConversationDelagate implements ItemViewDelegate<RecentConver
         holder.setText(R.id.name, data.getName());
         holder.setText(R.id.content, data.getContent());
         holder.setText(R.id.time, data.getTime());
-
+        holder.setOnClickListener(R.id.delete, new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Toast.makeText(mContext, "delete", Toast.LENGTH_SHORT).show();
+            }
+        });
         holder.getConvertView().setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {

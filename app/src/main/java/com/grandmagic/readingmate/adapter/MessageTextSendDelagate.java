@@ -5,7 +5,6 @@ import android.widget.ImageView;
 
 import com.bumptech.glide.Glide;
 import com.grandmagic.readingmate.R;
-import com.grandmagic.readingmate.activity.ChatActivity;
 import com.grandmagic.readingmate.bean.response.ChatMessage;
 import com.zhy.adapter.recyclerview.base.ItemViewDelegate;
 import com.zhy.adapter.recyclerview.base.ViewHolder;
@@ -13,11 +12,11 @@ import com.zhy.adapter.recyclerview.base.ViewHolder;
 /**
  * Created by lps on 2017/2/22.
  */
-public class MessageSendDelagate implements ItemViewDelegate<ChatMessage> {
+public class MessageTextSendDelagate implements ItemViewDelegate<ChatMessage> {
 
     private Context mContext;
 
-    public MessageSendDelagate(Context mContext) {
+    public MessageTextSendDelagate(Context mContext) {
         this.mContext = mContext;
     }
 
@@ -34,7 +33,7 @@ public class MessageSendDelagate implements ItemViewDelegate<ChatMessage> {
     @Override
     public void convert(ViewHolder holder, ChatMessage mChatMessage, int position) {
         Glide.with(mContext).load(mChatMessage.getAvatar()).into((ImageView) holder.getView(R.id.avatar));
-        holder.setText(R.id.name, mChatMessage.getName());
+        holder.setText(R.id.content, mChatMessage.getMsg());
     }
 
 

@@ -11,8 +11,8 @@ import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import com.grandmagic.readingmate.R;
-import com.grandmagic.readingmate.adapter.MessageRecevierDelagate;
-import com.grandmagic.readingmate.adapter.MessageSendDelagate;
+import com.grandmagic.readingmate.adapter.MessageTextSendDelagate;
+import com.grandmagic.readingmate.adapter.MessageTextReciveDelagate;
 import com.grandmagic.readingmate.adapter.MultiItemTypeAdapter;
 import com.grandmagic.readingmate.base.AppBaseActivity;
 import com.grandmagic.readingmate.bean.response.ChatMessage;
@@ -64,8 +64,8 @@ public class ChatActivity extends AppBaseActivity {
         mMessagerecyclerview.setLayoutManager(new LinearLayoutManager(this));
         inittestData();
         mAdapter = new MultiItemTypeAdapter(this, mMessageList);
-        mAdapter.addItemViewDelegate(new MessageSendDelagate(this));
-        mAdapter.addItemViewDelegate(new MessageRecevierDelagate(this));
+        mAdapter.addItemViewDelegate(new MessageTextReciveDelagate(this));
+        mAdapter.addItemViewDelegate(new MessageTextSendDelagate(this));
         mMessagerecyclerview.setAdapter(mAdapter);
     }
 

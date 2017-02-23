@@ -12,17 +12,17 @@ import com.zhy.adapter.recyclerview.base.ViewHolder;
 /**
  * Created by lps on 2017/2/22.
  */
-public class MessageRecevierDelagate implements ItemViewDelegate<ChatMessage> {
+public class MessageTextReciveDelagate implements ItemViewDelegate<ChatMessage> {
 
     private Context mContext;
 
-    public MessageRecevierDelagate(Context mContext) {
+    public MessageTextReciveDelagate(Context mContext) {
         this.mContext = mContext;
     }
 
     @Override
     public int getItemViewLayoutId() {
-        return R.layout.item_receviertextmsg;
+        return R.layout.item_recivetextmsg;
     }
 
     @Override
@@ -33,7 +33,7 @@ public class MessageRecevierDelagate implements ItemViewDelegate<ChatMessage> {
     @Override
     public void convert(ViewHolder holder, ChatMessage mChatMessage, int position) {
         Glide.with(mContext).load(mChatMessage.getAvatar()).into((ImageView) holder.getView(R.id.avatar));
-        holder.setText(R.id.name, mChatMessage.getName());
+        holder.setText(R.id.content, mChatMessage.getMsg());
     }
 
 
