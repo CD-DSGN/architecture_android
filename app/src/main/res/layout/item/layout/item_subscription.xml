@@ -4,7 +4,12 @@
                 android:layout_width="match_parent"
                 android:layout_height="156px"
     >
-
+    <View
+        android:id="@+id/dashline_top"
+        android:layout_width="match_parent"
+        android:layout_height="1px"
+        android:layout_alignParentTop="true"
+        android:background="@drawable/dashline"/>
     <ImageView
         android:id="@+id/iv_subscription_plus"
         android:layout_width="36px"

@@ -8,12 +8,14 @@
     android:orientation="vertical"
     tools:context="com.grandmagic.readingmate.activity.SubscriptionActivity">
 
-    <include layout="@layout/title_layout">
+    <include layout="@layout/title_layout"
+        >
     </include>
 
     <RelativeLayout
         android:layout_width="match_parent"
-        android:layout_height="wrap_content">
+        android:layout_height="wrap_content"
+        android:layout_marginTop="10px">
 
         <RelativeLayout
             android:layout_width="wrap_content"
@@ -71,6 +73,7 @@
                 android:background="@drawable/dashline"
                 android:layout_alignParentRight="true"
                 android:layout_marginRight="172px"
+                android:visibility="invisible"
                 />
         </RelativeLayout>
     </RelativeLayout>
@@ -79,13 +82,8 @@
         android:id="@+id/vp_subscription"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:layout_marginTop="30px"
         >
     </android.support.v4.view.ViewPager>
-
-    <android.support.v7.widget.RecyclerView
-        android:id="@+id/subscription_list"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content">
-    </android.support.v7.widget.RecyclerView>
 
 </LinearLayout>

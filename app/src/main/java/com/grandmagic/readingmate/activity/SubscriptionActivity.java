@@ -7,6 +7,7 @@ import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.view.View;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import com.grandmagic.readingmate.R;
@@ -41,6 +42,9 @@ public class SubscriptionActivity extends AppBaseActivity {
 
     List<View> view_List = new ArrayList<>();
 
+    @BindView(R.id.activity_subscription)
+    LinearLayout mActivitySubscription;
+
     //    @BindView(R.id.subscription_list)
     //    RecyclerView mSubscriptionList;
 
@@ -59,7 +63,7 @@ public class SubscriptionActivity extends AppBaseActivity {
         generateSubscriptionList();
         generateSuscribedList();
         mVpSubscription.setAdapter(new CommonPagerAdapter(view_List));
-        mVpSubscription.addOnPageChangeListener(new ViewPager.SimpleOnPageChangeListener(){
+        mVpSubscription.addOnPageChangeListener(new ViewPager.SimpleOnPageChangeListener() {
             @Override
             public void onPageSelected(int position) {
                 if (position == 0) {
@@ -67,7 +71,7 @@ public class SubscriptionActivity extends AppBaseActivity {
                     mIvDashlineSubscriped.setVisibility(View.GONE);
                     mSubscription.setTextColor(Color.parseColor("#1cc9a2"));
                     mSubscriped.setTextColor(Color.parseColor("#191921"));
-                }else{
+                } else {
                     mIvDashlineSubscription.setVisibility(View.GONE);
                     mIvDashlineSubscriped.setVisibility(View.VISIBLE);
                     mSubscription.setTextColor(Color.parseColor("#191921"));
@@ -75,30 +79,14 @@ public class SubscriptionActivity extends AppBaseActivity {
                 }
 
 
-
             }
         });
-
-        //        mSubscriptionList.setLayoutManager(new LinearLayoutManager(this));
-        //        ArrayList<String> data = new ArrayList<>();
-        //        for (int i = 0; i < 50; i++) {
-        //            data.add("张三");
-        //            data.add("李四");
-        //        }
-        //        mSubscriptionList.setAdapter(
-        //                new CommonAdapter<String>(SubscriptionActivity.this, R.layout.item_subscription, data) {
-        //
-        //                    @Override
-        //                    protected void convert(ViewHolder holder, Object o, int position) {
-        //
-        //                    }
-        //                });
     }
 
     private void generateSuscribedList() {
         RecyclerView rv_subscriped = new RecyclerView(this);
         rv_subscriped.setLayoutManager(new LinearLayoutManager(this));
-        ArrayList<String> data = new ArrayList<>();
+        final ArrayList<String> data = new ArrayList<>();
         for (int i = 0; i < 50; i++) {
             data.add("张三");
             data.add("李四");
@@ -107,8 +95,15 @@ public class SubscriptionActivity extends AppBaseActivity {
                 new CommonAdapter<String>(SubscriptionActivity.this, R.layout.item_subscription, data) {
                     @Override
                     protected void convert(ViewHolder holder, String o, int position) {
-
+                        ((TextView) holder.getView(R.id.cancel_subscription)).setText(R.string.subscription);
+                        if (position != data.size() - 1) {
+                            holder.getView(R.id.dashline).setVisibility(View.INVISIBLE);
+                        }else{
+                            holder.getView(R.id.dashline).setVisibility(View.VISIBLE);
+                        }
                     }
+
+
                 }
         );
         view_List.add(rv_subscriped);
@@ -117,8 +112,8 @@ public class SubscriptionActivity extends AppBaseActivity {
     private void generateSubscriptionList() {
         RecyclerView rv_subscription = new RecyclerView(this);
         rv_subscription.setLayoutManager(new LinearLayoutManager(this));
-        ArrayList<String> data = new ArrayList<>();
-        for (int i = 0; i < 50; i++) {
+        final ArrayList<String> data = new ArrayList<>();
+        for (int i = 0; i < 2; i++) {
             data.add("张三");
             data.add("李四");
         }
@@ -126,7 +121,12 @@ public class SubscriptionActivity extends AppBaseActivity {
                 new CommonAdapter<String>(SubscriptionActivity.this, R.layout.item_subscription, data) {
                     @Override
                     protected void convert(ViewHolder holder, String o, int position) {
-
+                        ((TextView) holder.getView(R.id.cancel_subscription)).setText(R.string.subscription);
+                        if (position != data.size() - 1) {
+                            holder.getView(R.id.dashline).setVisibility(View.INVISIBLE);
+                        }else{
+                            holder.getView(R.id.dashline).setVisibility(View.VISIBLE);
+                        }
                     }
                 }
         );
@@ -134,8 +134,18 @@ public class SubscriptionActivity extends AppBaseActivity {
     }
 
 
-    @OnClick(R.id.back)
-    public void onClick() {
-        finish();
+    @OnClick({R.id.subscription, R.id.subscriped,R.id.back})
+    public void onClick(View view) {
+        switch (view.getId()) {
+            case R.id.subscription:
+                mVpSubscription.setCurrentItem(0);
+                break;
+            case R.id.subscriped:
+                mVpSubscription.setCurrentItem(1);
+                break;
+            case R.id.back:
+                finish();
+                break;
+        }
     }
 }
