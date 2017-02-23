@@ -1,6 +1,7 @@
 package com.grandmagic.readingmate.view;
 
 import android.content.Context;
+import android.graphics.Rect;
 import android.support.v4.widget.ViewDragHelper;
 import android.util.AttributeSet;
 import android.view.MotionEvent;
@@ -44,7 +45,20 @@ public class SwipeItemLayout extends FrameLayout{
 
     @Override
     public boolean onInterceptTouchEvent(MotionEvent ev) {
+        if (isOpen()&&contentClick(ev)){
+            return true;//当侧滑出来状态的时候，拦截contentview的点击事件，进行关闭。
+            // 防止点击直接跳到新界面。如果希望侧滑菜单展开的时候点击列表也能跳转，注释掉这里
+        }
         return mDragHelper.shouldInterceptTouchEvent(ev);
+    }
+
+    private boolean contentClick(MotionEvent e) {
+        int downX = (int) e.getX();
+        int downY = (int) e.getY();
+        Rect mRect=new Rect();
+        mContentView.getHitRect(mRect);
+        if (mRect.contains(downX,downY))return true;
+        return false;
     }
 
     ViewDragHelper.Callback rigthCallback=new ViewDragHelper.Callback() {
