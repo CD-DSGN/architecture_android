@@ -1,6 +1,7 @@
 package com.grandmagic.readingmate.activity;
 
 import android.content.Intent;
+import android.graphics.Color;
 import android.os.Bundle;
 import android.text.method.PasswordTransformationMethod;
 import android.view.View;
@@ -61,6 +62,7 @@ public class ResetPassActivity extends AppBaseActivity {
 
     private void initview() {
         mTitle.setText(R.string.resetpass);
+        mTitle.setTextColor(Color.parseColor("#ffffff"));
     }
 
     @OnClick({R.id.back, R.id.eye_pass, R.id.eye_pass_sure, R.id.reset})

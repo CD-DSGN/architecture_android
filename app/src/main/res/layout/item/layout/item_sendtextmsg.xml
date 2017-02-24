@@ -3,7 +3,8 @@
 
     android:layout_width="match_parent"
     android:layout_height="156px"
-    android:background="@color/white"
+
+    android:layout_marginTop="48px"
     >
 
     <ImageView
@@ -13,6 +14,7 @@
         android:layout_alignParentRight="true"
         android:layout_centerVertical="true"
         android:layout_marginLeft="20px"
+        android:layout_marginRight="20px"
         android:background="@drawable/shape_round_imageview"
         />
 
@@ -21,11 +23,12 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_centerVertical="true"
-        android:layout_marginLeft="26px"
+        android:layout_marginLeft="96px"
         android:layout_toLeftOf="@+id/avatar"
-        android:textColor="#181e1d"
-        android:textSize="32px"
         android:background="@drawable/bg_chat_send"
+        android:padding="12px"
+        android:textColor="#181e1d"
+        android:textSize="28px"
         />
 
 

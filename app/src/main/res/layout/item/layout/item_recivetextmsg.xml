@@ -5,7 +5,8 @@
 
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:background="@color/white"
+
+        android:layout_marginTop="48px"
         >
 
         <ImageView
@@ -25,7 +26,9 @@
             android:layout_marginLeft="26px"
             android:layout_toRightOf="@+id/avatar"
             android:textColor="#181e1d"
-            android:textSize="32px"
+            android:textSize="28px"
+            android:padding="12px"
+            android:layout_marginRight="94px"
             android:background="@drawable/bg_chat_reciver"
             />
 

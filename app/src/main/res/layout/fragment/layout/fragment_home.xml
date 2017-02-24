@@ -30,7 +30,7 @@
                     android:layout_height="33px"
                     android:layout_centerVertical="true"
                     android:layout_marginLeft="62px"
-                    android:src="@drawable/ic_search"
+                    android:src="@drawable/ic_search_small"
                     />
 
                 <ImageView

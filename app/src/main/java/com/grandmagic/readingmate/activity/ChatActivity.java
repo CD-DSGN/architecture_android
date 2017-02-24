@@ -61,6 +61,7 @@ public class ChatActivity extends AppBaseActivity {
     List<ChatMessage> mMessageList;
 
     private void initview() {
+        mTitlelayout.setBackgroundResource(R.color.white);
         mMessagerecyclerview.setLayoutManager(new LinearLayoutManager(this));
         inittestData();
         mAdapter = new MultiItemTypeAdapter(this, mMessageList);
@@ -79,12 +80,12 @@ public class ChatActivity extends AppBaseActivity {
 
             if (i % 2 == 0) {
                 mChatMessage.setName("发送方");
-                mChatMessage.setMsg("发送文字消息");
-                mChatMessage.setAvatar("http://upload.jianshu.io/users/upload_avatars/1795423/03f6584b-deaa-4226-a455-925ac5b6b0c5.png?imageMogr/thumbnail/120x120/quality/100");
+                mChatMessage.setMsg("发送文字消息发送文字消息发送文字消息发送文字消息发送文字消息发送文字消息"+i);
+                mChatMessage.setAvatar("https://img6.bdstatic.com/img/image/smallpic/duorouzhiwu.jpg");
                 mChatMessage.setType(ChatMessage.TYPE.SEND);
             } else {
                 mChatMessage.setName("接受方");
-                mChatMessage.setMsg("收到文字消息");
+                mChatMessage.setMsg("收到文字消息收到文字消息收到文字消息收到文字消息收到文字消息收到文字消息收到文字消息"+i);
                 mChatMessage.setAvatar("http://upload.jianshu.io/users/upload_avatars/1795423/03f6584b-deaa-4226-a455-925ac5b6b0c5.png?imageMogr/thumbnail/120x120/quality/100");
                 mChatMessage.setType(ChatMessage.TYPE.RECICVER);
             }
