@@ -12,31 +12,31 @@ import com.zhy.adapter.recyclerview.base.ItemViewDelegate;
 import com.zhy.adapter.recyclerview.base.ViewHolder;
 
 /**
- * Created by lps on 2017/2/22.
+ * Created by lps on 2017/2/27.
  */
-public class MessageTextReciveDelagate implements ItemViewDelegate<ChatMessage> {
+public class MessageIMGSendDelagate implements ItemViewDelegate<ChatMessage> {
 
     private Context mContext;
 
-    public MessageTextReciveDelagate(Context mContext) {
+    public MessageIMGSendDelagate(Context mContext) {
         this.mContext = mContext;
     }
 
     @Override
     public int getItemViewLayoutId() {
-        return R.layout.item_recivetextmsg;
+        return R.layout.item_sendimgmsg;
     }
 
     @Override
     public boolean isForViewType(ChatMessage item, int position) {
-        return item.getType() == ChatMessage.TYPE.RECICVER
-                &&item.getMessageType()== ChatMessage.MessageType.TEXT;
+        return item.getType() == ChatMessage.TYPE.SEND
+                &&item.getMessageType()== ChatMessage.MessageType.IMAGE;
     }
 
     @Override
     public void convert(ViewHolder holder, ChatMessage mChatMessage, int position) {
+        ImageLoader.loadImage(mContext,mChatMessage.getImg(), (ImageView) holder.getView(R.id.image));
         ImageLoader.loadRoundImage(mContext,mChatMessage.getAvatar(), (ImageView) holder.getView(R.id.avatar));
-        holder.setText(R.id.content, mChatMessage.getMsg());
     }
 
 

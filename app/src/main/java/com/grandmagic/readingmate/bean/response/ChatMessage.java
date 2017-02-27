@@ -10,10 +10,16 @@ public class ChatMessage {
     private String name;
     private String msg;
     private String time;
+    private String img;
   public enum TYPE{
-      SEND,RECICVER
+      SEND,RECICVER,
+
   }
+    public enum MessageType{
+        TEXT,IMAGE
+    }
  private    TYPE type;
+    private MessageType mMessageType;
 
     public String getAvatar() {
         return avatar;
@@ -53,6 +59,22 @@ public class ChatMessage {
 
     public void setType(TYPE mType) {
         type = mType;
+    }
+
+    public MessageType getMessageType() {
+        return mMessageType;
+    }
+
+    public void setMessageType(MessageType mMessageType) {
+        this.mMessageType = mMessageType;
+    }
+
+    public String getImg() {
+        return img;
+    }
+
+    public void setImg(String mImg) {
+        img = mImg;
     }
 
     @Override

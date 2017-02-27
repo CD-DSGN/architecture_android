@@ -44,9 +44,15 @@ public class IrregularImageView extends ImageView {
 
     public IrregularImageView(Context context, AttributeSet attrs, int defStyleAttr) {
         super(context, attrs, defStyleAttr);
+
         mContext = context;
         mPaint = new Paint();
         mPaint.setAntiAlias(true);
+    }
+
+    @Override
+    protected void onMeasure(int widthMeasureSpec, int heightMeasureSpec) {
+        super.onMeasure(widthMeasureSpec, heightMeasureSpec);
     }
 
     @Override
@@ -59,7 +65,7 @@ public class IrregularImageView extends ImageView {
                 Canvas.HAS_ALPHA_LAYER_SAVE_FLAG |
                 Canvas.FULL_COLOR_LAYER_SAVE_FLAG |
                 Canvas.CLIP_TO_LAYER_SAVE_FLAG);
-        super.onDraw(canvas);
+//        super.onDraw(canvas);
 
         // 先画一个图片
         Bitmap mask = BitmapFactory.decodeResource(mContext.getResources(), R.drawable.irregular);

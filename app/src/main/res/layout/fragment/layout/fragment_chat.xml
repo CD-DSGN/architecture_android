@@ -38,7 +38,7 @@
         <RelativeLayout
             android:id="@+id/rela_friend"
             android:layout_width="721px"
-            android:layout_height="98px"
+            android:layout_height="88px"
             android:layout_gravity="center_horizontal"
             android:layout_marginTop="46px"
             android:background="@drawable/bg_friend"

@@ -11,6 +11,8 @@ import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import com.grandmagic.readingmate.R;
+import com.grandmagic.readingmate.adapter.MessageIMGReciveDelagate;
+import com.grandmagic.readingmate.adapter.MessageIMGSendDelagate;
 import com.grandmagic.readingmate.adapter.MessageTextSendDelagate;
 import com.grandmagic.readingmate.adapter.MessageTextReciveDelagate;
 import com.grandmagic.readingmate.adapter.MultiItemTypeAdapter;
@@ -67,6 +69,8 @@ public class ChatActivity extends AppBaseActivity {
         mAdapter = new MultiItemTypeAdapter(this, mMessageList);
         mAdapter.addItemViewDelegate(new MessageTextReciveDelagate(this));
         mAdapter.addItemViewDelegate(new MessageTextSendDelagate(this));
+        mAdapter.addItemViewDelegate(new MessageIMGSendDelagate(this));
+        mAdapter.addItemViewDelegate(new MessageIMGReciveDelagate(this));
         mMessagerecyclerview.setAdapter(mAdapter);
     }
 
@@ -83,7 +87,20 @@ public class ChatActivity extends AppBaseActivity {
                 mChatMessage.setMsg("发送文字消息发送文字消息发送文字消息发送文字消息发送文字消息发送文字消息"+i);
                 mChatMessage.setAvatar("https://img6.bdstatic.com/img/image/smallpic/duorouzhiwu.jpg");
                 mChatMessage.setType(ChatMessage.TYPE.SEND);
+                if (i%6==0){
+                    mChatMessage.setMessageType(ChatMessage.MessageType.IMAGE);
+                    mChatMessage.setImg("http://upload.jianshu.io/admin_banners/web_images/2805/4928a468b704d6e721d778c0f7d714feadda469e.jpg");
+                }else {
+                    mChatMessage.setMessageType(ChatMessage.MessageType.TEXT);
+                }
             } else {
+                if (i%6==1){
+                    mChatMessage.setMessageType(ChatMessage.MessageType.IMAGE);
+                    mChatMessage.setImg("http://upload.jianshu.io/admin_banners/web_images/2805/4928a468b704d6e721d778c0f7d714feadda469e.jpg");
+
+                }else {
+                    mChatMessage.setMessageType(ChatMessage.MessageType.TEXT);
+                }
                 mChatMessage.setName("接受方");
                 mChatMessage.setMsg("收到文字消息收到文字消息收到文字消息收到文字消息收到文字消息收到文字消息收到文字消息"+i);
                 mChatMessage.setAvatar("http://upload.jianshu.io/users/upload_avatars/1795423/03f6584b-deaa-4226-a455-925ac5b6b0c5.png?imageMogr/thumbnail/120x120/quality/100");

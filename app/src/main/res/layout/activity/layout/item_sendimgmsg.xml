@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal"
+                android:layout_marginTop="10px"
+    >
+
+    <RelativeLayout
+        android:background="@drawable/bg_chat_send"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_toLeftOf="@+id/avatar">
+
+        <com.grandmagic.readingmate.view.IrregularImageView
+            android:id="@+id/image"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:maxHeight="324px"
+            android:maxWidth="302px"
+            android:adjustViewBounds="true"
+            />
+    </RelativeLayout>
+
+    <ImageView
+        android:id="@+id/avatar"
+        android:layout_width="100px"
+        android:layout_height="100px"
+        android:layout_alignParentRight="true"
+        android:layout_marginLeft="10px"
+        android:layout_marginRight="20px"
+        />
+</RelativeLayout>
