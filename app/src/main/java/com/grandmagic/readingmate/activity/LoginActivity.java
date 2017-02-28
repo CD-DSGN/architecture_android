@@ -204,8 +204,7 @@ public class LoginActivity extends AppBaseActivity implements View.OnClickListen
         new LoginModel(LoginActivity.this, loginRequestBean, new AppBaseResponseCallBack<NovateResponse<LoginResponseBean>>(LoginActivity.this, true) {
             @Override
             public void onSuccee(NovateResponse<LoginResponseBean> response) {
-                // TODO: 2017/2/10 保存token
-//                SPUtils.getInstance().putBoolean(LoginActivity.this,SPUtils.IS_LOGIN,true);
+
                 String token = null;
                 if (response.getData() != null) {
                     token = response.getData().getAccess_token();

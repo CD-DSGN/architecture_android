@@ -2,6 +2,7 @@
               xmlns:tools="http://schemas.android.com/tools"
               android:layout_width="match_parent"
               android:layout_height="match_parent"
+              xmlns:app="http://schemas.android.com/apk/res-auto"
               android:orientation="vertical"
 
               tools:context="com.grandmagic.readingmate.fragment.ChatFragment">
@@ -14,24 +15,25 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_centerInParent="true"
-            android:text="HBOOK"
-            android:textSize="25sp"
+            android:text="家友"
+            android:textColor="#181e1d"
+            android:textSize="36px"
             />
 
         <ImageView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
+            android:layout_width="36px"
+            android:layout_height="36px"
             android:layout_alignParentRight="true"
             android:layout_centerVertical="true"
-            android:layout_marginRight="40px"
-            android:src="@drawable/ic_camera_small"
+            android:layout_marginRight="20px"
+            android:src="@drawable/iv_plus"
+            android:id="@+id/add_friend"
             />
     </RelativeLayout>
 
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:background="@color/white"
         android:orientation="vertical"
         >
 
@@ -41,15 +43,22 @@
             android:layout_height="88px"
             android:layout_gravity="center_horizontal"
             android:layout_marginTop="46px"
-            android:background="@drawable/bg_friend"
+            android:padding="3dp"
+            android:background="@drawable/shape_dash_frame"
             >
+
+<RelativeLayout
+    android:layout_margin="3px"
+    android:layout_width="match_parent"
+    android:background="@drawable/bg_round_white"
+    android:layout_height="match_parent">
 
             <TextView
                 android:id="@+id/tv_friend"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_centerInParent="true"
-                android:text="阅友"
+                android:text="家友"
                 android:textColor="#1cc9a2"
                 android:textSize="40px"
                 />
@@ -73,8 +82,8 @@
                 android:layout_toRightOf="@+id/iv_friend"
                 android:src="@drawable/red_point"
                 />
+</RelativeLayout>
         </RelativeLayout>
-
         <com.grandmagic.readingmate.view.SwipRecycleView
             android:id="@+id/recyclerview"
             android:layout_width="match_parent"

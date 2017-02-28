@@ -14,6 +14,7 @@ import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import com.grandmagic.readingmate.R;
+import com.grandmagic.readingmate.activity.AddFriendActivity;
 import com.grandmagic.readingmate.activity.FriendActivity;
 import com.grandmagic.readingmate.adapter.MultiItemTypeAdapter;
 import com.grandmagic.readingmate.adapter.RecentConversationDelagate;
@@ -34,7 +35,7 @@ import butterknife.OnClick;
  */
 public class ChatFragment extends AppBaseFragment {
 
-Context mContext;
+    Context mContext;
     @BindView(R.id.tv_friend)
     TextView mTvFriend;
     @BindView(R.id.iv_friend)
@@ -43,7 +44,6 @@ Context mContext;
     RelativeLayout mRelaFriend;
     @BindView(R.id.recyclerview)
     SwipRecycleView mRecyclerview;//最近会话列表
-
 
 
     @Override
@@ -56,13 +56,15 @@ Context mContext;
         initview();
         return view;
     }
-MultiItemTypeAdapter mAdapter;
+
+    MultiItemTypeAdapter mAdapter;
     List<RecentConversation> mConversations;
+
     private void initview() {
-        mContext=getActivity();
+        mContext = getActivity();
         mRecyclerview.setLayoutManager(new LinearLayoutManager(mContext));
         inittestData();
-        mAdapter=new MultiItemTypeAdapter(mContext,mConversations);//为了以后也许会加入群组会话等，使用MultiItemTypeAdapter，便于扩展
+        mAdapter = new MultiItemTypeAdapter(mContext, mConversations);//为了以后也许会加入群组会话等，使用MultiItemTypeAdapter，便于扩展
         mAdapter.addItemViewDelegate(new RecentConversationDelagate(mContext));
         mRecyclerview.setAdapter(mAdapter);
     }
@@ -71,19 +73,28 @@ MultiItemTypeAdapter mAdapter;
      * 创建测试数据
      */
     private void inittestData() {
-        mConversations=new ArrayList<>();
+        mConversations = new ArrayList<>();
         for (int i = 0; i < 20; i++) {
-            RecentConversation mConversation=new RecentConversation();
-            mConversation.setName("测试会话"+i);
-            mConversation.setContent("测试内容"+i);
+            RecentConversation mConversation = new RecentConversation();
+            mConversation.setName("测试会话" + i);
+            mConversation.setContent("测试内容" + i);
             mConversation.setTime("上午10点");
             mConversation.setAvatar("https://ss3.bdstatic.com/70cFv8Sh_Q1YnxGkpoWK1HF6hhy/it/u=1824807693,4159709632&fm=21&gp=0.jpg");
-        mConversations.add(mConversation);
+            mConversations.add(mConversation);
         }
     }
 
-    @OnClick(R.id.rela_friend)
-    public void onClick() {
-        startActivity(new Intent(getActivity(), FriendActivity.class));
+
+
+    @OnClick({R.id.add_friend, R.id.rela_friend})
+    public void onClick(View view) {
+        switch (view.getId()) {
+            case R.id.add_friend:
+                startActivity(new Intent(getActivity(), AddFriendActivity.class));
+                break;
+            case R.id.rela_friend:
+                startActivity(new Intent(getActivity(), FriendActivity.class));
+                break;
+        }
     }
 }

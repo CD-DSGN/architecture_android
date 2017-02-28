@@ -111,7 +111,11 @@
             android:name=".activity.FriendRequestActivity"
             android:theme="@style/notitle">
         </activity>
-        <activity android:name=".activity.ChatActivity" android:theme="@style/notitle">
+        <activity
+            android:name=".activity.ChatActivity"
+            android:theme="@style/notitle">
+        </activity>
+        <activity android:name=".activity.AddFriendActivity" android:theme="@style/notitle">
         </activity>
     </application>
 
