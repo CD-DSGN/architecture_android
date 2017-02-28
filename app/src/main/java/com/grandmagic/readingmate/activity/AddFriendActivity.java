@@ -1,5 +1,6 @@
 package com.grandmagic.readingmate.activity;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.EditText;
@@ -53,8 +54,8 @@ public class AddFriendActivity extends AppBaseActivity {
 
     private void initview() {
         mTitle.setText("添加家友");
-        ImageLoader.loadCircleImage(this,"https://img6.bdstatic.com/img/image/smallpic/dongman.jpg"
-        ,mAvatar);
+        ImageLoader.loadCircleImage(this, "https://img6.bdstatic.com/img/image/smallpic/dongman.jpg"
+                , mAvatar);
     }
 
 
@@ -65,7 +66,7 @@ public class AddFriendActivity extends AppBaseActivity {
                 finish();
                 break;
             case R.id.rela_friend:
-                // TODO: 2017/2/28 跳转到详情页面
+                startActivity(new Intent(AddFriendActivity.this, FriendDetailActivity.class));
                 break;
             case R.id.iv_addfriend:
                 // TODO: 2017/2/28 添加好友
