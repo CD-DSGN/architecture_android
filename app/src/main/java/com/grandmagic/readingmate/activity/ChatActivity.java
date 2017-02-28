@@ -96,7 +96,7 @@ public class ChatActivity extends AppBaseActivity {
             } else {
                 if (i%6==1){
                     mChatMessage.setMessageType(ChatMessage.MessageType.IMAGE);
-                    mChatMessage.setImg("http://upload.jianshu.io/admin_banners/web_images/2805/4928a468b704d6e721d778c0f7d714feadda469e.jpg");
+                    mChatMessage.setImg("http://img5.imgtn.bdimg.com/it/u=4152427209,241902858&fm=23&gp=0.jpg");
 
                 }else {
                     mChatMessage.setMessageType(ChatMessage.MessageType.TEXT);

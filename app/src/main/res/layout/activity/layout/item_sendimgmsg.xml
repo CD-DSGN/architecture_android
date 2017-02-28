@@ -9,10 +9,11 @@
     <RelativeLayout
         android:background="@drawable/bg_chat_send"
         android:layout_width="wrap_content"
+        android:padding="5dp"
         android:layout_height="wrap_content"
         android:layout_toLeftOf="@+id/avatar">
 
-        <com.grandmagic.readingmate.view.IrregularImageView
+        <ImageView
             android:id="@+id/image"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"

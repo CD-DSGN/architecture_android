@@ -159,7 +159,9 @@ public class LoginActivity extends AppBaseActivity implements View.OnClickListen
                 setPasswordVisable(mEtPass, mPassEye);
                 break;
             case R.id.login:
-                login();
+                String phone_num = mEtPhone.getText().toString();
+                String pwd = mEtPass.getText().toString();
+                login(phone_num,pwd);
                 break;
             case R.id.phone_clear:
                 mEtPhone.setText("");
@@ -190,9 +192,13 @@ public class LoginActivity extends AppBaseActivity implements View.OnClickListen
         }
     }
 
-    private void login() {
-        String phone_num = mEtPhone.getText().toString();
-        String pwd = mEtPass.getText().toString();
+    /**
+     * 登陆方法
+     * @param phone_num 手机
+     * @param pwd 密码
+     */
+    private void login(String phone_num, String pwd) {
+
 
         LoginRequestBean loginRequestBean = new LoginRequestBean(phone_num, pwd);
         new LoginModel(LoginActivity.this, loginRequestBean, new AppBaseResponseCallBack<NovateResponse<LoginResponseBean>>(LoginActivity.this, true) {
@@ -215,10 +221,10 @@ public class LoginActivity extends AppBaseActivity implements View.OnClickListen
     }
 
     private void register() {
-        String phone_num = mEtPhoneRg.getText().toString();
+        final String phone_num = mEtPhoneRg.getText().toString();
         String verify_code = mEtVerify.getText().toString();
 
-        String pwd = mEtPassRg.getText().toString();
+        final String pwd = mEtPassRg.getText().toString();
         String pwd_comfirm = mEtPasssureRg.getText().toString();
 
         RegisterRequestBean registerBean = new RegisterRequestBean(pwd, phone_num, verify_code);
@@ -226,15 +232,7 @@ public class LoginActivity extends AppBaseActivity implements View.OnClickListen
                 (LoginActivity.this, true) {
             @Override
             public void onSuccee(NovateResponse<RegisterResponseBean> response) {
-                String token = null;
-                if (response.getData() != null) {
-                    token = response.getData().getAccess_token();
-                }
-                //保存token
-                SPUtils.getInstance().saveToken(LoginActivity.this, token);
-                ViewUtils.showToast("注册成功");
-                startActivity(new Intent(LoginActivity.this,MainActivity.class));
-                finish();
+            login(phone_num,pwd);//改为注册成功调用登陆接口，不返回token
             }
         }, pwd_comfirm).register();
     }
