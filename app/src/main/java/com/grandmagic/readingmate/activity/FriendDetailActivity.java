@@ -1,15 +1,21 @@
 package com.grandmagic.readingmate.activity;
 
 import android.os.Bundle;
+import android.support.v4.widget.NestedScrollView;
+import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.widget.ImageView;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import com.grandmagic.readingmate.R;
+import com.grandmagic.readingmate.adapter.CommentsAdapter;
 import com.grandmagic.readingmate.base.AppBaseActivity;
 import com.grandmagic.readingmate.utils.AutoUtils;
 import com.grandmagic.readingmate.utils.ImageLoader;
+
+import java.util.ArrayList;
+import java.util.List;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
@@ -42,8 +48,16 @@ public class FriendDetailActivity extends AppBaseActivity {
         ButterKnife.bind(this);
         AutoUtils.auto(this);
         setTranslucentStatus(true);
+        try {
+            getSupportActionBar().hide();
+        } catch (Exception mE) {
+            mE.printStackTrace();
+        }
         initview();
     }
+
+    CommentsAdapter mAdapter;
+    List<String> mStrings = new ArrayList<>();
 
     private void initview() {
         mTitle.setText("详细信息");
@@ -51,5 +65,11 @@ public class FriendDetailActivity extends AppBaseActivity {
                 , mAvatar);
         ImageLoader.loadImage(this, "http://pic.ytqmx.com:82/2014/0831/01/11.jpg!960.jpg"
                 , mIvColl1);
+        mRecyclerview.setLayoutManager(new LinearLayoutManager(this));
+        for (int i = 0; i < 50; i++) {
+            mStrings.add("af");
+        }
+        mAdapter = new CommentsAdapter(this, mStrings);
+        mRecyclerview.setAdapter(mAdapter);
     }
 }
