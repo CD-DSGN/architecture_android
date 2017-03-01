@@ -3,6 +3,7 @@ package com.grandmagic.readingmate.adapter;
 import android.content.Context;
 import android.view.View;
 
+import com.grandmagic.readingmate.bean.response.Contacts;
 import com.grandmagic.readingmate.utils.AutoUtils;
 import com.zhy.adapter.recyclerview.base.ViewHolder;
 
@@ -13,6 +14,7 @@ import java.util.List;
  */
 
 public class MultiItemTypeAdapter extends com.zhy.adapter.recyclerview.MultiItemTypeAdapter {
+
     public MultiItemTypeAdapter(Context context, List datas) {
         super(context, datas);
     }
@@ -21,5 +23,10 @@ public class MultiItemTypeAdapter extends com.zhy.adapter.recyclerview.MultiItem
     public void onViewHolderCreated(ViewHolder holder, View itemView) {
         AutoUtils.auto(itemView);
 
+    }
+
+    public void setData(List<Contacts> mData) {
+        mDatas = mData;
+        notifyDataSetChanged();
     }
 }

@@ -23,6 +23,6 @@ public class ContactLetterDelagate implements ItemViewDelegate<Contacts> {
 
     @Override
     public void convert(ViewHolder holder, Contacts mContacts, int position) {
-        holder.setText(R.id.letter, mContacts.getText());
+        holder.setText(R.id.letter, mContacts.getLetter());
     }
 }

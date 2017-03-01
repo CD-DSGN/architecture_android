@@ -3,6 +3,8 @@ package com.grandmagic.readingmate.activity;
 import android.os.Bundle;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.text.Editable;
+import android.text.TextWatcher;
 import android.view.View;
 import android.widget.EditText;
 import android.widget.ImageView;
@@ -57,6 +59,26 @@ public class ChatActivity extends AppBaseActivity {
         AutoUtils.auto(this);
         setTranslucentStatus(true);
         initview();
+        initlistener();
+    }
+
+    private void initlistener() {
+        mEtInput.addTextChangedListener(new TextWatcher() {
+            @Override
+            public void beforeTextChanged(CharSequence s, int start, int count, int after) {
+
+            }
+
+            @Override
+            public void onTextChanged(CharSequence s, int start, int before, int count) {
+
+            }
+
+            @Override
+            public void afterTextChanged(Editable s) {
+
+            }
+        });
     }
 
     MultiItemTypeAdapter mAdapter;

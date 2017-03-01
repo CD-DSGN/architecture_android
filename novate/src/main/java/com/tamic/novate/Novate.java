@@ -93,7 +93,7 @@ public class Novate {
     private static OkHttpClient.Builder okhttpBuilder;
     public static BaseApiService apiManager;
     private static OkHttpClient okHttpClient;
-//    private static Context mContext;
+    //    private static Context mContext;
     private Context mContext;
     private final okhttp3.Call.Factory callFactory;
     private final String baseUrl;
@@ -178,13 +178,22 @@ public class Novate {
                 .subscribe(new NovateSubscriber<T>(mContext, finalNeedType, callBack));
     }
 
-    public <T> T executeGet(final String url, final Map<String, Object> maps, final ResponseCallBack<T> callBack, String token) {
+    /**
+     * 用于需要token的
+     * @param url
+     * @param maps
+     * @param callBack
+     * @param token
+     * @param <T>
+     * @return
+     */
+    public <T> T executeGet(final String url, Map<String, Object> maps, final ResponseCallBack<T> callBack, String token) {
 
         final Type finalNeedType = getFinalNeedType(callBack);
         if (finalNeedType == null) {
             return null;
         }
-
+        if (maps == null) maps = new HashMap<>();
         maps.put("access-token", token);
         return (T) apiManager.executeGet(url, maps)
                 .compose(schedulersTransformer)
@@ -192,16 +201,33 @@ public class Novate {
                 .subscribe(new NovateSubscriber<T>(mContext, finalNeedType, callBack));
     }
 
-
-
-
+    /**
+     * 用于只需要传递token的接口
+     * @param url
+     * @param token
+     * @param callBack
+     * @param <T>
+     * @return
+     */
+    public <T> T executeGet(final String url,String token, final ResponseCallBack<T> callBack) {
+        final Type finalNeedType = getFinalNeedType(callBack);
+        if (finalNeedType == null) {
+            return null;
+        }
+       Map<String,Object> maps = new HashMap<>();
+        maps.put("access-token",token );
+        return (T) apiManager.executeGet(url, maps)
+                .compose(schedulersTransformer)
+                .compose(handleErrTransformer())
+                .subscribe(new NovateSubscriber<T>(mContext, finalNeedType, callBack));
+    }
 
 
     private <T> Type getFinalNeedType(final ResponseCallBack<T> callBack) {
         Type type_super = callBack.getClass().getGenericSuperclass();
         Type[] parentypes = null;
         if (type_super != null && type_super instanceof ParameterizedType) {
-            parentypes  = ((ParameterizedType) type_super).getActualTypeArguments();
+            parentypes = ((ParameterizedType) type_super).getActualTypeArguments();
         }
 
         if (parentypes == null && parentypes.length == 0) {
@@ -1340,13 +1366,14 @@ public class Novate {
                          *  Type finalNeedType = needChildType;
                          */
                         NovateResponse<T> baseResponse = null;
-                        JSONObject mJSONObject=new JSONObject(jsStr);
+                        JSONObject mJSONObject = new JSONObject(jsStr);
                         int mCode = mJSONObject.optInt("code");
-                        if (ConfigLoader.checkSucess(mContext,mCode)){
+                        if (ConfigLoader.checkSucess(mContext, mCode)) {
                             callBack.onSuccee((T) new Gson().fromJson(jsStr, finalNeedType));
-                        }else {
-                            baseResponse=new Gson().fromJson(jsStr, new TypeToken<NovateResponse>(){}.getType());
-                            String msg = baseResponse.getMessage() != null ? baseResponse.getMessage()  : "api未知异常";
+                        } else {
+                            baseResponse = new Gson().fromJson(jsStr, new TypeToken<NovateResponse>() {
+                            }.getType());
+                            String msg = baseResponse.getMessage() != null ? baseResponse.getMessage() : "api未知异常";
                             ServerException serverException = new com.tamic.novate.exception.ServerException(baseResponse.getCode(), msg);
                             callBack.onError(NovateException.handleException(serverException));
                         }
@@ -1381,12 +1408,6 @@ public class Novate {
         public abstract void onSuccee(T response);
 
     }
-
-
-
-
-
-
 
 
 }

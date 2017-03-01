@@ -23,6 +23,7 @@ import com.grandmagic.readingmate.fragment.ChatFragment;
 import com.grandmagic.readingmate.fragment.HomeFragment;
 import com.grandmagic.readingmate.fragment.PersonalFragment;
 import com.grandmagic.readingmate.fragment.SearchFragment;
+import com.grandmagic.readingmate.listener.IMMessageListener;
 import com.grandmagic.readingmate.utils.AutoUtils;
 import com.grandmagic.readingmate.utils.KitUtils;
 import com.grandmagic.readingmate.utils.SPUtils;
@@ -117,6 +118,7 @@ initIM();
                 Log.d("main", "登录聊天服务器失败！"+code+message);
             }
         });
+        EMClient.getInstance().chatManager().addMessageListener(new IMMessageListener(this));
     }
 
     private void initdata() {

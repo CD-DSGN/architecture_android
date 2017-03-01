@@ -15,6 +15,7 @@ import android.view.View;
 import android.widget.TextView;
 
 import com.grandmagic.readingmate.R;
+import com.grandmagic.readingmate.bean.response.Contacts;
 import com.grandmagic.readingmate.bean.response.DataBean;
 
 import java.util.Arrays;
@@ -34,7 +35,7 @@ public class IndexBar extends View {
     Paint mPaint;//画笔
     private TextView hintTextView;//滑动时候显示的文字
     private LinearLayoutManager layoutmanager;//recycle的LayoutManager
-    private List<DataBean> souseData;//源数据
+    private List<Contacts> souseData;//源数据
 
     public IndexBar(Context context) {
         this(context, null);
@@ -185,7 +186,7 @@ public class IndexBar extends View {
         return this;
     }
 
-    public IndexBar setSouseData(List<DataBean> souseData) {
+    public IndexBar setSouseData(List<Contacts> souseData) {
         this.souseData = souseData;
         return this;
     }
@@ -195,7 +196,7 @@ public class IndexBar extends View {
             return -1;
         }
         for (int i = 0; i < souseData.size(); i++) {
-            if (letter.equals(souseData.get(i).getTag())) {
+            if (letter.equals(souseData.get(i).getLetter())) {
                 return i;
             }
         }

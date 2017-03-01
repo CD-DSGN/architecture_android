@@ -5,6 +5,7 @@ import android.content.Intent;
 import android.graphics.Color;
 import android.os.Bundle;
 import android.support.v7.widget.LinearLayoutManager;
+import android.util.Log;
 import android.view.View;
 import android.widget.ImageView;
 import android.widget.RelativeLayout;
@@ -17,11 +18,16 @@ import com.grandmagic.readingmate.adapter.ContactLetterDelagate;
 import com.grandmagic.readingmate.adapter.ContactNewFriendDelagate;
 import com.grandmagic.readingmate.adapter.MultiItemTypeAdapter;
 import com.grandmagic.readingmate.base.AppBaseActivity;
+import com.grandmagic.readingmate.base.AppBaseResponseCallBack;
 import com.grandmagic.readingmate.bean.response.Contacts;
 import com.grandmagic.readingmate.bean.response.DataBean;
+import com.grandmagic.readingmate.model.ContactModel;
 import com.grandmagic.readingmate.utils.AutoUtils;
 import com.grandmagic.readingmate.view.IndexBar;
 import com.grandmagic.readingmate.view.SwipRecycleView;
+import com.hyphenate.chat.EMClient;
+import com.hyphenate.exceptions.HyphenateException;
+import com.tamic.novate.NovateResponse;
 
 import java.util.ArrayList;
 import java.util.Collections;
@@ -33,7 +39,7 @@ import butterknife.ButterKnife;
 import butterknife.OnClick;
 
 public class FriendActivity extends AppBaseActivity {
-public static final int REQUEST_NEWFRIEND=1;
+    public static final int REQUEST_NEWFRIEND = 1;
     @BindView(R.id.back)
     ImageView mBack;
     @BindView(R.id.title)
@@ -48,6 +54,7 @@ public static final int REQUEST_NEWFRIEND=1;
     List<Contacts> mAdapterData = new ArrayList<>();
     @BindView(R.id.titlelayout)
     RelativeLayout mTitlelayout;
+    private static final String TAG = "FriendActivity";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -56,17 +63,34 @@ public static final int REQUEST_NEWFRIEND=1;
         ButterKnife.bind(this);
         AutoUtils.auto(this);
         setTranslucentStatus(true);
-        initdata();
         initview();
+        initdata();
     }
 
-    List<DataBean> mSouseDatas = new ArrayList<>();
+    List<Contacts> mSouseDatas = new ArrayList<>();
     List<String> mLetters = new ArrayList<>();
 
     private void initdata() {//模拟假数据
-        initTestData();
-        initsouseData();
-        initadapterData();
+        initServerData();
+        getallFriendfromEM();
+
+    }
+
+    private void getallFriendfromEM() {
+        new Thread(new Runnable() {
+            @Override
+            public void run() {
+                try {
+                    List<String> mAllContactsFromServer = EMClient.getInstance().
+                            contactManager().getAllContactsFromServer();//需要在子线程执行。否则会报303
+                    for (int i = 0; i < mAllContactsFromServer.size(); i++) {
+                        Log.e(TAG, "initdata: " + mAllContactsFromServer.get(i));
+                    }
+                } catch (HyphenateException mE) {
+                    mE.printStackTrace();
+                }
+            }
+        }).start();
     }
 
     /**
@@ -77,13 +101,15 @@ public static final int REQUEST_NEWFRIEND=1;
         for (int i = 0; i < mLetters.size(); i++) {
             String letter = mLetters.get(i);
             mAdapterData.get(mAdapterData.size() - 1).setNeedline(false);
-            Contacts mContacts = new Contacts(Contacts.TYPE.TYPE_LETTER, letter);
+            Contacts mContacts = new Contacts(Contacts.TYPE.TYPE_LETTER, letter);//字母
             mAdapterData.add(mContacts);
             for (int j = 0; j < mSouseDatas.size(); j++) {
-                if (letter.equals(mSouseDatas.get(j).getTag()))
-                    mAdapterData.add(new Contacts(Contacts.TYPE.TYPE_FRIEND, mSouseDatas.get(j).getName()));
+                if (letter.equals(mSouseDatas.get(j).getLetter()))
+                    mAdapterData.add(new Contacts(Contacts.TYPE.TYPE_FRIEND, mSouseDatas.get(j).getUser_name(),
+                            mSouseDatas.get(j).getAvatar_native() ));
             }
         }
+        mAdapter.setData(mAdapterData);
     }
 
     /**
@@ -92,18 +118,18 @@ public static final int REQUEST_NEWFRIEND=1;
     private void initsouseData() {
         int mSize = mSouseDatas.size();
         for (int i = 0; i < mSize; i++) {
-            DataBean data = mSouseDatas.get(i);
+            Contacts data = mSouseDatas.get(i);
             StringBuilder pySb = new StringBuilder();
-            String dataName = data.getName();
+            String dataName = data.getUser_name();
             for (int j = 0; j < dataName.length(); j++) {
                 pySb.append(Pinyin.toPinyin(dataName.charAt(j)));
             }
             data.setPyName(pySb.toString());//转化后的拼音
             String letter = pySb.substring(0, 1);//首字母
             if (letter.matches("[A-Z]")) {
-                data.setTag(letter);
+                data.setLetter(letter);
             } else {
-                data.setTag("#");
+                data.setLetter("#");
             }
             if (!mLetters.contains(letter)) {
                 mLetters.add(letter);
@@ -114,11 +140,11 @@ public static final int REQUEST_NEWFRIEND=1;
     }
 
     private void sortData() {
-        Collections.sort(mSouseDatas, new Comparator<DataBean>() {
+        Collections.sort(mSouseDatas, new Comparator<Contacts>() {
             @Override
-            public int compare(DataBean o1, DataBean o2) {
-                if (o1.getTag().equals("#")) return 1;
-                else if (o2.getTag().equals("#")) return -1;
+            public int compare(Contacts o1, Contacts o2) {
+                if (o1.getLetter().equals("#")) return 1;
+                else if (o2.getLetter().equals("#")) return -1;
                 return o1.getPyName().compareTo(o2.getPyName());
             }
         });
@@ -132,27 +158,16 @@ public static final int REQUEST_NEWFRIEND=1;
         });
     }
 
-    private void initTestData() {
-        for (int i = 0; i < 12; i++) {
-            mSouseDatas.add(new DataBean("张三"));
-            mSouseDatas.add(new DataBean("浪费的考虑过"));
-            mSouseDatas.add(new DataBean("根本"));
-            mSouseDatas.add(new DataBean("李四"));
-            mSouseDatas.add(new DataBean("欧阳克"));
-            mSouseDatas.add(new DataBean("肯定能发"));
-            mSouseDatas.add(new DataBean("李四"));
-            mSouseDatas.add(new DataBean("王五"));
-            mSouseDatas.add(new DataBean("撒"));
-            mSouseDatas.add(new DataBean("艾丝凡"));
-            mSouseDatas.add(new DataBean("艾弗森"));
-            mSouseDatas.add(new DataBean("李四"));
-            mSouseDatas.add(new DataBean("爱疯"));
-            mSouseDatas.add(new DataBean("阿芳认"));
-            mSouseDatas.add(new DataBean("啊"));
-            mSouseDatas.add(new DataBean("欧盟和"));
-            mSouseDatas.add(new DataBean("哦你概况"));
-            mSouseDatas.add(new DataBean("偶尔"));
-        }
+    private void initServerData() {
+        mModel.getAllFriendFromServer(new AppBaseResponseCallBack<NovateResponse<List<Contacts>>>(this) {
+            @Override
+            public void onSuccee(NovateResponse<List<Contacts>> response) {
+                List<Contacts> mData = response.getData();
+              mSouseDatas.addAll(mData);
+                initsouseData();
+                initadapterData();
+            }
+        });
     }
 
     MultiItemTypeAdapter mAdapter;
@@ -190,4 +205,8 @@ public static final int REQUEST_NEWFRIEND=1;
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
     }
+
+    ContactModel mModel = new ContactModel(this);
+
+
 }

@@ -39,8 +39,8 @@ public class ContactItemDelagate implements ItemViewDelegate<Contacts>, CustomDi
     @Override
     public void convert(ViewHolder holder, Contacts mContacts, int position) {
         holder.setVisible(R.id.dashline, mContacts.isNeedline());
-        holder.setText(R.id.name, mContacts.getText());
-        ImageLoader.loadRoundImage(mContext, "https://ss0.bdstatic.com/70cFvHSh_Q1YnxGkpoWK1HF6hhy/it/u=3845314423,334172753&fm=21&gp=0.jpg",
+        holder.setText(R.id.name, mContacts.getUser_name());
+        ImageLoader.loadRoundImage(mContext, mContacts.getAvatar_native(),
                 (ImageView) holder.getView(R.id.avatar));
         holder.setOnClickListener(R.id.notename, new View.OnClickListener() {
             @Override
