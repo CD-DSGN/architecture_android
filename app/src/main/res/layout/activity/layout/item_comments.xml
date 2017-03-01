@@ -1,94 +1,105 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-              android:orientation="vertical"
-              android:gravity="center_horizontal"
               android:layout_width="match_parent"
-              android:layout_height="wrap_content">
-<RelativeLayout
-    android:layout_width="618px"
-    android:layout_height="wrap_content">
-    <ImageView
-        android:layout_width="72px"
-        android:layout_height="72px"
-        android:id="@+id/avatar"
-        />
-    <TextView
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:textColor="@color/text_black"
-        android:text="花花"
-        android:layout_toRightOf="@+id/avatar"
-        android:textSize="28px"
-        android:layout_marginLeft="20px"
-        android:id="@+id/nickname"
-        />
-    <TextView
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:textColor="@color/text_lightgray"
-        android:text="2017.2.28"
-        android:layout_toRightOf="@+id/avatar"
-        android:textSize="20px"
-        android:layout_marginLeft="20px"
-        android:layout_below="@+id/nickname"
-        android:id="@+id/time"
-        android:layout_alignBottom="@id/avatar"
-        />
-    <TextView
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:textColor="@color/text_lightgray"
-        android:text="4回复"
-        android:layout_toRightOf="@+id/time"
-        android:textSize="20px"
-        android:layout_marginLeft="36px"
-        android:layout_below="@+id/nickname"
-        android:id="@+id/replynum"
-        android:layout_alignBottom="@id/avatar"
-        />
-<TextView
-    android:layout_width="wrap_content"
-    android:layout_height="wrap_content"
+              android:layout_height="wrap_content"
+              android:gravity="center_horizontal"
+              android:orientation="vertical">
 
-    android:text="26"
-    android:textColor="@color/text_lightgreen"
-    android:layout_alignParentRight="true"
-    android:id="@+id/likenum"
-    android:layout_centerVertical="true"
-    />
-    <ImageView
-        android:layout_width="26px"
-        android:layout_height="26px"
-        android:src="@drawable/iv_like"
-        android:layout_toLeftOf="@+id/likenum"
-        android:layout_centerVertical="true"
-        />
-</RelativeLayout>
+    <RelativeLayout
+        android:layout_width="618px"
+        android:layout_height="wrap_content">
+
+        <ImageView
+            android:id="@+id/avatar"
+            android:layout_width="72px"
+            android:layout_height="72px"
+            />
+
+        <TextView
+            android:id="@+id/nickname"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="20px"
+            android:layout_toRightOf="@+id/avatar"
+            android:text="花花"
+            android:textColor="@color/text_black"
+            android:textSize="28px"
+            />
+
+        <TextView
+            android:id="@+id/time"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignBottom="@id/avatar"
+            android:layout_below="@+id/nickname"
+            android:layout_marginLeft="20px"
+            android:layout_toRightOf="@+id/avatar"
+            android:text="2017.2.28"
+            android:textColor="@color/text_lightgray"
+            android:textSize="20px"
+            />
+
+        <TextView
+            android:id="@+id/replynum"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignBottom="@id/avatar"
+            android:layout_below="@+id/nickname"
+            android:layout_marginLeft="36px"
+            android:layout_toRightOf="@+id/time"
+            android:text="4回复"
+            android:textColor="@color/text_lightgray"
+            android:textSize="20px"
+            />
+
+        <TextView
+            android:id="@+id/likenum"
+            android:layout_width="wrap_content"
+
+            android:layout_height="wrap_content"
+            android:layout_alignParentRight="true"
+            android:layout_centerVertical="true"
+            android:text="26"
+            android:textColor="@color/text_lightgreen"
+            />
+
+        <ImageView
+            android:layout_width="26px"
+            android:layout_height="26px"
+            android:layout_centerVertical="true"
+            android:layout_toLeftOf="@+id/likenum"
+            android:src="@drawable/iv_like"
+            />
+    </RelativeLayout>
+
     <TextView
+        android:id="@+id/content"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:id="@+id/content"
+        android:text="随便写吧。"
         android:textColor="@color/text_black"
         android:textSize="28px"
-        android:text="随便写吧。"
         />
+
     <RelativeLayout
-        android:background="@drawable/bg_white_irr"
         android:layout_width="618px"
-        android:layout_height="98px">
-<ImageView
-    android:layout_width="80px"
-    android:layout_height="80px"
-    android:id="@+id/cover"
-    android:layout_marginLeft="24px"
-    />
+        android:layout_height="98px"
+        android:background="@drawable/bg_white_irr">
+
+        <ImageView
+            android:id="@+id/cover"
+            android:layout_width="80px"
+            android:layout_height="80px"
+            android:layout_marginLeft="24px"
+            />
+
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:textColor="@color/text_black"
-            android:text="《从你的全世界路过》"
-            android:textSize="32px"
             android:layout_centerInParent="true"
+            android:text="《从你的全世界路过》"
+            android:textColor="@color/text_black"
+            android:textSize="32px"
             />
     </RelativeLayout>
 </LinearLayout>

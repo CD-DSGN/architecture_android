@@ -2,7 +2,6 @@
 <project version="4">
   <component name="ProjectModuleManager">
     <modules>
-      <module fileurl="file://$PROJECT_DIR$/ReadingMate.iml" filepath="$PROJECT_DIR$/ReadingMate.iml" />
       <module fileurl="file://$PROJECT_DIR$/app/app.iml" filepath="$PROJECT_DIR$/app/app.iml" />
       <module fileurl="file://$PROJECT_DIR$/architecture_android.iml" filepath="$PROJECT_DIR$/architecture_android.iml" />
       <module fileurl="file://$PROJECT_DIR$/library_refresh/library_refresh.iml" filepath="$PROJECT_DIR$/library_refresh/library_refresh.iml" />
