@@ -12,6 +12,10 @@ import android.text.TextUtils;
 public class SPUtils {
     public static final String DEFAULT_SP_NAME = "userinfo";
     public static final String IS_FIRST = "isFirst";
+    public static final String INFO_NAME="name";//用户的手机号码
+    public static final String INFO_PWD="pwd";//用户密码
+    public static final String IM_PWD="im_pwd";//环信的密码
+    public static final String IM_NAME="im_name";//环信的name
     static SPUtils mSPUtils;
 
     public static SPUtils getInstance() {

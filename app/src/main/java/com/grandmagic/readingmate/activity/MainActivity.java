@@ -4,14 +4,18 @@ import android.Manifest;
 import android.animation.ObjectAnimator;
 import android.app.Fragment;
 import android.app.FragmentManager;
+import android.content.Intent;
 import android.graphics.Color;
 import android.os.Bundle;
+import android.text.TextUtils;
+import android.util.Log;
 import android.view.View;
 import android.widget.FrameLayout;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.grandmagic.readingmate.R;
 import com.grandmagic.readingmate.base.AppBaseActivity;
@@ -21,7 +25,10 @@ import com.grandmagic.readingmate.fragment.PersonalFragment;
 import com.grandmagic.readingmate.fragment.SearchFragment;
 import com.grandmagic.readingmate.utils.AutoUtils;
 import com.grandmagic.readingmate.utils.KitUtils;
+import com.grandmagic.readingmate.utils.SPUtils;
 import com.grandmagic.readingmate.utils.UpdateManager;
+import com.hyphenate.EMCallBack;
+import com.hyphenate.chat.EMClient;
 import com.tbruyelle.rxpermissions.RxPermissions;
 
 import java.util.HashMap;
@@ -81,7 +88,35 @@ public class MainActivity extends AppBaseActivity {
 
             }
         });
+initIM();
+    }
 
+    private void initIM() {
+        String name = SPUtils.getInstance().getString(this, SPUtils.IM_NAME);
+        String pwd = SPUtils.getInstance().getString(this, SPUtils.IM_PWD);
+        if (TextUtils.isEmpty(name)||TextUtils.isEmpty(pwd)){
+            Toast.makeText(this, "登陆信息失效", Toast.LENGTH_SHORT).show();
+            startActivity(new Intent(MainActivity.this,LoginActivity.class));
+            return;
+        }
+        EMClient.getInstance().login(name,pwd,new EMCallBack() {//回调
+            @Override
+            public void onSuccess() {
+                EMClient.getInstance().groupManager().loadAllGroups();
+                EMClient.getInstance().chatManager().loadAllConversations();
+                Log.d("main", "登录聊天服务器成功！");
+            }
+
+            @Override
+            public void onProgress(int progress, String status) {
+
+            }
+
+            @Override
+            public void onError(int code, String message) {
+                Log.d("main", "登录聊天服务器失败！"+code+message);
+            }
+        });
     }
 
     private void initdata() {

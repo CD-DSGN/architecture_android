@@ -197,7 +197,7 @@ public class LoginActivity extends AppBaseActivity implements View.OnClickListen
      * @param phone_num 手机
      * @param pwd 密码
      */
-    private void login(String phone_num, String pwd) {
+    private void login(final String phone_num, final String pwd) {
 
 
         LoginRequestBean loginRequestBean = new LoginRequestBean(phone_num, pwd);
@@ -210,6 +210,11 @@ public class LoginActivity extends AppBaseActivity implements View.OnClickListen
                     token = response.getData().getAccess_token();
                 }
                 //保存token
+                SPUtils.getInstance().saveToken(LoginActivity.this, token);
+                SPUtils.getInstance().putString(LoginActivity.this, SPUtils.INFO_NAME,phone_num);
+                SPUtils.getInstance().putString(LoginActivity.this, SPUtils.INFO_PWD,pwd);
+                SPUtils.getInstance().putString(LoginActivity.this, SPUtils.IM_NAME,response.getData().getUsername());
+                SPUtils.getInstance().putString(LoginActivity.this, SPUtils.IM_PWD,response.getData().getPassword());
                 SPUtils.getInstance().saveToken(LoginActivity.this, token);
                 //跳转到首页
                 Intent intent = new Intent(LoginActivity.this, MainActivity.class);
@@ -227,10 +232,10 @@ public class LoginActivity extends AppBaseActivity implements View.OnClickListen
         String pwd_comfirm = mEtPasssureRg.getText().toString();
 
         RegisterRequestBean registerBean = new RegisterRequestBean(pwd, phone_num, verify_code);
-        new RegisterModel(LoginActivity.this, registerBean, new AppBaseResponseCallBack<NovateResponse<RegisterResponseBean>>
+        new RegisterModel(LoginActivity.this, registerBean, new AppBaseResponseCallBack<NovateResponse<String>>
                 (LoginActivity.this, true) {
             @Override
-            public void onSuccee(NovateResponse<RegisterResponseBean> response) {
+            public void onSuccee(NovateResponse<String> response) {
             login(phone_num,pwd);//改为注册成功调用登陆接口，不返回token
             }
         }, pwd_comfirm).register();
