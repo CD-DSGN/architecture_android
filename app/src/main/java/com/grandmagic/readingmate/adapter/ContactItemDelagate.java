@@ -1,16 +1,19 @@
 package com.grandmagic.readingmate.adapter;
 
 import android.content.Context;
+import android.content.Intent;
 import android.support.v7.widget.RecyclerView;
 import android.view.View;
 import android.widget.ImageView;
 
 import com.bumptech.glide.Glide;
 import com.grandmagic.readingmate.R;
+import com.grandmagic.readingmate.activity.ChatActivity;
 import com.grandmagic.readingmate.bean.response.Contacts;
 import com.grandmagic.readingmate.ui.CustomDialog;
 import com.grandmagic.readingmate.utils.AutoUtils;
 import com.grandmagic.readingmate.utils.ImageLoader;
+import com.grandmagic.readingmate.utils.SPUtils;
 import com.zhy.adapter.recyclerview.base.ItemViewDelegate;
 import com.zhy.adapter.recyclerview.base.ViewHolder;
 
@@ -37,7 +40,7 @@ public class ContactItemDelagate implements ItemViewDelegate<Contacts>, CustomDi
     }
 
     @Override
-    public void convert(ViewHolder holder, Contacts mContacts, int position) {
+    public void convert(ViewHolder holder, final Contacts mContacts, int position) {
         holder.setVisible(R.id.dashline, mContacts.isNeedline());
         holder.setText(R.id.name, mContacts.getUser_name());
         ImageLoader.loadRoundImage(mContext, mContacts.getAvatar_native(),
@@ -46,6 +49,15 @@ public class ContactItemDelagate implements ItemViewDelegate<Contacts>, CustomDi
             @Override
             public void onClick(View v) {
                 showNoteNameDialog();
+            }
+        });
+        holder.getConvertView().setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent mIntent=new Intent(mContext, ChatActivity.class);
+                mIntent.putExtra(ChatActivity.CHAT_NAME,mContacts.getUser_name());
+                mIntent.putExtra(ChatActivity.CHAT_IM_NAME,mContacts.getUser_id());
+                mContext.startActivity(mIntent);
             }
         });
     }

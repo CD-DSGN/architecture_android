@@ -21,6 +21,7 @@ import com.grandmagic.readingmate.adapter.MultiItemTypeAdapter;
 import com.grandmagic.readingmate.base.AppBaseActivity;
 import com.grandmagic.readingmate.bean.response.ChatMessage;
 import com.grandmagic.readingmate.utils.AutoUtils;
+import com.grandmagic.readingmate.utils.SPUtils;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -33,7 +34,9 @@ import butterknife.OnClick;
  * 聊天界面
  */
 public class ChatActivity extends AppBaseActivity {
-
+public static final String CHAT_NAME="chat_name";
+public static final String CHAT_IM_NAME="chat_im_name";
+    private String chat_name;//聊天的在环信的name,为我们的userid
     @BindView(R.id.back)
     ImageView mBack;
     @BindView(R.id.title)
@@ -86,6 +89,8 @@ public class ChatActivity extends AppBaseActivity {
 
     private void initview() {
         mTitlelayout.setBackgroundResource(R.color.white);
+        mTitle.setText(getIntent().getStringExtra(CHAT_NAME));
+        chat_name=getIntent().getStringExtra(CHAT_IM_NAME);
         mMessagerecyclerview.setLayoutManager(new LinearLayoutManager(this));
         inittestData();
         mAdapter = new MultiItemTypeAdapter(this, mMessageList);
