@@ -5,10 +5,8 @@ import android.content.Context;
 import android.content.Intent;
 import android.graphics.Color;
 import android.graphics.drawable.BitmapDrawable;
-import android.graphics.drawable.ColorDrawable;
 import android.os.Bundle;
 import android.os.Handler;
-import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.view.Gravity;
@@ -30,7 +28,6 @@ import com.grandmagic.readingmate.adapter.HomeBookAdapter;
 import com.grandmagic.readingmate.base.AppBaseFragment;
 import com.grandmagic.readingmate.dialog.HintDialog;
 import com.grandmagic.readingmate.utils.AutoUtils;
-import com.grandmagic.readingmate.utils.DensityUtil;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -90,7 +87,7 @@ public class HomeFragment extends AppBaseFragment implements HomeBookAdapter.Cli
         mTvTitle.setTextColor(mContext.getResources().getColor(R.color.white));
         mIvCamera.setVisibility(View.GONE);
         mIvSearch.setVisibility(View.GONE);
-        ((MainActivity) getActivity()).setSystemBarColor(R.color.bg);
+        ((MainActivity) getActivity()).setSystemBarColor(R.color.text_green);
     }
 
     /**
@@ -104,7 +101,7 @@ public class HomeFragment extends AppBaseFragment implements HomeBookAdapter.Cli
         mIvCamera.setVisibility(View.VISIBLE);
         mIvSearch.setVisibility(View.VISIBLE);
         rootview.setBackgroundColor(0xf8f8f8);
-        mTvTitle.setTextColor(mContext.getResources().getColor(R.color.bg));
+        mTvTitle.setTextColor(mContext.getResources().getColor(R.color.text_green));
         mRecyclerview.setVisibility(View.VISIBLE);
         mLayoutNobook.setVisibility(View.GONE);
         mRecyclerview.setLayoutManager(new LinearLayoutManager(mContext));
