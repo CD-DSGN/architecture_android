@@ -21,6 +21,7 @@ import com.grandmagic.readingmate.adapter.MessageTextReciveDelagate;
 import com.grandmagic.readingmate.adapter.MultiItemTypeAdapter;
 import com.grandmagic.readingmate.base.AppBaseActivity;
 import com.grandmagic.readingmate.utils.AutoUtils;
+import com.grandmagic.readingmate.utils.IMHelper;
 import com.hyphenate.EMMessageListener;
 import com.hyphenate.chat.EMClient;
 import com.hyphenate.chat.EMCmdMessageBody;
@@ -74,6 +75,7 @@ public class ChatActivity extends AppBaseActivity implements EMMessageListener {
     }
 
     private void initlistener() {
+        IMHelper.getInstance().pushActivity(this);
         EMClient.getInstance().chatManager().addMessageListener(this);
         mEtInput.setOnEditorActionListener(new TextView.OnEditorActionListener() {
             @Override
@@ -201,8 +203,9 @@ public class ChatActivity extends AppBaseActivity implements EMMessageListener {
     }
 
     @Override
-    protected void onDestroy() {
-        super.onDestroy();
+    protected void onStop() {
+        super.onStop();
         EMClient.getInstance().chatManager().removeMessageListener(this);//移除监听
+        IMHelper.getInstance().popActivity(this);
     }
 }

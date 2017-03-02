@@ -23,8 +23,9 @@ import com.grandmagic.readingmate.fragment.ChatFragment;
 import com.grandmagic.readingmate.fragment.HomeFragment;
 import com.grandmagic.readingmate.fragment.PersonalFragment;
 import com.grandmagic.readingmate.fragment.SearchFragment;
-import com.grandmagic.readingmate.listener.IMMessageListener;
+import com.grandmagic.readingmate.listener.IMMessageListenerMain;
 import com.grandmagic.readingmate.utils.AutoUtils;
+import com.grandmagic.readingmate.utils.IMHelper;
 import com.grandmagic.readingmate.utils.KitUtils;
 import com.grandmagic.readingmate.utils.SPUtils;
 import com.grandmagic.readingmate.utils.UpdateManager;
@@ -75,6 +76,7 @@ public class MainActivity extends AppBaseActivity {
     TextView mTextSearch;
     @BindView(R.id.text_person)
     TextView mTextPerson;
+    IMMessageListenerMain mIMMessageListenerMain;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -89,18 +91,18 @@ public class MainActivity extends AppBaseActivity {
 
             }
         });
-initIM();
+        initIM();
     }
 
     private void initIM() {
         String name = SPUtils.getInstance().getString(this, SPUtils.IM_NAME);
         String pwd = SPUtils.getInstance().getString(this, SPUtils.IM_PWD);
-        if (TextUtils.isEmpty(name)||TextUtils.isEmpty(pwd)){
+        if (TextUtils.isEmpty(name) || TextUtils.isEmpty(pwd)) {
             Toast.makeText(this, "登陆信息失效", Toast.LENGTH_SHORT).show();
-            startActivity(new Intent(MainActivity.this,LoginActivity.class));
+            startActivity(new Intent(MainActivity.this, LoginActivity.class));
             return;
         }
-        EMClient.getInstance().login(name,pwd,new EMCallBack() {//回调
+        EMClient.getInstance().login(name, pwd, new EMCallBack() {//回调
             @Override
             public void onSuccess() {
                 EMClient.getInstance().groupManager().loadAllGroups();
@@ -115,10 +117,12 @@ initIM();
 
             @Override
             public void onError(int code, String message) {
-                Log.d("main", "登录聊天服务器失败！"+code+message);
+                Log.d("main", "登录聊天服务器失败！" + code + message);
             }
         });
-        EMClient.getInstance().chatManager().addMessageListener(new IMMessageListener(this));
+        IMHelper.getInstance().pushActivity(this);
+        mIMMessageListenerMain = new IMMessageListenerMain(this);
+        EMClient.getInstance().chatManager().addMessageListener(mIMMessageListenerMain);
     }
 
     private void initdata() {
@@ -186,22 +190,22 @@ initIM();
         if (mClass == HomeFragment.class) {
             scalesmall();
             mcurrentIV = mIvHome;
-            mcurrentTV=mTextHome;
+            mcurrentTV = mTextHome;
             scalelarge();
         } else if (mClass == ChatFragment.class) {
             scalesmall();
             mcurrentIV = mIvChat;
-            mcurrentTV=mTextChat;
+            mcurrentTV = mTextChat;
             scalelarge();
         } else if (mClass == SearchFragment.class) {
             scalesmall();
             mcurrentIV = mIvSearch;
-            mcurrentTV=mTextSearch;
+            mcurrentTV = mTextSearch;
             scalelarge();
         } else if (mClass == PersonalFragment.class) {
             scalesmall();
             mcurrentIV = mIvPerson;
-            mcurrentTV=mTextPerson;
+            mcurrentTV = mTextPerson;
             scalelarge();
         }
     }
@@ -244,5 +248,12 @@ initIM();
             mFragments.put(mName, mInstance);
         }
         return mInstance;
+    }
+
+    @Override
+    protected void onStop() {
+        super.onStop();
+        IMHelper.getInstance().popActivity(this);
+        EMClient.getInstance().chatManager().removeMessageListener(mIMMessageListenerMain);
     }
 }

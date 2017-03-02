@@ -8,6 +8,7 @@ import android.os.StrictMode;
 import android.util.Log;
 
 import com.facebook.stetho.Stetho;
+import com.grandmagic.readingmate.utils.IMHelper;
 import com.hyphenate.chat.EMClient;
 import com.hyphenate.chat.EMOptions;
 import com.squareup.leakcanary.LeakCanary;
@@ -58,6 +59,7 @@ public class AppBaseApplication extends Application {
         EMClient.getInstance().init(this, mEMOptions);
         //在做打包混淆时，关闭debug模式，避免消耗不必要的资源
         EMClient.getInstance().setDebugMode(true);
+        IMHelper.getInstance().init(this);
     }
 
     private String getAppName(int pID) {
