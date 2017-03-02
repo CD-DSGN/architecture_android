@@ -3,6 +3,8 @@ package com.grandmagic.readingmate.listener;
 import android.content.Context;
 import android.util.Log;
 
+import com.grandmagic.readingmate.activity.MainActivity;
+import com.grandmagic.readingmate.utils.IMHelper;
 import com.hyphenate.EMMessageListener;
 import com.hyphenate.chat.EMMessage;
 
@@ -26,6 +28,8 @@ public class IMMessageListenerMain implements EMMessageListener {
     public void onMessageReceived(List<EMMessage> mList) {
         for (EMMessage msg : mList) {
             Log.e(TAG, "onMessageReceived: " + msg);
+            IMHelper.getInstance().onNewMsg(msg);
+            ((MainActivity) (mContext)).newMsg();
         }
     }
 

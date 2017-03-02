@@ -120,9 +120,9 @@ public class MainActivity extends AppBaseActivity {
                 Log.d("main", "登录聊天服务器失败！" + code + message);
             }
         });
-        IMHelper.getInstance().pushActivity(this);
+
         mIMMessageListenerMain = new IMMessageListenerMain(this);
-        EMClient.getInstance().chatManager().addMessageListener(mIMMessageListenerMain);
+
     }
 
     private void initdata() {
@@ -248,6 +248,24 @@ public class MainActivity extends AppBaseActivity {
             mFragments.put(mName, mInstance);
         }
         return mInstance;
+    }
+
+   public void newMsg(){
+       // TODO: 2017/3/2 更新新消息UI
+       runOnUiThread(new Runnable() {
+           @Override
+           public void run() {
+               Toast.makeText(MainActivity.this, "收到新的消息", Toast.LENGTH_SHORT).show();
+               ((ChatFragment) mFragments.get(ChatFragment.class.getName())).onrefreshConversation();
+           }
+       });
+   }
+
+    @Override
+    protected void onResume() {
+        super.onResume();
+        IMHelper.getInstance().pushActivity(this);
+        EMClient.getInstance().chatManager().addMessageListener(mIMMessageListenerMain);
     }
 
     @Override

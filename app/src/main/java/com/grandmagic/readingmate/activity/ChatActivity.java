@@ -75,8 +75,7 @@ public class ChatActivity extends AppBaseActivity implements EMMessageListener {
     }
 
     private void initlistener() {
-        IMHelper.getInstance().pushActivity(this);
-        EMClient.getInstance().chatManager().addMessageListener(this);
+
         mEtInput.setOnEditorActionListener(new TextView.OnEditorActionListener() {
             @Override
             public boolean onEditorAction(TextView v, int actionId, KeyEvent event) {
@@ -200,6 +199,13 @@ public class ChatActivity extends AppBaseActivity implements EMMessageListener {
     @Override
     public void onMessageChanged(EMMessage mEMMessage, Object mO) {
 
+    }
+
+    @Override
+    protected void onResume() {
+        super.onResume();
+        IMHelper.getInstance().pushActivity(this);
+        EMClient.getInstance().chatManager().addMessageListener(this);
     }
 
     @Override

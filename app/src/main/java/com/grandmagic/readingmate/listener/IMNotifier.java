@@ -58,6 +58,7 @@ public class IMNotifier {
      * @param message
      */
     protected void sendNotification(EMMessage message, boolean isForeground, boolean numIncrease) {
+        // TODO: 2017/3/2 免打扰等设置判断，暂时没处理
         String username = message.getFrom();
         try {
             String notifytxt = username + "";
@@ -80,7 +81,7 @@ public class IMNotifier {
             PendingIntent mPendingIntent = PendingIntent.getActivity(mAppContext, notifyID, msgIntent, PendingIntent.FLAG_UPDATE_CURRENT);
             mBuilder.setContentTitle(contenttitle);
             mBuilder.setTicker(notifytxt);
-            mBuilder.setContentText("summaryBody");
+            mBuilder.setContentText(message.getBody().toString());
             mBuilder.setContentIntent(mPendingIntent);
             Notification mNotification = mBuilder.build();
             mNotificationManager.notify(foregroundNotifyID, mNotification);
