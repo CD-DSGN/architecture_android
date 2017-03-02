@@ -8,13 +8,14 @@ import com.grandmagic.readingmate.R;
 import com.grandmagic.readingmate.bean.response.ChatMessage;
 import com.grandmagic.readingmate.utils.GlideRoundTransform;
 import com.grandmagic.readingmate.utils.ImageLoader;
+import com.hyphenate.chat.EMMessage;
 import com.zhy.adapter.recyclerview.base.ItemViewDelegate;
 import com.zhy.adapter.recyclerview.base.ViewHolder;
 
 /**
  * Created by lps on 2017/2/27.
  */
-public class MessageIMGSendDelagate implements ItemViewDelegate<ChatMessage> {
+public class MessageIMGSendDelagate implements ItemViewDelegate<EMMessage> {
 
     private Context mContext;
 
@@ -28,15 +29,13 @@ public class MessageIMGSendDelagate implements ItemViewDelegate<ChatMessage> {
     }
 
     @Override
-    public boolean isForViewType(ChatMessage item, int position) {
-        return item.getType() == ChatMessage.TYPE.SEND
-                &&item.getMessageType()== ChatMessage.MessageType.IMAGE;
+    public boolean isForViewType(EMMessage item, int position) {
+        return item.getType() == EMMessage.Type.IMAGE
+                && item.direct() == EMMessage.Direct.SEND;
     }
 
     @Override
-    public void convert(ViewHolder holder, ChatMessage mChatMessage, int position) {
-        ImageLoader.loadImage(mContext,mChatMessage.getImg(), (ImageView) holder.getView(R.id.image));
-        ImageLoader.loadRoundImage(mContext,mChatMessage.getAvatar(), (ImageView) holder.getView(R.id.avatar));
+    public void convert(ViewHolder holder, EMMessage mChatMessage, int position) {
     }
 
 

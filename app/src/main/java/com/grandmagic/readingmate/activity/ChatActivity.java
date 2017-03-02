@@ -3,9 +3,10 @@ package com.grandmagic.readingmate.activity;
 import android.os.Bundle;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
-import android.text.Editable;
-import android.text.TextWatcher;
+import android.util.Log;
+import android.view.KeyEvent;
 import android.view.View;
+import android.view.inputmethod.EditorInfo;
 import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
@@ -19,9 +20,11 @@ import com.grandmagic.readingmate.adapter.MessageTextSendDelagate;
 import com.grandmagic.readingmate.adapter.MessageTextReciveDelagate;
 import com.grandmagic.readingmate.adapter.MultiItemTypeAdapter;
 import com.grandmagic.readingmate.base.AppBaseActivity;
-import com.grandmagic.readingmate.bean.response.ChatMessage;
 import com.grandmagic.readingmate.utils.AutoUtils;
-import com.grandmagic.readingmate.utils.SPUtils;
+import com.hyphenate.EMMessageListener;
+import com.hyphenate.chat.EMClient;
+import com.hyphenate.chat.EMCmdMessageBody;
+import com.hyphenate.chat.EMMessage;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -33,10 +36,16 @@ import butterknife.OnClick;
 /**
  * 聊天界面
  */
-public class ChatActivity extends AppBaseActivity {
-public static final String CHAT_NAME="chat_name";
-public static final String CHAT_IM_NAME="chat_im_name";
-    private String chat_name;//聊天的在环信的name,为我们的userid
+public class ChatActivity extends AppBaseActivity implements EMMessageListener {
+    private static final String TAG = "ChatActivity";
+    public static final String CHAT_NAME = "chat_name";
+    public static final String CHAT_IM_NAME = "chat_im_name";
+    public static final String CHAT_TYPE = "chat_type";
+    //聊天的在环信的name,为我们的userid
+    private String toChatUserName;
+    private int chat_type;
+    //聊天的name（title）
+    private String chat_name;
     @BindView(R.id.back)
     ImageView mBack;
     @BindView(R.id.title)
@@ -51,8 +60,7 @@ public static final String CHAT_IM_NAME="chat_im_name";
     EditText mEtInput;
     @BindView(R.id.voice)
     ImageView mVoice;
-    @BindView(R.id.activity_chat)
-    LinearLayout mActivityChat;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -66,33 +74,56 @@ public static final String CHAT_IM_NAME="chat_im_name";
     }
 
     private void initlistener() {
-        mEtInput.addTextChangedListener(new TextWatcher() {
+        EMClient.getInstance().chatManager().addMessageListener(this);
+        mEtInput.setOnEditorActionListener(new TextView.OnEditorActionListener() {
             @Override
-            public void beforeTextChanged(CharSequence s, int start, int count, int after) {
-
-            }
-
-            @Override
-            public void onTextChanged(CharSequence s, int start, int before, int count) {
-
-            }
-
-            @Override
-            public void afterTextChanged(Editable s) {
-
+            public boolean onEditorAction(TextView v, int actionId, KeyEvent event) {
+                String mString = v.getText().toString();
+                if (actionId == EditorInfo.IME_ACTION_SEND ||
+                        (event != null && event.getKeyCode() == KeyEvent.KEYCODE_ENTER)) {
+                    sendTextMsg(mString);
+                    return true;
+                }
+                return false;
             }
         });
     }
 
+    /**
+     * 发送文本消息
+     *
+     * @param mString
+     */
+    private void sendTextMsg(String mString) {
+//如果String 为空。则返回的message为null
+        EMMessage message = EMMessage.createTxtSendMessage(mString, toChatUserName);
+        if (message != null) {
+            sendMessage(message);
+        }
+    }
+
+    /**
+     * 统一的发送消息
+     *
+     * @param mMessage
+     */
+    private void sendMessage(EMMessage mMessage) {
+        EMClient.getInstance().chatManager().sendMessage(mMessage);
+        mMessageList.add(mMessage);
+        mAdapter.setData(mMessageList);
+        mEtInput.setText("");
+        mMessagerecyclerview.smoothScrollToPosition(mMessageList.size()-1);
+    }
+
     MultiItemTypeAdapter mAdapter;
-    List<ChatMessage> mMessageList;
+    List<EMMessage> mMessageList = new ArrayList<>();
 
     private void initview() {
         mTitlelayout.setBackgroundResource(R.color.white);
-        mTitle.setText(getIntent().getStringExtra(CHAT_NAME));
-        chat_name=getIntent().getStringExtra(CHAT_IM_NAME);
+        chat_name = getIntent().getStringExtra(CHAT_NAME);
+        mTitle.setText(chat_name);
+        toChatUserName = getIntent().getStringExtra(CHAT_IM_NAME);
         mMessagerecyclerview.setLayoutManager(new LinearLayoutManager(this));
-        inittestData();
         mAdapter = new MultiItemTypeAdapter(this, mMessageList);
         mAdapter.addItemViewDelegate(new MessageTextReciveDelagate(this));
         mAdapter.addItemViewDelegate(new MessageTextSendDelagate(this));
@@ -101,41 +132,6 @@ public static final String CHAT_IM_NAME="chat_im_name";
         mMessagerecyclerview.setAdapter(mAdapter);
     }
 
-    /**
-     * 创建的测试数据
-     */
-    private void inittestData() {
-        mMessageList = new ArrayList<>();
-        for (int i = 0; i < 40; i++) {
-            ChatMessage mChatMessage = new ChatMessage();
-
-            if (i % 2 == 0) {
-                mChatMessage.setName("发送方");
-                mChatMessage.setMsg("发送文字消息发送文字消息发送文字消息发送文字消息发送文字消息发送文字消息"+i);
-                mChatMessage.setAvatar("https://img6.bdstatic.com/img/image/smallpic/duorouzhiwu.jpg");
-                mChatMessage.setType(ChatMessage.TYPE.SEND);
-                if (i%6==0){
-                    mChatMessage.setMessageType(ChatMessage.MessageType.IMAGE);
-                    mChatMessage.setImg("http://upload.jianshu.io/admin_banners/web_images/2805/4928a468b704d6e721d778c0f7d714feadda469e.jpg");
-                }else {
-                    mChatMessage.setMessageType(ChatMessage.MessageType.TEXT);
-                }
-            } else {
-                if (i%6==1){
-                    mChatMessage.setMessageType(ChatMessage.MessageType.IMAGE);
-                    mChatMessage.setImg("http://img5.imgtn.bdimg.com/it/u=4152427209,241902858&fm=23&gp=0.jpg");
-
-                }else {
-                    mChatMessage.setMessageType(ChatMessage.MessageType.TEXT);
-                }
-                mChatMessage.setName("接受方");
-                mChatMessage.setMsg("收到文字消息收到文字消息收到文字消息收到文字消息收到文字消息收到文字消息收到文字消息"+i);
-                mChatMessage.setAvatar("http://upload.jianshu.io/users/upload_avatars/1795423/03f6584b-deaa-4226-a455-925ac5b6b0c5.png?imageMogr/thumbnail/120x120/quality/100");
-                mChatMessage.setType(ChatMessage.TYPE.RECICVER);
-            }
-            mMessageList.add(mChatMessage);
-        }
-    }
 
     @OnClick({R.id.back, R.id.iv_select_img, R.id.voice})
     public void onClick(View view) {
@@ -150,5 +146,63 @@ public static final String CHAT_IM_NAME="chat_im_name";
                 // TODO: 2017/2/22 录音
                 break;
         }
+    }
+
+    /**
+     * 收到消息的回调(在子线程执行)
+     *
+     * @param mList
+     */
+    @Override
+    public void onMessageReceived(List<EMMessage> mList) {
+        for (EMMessage msg : mList) {
+            String username = null;
+            Log.e(TAG, "onMessageReceived: " + msg.toString());
+            if (msg.getChatType() == EMMessage.ChatType.GroupChat ||
+                    msg.getChatType() == EMMessage.ChatType.ChatRoom) {//如果不是单聊
+                username = msg.getTo();
+            } else {
+                username = msg.getFrom();
+            }
+            //判断是否就是当前会话
+            if (toChatUserName.equals(username)) {
+                mMessageList.add(msg);
+                runOnUiThread(new Runnable() {
+                    @Override
+                    public void run() {
+                        mAdapter.setData(mMessageList);
+                        mMessagerecyclerview.smoothScrollToPosition(mMessageList.size()-1);
+                    }
+                });
+
+            }
+
+        }
+    }
+
+    @Override
+    public void onCmdMessageReceived(List<EMMessage> mList) {
+
+    }
+
+    @Override
+    public void onMessageRead(List<EMMessage> mList) {
+
+    }
+
+    @Override
+    public void onMessageDelivered(List<EMMessage> mList) {
+
+    }
+
+    @Override
+    public void onMessageChanged(EMMessage mEMMessage, Object mO) {
+
+    }
+
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+        EMClient.getInstance().chatManager().removeMessageListener(this);//移除监听
     }
 }

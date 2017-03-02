@@ -105,7 +105,8 @@ public class FriendActivity extends AppBaseActivity {
             mAdapterData.add(mContacts);
             for (int j = 0; j < mSouseDatas.size(); j++) {
                 if (letter.equals(mSouseDatas.get(j).getLetter()))
-                    mAdapterData.add(new Contacts(Contacts.TYPE.TYPE_FRIEND, mSouseDatas.get(j).getUser_name(),
+                    mAdapterData.add(new Contacts(Contacts.TYPE.TYPE_FRIEND,mSouseDatas.get(j).getUser_id(),
+                            mSouseDatas.get(j).getUser_name(),
                             mSouseDatas.get(j).getAvatar_native() ));
             }
         }
@@ -121,11 +122,11 @@ public class FriendActivity extends AppBaseActivity {
             Contacts data = mSouseDatas.get(i);
             StringBuilder pySb = new StringBuilder();
             String dataName = data.getUser_name();
-            for (int j = 0; j < dataName.length(); j++) {
+            for (int j = 0; dataName!=null&&j < dataName.length(); j++) {
                 pySb.append(Pinyin.toPinyin(dataName.charAt(j)));
             }
             data.setPyName(pySb.toString());//转化后的拼音
-            String letter = pySb.substring(0, 1);//首字母
+            String letter = pySb.length()>0?pySb.substring(0, 1):"#";//首字母
             if (letter.matches("[A-Z]")) {
                 data.setLetter(letter);
             } else {

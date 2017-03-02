@@ -5,6 +5,7 @@ import android.view.View;
 
 import com.grandmagic.readingmate.bean.response.Contacts;
 import com.grandmagic.readingmate.utils.AutoUtils;
+import com.hyphenate.chat.EMMessage;
 import com.zhy.adapter.recyclerview.base.ViewHolder;
 
 import java.util.List;
@@ -25,8 +26,11 @@ public class MultiItemTypeAdapter extends com.zhy.adapter.recyclerview.MultiItem
 
     }
 
-    public void setData(List<Contacts> mData) {
-        mDatas = mData;
+
+    public void setData(List mMessageList) {
+        this.mDatas=mMessageList;
         notifyDataSetChanged();
     }
+
+
 }

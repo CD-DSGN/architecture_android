@@ -79,7 +79,11 @@ public class Contacts {
         avatar_native = mAvatar_native;
     }
 
-    public Contacts() {
+    public Contacts(TYPE mTypeFriend, int mUser_id, String mUser_name, String mAvatar_native) {
+    this.type=mTypeFriend;
+        this.user_id=mUser_id;
+        this.user_name=mUser_name;
+        this.avatar_native=mAvatar_native;
     }
 
     public Contacts(TYPE mType, String mLetter) {

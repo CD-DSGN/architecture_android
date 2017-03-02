@@ -56,7 +56,7 @@ public class ContactItemDelagate implements ItemViewDelegate<Contacts>, CustomDi
             public void onClick(View v) {
                 Intent mIntent=new Intent(mContext, ChatActivity.class);
                 mIntent.putExtra(ChatActivity.CHAT_NAME,mContacts.getUser_name());
-                mIntent.putExtra(ChatActivity.CHAT_IM_NAME,mContacts.getUser_id());
+                mIntent.putExtra(ChatActivity.CHAT_IM_NAME,mContacts.getUser_id()+"");
                 mContext.startActivity(mIntent);
             }
         });
