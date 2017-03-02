@@ -3,6 +3,7 @@ package com.grandmagic.readingmate.utils;
 import android.app.Activity;
 import android.content.Context;
 
+import com.grandmagic.readingmate.listener.IMConnectionListener;
 import com.grandmagic.readingmate.listener.IMMessageListenerApp;
 import com.grandmagic.readingmate.listener.IMNotifier;
 import com.hyphenate.chat.EMClient;
@@ -19,6 +20,7 @@ import java.util.List;
 public class IMHelper {
     private static IMHelper instance = null;
     private IMMessageListenerApp mListenerApp = null;
+    IMConnectionListener mIMConnectionListener;
     private List<Activity> mActivityList = new ArrayList<>();
     private IMNotifier mIMNotifier;//提示的工具类
 
@@ -38,7 +40,9 @@ public class IMHelper {
 
     public void init(Context appContext) {
         mListenerApp = new IMMessageListenerApp(appContext);
+         mIMConnectionListener = new IMConnectionListener(appContext);
         EMClient.getInstance().chatManager().addMessageListener(mListenerApp);
+        EMClient.getInstance().addConnectionListener(mIMConnectionListener);
         mIMNotifier = new IMNotifier();
         mIMNotifier.init(appContext);
     }

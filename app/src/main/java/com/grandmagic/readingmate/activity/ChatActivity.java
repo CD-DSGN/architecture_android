@@ -25,6 +25,7 @@ import com.grandmagic.readingmate.utils.IMHelper;
 import com.hyphenate.EMMessageListener;
 import com.hyphenate.chat.EMClient;
 import com.hyphenate.chat.EMCmdMessageBody;
+import com.hyphenate.chat.EMConversation;
 import com.hyphenate.chat.EMMessage;
 
 import java.util.ArrayList;
@@ -61,6 +62,7 @@ public class ChatActivity extends AppBaseActivity implements EMMessageListener {
     EditText mEtInput;
     @BindView(R.id.voice)
     ImageView mVoice;
+    private EMConversation mConversation;
 
 
     @Override
@@ -113,7 +115,7 @@ public class ChatActivity extends AppBaseActivity implements EMMessageListener {
         mMessageList.add(mMessage);
         mAdapter.setData(mMessageList);
         mEtInput.setText("");
-        mMessagerecyclerview.smoothScrollToPosition(mMessageList.size()-1);
+        mMessagerecyclerview.smoothScrollToPosition(mMessageList.size() - 1);
     }
 
     MultiItemTypeAdapter mAdapter;
@@ -131,6 +133,28 @@ public class ChatActivity extends AppBaseActivity implements EMMessageListener {
         mAdapter.addItemViewDelegate(new MessageIMGSendDelagate(this));
         mAdapter.addItemViewDelegate(new MessageIMGReciveDelagate(this));
         mMessagerecyclerview.setAdapter(mAdapter);
+        conversationInit();
+    }
+
+    // FIXME: 2017/3/2 mConversation有时候返回空，环信处理的比较奇怪
+
+    private void conversationInit() {
+        mConversation = EMClient.getInstance().chatManager().getConversation(toChatUserName);
+        if (mConversation == null) return;
+        mConversation.markAllMessagesAsRead();
+        final List<EMMessage> msgs = mConversation.getAllMessages();
+        mMessageList.addAll(msgs);
+        int msgCount = msgs != null ? msgs.size() : 0;
+        int pagesize = 20;
+        if (msgCount < mConversation.getAllMsgCount() && msgCount < pagesize) {
+            String msgId = null;
+            if (msgs != null && msgs.size() > 0) {
+                msgId = msgs.get(0).getMsgId();
+            }
+            List<EMMessage> mEMMessages = mConversation.loadMoreMsgFromDB(msgId, pagesize - msgCount);
+            mMessageList.addAll(mEMMessages);
+        }
+        mAdapter.setData(mMessageList);
     }
 
 
@@ -172,7 +196,7 @@ public class ChatActivity extends AppBaseActivity implements EMMessageListener {
                     @Override
                     public void run() {
                         mAdapter.setData(mMessageList);
-                        mMessagerecyclerview.smoothScrollToPosition(mMessageList.size()-1);
+                        mMessagerecyclerview.smoothScrollToPosition(mMessageList.size() - 1);
                     }
                 });
 
