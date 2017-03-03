@@ -22,11 +22,13 @@ import com.grandmagic.readingmate.adapter.MultiItemTypeAdapter;
 import com.grandmagic.readingmate.base.AppBaseActivity;
 import com.grandmagic.readingmate.utils.AutoUtils;
 import com.grandmagic.readingmate.utils.IMHelper;
+import com.hyphenate.EMCallBack;
 import com.hyphenate.EMMessageListener;
 import com.hyphenate.chat.EMClient;
 import com.hyphenate.chat.EMCmdMessageBody;
 import com.hyphenate.chat.EMConversation;
 import com.hyphenate.chat.EMMessage;
+import com.orhanobut.logger.Logger;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -116,6 +118,24 @@ public class ChatActivity extends AppBaseActivity implements EMMessageListener {
         mAdapter.setData(mMessageList);
         mEtInput.setText("");
         mMessagerecyclerview.smoothScrollToPosition(mMessageList.size() - 1);
+        mMessage.setMessageStatusCallback(new EMCallBack() {
+            @Override
+            public void onSuccess() {
+                Log.e(TAG, "setMessageStatusCallback  onSuccess: " );
+            }
+
+            @Override
+            public void onError(int mI, String mS) {
+                Logger.e( "setMessageStatusCallback  onError: " +mI+mS);
+
+            }
+
+            @Override
+            public void onProgress(int mI, String mS) {
+              Logger.e("setMessageStatusCallback  onProgress: "+mI+mS );
+
+            }
+        });
     }
 
     MultiItemTypeAdapter mAdapter;
@@ -145,7 +165,7 @@ public class ChatActivity extends AppBaseActivity implements EMMessageListener {
         final List<EMMessage> msgs = mConversation.getAllMessages();
         mMessageList.addAll(msgs);
         int msgCount = msgs != null ? msgs.size() : 0;
-        int pagesize = 20;
+        int pagesize = 20;//默认最左加载最近的20条。其他通过用户下拉刷新获取
         if (msgCount < mConversation.getAllMsgCount() && msgCount < pagesize) {
             String msgId = null;
             if (msgs != null && msgs.size() > 0) {
@@ -180,9 +200,9 @@ public class ChatActivity extends AppBaseActivity implements EMMessageListener {
      */
     @Override
     public void onMessageReceived(List<EMMessage> mList) {
+        Logger.d(mList);
         for (EMMessage msg : mList) {
             String username = null;
-            Log.e(TAG, "onMessageReceived: " + msg.toString());
             if (msg.getChatType() == EMMessage.ChatType.GroupChat ||
                     msg.getChatType() == EMMessage.ChatType.ChatRoom) {//如果不是单聊
                 username = msg.getTo();

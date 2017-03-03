@@ -5,6 +5,7 @@ import android.util.Log;
 
 import com.hyphenate.EMConnectionListener;
 import com.hyphenate.EMError;
+import com.orhanobut.logger.Logger;
 
 /**
  * Created by lps on 2017/3/2.
@@ -27,6 +28,6 @@ public class IMConnectionListener implements EMConnectionListener{
     @Override
     public void onDisconnected(int error) {
 
-        Log.e(TAG, "onDisconnected: "+error );
+        Logger.e("onDisconnected"+error);
     }
 }

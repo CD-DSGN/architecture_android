@@ -250,13 +250,19 @@ public class MainActivity extends AppBaseActivity {
         return mInstance;
     }
 
+    // FIXME: 2017/3/3 当还没创建chatFragment的时候无法刷新
+
    public void newMsg(){
        // TODO: 2017/3/2 更新新消息UI
        runOnUiThread(new Runnable() {
            @Override
            public void run() {
                Toast.makeText(MainActivity.this, "收到新的消息", Toast.LENGTH_SHORT).show();
-               ((ChatFragment) mFragments.get(ChatFragment.class.getName())).onrefreshConversation();
+               try {
+                   ((ChatFragment) mFragments.get(ChatFragment.class.getName())).onrefreshConversation();
+               } catch (Exception mE) {
+                   mE.printStackTrace();
+               }
            }
        });
    }

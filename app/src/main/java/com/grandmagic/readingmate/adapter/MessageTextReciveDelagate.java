@@ -9,6 +9,8 @@ import com.grandmagic.readingmate.bean.response.ChatMessage;
 import com.grandmagic.readingmate.utils.GlideRoundTransform;
 import com.grandmagic.readingmate.utils.ImageLoader;
 import com.hyphenate.chat.EMMessage;
+import com.hyphenate.chat.EMMessageBody;
+import com.hyphenate.chat.EMTextMessageBody;
 import com.zhy.adapter.recyclerview.base.ItemViewDelegate;
 import com.zhy.adapter.recyclerview.base.ViewHolder;
 
@@ -37,7 +39,8 @@ public class MessageTextReciveDelagate implements ItemViewDelegate<EMMessage> {
 
     @Override
     public void convert(ViewHolder holder, EMMessage mChatMessage, int position) {
-holder.setText(R.id.content,mChatMessage.getBody().toString());
+        EMTextMessageBody mBody = (EMTextMessageBody) mChatMessage.getBody();
+        holder.setText(R.id.content,mBody.getMessage());
     }
 
 

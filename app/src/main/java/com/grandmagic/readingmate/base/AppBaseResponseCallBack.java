@@ -9,6 +9,7 @@ import android.widget.Toast;
 
 import com.grandmagic.readingmate.activity.LoginActivity;
 import com.grandmagic.readingmate.consts.ApiErrorConsts;
+import com.orhanobut.logger.Logger;
 import com.tamic.novate.Novate;
 import com.tamic.novate.Throwable;
 
@@ -51,6 +52,7 @@ public abstract class AppBaseResponseCallBack<T> implements Novate.ResponseCallB
     @Override
     public void onError(Throwable e) {
         //        作统一错误处理
+        Logger.e(e.getMessage());
         dismissLoading();
         if (e != null) {
             if (e.getCode() != ApiErrorConsts.token_invalide) {

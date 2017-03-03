@@ -9,9 +9,15 @@ import android.content.Context;
 import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.media.AudioManager;
+import android.media.Ringtone;
+import android.media.RingtoneManager;
+import android.net.Uri;
+import android.os.Build;
 import android.os.Vibrator;
 import android.support.v4.app.NotificationCompat;
+import android.util.Log;
 
+import com.grandmagic.readingmate.utils.IMHelper;
 import com.hyphenate.chat.EMMessage;
 
 import java.util.List;
@@ -29,7 +35,10 @@ public class IMNotifier {
     private String packName;
     private AudioManager mAudioManager;
     private Vibrator mVibrator;
+    Ringtone mRingtone;
     private Context mAppContext;
+    private long lastNotifiyTime;//上次提示时间
+    private IMSettingsProvider mSettingsProvider;
 
     public void init(Context mAppContext) {
         mNotificationManager = (NotificationManager) mAppContext.getSystemService(Context.NOTIFICATION_SERVICE);
@@ -40,7 +49,12 @@ public class IMNotifier {
     }
 
     public void newMsg(EMMessage mMessage) {
+        mSettingsProvider = IMHelper.getInstance().getSettingsProvider();
+        if (!mSettingsProvider.isMsgNotifyAllowed(mMessage)) {
+            return;
+        }
         sendNotification(mMessage, isAppRunningForeground());
+        vibrateAndPlayTone(mMessage);
     }
 
     protected void sendNotification(EMMessage message, boolean isForeground) {
@@ -54,7 +68,8 @@ public class IMNotifier {
     /**
      * send it to notification bar
      * This can be override by subclass to provide customer implementation
-     *未完善
+     * 未完善
+     *
      * @param message
      */
     protected void sendNotification(EMMessage message, boolean isForeground, boolean numIncrease) {
@@ -108,6 +123,62 @@ public class IMNotifier {
         } catch (SecurityException mE) {
             mE.printStackTrace();
             return false;
+        }
+    }
+
+    private static final String TAG = "IMNotifier";
+
+    /**
+     * 声音和震动提示
+     *
+     * @param mMessage
+     */
+    public void vibrateAndPlayTone(EMMessage mMessage) {
+//        间隔时间小于一秒则不提示
+        if (System.currentTimeMillis() - lastNotifiyTime < 1 * 1000) {
+            return;
+        }
+        lastNotifiyTime = System.currentTimeMillis();
+        if (mAudioManager.getRingerMode() == AudioManager.RINGER_MODE_SILENT) {
+            Log.e(TAG, "vibrateAndPlayTone: 手机静音模式不提shi");
+            return;
+        }
+        if (mSettingsProvider.isMsgVibrateAllowed(mMessage)) {
+            long pattern[] = new long[]{0, 180, 80, 20};
+            mVibrator.vibrate(pattern, -1);
+        }
+        if (mSettingsProvider.isMsgSoundAllowed(mMessage)) {
+            if (mRingtone == null) {
+                Uri mDefaultUri = RingtoneManager.getDefaultUri(RingtoneManager.TYPE_NOTIFICATION);
+                mRingtone = RingtoneManager.getRingtone(mAppContext, mDefaultUri);
+                if (mRingtone == null) {
+                    Log.e(TAG, "vibrateAndPlayTone: 没找到提示文件");
+                    return;
+                }
+            }
+
+            if (!mRingtone.isPlaying()) {
+                String vendor = Build.MANUFACTURER;
+                mRingtone.play();
+                // for samsung S3, we meet a bug that the phone will
+                // continue ringtone without stop
+                // so add below special handler to stop it after 3s if
+                // needed
+                if (vendor != null && vendor.toLowerCase().contains("samsung")) {
+                    Thread ctlThread = new Thread() {
+                        public void run() {
+                            try {
+                                Thread.sleep(3000);
+                                if (mRingtone.isPlaying()) {
+                                    mRingtone.stop();
+                                }
+                            } catch (Exception e) {
+                            }
+                        }
+                    };
+                    ctlThread.run();
+                }
+            }
         }
     }
 }

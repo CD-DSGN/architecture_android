@@ -84,11 +84,18 @@
                 />
 </RelativeLayout>
         </RelativeLayout>
+        <cn.bingoogolapple.refreshlayout.BGARefreshLayout
+            android:id="@+id/refreshLayout"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent">
         <com.grandmagic.readingmate.view.SwipRecycleView
             android:id="@+id/recyclerview"
             android:layout_width="match_parent"
-            android:layout_height="match_parent">
+            android:layout_height="0dp"
+            android:layout_weight="1"
+            >
 
         </com.grandmagic.readingmate.view.SwipRecycleView>
+        </cn.bingoogolapple.refreshlayout.BGARefreshLayout>
     </LinearLayout>
 </LinearLayout>

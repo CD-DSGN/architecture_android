@@ -31,5 +31,13 @@
         android:textSize="28px"
         />
 
+    <ProgressBar
+        android:id="@+id/progress"
+        android:layout_width="30px"
+        android:layout_height="30px"
+        android:layout_centerVertical="true"
+        android:layout_toLeftOf="@+id/content"
+        android:visibility="gone"
 
+        />
 </RelativeLayout>

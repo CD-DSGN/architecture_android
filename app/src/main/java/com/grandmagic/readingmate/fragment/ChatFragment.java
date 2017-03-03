@@ -30,10 +30,13 @@ import java.util.Collections;
 import java.util.Comparator;
 import java.util.List;
 import java.util.Map;
+import java.util.logging.Logger;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
+import cn.bingoogolapple.refreshlayout.BGARefreshLayout;
+import cn.bingoogolapple.refreshlayout.BGAStickinessRefreshViewHolder;
 
 /**
  * A simple {@link Fragment} subclass.
@@ -49,6 +52,8 @@ public class ChatFragment extends AppBaseFragment {
     RelativeLayout mRelaFriend;
     @BindView(R.id.recyclerview)
     SwipRecycleView mRecyclerview;//最近会话列表
+    @BindView(R.id.refreshLayout)
+    BGARefreshLayout mRefreshLayout;
 
 
     @Override
@@ -68,10 +73,31 @@ public class ChatFragment extends AppBaseFragment {
     private void initview() {
         mContext = getActivity();
         mRecyclerview.setLayoutManager(new LinearLayoutManager(mContext));
-         mConversations = loadAllConversation();
+        mConversations = loadAllConversation();
         mAdapter = new MultiItemTypeAdapter(mContext, mConversations);//为了以后也许会加入群组会话等，使用MultiItemTypeAdapter，便于扩展
         mAdapter.addItemViewDelegate(new RecentConversationDelagate(mContext));
         mRecyclerview.setAdapter(mAdapter);
+        initrefreshlayout();
+    }
+
+    private void initrefreshlayout() {
+        BGAStickinessRefreshViewHolder mRefreshViewHolder = new BGAStickinessRefreshViewHolder(mContext, false);
+        mRefreshViewHolder.setStickinessColor(R.color.colorAccent);
+        mRefreshViewHolder.setRotateImage(R.drawable.bga_refresh_stickiness);
+//        mRefreshLayout.offsetTopAndBottom(88);
+        mRefreshLayout.setRefreshViewHolder(mRefreshViewHolder);
+        mRefreshLayout.setDelegate(new BGARefreshLayout.BGARefreshLayoutDelegate() {
+            @Override
+            public void onBGARefreshLayoutBeginRefreshing(BGARefreshLayout refreshLayout) {
+                onrefreshConversation();
+                mRefreshLayout.endRefreshing();
+            }
+
+            @Override
+            public boolean onBGARefreshLayoutBeginLoadingMore(BGARefreshLayout refreshLayout) {
+                return false;
+            }
+        });
     }
 
     /**
@@ -102,6 +128,7 @@ public class ChatFragment extends AppBaseFragment {
         for (Pair<Long, EMConversation> sortItem : sortList) {
             list.add(sortItem.second);
         }
+        com.orhanobut.logger.Logger.d(list);
         return list;
     }
 
@@ -142,8 +169,8 @@ public class ChatFragment extends AppBaseFragment {
     /**
      * 收到新消息时候刷新
      */
-    public void onrefreshConversation(){
-        mConversations=loadAllConversation();
+    public void onrefreshConversation() {
+        mConversations = loadAllConversation();
         mAdapter.setData(mConversations);
     }
 }
