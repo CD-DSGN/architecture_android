@@ -16,7 +16,9 @@ import android.widget.TextView;
 
 import com.grandmagic.readingmate.R;
 import com.grandmagic.readingmate.activity.AddFriendActivity;
+import com.grandmagic.readingmate.activity.ChatActivity;
 import com.grandmagic.readingmate.activity.FriendActivity;
+import com.grandmagic.readingmate.activity.MainActivity;
 import com.grandmagic.readingmate.adapter.MultiItemTypeAdapter;
 import com.grandmagic.readingmate.adapter.RecentConversationDelagate;
 import com.grandmagic.readingmate.base.AppBaseFragment;
@@ -24,6 +26,7 @@ import com.grandmagic.readingmate.utils.AutoUtils;
 import com.grandmagic.readingmate.view.SwipRecycleView;
 import com.hyphenate.chat.EMClient;
 import com.hyphenate.chat.EMConversation;
+import com.hyphenate.chat.EMMessage;
 
 import java.util.ArrayList;
 import java.util.Collections;
@@ -41,7 +44,7 @@ import cn.bingoogolapple.refreshlayout.BGAStickinessRefreshViewHolder;
 /**
  * A simple {@link Fragment} subclass.
  */
-public class ChatFragment extends AppBaseFragment {
+public class ChatFragment extends AppBaseFragment implements RecentConversationDelagate.RecentConversationListener {
     public static final int REQUEST_READMSG = 1;
     Context mContext;
     @BindView(R.id.tv_friend)
@@ -75,7 +78,9 @@ public class ChatFragment extends AppBaseFragment {
         mRecyclerview.setLayoutManager(new LinearLayoutManager(mContext));
         mConversations = loadAllConversation();
         mAdapter = new MultiItemTypeAdapter(mContext, mConversations);//为了以后也许会加入群组会话等，使用MultiItemTypeAdapter，便于扩展
-        mAdapter.addItemViewDelegate(new RecentConversationDelagate(mContext));
+        RecentConversationDelagate mRecentConversationDelagate = new RecentConversationDelagate(mContext);
+        mRecentConversationDelagate.setRecentConversationListener(this);
+        mAdapter.addItemViewDelegate(mRecentConversationDelagate);
         mRecyclerview.setAdapter(mAdapter);
         initrefreshlayout();
     }
@@ -181,4 +186,28 @@ public class ChatFragment extends AppBaseFragment {
 // TODO: 2017/3/3 处理点击
         }
     }
+
+    /**
+     * 侧滑删除会话
+     *
+     * @param username 环信那边的username
+     */
+    @Override
+    public void delete(String username) {
+        //删除和某个user会话，如果需要保留聊天记录，传false
+        EMClient.getInstance().chatManager().deleteConversation(username, false);
+        onrefreshConversation();
+    }
+
+    @Override
+    public void onitemclick(EMMessage mLastMessage, String mFinalUsername, int position) {
+
+        Intent mIntent = new Intent(mContext, ChatActivity.class);
+        mIntent.putExtra(ChatActivity.CHAT_IM_NAME, mLastMessage.getFrom());
+        mIntent.putExtra(ChatActivity.CHAT_NAME, mFinalUsername);
+        mConversations.get(position).markAllMessagesAsRead();
+        onrefreshConversation();
+        ((MainActivity) mContext).startActivityForResult(mIntent, REQUEST_READMSG);
+    }
+
 }

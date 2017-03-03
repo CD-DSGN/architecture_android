@@ -44,7 +44,7 @@ public class RecentConversationDelagate implements ItemViewDelegate<EMConversati
     }
 
     @Override
-    public void convert(ViewHolder holder, final EMConversation data, int position) {
+    public void convert(ViewHolder holder, final EMConversation data, final int position) {
         //显示当前会话的未读的消息数量
         int mUnreadMsgCount = data.getUnreadMsgCount();
         holder.setVisible(R.id.unread,mUnreadMsgCount>0);
@@ -61,7 +61,7 @@ public class RecentConversationDelagate implements ItemViewDelegate<EMConversati
             }
             imNname = mLastMessage.direct() == EMMessage.Direct.RECEIVE ? mLastMessage.getFrom() : mLastMessage.getTo();
             //从本地获取联系人信息
-            Contacts mUserInfo = IMHelper.getInstance().getUserInfo(imNname);
+            final Contacts mUserInfo = IMHelper.getInstance().getUserInfo(imNname);
 
             if (mUserInfo != null) {
                 ImageLoader.loadCircleImage(mContext,
@@ -74,12 +74,31 @@ public class RecentConversationDelagate implements ItemViewDelegate<EMConversati
             holder.getConvertView().setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
-                    Intent mIntent = new Intent(mContext, ChatActivity.class);
-                    mIntent.putExtra(ChatActivity.CHAT_IM_NAME, mLastMessage.getFrom());
-                    mIntent.putExtra(ChatActivity.CHAT_NAME, finalUsername);
-                    ((MainActivity)mContext).startActivityForResult(mIntent, ChatFragment.REQUEST_READMSG);
+                    mRecentConversationListener.onitemclick(mLastMessage, finalUsername,position);
+                }
+            });
+            holder.setOnClickListener(R.id.delete, new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    if (mUserInfo!=null){
+                        mRecentConversationListener.delete(mUserInfo.getUser_id()+"");
+                    }
                 }
             });
         }
+    }
+
+
+
+
+    RecentConversationListener mRecentConversationListener;
+
+    public void setRecentConversationListener(RecentConversationListener mRecentConversationListener) {
+        this.mRecentConversationListener = mRecentConversationListener;
+    }
+
+    public interface RecentConversationListener {
+        void delete(String username);
+        void onitemclick(EMMessage mLastMessage, String mFinalUsername,int position);
     }
 }
