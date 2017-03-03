@@ -2,6 +2,7 @@ package com.grandmagic.readingmate.activity;
 
 import android.content.Context;
 import android.content.Intent;
+import android.database.sqlite.SQLiteDatabase;
 import android.graphics.Color;
 import android.os.Bundle;
 import android.support.v7.widget.LinearLayoutManager;
@@ -21,6 +22,8 @@ import com.grandmagic.readingmate.base.AppBaseActivity;
 import com.grandmagic.readingmate.base.AppBaseResponseCallBack;
 import com.grandmagic.readingmate.bean.response.Contacts;
 import com.grandmagic.readingmate.bean.response.DataBean;
+import com.grandmagic.readingmate.db.DaoMaster;
+import com.grandmagic.readingmate.db.DaoSession;
 import com.grandmagic.readingmate.model.ContactModel;
 import com.grandmagic.readingmate.utils.AutoUtils;
 import com.grandmagic.readingmate.view.IndexBar;
@@ -97,6 +100,9 @@ public class FriendActivity extends AppBaseActivity {
      * 生成adapter需要的list
      */
     private void initadapterData() {
+        DaoMaster.DevOpenHelper mDevOpenHelper = new DaoMaster.DevOpenHelper(this, "contacts-db", null);
+        SQLiteDatabase db = mDevOpenHelper.getWritableDatabase();
+        DaoMaster mDaoMaster = new DaoMaster(db);
         mAdapterData.add(new Contacts(Contacts.TYPE.TYPE_NEWFRIEND));//新朋友的头部
         for (int i = 0; i < mLetters.size(); i++) {
             String letter = mLetters.get(i);
@@ -104,10 +110,14 @@ public class FriendActivity extends AppBaseActivity {
             Contacts mContacts = new Contacts(Contacts.TYPE.TYPE_LETTER, letter);//字母
             mAdapterData.add(mContacts);
             for (int j = 0; j < mSouseDatas.size(); j++) {
-                if (letter.equals(mSouseDatas.get(j).getLetter()))
-                    mAdapterData.add(new Contacts(Contacts.TYPE.TYPE_FRIEND,mSouseDatas.get(j).getUser_id(),
+                if (letter.equals(mSouseDatas.get(j).getLetter())) {
+                    Contacts mContacts1 = new Contacts(Contacts.TYPE.TYPE_FRIEND, mSouseDatas.get(j).getUser_id(),
                             mSouseDatas.get(j).getUser_name(),
-                            mSouseDatas.get(j).getAvatar_native() ));
+                            mSouseDatas.get(j).getAvatar_native());
+                    DaoSession mDaoSession = mDaoMaster.newSession();
+                    mDaoSession.insertOrReplace(mContacts1);
+                    mAdapterData.add(mContacts1);
+                }
             }
         }
         mAdapter.setData(mAdapterData);
@@ -122,11 +132,11 @@ public class FriendActivity extends AppBaseActivity {
             Contacts data = mSouseDatas.get(i);
             StringBuilder pySb = new StringBuilder();
             String dataName = data.getUser_name();
-            for (int j = 0; dataName!=null&&j < dataName.length(); j++) {
+            for (int j = 0; dataName != null && j < dataName.length(); j++) {
                 pySb.append(Pinyin.toPinyin(dataName.charAt(j)));
             }
             data.setPyName(pySb.toString());//转化后的拼音
-            String letter = pySb.length()>0?pySb.substring(0, 1):"#";//首字母
+            String letter = pySb.length() > 0 ? pySb.substring(0, 1) : "#";//首字母
             if (letter.matches("[A-Z]")) {
                 data.setLetter(letter);
             } else {
@@ -164,7 +174,7 @@ public class FriendActivity extends AppBaseActivity {
             @Override
             public void onSuccee(NovateResponse<List<Contacts>> response) {
                 List<Contacts> mData = response.getData();
-              mSouseDatas.addAll(mData);
+                mSouseDatas.addAll(mData);
                 initsouseData();
                 initadapterData();
             }

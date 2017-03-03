@@ -2,12 +2,22 @@ package com.grandmagic.readingmate.bean.response;
 
 import com.tamic.novate.util.Environment;
 
+import org.greenrobot.greendao.annotation.Entity;
+import org.greenrobot.greendao.annotation.Id;
+import org.greenrobot.greendao.annotation.ToOne;
+import org.greenrobot.greendao.annotation.Transient;
+import org.greenrobot.greendao.annotation.Generated;
+import org.greenrobot.greendao.annotation.Unique;
+
 /**
  * Created by lps on 2017/2/21.
  * 通讯录的好友列表
  */
-
+@Entity
 public class Contacts {
+    @Id
+    Long id;
+    @Transient
     private TYPE type;
 
 
@@ -16,7 +26,7 @@ public class Contacts {
         TYPE_NEWFRIEND,//新朋友的头部
         TYPE_FRIEND//普通的好友
     }
-
+@Unique
     private int user_id;
     private String avatar_native;
     private String user_name;
@@ -24,6 +34,8 @@ public class Contacts {
     private String letter;//首字母
     private String pyName;
 
+    public Contacts() {
+    }
 
     public Contacts(TYPE mTypeFriend, String mUser_name, String mAvatar_native) {
         this.type = mTypeFriend;
@@ -72,7 +84,7 @@ public class Contacts {
     }
 
     public String getAvatar_native() {
-        return Environment.BASEULR_PRODUCTION +avatar_native;
+        return avatar_native;
     }
 
     public void setAvatar_native(String mAvatar_native) {
@@ -101,6 +113,18 @@ public class Contacts {
         type = mType;
     }
 
+    @Generated(hash = 1100261463)
+    public Contacts(Long id, int user_id, String avatar_native, String user_name, boolean needline,
+            String letter, String pyName) {
+        this.id = id;
+        this.user_id = user_id;
+        this.avatar_native = avatar_native;
+        this.user_name = user_name;
+        this.needline = needline;
+        this.letter = letter;
+        this.pyName = pyName;
+    }
+
 
     public TYPE getType() {
         return type;
@@ -119,5 +143,17 @@ public class Contacts {
                 ", user_name='" + user_name + '\'' +
                 ", needline=" + needline +
                 '}';
+    }
+
+    public Long getId() {
+        return this.id;
+    }
+
+    public void setId(Long id) {
+        this.id = id;
+    }
+
+    public boolean getNeedline() {
+        return this.needline;
     }
 }

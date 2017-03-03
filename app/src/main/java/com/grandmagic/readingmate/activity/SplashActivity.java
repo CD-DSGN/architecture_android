@@ -1,21 +1,32 @@
 package com.grandmagic.readingmate.activity;
 
 import android.content.Intent;
+import android.database.sqlite.SQLiteDatabase;
 import android.os.Bundle;
+import android.util.Log;
 import android.widget.Toast;
 
 import com.grandmagic.readingmate.R;
 import com.grandmagic.readingmate.base.AppBaseActivity;
+import com.grandmagic.readingmate.base.AppBaseResponseCallBack;
+import com.grandmagic.readingmate.bean.response.Contacts;
+import com.grandmagic.readingmate.db.DaoMaster;
+import com.grandmagic.readingmate.db.DaoSession;
+import com.grandmagic.readingmate.model.ContactModel;
 import com.grandmagic.readingmate.utils.AutoUtils;
 import com.grandmagic.readingmate.utils.SPUtils;
+import com.orhanobut.logger.Logger;
+import com.tamic.novate.NovateResponse;
+
+import java.util.List;
 
 //启动页面
 public class SplashActivity extends AppBaseActivity {
-
+    private static final String TAG = "SplashActivity";
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        AutoUtils.setSize(this,false,750,1334);
+        AutoUtils.setSize(this, false, 750, 1334);
         setContentView(R.layout.activity_splash);
         initview();
         checkfrist();
@@ -43,11 +54,29 @@ public class SplashActivity extends AppBaseActivity {
     private void checklogin() {
         boolean mLogin = SPUtils.getInstance().isLogin(this);
         if (mLogin) {
-            startActivity(new Intent(SplashActivity.this, MainActivity.class));
+//            保存一份联系人信息
+            new ContactModel(this).getAllFriendFromServer(new AppBaseResponseCallBack<NovateResponse<List<Contacts>>>(this) {
+                @Override
+                public void onSuccee(NovateResponse<List<Contacts>> response) {
+                    List<Contacts> mData = response.getData();
+                    DaoMaster.DevOpenHelper mDevOpenHelper = new DaoMaster.DevOpenHelper(SplashActivity.this,"contacts-db",null);
+                    SQLiteDatabase db = mDevOpenHelper.getWritableDatabase();
+                    DaoMaster mDaoMaster = new DaoMaster(db);
+                    DaoSession mDaoSession = mDaoMaster.newSession();
+                    for (Contacts mContacts : mData) {
+                        mDaoSession.insertOrReplace(mContacts);
+                        Logger.e(mContacts.toString());
+                    }
+                    startActivity(new Intent(SplashActivity.this, MainActivity.class));
+                    finish();
+                }
+            });
         } else {
             startActivity(new Intent(SplashActivity.this, LoginActivity.class));
+            finish();
+
         }
-        finish();
+
     }
 
     private void initview() {
