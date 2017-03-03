@@ -12,9 +12,8 @@ import com.orhanobut.logger.Logger;
  * 链接状态监听
  */
 
-public class IMConnectionListener implements EMConnectionListener{
+public class IMConnectionListener implements EMConnectionListener {
     private Context mContext;
-    private static final String TAG = "IMConnectionListener";
 
     public IMConnectionListener(Context mContext) {
         this.mContext = mContext;
@@ -22,12 +21,12 @@ public class IMConnectionListener implements EMConnectionListener{
 
     @Override
     public void onConnected() {
-
+        Logger.e("onConnected");
     }
 
     @Override
     public void onDisconnected(int error) {
 
-        Logger.e("onDisconnected"+error);
+        Logger.e("onDisconnected" + error);
     }
 }

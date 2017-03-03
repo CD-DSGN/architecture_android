@@ -31,6 +31,7 @@ import com.grandmagic.readingmate.utils.SPUtils;
 import com.grandmagic.readingmate.utils.UpdateManager;
 import com.hyphenate.EMCallBack;
 import com.hyphenate.chat.EMClient;
+import com.orhanobut.logger.Logger;
 import com.tbruyelle.rxpermissions.RxPermissions;
 
 import java.util.HashMap;
@@ -107,7 +108,7 @@ public class MainActivity extends AppBaseActivity {
             public void onSuccess() {
                 EMClient.getInstance().groupManager().loadAllGroups();
                 EMClient.getInstance().chatManager().loadAllConversations();
-                Log.d("main", "登录聊天服务器成功！");
+                Logger.e( "登录聊天服务器成功！");
             }
 
             @Override
@@ -117,7 +118,7 @@ public class MainActivity extends AppBaseActivity {
 
             @Override
             public void onError(int code, String message) {
-                Log.d("main", "登录聊天服务器失败！" + code + message);
+                Logger.e("登录聊天服务器失败！" + code + message);
             }
         });
 

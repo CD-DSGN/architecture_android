@@ -30,6 +30,7 @@ import com.grandmagic.readingmate.view.IndexBar;
 import com.grandmagic.readingmate.view.SwipRecycleView;
 import com.hyphenate.chat.EMClient;
 import com.hyphenate.exceptions.HyphenateException;
+import com.orhanobut.logger.Logger;
 import com.tamic.novate.NovateResponse;
 
 import java.util.ArrayList;
@@ -120,6 +121,7 @@ public class FriendActivity extends AppBaseActivity {
                 }
             }
         }
+        Logger.e("更新好友列表");
         mAdapter.setData(mAdapterData);
     }
 

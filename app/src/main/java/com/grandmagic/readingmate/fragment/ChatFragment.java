@@ -42,7 +42,7 @@ import cn.bingoogolapple.refreshlayout.BGAStickinessRefreshViewHolder;
  * A simple {@link Fragment} subclass.
  */
 public class ChatFragment extends AppBaseFragment {
-
+    public static final int REQUEST_READMSG = 1;
     Context mContext;
     @BindView(R.id.tv_friend)
     TextView mTvFriend;
@@ -172,5 +172,13 @@ public class ChatFragment extends AppBaseFragment {
     public void onrefreshConversation() {
         mConversations = loadAllConversation();
         mAdapter.setData(mConversations);
+    }
+
+    @Override
+    public void onActivityResult(int requestCode, int resultCode, Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+        if (requestCode == REQUEST_READMSG) {
+// TODO: 2017/3/3 处理点击
+        }
     }
 }

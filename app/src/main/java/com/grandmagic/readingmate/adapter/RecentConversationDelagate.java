@@ -2,27 +2,26 @@ package com.grandmagic.readingmate.adapter;
 
 import android.content.Context;
 import android.content.Intent;
-import android.util.Log;
 import android.view.View;
 import android.widget.ImageView;
-import android.widget.Toast;
 
-import com.bumptech.glide.Glide;
 import com.grandmagic.readingmate.R;
 import com.grandmagic.readingmate.activity.ChatActivity;
+import com.grandmagic.readingmate.activity.MainActivity;
 import com.grandmagic.readingmate.bean.response.Contacts;
-import com.grandmagic.readingmate.bean.response.RecentConversation;
-import com.grandmagic.readingmate.utils.GlideRoundTransform;
+import com.grandmagic.readingmate.fragment.ChatFragment;
 import com.grandmagic.readingmate.utils.IMHelper;
 import com.grandmagic.readingmate.utils.ImageLoader;
 import com.hyphenate.chat.EMConversation;
 import com.hyphenate.chat.EMMessage;
+import com.hyphenate.chat.EMTextMessageBody;
 import com.tamic.novate.util.Environment;
 import com.zhy.adapter.recyclerview.base.ItemViewDelegate;
 import com.zhy.adapter.recyclerview.base.ViewHolder;
 
 /**
  * Created by lps on 2017/2/22.
+ * 最近会话列表的处理
  */
 
 public class RecentConversationDelagate implements ItemViewDelegate<EMConversation> {
@@ -46,13 +45,22 @@ public class RecentConversationDelagate implements ItemViewDelegate<EMConversati
 
     @Override
     public void convert(ViewHolder holder, final EMConversation data, int position) {
-        // TODO: 2017/3/2 最近会话
-        holder.setText(R.id.readnum, data.getUnreadMsgCount() + "");
+        //显示当前会话的未读的消息数量
+        int mUnreadMsgCount = data.getUnreadMsgCount();
+        holder.setVisible(R.id.unread,mUnreadMsgCount>0);
+        holder.setText(R.id.unread, mUnreadMsgCount + "");
         String imNname = null;
         if (data.getAllMsgCount() > 0) {
             final EMMessage mLastMessage = data.getLastMessage();
-            holder.setText(R.id.content, mLastMessage.getBody().toString());
+            if (mLastMessage.getType()== EMMessage.Type.TXT){
+                holder.setText(R.id.content, ((EMTextMessageBody)mLastMessage.getBody()).getMessage());
+            }else if (mLastMessage.getType()== EMMessage.Type.IMAGE){
+                holder.setText(R.id.content,"[图片]");
+            }else if (mLastMessage.getType()== EMMessage.Type.VOICE){
+                holder.setText(R.id.content,"[语音]");
+            }
             imNname = mLastMessage.direct() == EMMessage.Direct.RECEIVE ? mLastMessage.getFrom() : mLastMessage.getTo();
+            //从本地获取联系人信息
             Contacts mUserInfo = IMHelper.getInstance().getUserInfo(imNname);
 
             if (mUserInfo != null) {
@@ -69,8 +77,7 @@ public class RecentConversationDelagate implements ItemViewDelegate<EMConversati
                     Intent mIntent = new Intent(mContext, ChatActivity.class);
                     mIntent.putExtra(ChatActivity.CHAT_IM_NAME, mLastMessage.getFrom());
                     mIntent.putExtra(ChatActivity.CHAT_NAME, finalUsername);
-                    mContext.startActivity(mIntent);
-
+                    ((MainActivity)mContext).startActivityForResult(mIntent, ChatFragment.REQUEST_READMSG);
                 }
             });
         }
