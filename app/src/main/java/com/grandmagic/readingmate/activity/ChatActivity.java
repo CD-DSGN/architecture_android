@@ -9,15 +9,12 @@ import android.view.View;
 import android.view.inputmethod.EditorInfo;
 import android.widget.EditText;
 import android.widget.ImageView;
-import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import com.grandmagic.readingmate.R;
-import com.grandmagic.readingmate.adapter.MessageIMGReciveDelagate;
-import com.grandmagic.readingmate.adapter.MessageIMGSendDelagate;
-import com.grandmagic.readingmate.adapter.MessageTextSendDelagate;
-import com.grandmagic.readingmate.adapter.MessageTextReciveDelagate;
+import com.grandmagic.readingmate.adapter.MessageIMGDelagate;
+import com.grandmagic.readingmate.adapter.MessageTextDelagate;
 import com.grandmagic.readingmate.adapter.MultiItemTypeAdapter;
 import com.grandmagic.readingmate.base.AppBaseActivity;
 import com.grandmagic.readingmate.utils.AutoUtils;
@@ -25,7 +22,6 @@ import com.grandmagic.readingmate.utils.IMHelper;
 import com.hyphenate.EMCallBack;
 import com.hyphenate.EMMessageListener;
 import com.hyphenate.chat.EMClient;
-import com.hyphenate.chat.EMCmdMessageBody;
 import com.hyphenate.chat.EMConversation;
 import com.hyphenate.chat.EMMessage;
 import com.orhanobut.logger.Logger;
@@ -148,10 +144,8 @@ public class ChatActivity extends AppBaseActivity implements EMMessageListener {
         toChatUserName = getIntent().getStringExtra(CHAT_IM_NAME);
         mMessagerecyclerview.setLayoutManager(new LinearLayoutManager(this));
         mAdapter = new MultiItemTypeAdapter(this, mMessageList);
-        mAdapter.addItemViewDelegate(new MessageTextReciveDelagate(this));
-        mAdapter.addItemViewDelegate(new MessageTextSendDelagate(this));
-        mAdapter.addItemViewDelegate(new MessageIMGSendDelagate(this));
-        mAdapter.addItemViewDelegate(new MessageIMGReciveDelagate(this));
+        mAdapter.addItemViewDelegate(new MessageTextDelagate(this));
+        mAdapter.addItemViewDelegate(new MessageIMGDelagate(this));
         mMessagerecyclerview.setAdapter(mAdapter);
         conversationInit();
     }

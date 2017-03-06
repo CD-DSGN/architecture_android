@@ -52,6 +52,7 @@ public class RecentConversationDelagate implements ItemViewDelegate<EMConversati
         String imNname = null;
         if (data.getAllMsgCount() > 0) {
             final EMMessage mLastMessage = data.getLastMessage();
+
             if (mLastMessage.getType()== EMMessage.Type.TXT){
                 holder.setText(R.id.content, ((EMTextMessageBody)mLastMessage.getBody()).getMessage());
             }else if (mLastMessage.getType()== EMMessage.Type.IMAGE){
@@ -68,7 +69,7 @@ public class RecentConversationDelagate implements ItemViewDelegate<EMConversati
                         Environment.BASEULR_PRODUCTION+mUserInfo.getAvatar_native(),
                         (ImageView) holder.getView(R.id.avatar)
                 );
-                holder.setText(R.id.name, mUserInfo.getUser_name()==null?mUserInfo.getUser_id()+"":mUserInfo.getUser_name());
+                holder.setText(R.id.name,mUserInfo.getUser_name()==null?mUserInfo.getUser_id()+"":mUserInfo.getUser_name());
             }
             final String finalUsername =mUserInfo==null?"": mUserInfo.getUser_name();
             holder.getConvertView().setOnClickListener(new View.OnClickListener() {

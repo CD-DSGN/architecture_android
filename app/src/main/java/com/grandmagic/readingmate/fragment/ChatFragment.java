@@ -203,8 +203,10 @@ public class ChatFragment extends AppBaseFragment implements RecentConversationD
     public void onitemclick(EMMessage mLastMessage, String mFinalUsername, int position) {
 
         Intent mIntent = new Intent(mContext, ChatActivity.class);
-        mIntent.putExtra(ChatActivity.CHAT_IM_NAME, mLastMessage.getFrom());
-        mIntent.putExtra(ChatActivity.CHAT_NAME, mFinalUsername);
+        mIntent.putExtra(ChatActivity.CHAT_IM_NAME, mLastMessage.direct()== EMMessage.Direct.RECEIVE?
+                mLastMessage.getFrom():mLastMessage.getTo());
+        mIntent.putExtra(ChatActivity.CHAT_NAME,  mLastMessage.direct()== EMMessage.Direct.RECEIVE?
+                mLastMessage.getFrom():mLastMessage.getTo());
         mConversations.get(position).markAllMessagesAsRead();
         onrefreshConversation();
         ((MainActivity) mContext).startActivityForResult(mIntent, REQUEST_READMSG);
