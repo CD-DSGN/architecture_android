@@ -13,4 +13,5 @@ public class ApiInterface {
     public  static final String  LOGOUT = "logout/exit"; //退出账户
     public  static final String  FEEDBACK = "suggest/useradvise"; //用户反馈
     public  static final String  SHOWFRIEND = "friendinfo/showfriend"; //获取好友列表
+    public  static final String  SEARCH_USER = "friendinfo/searchuser"; //查找用户
 }

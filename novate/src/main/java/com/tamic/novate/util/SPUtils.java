@@ -1,4 +1,4 @@
-package com.grandmagic.readingmate.utils;
+package com.tamic.novate.util;
 
 
 import android.content.Context;

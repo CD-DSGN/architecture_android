@@ -5,10 +5,10 @@ import android.animation.ObjectAnimator;
 import android.app.Fragment;
 import android.app.FragmentManager;
 import android.content.Intent;
+import android.database.sqlite.SQLiteDatabase;
 import android.graphics.Color;
 import android.os.Bundle;
 import android.text.TextUtils;
-import android.util.Log;
 import android.view.View;
 import android.widget.FrameLayout;
 import android.widget.ImageView;
@@ -19,15 +19,22 @@ import android.widget.Toast;
 
 import com.grandmagic.readingmate.R;
 import com.grandmagic.readingmate.base.AppBaseActivity;
+import com.grandmagic.readingmate.base.AppBaseResponseCallBack;
+import com.grandmagic.readingmate.bean.response.Contacts;
+import com.grandmagic.readingmate.bean.response.SearchUserResponse;
+import com.grandmagic.readingmate.db.DaoMaster;
+import com.grandmagic.readingmate.db.DaoSession;
 import com.grandmagic.readingmate.fragment.ChatFragment;
 import com.grandmagic.readingmate.fragment.HomeFragment;
 import com.grandmagic.readingmate.fragment.PersonalFragment;
 import com.grandmagic.readingmate.fragment.SearchFragment;
 import com.grandmagic.readingmate.listener.IMMessageListenerMain;
+import com.grandmagic.readingmate.model.SearchUserModel;
 import com.grandmagic.readingmate.utils.AutoUtils;
 import com.grandmagic.readingmate.utils.IMHelper;
 import com.grandmagic.readingmate.utils.KitUtils;
-import com.grandmagic.readingmate.utils.SPUtils;
+import com.tamic.novate.NovateResponse;
+import com.tamic.novate.util.SPUtils;
 import com.grandmagic.readingmate.utils.UpdateManager;
 import com.hyphenate.EMCallBack;
 import com.hyphenate.chat.EMClient;
@@ -35,6 +42,7 @@ import com.orhanobut.logger.Logger;
 import com.tbruyelle.rxpermissions.RxPermissions;
 
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 import butterknife.BindView;
@@ -93,6 +101,31 @@ public class MainActivity extends AppBaseActivity {
             }
         });
         initIM();
+        initSelfInfo();
+    }
+
+    /**
+     * 获取自己在环信的信息
+     */
+    private void initSelfInfo() {
+new SearchUserModel(this).searchUser(SPUtils.getInstance().getString(this, SPUtils.INFO_NAME), new AppBaseResponseCallBack<NovateResponse<SearchUserResponse>>(this) {
+    @Override
+    public void onSuccee(NovateResponse<SearchUserResponse> response) {
+       SearchUserResponse responseData = response.getData();
+        if (responseData != null) {
+
+            Contacts mContacts=new Contacts();
+            mContacts.setAvatar_native(responseData.getAvatar_native());
+            mContacts.setUser_id(Integer.valueOf(responseData.getUser_id()));
+            mContacts.setUser_name(responseData.getUser_name());
+            DaoMaster.DevOpenHelper mDevOpenHelper=new DaoMaster.DevOpenHelper(MainActivity.this,"contacts.db",null);
+            SQLiteDatabase db = mDevOpenHelper.getWritableDatabase();
+            DaoMaster mDaoMaster = new DaoMaster(db);
+            DaoSession mDaoSession = mDaoMaster.newSession();
+            mDaoSession.insertOrReplace(mContacts);
+        }
+    }
+});
     }
 
     private void initIM() {

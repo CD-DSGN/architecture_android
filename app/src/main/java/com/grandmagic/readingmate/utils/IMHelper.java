@@ -67,7 +67,7 @@ public class IMHelper {
      * @return
      */
     public Contacts getUserInfo(String mUsernam) {
-        DaoMaster.DevOpenHelper mDevOpenHelper = new DaoMaster.DevOpenHelper(mAppContext, "contacts-db", null);
+        DaoMaster.DevOpenHelper mDevOpenHelper = new DaoMaster.DevOpenHelper(mAppContext, "contacts.db", null);
         SQLiteDatabase db = mDevOpenHelper.getWritableDatabase();
         DaoMaster mDaoMaster = new DaoMaster(db);
         DaoSession mDaoSession = mDaoMaster.newSession();

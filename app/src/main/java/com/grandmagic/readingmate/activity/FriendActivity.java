@@ -101,7 +101,7 @@ public class FriendActivity extends AppBaseActivity {
      * 生成adapter需要的list
      */
     private void initadapterData() {
-        DaoMaster.DevOpenHelper mDevOpenHelper = new DaoMaster.DevOpenHelper(this, "contacts-db", null);
+        DaoMaster.DevOpenHelper mDevOpenHelper = new DaoMaster.DevOpenHelper(this, "contacts.db", null);
         SQLiteDatabase db = mDevOpenHelper.getWritableDatabase();
         DaoMaster mDaoMaster = new DaoMaster(db);
         mAdapterData.add(new Contacts(Contacts.TYPE.TYPE_NEWFRIEND));//新朋友的头部

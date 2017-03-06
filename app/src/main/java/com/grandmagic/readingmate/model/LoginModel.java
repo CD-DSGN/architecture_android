@@ -11,7 +11,7 @@ import com.grandmagic.readingmate.base.AppBaseResponseCallBack;
 import com.grandmagic.readingmate.bean.request.LoginRequestBean;
 import com.grandmagic.readingmate.consts.ApiInterface;
 import com.grandmagic.readingmate.utils.KitUtils;
-import com.grandmagic.readingmate.utils.SPUtils;
+import com.tamic.novate.util.SPUtils;
 import com.grandmagic.readingmate.utils.ViewUtils;
 import com.tamic.novate.Novate;
 

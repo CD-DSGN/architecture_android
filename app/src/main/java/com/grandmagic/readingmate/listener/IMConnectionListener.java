@@ -2,6 +2,7 @@ package com.grandmagic.readingmate.listener;
 
 import android.content.Context;
 import android.util.Log;
+import android.widget.Toast;
 
 import com.hyphenate.EMConnectionListener;
 import com.hyphenate.EMError;

@@ -24,14 +24,13 @@ import com.grandmagic.readingmate.base.AppBaseResponseCallBack;
 import com.grandmagic.readingmate.bean.request.LoginRequestBean;
 import com.grandmagic.readingmate.bean.request.RegisterRequestBean;
 import com.grandmagic.readingmate.bean.response.LoginResponseBean;
-import com.grandmagic.readingmate.bean.response.RegisterResponseBean;
 import com.grandmagic.readingmate.model.LoginModel;
 import com.grandmagic.readingmate.model.RegisterModel;
 import com.grandmagic.readingmate.model.VerifyModel;
 import com.grandmagic.readingmate.utils.AutoUtils;
 import com.grandmagic.readingmate.utils.DensityUtil;
 import com.grandmagic.readingmate.utils.KitUtils;
-import com.grandmagic.readingmate.utils.SPUtils;
+import com.tamic.novate.util.SPUtils;
 import com.grandmagic.readingmate.utils.ViewUtils;
 import com.tamic.novate.NovateResponse;
 

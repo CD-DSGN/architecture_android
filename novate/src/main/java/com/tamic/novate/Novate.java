@@ -20,6 +20,7 @@ import com.tamic.novate.exception.ServerException;
 import com.tamic.novate.request.NovateRequest;
 import com.tamic.novate.util.Environment;
 import com.tamic.novate.util.FileUtil;
+import com.tamic.novate.util.SPUtils;
 import com.tamic.novate.util.Utils;
 
 import org.json.JSONObject;
@@ -482,32 +483,14 @@ public class Novate {
                 .subscribe(subscriber);
     }
 
-    /**
-     * http execute Post by Json
-     *
-     * @param url
-     * @param jsonStr Json String
-     * @return parsed data
-     * you don't need to   parse ResponseBody
-     */
+
+
     public <T> T executeJson(final String url, final String jsonStr, final ResponseCallBack<T> callBack) {
         final Type finalNeedType = getFinalNeedType(callBack);
         if (finalNeedType == null) {
             return null;
         }
-
-        return (T) apiManager.postRequestBody(url, Utils.createJson(jsonStr))
-                .compose(schedulersTransformer)
-                .compose(handleErrTransformer())
-                .subscribe(new NovateSubscriber<T>(mContext, finalNeedType, callBack));
-    }
-
-    public <T> T executeJson(final String url, final String jsonStr, final ResponseCallBack<T> callBack, String token) {
-        final Type finalNeedType = getFinalNeedType(callBack);
-        if (finalNeedType == null) {
-            return null;
-        }
-
+String token= SPUtils.getInstance().getToken(mContext);
         return (T) apiManager.postRequestBody(Utils.getUrlWithToken(url, token), Utils.createJson(jsonStr))
                 .compose(schedulersTransformer)
                 .compose(handleErrTransformer())

@@ -18,7 +18,7 @@ import com.grandmagic.readingmate.model.LoginModel;
 import com.grandmagic.readingmate.ui.CustomDialog;
 import com.grandmagic.readingmate.ui.ListDialog;
 import com.grandmagic.readingmate.utils.KitUtils;
-import com.grandmagic.readingmate.utils.SPUtils;
+import com.tamic.novate.util.SPUtils;
 import com.grandmagic.readingmate.utils.ViewUtils;
 import com.tamic.novate.NovateResponse;
 import com.tamic.novate.Throwable;

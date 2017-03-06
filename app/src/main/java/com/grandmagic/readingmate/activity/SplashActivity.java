@@ -3,7 +3,6 @@ package com.grandmagic.readingmate.activity;
 import android.content.Intent;
 import android.database.sqlite.SQLiteDatabase;
 import android.os.Bundle;
-import android.util.Log;
 import android.widget.Toast;
 
 import com.grandmagic.readingmate.R;
@@ -14,9 +13,10 @@ import com.grandmagic.readingmate.db.DaoMaster;
 import com.grandmagic.readingmate.db.DaoSession;
 import com.grandmagic.readingmate.model.ContactModel;
 import com.grandmagic.readingmate.utils.AutoUtils;
-import com.grandmagic.readingmate.utils.SPUtils;
+import com.tamic.novate.util.SPUtils;
 import com.orhanobut.logger.Logger;
 import com.tamic.novate.NovateResponse;
+import com.tamic.novate.Throwable;
 
 import java.util.List;
 
@@ -59,7 +59,7 @@ public class SplashActivity extends AppBaseActivity {
                 @Override
                 public void onSuccee(NovateResponse<List<Contacts>> response) {
                     List<Contacts> mData = response.getData();
-                    DaoMaster.DevOpenHelper mDevOpenHelper = new DaoMaster.DevOpenHelper(SplashActivity.this,"contacts-db",null);
+                    DaoMaster.DevOpenHelper mDevOpenHelper = new DaoMaster.DevOpenHelper(SplashActivity.this,"contacts.db",null);
                     SQLiteDatabase db = mDevOpenHelper.getWritableDatabase();
                     DaoMaster mDaoMaster = new DaoMaster(db);
                     DaoSession mDaoSession = mDaoMaster.newSession();
@@ -67,6 +67,13 @@ public class SplashActivity extends AppBaseActivity {
                         mDaoSession.insertOrReplace(mContacts);
                         Logger.e(mContacts.toString());
                     }
+                    startActivity(new Intent(SplashActivity.this, MainActivity.class));
+                    finish();
+                }
+
+                @Override
+                public void onError(Throwable e) {
+                    super.onError(e);
                     startActivity(new Intent(SplashActivity.this, MainActivity.class));
                     finish();
                 }

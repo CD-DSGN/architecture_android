@@ -7,7 +7,7 @@ import com.grandmagic.readingmate.base.AppBaseModel;
 import com.grandmagic.readingmate.base.AppBaseResponseCallBack;
 import com.grandmagic.readingmate.bean.request.FeedBackRequestBean;
 import com.grandmagic.readingmate.consts.ApiInterface;
-import com.grandmagic.readingmate.utils.SPUtils;
+import com.tamic.novate.util.SPUtils;
 import com.tamic.novate.Novate;
 
 /**
@@ -29,7 +29,7 @@ public class FeedBackModel extends AppBaseModel {
         Novate novate = new Novate.Builder(mContext).build();
         String json_str = new Gson().toJson(mFeedBackRequestBean);
         novate.executeJson(ApiInterface.FEEDBACK,
-                json_str, mCallBack, SPUtils.getInstance().getToken(mContext));
+                json_str, mCallBack);
     }
 
     //可能要做字数限制检查

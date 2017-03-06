@@ -3,13 +3,9 @@ package com.grandmagic.readingmate.model;
 import android.content.Context;
 
 import com.grandmagic.readingmate.base.AppBaseResponseCallBack;
-import com.grandmagic.readingmate.bean.response.Contacts;
 import com.grandmagic.readingmate.consts.ApiInterface;
-import com.grandmagic.readingmate.utils.SPUtils;
+import com.tamic.novate.util.SPUtils;
 import com.tamic.novate.Novate;
-import com.tamic.novate.NovateResponse;
-
-import java.util.List;
 
 /**
  * Created by lps on 2017/3/1.
