@@ -10,17 +10,10 @@
         android:background="@drawable/bg_chat_send"
         android:layout_width="wrap_content"
         android:padding="5dp"
+        android:id="@+id/contentView"
         android:layout_height="wrap_content"
         android:layout_toLeftOf="@+id/avatar">
 
-        <ImageView
-            android:id="@+id/image"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:maxHeight="324px"
-            android:maxWidth="302px"
-            android:adjustViewBounds="true"
-            />
     </RelativeLayout>
 
     <ImageView

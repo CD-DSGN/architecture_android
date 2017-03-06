@@ -19,17 +19,9 @@
 
         android:layout_height="wrap_content"
         android:padding="5dp"
+     android:id="@+id/contentView"
         android:background="@drawable/bg_chat_reciver">
 
-        <ImageView
-            android:id="@+id/image"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:adjustViewBounds="true"
-            android:maxHeight="342px"
-            android:maxWidth="302px"
-
-            />
     </RelativeLayout>
 
 

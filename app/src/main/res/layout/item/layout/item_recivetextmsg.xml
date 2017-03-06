@@ -1,36 +1,13 @@
+<TextView
+    android:id="@+id/content"
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content"
+    android:layout_centerVertical="true"
+    android:layout_marginLeft="26px"
+    android:layout_toRightOf="@+id/avatar"
+    android:textColor="#181e1d"
+    android:textSize="28px"
+    android:padding="12px"
+    android:layout_marginRight="94px"
+    xmlns:android="http://schemas.android.com/apk/res/android"/>
 
-
-    <RelativeLayout
-        xmlns:android="http://schemas.android.com/apk/res/android"
-
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-
-        android:layout_marginTop="48px"
-        >
-
-        <ImageView
-            android:id="@+id/avatar"
-            android:layout_width="100px"
-            android:layout_height="100px"
-            android:layout_centerVertical="true"
-            android:layout_marginLeft="20px"
-            android:background="@drawable/shape_round_imageview"
-            />
-
-        <TextView
-            android:id="@+id/content"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_centerVertical="true"
-            android:layout_marginLeft="26px"
-            android:layout_toRightOf="@+id/avatar"
-            android:textColor="#181e1d"
-            android:textSize="28px"
-            android:padding="12px"
-            android:layout_marginRight="94px"
-            android:background="@drawable/bg_chat_reciver"
-            />
-
-
-    </RelativeLayout>

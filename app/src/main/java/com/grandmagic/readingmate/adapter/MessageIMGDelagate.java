@@ -1,6 +1,8 @@
 package com.grandmagic.readingmate.adapter;
 
 import android.content.Context;
+import android.view.LayoutInflater;
+import android.view.View;
 import android.widget.ImageView;
 
 import com.grandmagic.readingmate.R;
@@ -16,37 +18,27 @@ import com.zhy.adapter.recyclerview.base.ViewHolder;
 /**
  * Created by lps on 2017/2/27.
  */
-public class MessageIMGDelagate implements ItemViewDelegate<EMMessage> {
+public class MessageIMGDelagate extends ChatItemViewDelegate {
 
-    private Context mContext;
-    private EMMessage.Direct mDirect;
 
     public MessageIMGDelagate(Context mContext) {
-        this.mContext = mContext;
-    }
-
-    @Override
-    public int getItemViewLayoutId() {
-        return mDirect == EMMessage.Direct.RECEIVE ? R.layout.item_reciveimgmsg : R.layout.item_sendimgmsg;
+        super(mContext);
     }
 
     @Override
     public boolean isForViewType(EMMessage item, int position) {
-        mDirect = item.direct();
-        return item.getType() == EMMessage.Type.IMAGE
-                && mDirect == EMMessage.Direct.RECEIVE;
+        return item.getType() == EMMessage.Type.IMAGE;
     }
 
     @Override
-    public void convert(ViewHolder holder, EMMessage mChatMessage, int position) {
-        EMImageMessageBody mBody = (EMImageMessageBody) mChatMessage.getBody();
-        ImageLoader.loadRoundImage(mContext, mBody.getRemoteUrl(), (ImageView) holder.getView(R.id.image));
-        Contacts mUserInfo = IMHelper.getInstance()
-                .getUserInfo( mChatMessage.getFrom());
-        if (mUserInfo == null) return;
-        ImageLoader.loadRoundImage(mContext,
-                mUserInfo.getAvatar_native(),
-                (ImageView) holder.getView(R.id.avatar));
+    protected void childConvert(ViewHolder mHolder, EMMessage data, int mPosition) {
+        EMImageMessageBody  mBody= (EMImageMessageBody) data.getBody();
+        ImageLoader.loadRoundImage(mContext,mBody.getRemoteUrl(), (ImageView) mHolder.getView(R.id.image));
+    }
+
+    @Override
+    protected View setContentView() {
+        return LayoutInflater.from(mContext).inflate(mDirect== EMMessage.Direct.RECEIVE?R.layout.item_reciveimgmsg:R.layout.item_sendimgmsg,null);
     }
 
 
