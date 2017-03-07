@@ -18,16 +18,16 @@ import com.zhy.adapter.recyclerview.base.ViewHolder;
 /**
  * Created by lps on 2017/2/27.
  */
-public class MessageIMGDelagate extends ChatItemViewDelegate {
+public class MessageIMGRecDelagate extends ChatItemViewDelegate {
 
 
-    public MessageIMGDelagate(Context mContext) {
+    public MessageIMGRecDelagate(Context mContext) {
         super(mContext);
     }
 
     @Override
-    public boolean isForViewType(EMMessage item, int position) {
-        return item.getType() == EMMessage.Type.IMAGE;
+    public boolean isForViewType(EMMessage item) {
+        return item.getType() == EMMessage.Type.IMAGE&&mDirect== EMMessage.Direct.RECEIVE;
     }
 
     @Override
@@ -38,7 +38,7 @@ public class MessageIMGDelagate extends ChatItemViewDelegate {
 
     @Override
     protected View setContentView() {
-        return LayoutInflater.from(mContext).inflate(mDirect== EMMessage.Direct.RECEIVE?R.layout.item_reciveimgmsg:R.layout.item_sendimgmsg,null);
+        return LayoutInflater.from(mContext).inflate(R.layout.item_reciveimgmsg,null);
     }
 
 

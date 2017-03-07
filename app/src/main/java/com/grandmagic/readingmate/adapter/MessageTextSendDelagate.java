@@ -23,17 +23,17 @@ import com.zhy.adapter.recyclerview.base.ViewHolder;
 /**
  * Created by lps on 2017/2/22.
  */
-public class MessageTextDelagate extends ChatItemViewDelegate {
+public class MessageTextSendDelagate extends ChatItemViewDelegate {
 
 
 
-    public MessageTextDelagate(Context mContext) {
+    public MessageTextSendDelagate(Context mContext) {
         super(mContext);
     }
 
     @Override
-    public boolean isForViewType(EMMessage item, int position) {
-        return item.getType() == EMMessage.Type.TXT;
+    public boolean isForViewType(EMMessage item) {
+        return item.getType() == EMMessage.Type.TXT&&mDirect == EMMessage.Direct.SEND;
     }
 
     @Override
@@ -44,8 +44,8 @@ public class MessageTextDelagate extends ChatItemViewDelegate {
 
     @Override
     protected View setContentView() {
-        return LayoutInflater.from(mContext).inflate(mDirect == EMMessage.Direct.RECEIVE ? R.layout.item_recivetextmsg :
-                R.layout.item_sendtextmsg, null);
+        return LayoutInflater.from(mContext).inflate(  R.layout.item_sendtextmsg ,
+        null);
     }
 
 

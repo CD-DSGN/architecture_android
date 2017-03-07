@@ -34,15 +34,14 @@ public abstract class ChatItemViewDelegate implements ItemViewDelegate<EMMessage
         return mDirect== EMMessage.Direct.RECEIVE? R.layout.item_common_recivemsg:R.layout.item_common_sendmsg;
     }
 
-    /**
-     * fixme 因为把接收消息和发送消息放到一个delagete处理，所以会被调用2次
-     * @param holder
-     * @param mChatMessage
-     * @param position
-     */
+    @Override
+    public boolean isForViewType(EMMessage item, int position) {
+        mDirect=item.direct();
+        return isForViewType(item);
+    }
+
     @Override
     public void convert(ViewHolder holder, EMMessage mChatMessage, int position) {
-        mDirect=mChatMessage.direct();
         Contacts mUserInfo = IMHelper.getInstance()
                 .getUserInfo(mChatMessage.getFrom());
         if (mUserInfo != null){
@@ -55,12 +54,11 @@ public abstract class ChatItemViewDelegate implements ItemViewDelegate<EMMessage
         ViewHolder mHolder=ViewHolder.createViewHolder(mContext, childView);
         RelativeLayout holderView = holder.getView(R.id.contentView);
         childConvert(mHolder,mChatMessage,position);
-        if (holderView.getChildCount()==0) {
             holderView.addView(childView);
-        }
     }
 
     protected abstract void childConvert(ViewHolder mHolder, EMMessage mChatMessage, int mPosition);
 
     protected abstract View setContentView();
+    protected abstract boolean isForViewType(EMMessage mItem);
 }

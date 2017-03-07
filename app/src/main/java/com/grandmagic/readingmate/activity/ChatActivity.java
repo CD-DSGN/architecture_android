@@ -13,8 +13,10 @@ import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import com.grandmagic.readingmate.R;
-import com.grandmagic.readingmate.adapter.MessageIMGDelagate;
-import com.grandmagic.readingmate.adapter.MessageTextDelagate;
+import com.grandmagic.readingmate.adapter.MessageIMGRecDelagate;
+import com.grandmagic.readingmate.adapter.MessageIMGSendDelagate;
+import com.grandmagic.readingmate.adapter.MessageTextRecDelagate;
+import com.grandmagic.readingmate.adapter.MessageTextSendDelagate;
 import com.grandmagic.readingmate.adapter.MultiItemTypeAdapter;
 import com.grandmagic.readingmate.base.AppBaseActivity;
 import com.grandmagic.readingmate.utils.AutoUtils;
@@ -144,8 +146,10 @@ public class ChatActivity extends AppBaseActivity implements EMMessageListener {
         toChatUserName = getIntent().getStringExtra(CHAT_IM_NAME);
         mMessagerecyclerview.setLayoutManager(new LinearLayoutManager(this));
         mAdapter = new MultiItemTypeAdapter(this, mMessageList);
-        mAdapter.addItemViewDelegate(new MessageTextDelagate(this));
-        mAdapter.addItemViewDelegate(new MessageIMGDelagate(this));
+        mAdapter.addItemViewDelegate(new MessageTextSendDelagate(this));
+        mAdapter.addItemViewDelegate(new MessageTextRecDelagate(this));
+        mAdapter.addItemViewDelegate(new MessageIMGSendDelagate(this));
+        mAdapter.addItemViewDelegate(new MessageIMGRecDelagate(this));
         mMessagerecyclerview.setAdapter(mAdapter);
         conversationInit();
     }

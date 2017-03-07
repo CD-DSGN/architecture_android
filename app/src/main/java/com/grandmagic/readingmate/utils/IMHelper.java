@@ -11,6 +11,7 @@ import com.grandmagic.readingmate.db.DaoMaster;
 import com.grandmagic.readingmate.db.DaoSession;
 import com.grandmagic.readingmate.listener.DefaultSettingsProvider;
 import com.grandmagic.readingmate.listener.IMConnectionListener;
+import com.grandmagic.readingmate.listener.IMContactListener;
 import com.grandmagic.readingmate.listener.IMMessageListenerApp;
 import com.grandmagic.readingmate.listener.IMNotifier;
 import com.grandmagic.readingmate.listener.IMSettingsProvider;
@@ -56,6 +57,7 @@ public class IMHelper {
         mAppContext = appContext;
         EMClient.getInstance().chatManager().addMessageListener(mListenerApp);
         EMClient.getInstance().addConnectionListener(mIMConnectionListener);
+        EMClient.getInstance().contactManager().setContactListener(new IMContactListener(appContext));
         mIMNotifier = new IMNotifier();
         mIMNotifier.init(appContext);
     }
