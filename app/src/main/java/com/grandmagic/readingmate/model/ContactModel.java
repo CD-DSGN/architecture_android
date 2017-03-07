@@ -20,7 +20,6 @@ public class ContactModel {
 
     public void getAllFriendFromServer(AppBaseResponseCallBack mBack){
         Novate mNovate=new Novate.Builder(mContext).build();
-        mNovate.executeGet(ApiInterface.SHOWFRIEND, SPUtils.getInstance().getToken(mContext)
-                ,mBack );
+        mNovate.executeGet(ApiInterface.SHOWFRIEND,mBack );
 }
 }

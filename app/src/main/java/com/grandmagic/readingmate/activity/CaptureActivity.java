@@ -1,5 +1,6 @@
 package com.grandmagic.readingmate.activity;
 
+import android.Manifest;
 import android.annotation.TargetApi;
 import android.app.AlertDialog;
 import android.content.DialogInterface;
@@ -19,7 +20,9 @@ import android.widget.RelativeLayout;
 
 import com.google.zxing.Result;
 import com.grandmagic.readingmate.R;
+import com.grandmagic.readingmate.permission.CameraPermission;
 import com.grandmagic.readingmate.utils.AutoUtils;
+import com.tbruyelle.rxpermissions.RxPermissions;
 import com.xys.libzxing.zxing.camera.CameraManager;
 import com.xys.libzxing.zxing.decode.DecodeThread;
 import com.xys.libzxing.zxing.utils.BeepManager;
@@ -48,7 +51,7 @@ public class CaptureActivity extends com.xys.libzxing.zxing.activity.CaptureActi
     private CaptureActivityHandler handler;
     private InactivityTimer inactivityTimer;
     private BeepManager beepManager;
-    
+
     private Rect mCropRect = null;
     private boolean isHasSurface = false;
 
@@ -62,6 +65,7 @@ public class CaptureActivity extends com.xys.libzxing.zxing.activity.CaptureActi
 
     /**
      * 状态栏透明
+     *
      * @param on
      */
     @TargetApi(19)
@@ -88,7 +92,6 @@ public class CaptureActivity extends com.xys.libzxing.zxing.activity.CaptureActi
         setTranslucentStatus(true);//状态栏透明（APi19+）
         inactivityTimer = new InactivityTimer(this);
         beepManager = new BeepManager(this);
-
         TranslateAnimation animation = new TranslateAnimation(Animation.RELATIVE_TO_PARENT, 0.0f, Animation
                 .RELATIVE_TO_PARENT, 0.0f, Animation.RELATIVE_TO_PARENT, 0.0f, Animation.RELATIVE_TO_PARENT,
                 0.9f);

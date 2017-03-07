@@ -3,6 +3,7 @@
     xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
+    xmlns:tool="http://schemas.android.com/tools"
     android:layout_marginTop="12px"
 
     >
@@ -21,7 +22,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginLeft="287px"
-            android:text="从你的全世界路过"
+            tool:text="从你的全世界路过"
             android:textColor="#181e1d"
             android:textSize="32px"
             />
@@ -43,7 +44,7 @@
             android:text="张嘉jia"
             android:textColor="#181e1d"
             android:textSize="26px"
-
+android:id="@+id/author"
             />
 
         <com.grandmagic.readingmate.view.StarView

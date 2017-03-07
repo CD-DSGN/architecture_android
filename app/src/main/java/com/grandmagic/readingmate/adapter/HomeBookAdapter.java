@@ -10,6 +10,7 @@ import android.widget.ImageView;
 
 import com.bumptech.glide.Glide;
 import com.grandmagic.readingmate.R;
+import com.grandmagic.readingmate.bean.response.DisplayBook;
 import com.grandmagic.readingmate.rvanimation.AnimationAdapter;
 
 import com.grandmagic.readingmate.utils.ImageLoader;
@@ -21,19 +22,22 @@ import java.util.List;
  * Created by lps  on 2017/2/16.
  */
 
-public class HomeBookAdapter extends AnimationAdapter<String> {
+public class HomeBookAdapter extends AnimationAdapter<DisplayBook.InfoBean> {
 
-    public HomeBookAdapter(Context context, List<String> datas, RecyclerView mRecyclerView) {
+
+    public HomeBookAdapter(Context context, List<DisplayBook.InfoBean> datas, RecyclerView mRecyclerView) {
         super(context, R.layout.item_homepage, datas, mRecyclerView);
         setUseanimation(false);
     }
 
     @Override
-    protected void convert(ViewHolder holder, String mS, final int position) {
+    protected void convert(ViewHolder holder, DisplayBook.InfoBean data, final int position) {
 
-        ImageLoader.loadImage(mContext,"https://ss1.baidu.com/6ONXsjip0QIZ8tyhnq/it/u=1937046046,1905495319&fm=58", (ImageView) holder.getView(R.id.iv_conver));
+        ImageLoader.loadImage(mContext, "https://ss1.baidu.com/6ONXsjip0QIZ8tyhnq/it/u=1937046046,1905495319&fm=58", (ImageView) holder.getView(R.id.iv_conver));
 
-        ImageLoader.loadCircleImage(mContext,"https://ss2.baidu.com/6ONYsjip0QIZ8tyhnq/it/u=1460995985,2991423940&fm=58", (ImageView) holder.getView(R.id.avatar));
+        ImageLoader.loadCircleImage(mContext, "https://ss2.baidu.com/6ONYsjip0QIZ8tyhnq/it/u=1460995985,2991423940&fm=58", (ImageView) holder.getView(R.id.avatar));
+        holder.setText(R.id.bookname, data.getBook_name());
+        holder.setText(R.id.author, data.getAuthor());
 
         holder.setOnClickListener(R.id.linear_share, new View.OnClickListener() {
             @Override
@@ -83,6 +87,11 @@ public class HomeBookAdapter extends AnimationAdapter<String> {
 
     public void setClickListener(ClickListener mClickListener) {
         this.mClickListener = mClickListener;
+    }
+
+    public void setData(List mData) {
+        this.mDatas = mData;
+        notifyDataSetChanged();
     }
 
     public interface ClickListener {

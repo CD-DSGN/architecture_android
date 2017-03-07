@@ -181,6 +181,7 @@ public class Novate {
 
     /**
      * 用于需要token的
+     *
      * @param url
      * @param maps
      * @param callBack
@@ -204,19 +205,20 @@ public class Novate {
 
     /**
      * 用于只需要传递token的接口
+     *
      * @param url
      * @param token
      * @param callBack
      * @param <T>
      * @return
      */
-    public <T> T executeGet(final String url,String token, final ResponseCallBack<T> callBack) {
+    public <T> T executeGet(final String url,  final ResponseCallBack<T> callBack) {
         final Type finalNeedType = getFinalNeedType(callBack);
         if (finalNeedType == null) {
             return null;
         }
-       Map<String,Object> maps = new HashMap<>();
-        maps.put("access-token",token );
+        Map<String, Object> maps = new HashMap<>();
+        maps.put("access-token", SPUtils.getInstance().getToken(mContext));
         return (T) apiManager.executeGet(url, maps)
                 .compose(schedulersTransformer)
                 .compose(handleErrTransformer())
@@ -484,13 +486,12 @@ public class Novate {
     }
 
 
-
     public <T> T executeJson(final String url, final String jsonStr, final ResponseCallBack<T> callBack) {
         final Type finalNeedType = getFinalNeedType(callBack);
         if (finalNeedType == null) {
             return null;
         }
-String token= SPUtils.getInstance().getToken(mContext);
+        String token = SPUtils.getInstance().getToken(mContext);
         return (T) apiManager.postRequestBody(Utils.getUrlWithToken(url, token), Utils.createJson(jsonStr))
                 .compose(schedulersTransformer)
                 .compose(handleErrTransformer())

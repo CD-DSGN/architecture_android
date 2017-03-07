@@ -168,6 +168,7 @@ new SearchUserModel(this).searchUser(SPUtils.getInstance().getString(this, SPUti
             mFragmentManager.beginTransaction().add(R.id.contentframe, mHomeFragment).show(mHomeFragment).commit();
             mcurrentFragment = mHomeFragment;
             mcurrentIV = mIvHome;
+            mcurrentIV.setSelected(true);
             mcurrentTV = mTextHome;
             scalelarge();
         }
@@ -223,23 +224,31 @@ new SearchUserModel(this).searchUser(SPUtils.getInstance().getString(this, SPUti
 //        图标变化
         if (mClass == HomeFragment.class) {
             scalesmall();
+            mcurrentIV.setSelected(false);
             mcurrentIV = mIvHome;
             mcurrentTV = mTextHome;
+            mcurrentIV.setSelected(true);
             scalelarge();
         } else if (mClass == ChatFragment.class) {
+            mcurrentIV.setSelected(false);
             scalesmall();
             mcurrentIV = mIvChat;
             mcurrentTV = mTextChat;
+            mcurrentIV.setSelected(true);
             scalelarge();
         } else if (mClass == SearchFragment.class) {
+            mcurrentIV.setSelected(false);
             scalesmall();
             mcurrentIV = mIvSearch;
             mcurrentTV = mTextSearch;
+            mcurrentIV.setSelected(true);
             scalelarge();
         } else if (mClass == PersonalFragment.class) {
+            mcurrentIV.setSelected(false);
             scalesmall();
             mcurrentIV = mIvPerson;
             mcurrentTV = mTextPerson;
+            mcurrentIV.setSelected(true);
             scalelarge();
         }
     }
