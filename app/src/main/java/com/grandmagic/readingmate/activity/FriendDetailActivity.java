@@ -67,11 +67,6 @@ public class FriendDetailActivity extends AppBaseActivity {
         ButterKnife.bind(this);
         AutoUtils.auto(this);
         setTranslucentStatus(true);
-        try {
-            getSupportActionBar().hide();
-        } catch (Exception mE) {
-            mE.printStackTrace();
-        }
         initview();
     }
 

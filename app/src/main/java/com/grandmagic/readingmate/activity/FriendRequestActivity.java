@@ -12,7 +12,11 @@ import com.grandmagic.readingmate.R;
 import com.grandmagic.readingmate.adapter.RequestListAdapter;
 import com.grandmagic.readingmate.base.AppBaseActivity;
 import com.grandmagic.readingmate.bean.response.FriendRequestBean;
-import com.grandmagic.readingmate.view.SwipRecycleView;
+import com.grandmagic.readingmate.bean.response.InviteMessage;
+import com.grandmagic.readingmate.db.DBHelper;
+import com.grandmagic.readingmate.db.InviteMessageDao;
+import com.hyphenate.chat.EMClient;
+import com.hyphenate.exceptions.HyphenateException;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -21,8 +25,8 @@ import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
 
-public class FriendRequestActivity extends AppBaseActivity {
-Context mContext;
+public class FriendRequestActivity extends AppBaseActivity implements RequestListAdapter.StateListener {
+    Context mContext;
     @BindView(R.id.back)
     ImageView mBack;
     @BindView(R.id.title)
@@ -32,7 +36,7 @@ Context mContext;
     @BindView(R.id.recyclerview)
     RecyclerView mRecyclerview;
 
-    List<FriendRequestBean> mRequestBean = new ArrayList<>();
+    List<InviteMessage> mInviteMessages = new ArrayList<>();
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -40,34 +44,42 @@ Context mContext;
         setContentView(R.layout.activity_friend_request);
         ButterKnife.bind(this);
         setTranslucentStatus(true);
-        inittestData();
+        loadDataFromDB();
         initview();
     }
+
     RequestListAdapter mAdapter;
+
     private void initview() {
-        mContext=this;
+        mContext = this;
         mTitle.setText("新阅友");
         mRecyclerview.setLayoutManager(new LinearLayoutManager(mContext));
-        mAdapter=new RequestListAdapter(mContext,mRequestBean);
+        mAdapter = new RequestListAdapter(mContext, mInviteMessages);
+        mAdapter.setStateListener(this);
         mRecyclerview.setAdapter(mAdapter);
     }
 
-    private void inittestData() {
-        for (int i = 0; i < 8; i++) {
-            FriendRequestBean mFriendRequestBean = new FriendRequestBean();
-            mFriendRequestBean.setAvatar("https://ss1.bdstatic.com/70cFuXSh_Q1YnxGkpoWK1HF6hhy/it/u=34014521,1996222662&fm=21&gp=0.jpg");
-            mFriendRequestBean.setName("好友请求" + i);
-            if (i == 3) {
-                mFriendRequestBean.setState(1);
-            } else {
-                mFriendRequestBean.setState(0);
-            }
-            mRequestBean.add(mFriendRequestBean);
-        }
+    private void loadDataFromDB() {
+        InviteMessageDao mInviteDao = DBHelper.getInviteDao(this);
+        mInviteMessages = mInviteDao.loadAll();
     }
 
     @OnClick(R.id.back)
     public void onClick() {
         finish();
     }
+
+    @Override
+    public void accpet(InviteMessage data) {
+        try {
+            EMClient.getInstance().contactManager().acceptInvitation(data.getFrom());
+            data.setStatus(InviteMessage.InviteMesageStatus.AGREED);
+            DBHelper.getInviteDao(mContext).insertOrReplace(data);//更新数据库
+        } catch (HyphenateException mE) {
+            mE.printStackTrace();
+        }
+        loadDataFromDB();
+        mAdapter.notifyDataSetChanged();
+    }
+
 }

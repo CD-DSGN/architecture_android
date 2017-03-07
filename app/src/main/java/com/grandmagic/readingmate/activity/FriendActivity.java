@@ -104,7 +104,6 @@ public class FriendActivity extends AppBaseActivity {
         DaoMaster.DevOpenHelper mDevOpenHelper = new DaoMaster.DevOpenHelper(this, "contacts.db", null);
         SQLiteDatabase db = mDevOpenHelper.getWritableDatabase();
         DaoMaster mDaoMaster = new DaoMaster(db);
-        mAdapterData.add(new Contacts(Contacts.TYPE.TYPE_NEWFRIEND));//新朋友的头部
         for (int i = 0; i < mLetters.size(); i++) {
             String letter = mLetters.get(i);
             mAdapterData.get(mAdapterData.size() - 1).setNeedline(false);
@@ -187,6 +186,8 @@ public class FriendActivity extends AppBaseActivity {
 
     private void initview() {
         mContext = this;
+        mAdapterData.add(new Contacts(Contacts.TYPE.TYPE_NEWFRIEND));//新朋友的头部
+
         mTitle.setText(R.string.read_friend);
         mTitlelayout.setBackgroundColor(Color.parseColor("#ffffff"));
         mTitle.setTextColor(Color.parseColor("#181e1d"));

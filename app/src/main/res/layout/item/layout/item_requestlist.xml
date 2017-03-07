@@ -71,7 +71,7 @@
         android:layout_marginRight="20px"
         android:background="@drawable/bg_accept_btn"
         android:gravity="center"
-        android:text="已添加"
+        android:text="接受"
         android:textColor="#cc191921"
         android:textSize="28px"
         android:visibility="gone"

@@ -17,8 +17,13 @@ import android.os.Vibrator;
 import android.support.v4.app.NotificationCompat;
 import android.util.Log;
 
+import com.grandmagic.readingmate.bean.response.InviteMessage;
+import com.grandmagic.readingmate.db.DBHelper;
+import com.grandmagic.readingmate.db.InviteMessageDao;
 import com.grandmagic.readingmate.utils.IMHelper;
 import com.hyphenate.chat.EMMessage;
+
+import org.greenrobot.greendao.query.Query;
 
 import java.util.List;
 
@@ -143,11 +148,11 @@ public class IMNotifier {
             Log.e(TAG, "vibrateAndPlayTone: 手机静音模式不提shi");
             return;
         }
-        if (mSettingsProvider.isMsgVibrateAllowed(mMessage)) {
+        if (mMessage == null || mSettingsProvider.isMsgVibrateAllowed(mMessage)) {
             long pattern[] = new long[]{0, 180, 80, 20};
             mVibrator.vibrate(pattern, -1);
         }
-        if (mSettingsProvider.isMsgSoundAllowed(mMessage)) {
+        if (mMessage == null || mSettingsProvider.isMsgSoundAllowed(mMessage)) {
             if (mRingtone == null) {
                 Uri mDefaultUri = RingtoneManager.getDefaultUri(RingtoneManager.TYPE_NOTIFICATION);
                 mRingtone = RingtoneManager.getRingtone(mAppContext, mDefaultUri);
@@ -180,5 +185,45 @@ public class IMNotifier {
                 }
             }
         }
+    }
+
+    /**
+     * 好友请求相关提示
+     *
+     * @param mInviteMessage
+     */
+    public void newInvaiteMsg(InviteMessage mInviteMessage) {
+        InviteMessageDao mInviteDao = DBHelper.getInviteDao(mAppContext);
+        InviteMessage mUnique = mInviteDao.queryBuilder().where(InviteMessageDao.Properties.From.eq(mInviteMessage.getFrom())).build().unique();
+      if (mUnique!=null){
+        mInviteDao.delete(mUnique);}
+        mInviteDao.save(mInviteMessage);
+        vibrateAndPlayTone(null);
+        sendInviteNotification(mInviteMessage);
+    }
+
+    /**
+     * 好友相关的提示
+     *
+     * @param msg
+     */
+    private void sendInviteNotification(InviteMessage msg) {
+        PackageManager mPackageManager = mAppContext.getPackageManager();
+        String appname = (String) mPackageManager.getApplicationLabel(mAppContext.getApplicationInfo());
+        String contenttitle = appname;
+        NotificationCompat.Builder mBuilder = new NotificationCompat.Builder(mAppContext)
+                .setSmallIcon(mAppContext.getApplicationInfo().icon)
+                .setWhen(System.currentTimeMillis())
+                .setAutoCancel(true);
+        Intent msgIntent = mAppContext.getPackageManager().getLaunchIntentForPackage(packName);
+        PendingIntent mPendingIntent = PendingIntent.getActivity(mAppContext, notifyID, msgIntent, PendingIntent.FLAG_UPDATE_CURRENT);
+        mBuilder.setContentTitle(contenttitle);
+        mBuilder.setTicker(msg.getFrom());
+        if (msg.getStatus() == InviteMessage.InviteMesageStatus.BEINVITEED) {
+            mBuilder.setContentText(msg.getReason());
+        }
+        mBuilder.setContentIntent(mPendingIntent);
+        Notification mNotification = mBuilder.build();
+        mNotificationManager.notify(foregroundNotifyID, mNotification);
     }
 }

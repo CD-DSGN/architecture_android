@@ -6,6 +6,7 @@ import android.database.sqlite.SQLiteDatabase;
 import android.util.Log;
 
 import com.grandmagic.readingmate.bean.response.Contacts;
+import com.grandmagic.readingmate.bean.response.InviteMessage;
 import com.grandmagic.readingmate.db.ContactsDao;
 import com.grandmagic.readingmate.db.DaoMaster;
 import com.grandmagic.readingmate.db.DaoSession;
@@ -55,9 +56,9 @@ public class IMHelper {
         mListenerApp = new IMMessageListenerApp(appContext);
         mIMConnectionListener = new IMConnectionListener(appContext);
         mAppContext = appContext;
-        EMClient.getInstance().chatManager().addMessageListener(mListenerApp);
-        EMClient.getInstance().addConnectionListener(mIMConnectionListener);
-        EMClient.getInstance().contactManager().setContactListener(new IMContactListener(appContext));
+        EMClient.getInstance().chatManager().addMessageListener(mListenerApp);//新消息监听
+        EMClient.getInstance().addConnectionListener(mIMConnectionListener);//链接状态监听
+        EMClient.getInstance().contactManager().setContactListener(new IMContactListener(appContext));//好友请求监听
         mIMNotifier = new IMNotifier();
         mIMNotifier.init(appContext);
     }
@@ -110,7 +111,9 @@ public class IMHelper {
     public void onNewMsg(EMMessage mMsg) {
         mIMNotifier.newMsg(mMsg);
     }
-
+public void newInvaiteMsg(InviteMessage mInviteMessage){
+    mIMNotifier.newInvaiteMsg(mInviteMessage);
+}
     public IMSettingsProvider getSettingsProvider() {
         if (mSettingsProvider == null) mSettingsProvider = new DefaultSettingsProvider();
         return mSettingsProvider;

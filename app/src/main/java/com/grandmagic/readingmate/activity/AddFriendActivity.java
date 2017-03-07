@@ -14,7 +14,9 @@ import android.widget.Toast;
 import com.grandmagic.readingmate.R;
 import com.grandmagic.readingmate.base.AppBaseActivity;
 import com.grandmagic.readingmate.base.AppBaseResponseCallBack;
+import com.grandmagic.readingmate.bean.response.InviteMessage;
 import com.grandmagic.readingmate.bean.response.SearchUserResponse;
+import com.grandmagic.readingmate.db.DBHelper;
 import com.grandmagic.readingmate.model.SearchUserModel;
 import com.grandmagic.readingmate.utils.AutoUtils;
 import com.grandmagic.readingmate.utils.IMHelper;
@@ -151,7 +153,14 @@ public class AddFriendActivity extends AppBaseActivity {
             Toast.makeText(this, "你们已经是好友了,不能再添加", Toast.LENGTH_SHORT).show();
         }
         try {
-            EMClient.getInstance().contactManager().addContact(mUser_id,"加个好友呗");
+            String reason="加个好友呗";
+            EMClient.getInstance().contactManager().addContact(mUser_id,reason);
+            InviteMessage mInviteMessage=new InviteMessage();
+            mInviteMessage.setFrom(mUser_id);
+            mInviteMessage.setTime(System.currentTimeMillis());
+            mInviteMessage.setStatus(InviteMessage.InviteMesageStatus.INVITEED);
+            mInviteMessage.setReason(reason);
+            DBHelper.getInviteDao(this).save(mInviteMessage);
         } catch (HyphenateException mE) {
             Logger.e(mE.getMessage());
             mE.printStackTrace();
