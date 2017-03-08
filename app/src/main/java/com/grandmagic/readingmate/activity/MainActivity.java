@@ -4,10 +4,12 @@ import android.Manifest;
 import android.animation.ObjectAnimator;
 import android.app.Fragment;
 import android.app.FragmentManager;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.database.sqlite.SQLiteDatabase;
 import android.graphics.Color;
 import android.os.Bundle;
+import android.support.v7.app.AlertDialog;
 import android.text.TextUtils;
 import android.view.View;
 import android.widget.FrameLayout;
@@ -24,15 +26,18 @@ import com.grandmagic.readingmate.bean.response.Contacts;
 import com.grandmagic.readingmate.bean.response.SearchUserResponse;
 import com.grandmagic.readingmate.db.DaoMaster;
 import com.grandmagic.readingmate.db.DaoSession;
+import com.grandmagic.readingmate.event.ConnectStateEvent;
 import com.grandmagic.readingmate.fragment.ChatFragment;
 import com.grandmagic.readingmate.fragment.HomeFragment;
 import com.grandmagic.readingmate.fragment.PersonalFragment;
 import com.grandmagic.readingmate.fragment.SearchFragment;
 import com.grandmagic.readingmate.listener.IMMessageListenerMain;
 import com.grandmagic.readingmate.model.SearchUserModel;
+import com.grandmagic.readingmate.ui.CustomDialog;
 import com.grandmagic.readingmate.utils.AutoUtils;
 import com.grandmagic.readingmate.utils.IMHelper;
 import com.grandmagic.readingmate.utils.KitUtils;
+import com.hyphenate.EMError;
 import com.tamic.novate.NovateResponse;
 import com.tamic.novate.util.SPUtils;
 import com.grandmagic.readingmate.utils.UpdateManager;
@@ -40,6 +45,10 @@ import com.hyphenate.EMCallBack;
 import com.hyphenate.chat.EMClient;
 import com.orhanobut.logger.Logger;
 import com.tbruyelle.rxpermissions.RxPermissions;
+
+import org.greenrobot.eventbus.EventBus;
+import org.greenrobot.eventbus.Subscribe;
+import org.greenrobot.eventbus.ThreadMode;
 
 import java.util.HashMap;
 import java.util.List;
@@ -93,6 +102,7 @@ public class MainActivity extends AppBaseActivity {
         setContentView(R.layout.activity_main);
         ButterKnife.bind(this);
         AutoUtils.auto(this);
+        EventBus.getDefault().register(this);
         initdata();
         new RxPermissions(this).request(Manifest.permission.WRITE_EXTERNAL_STORAGE).subscribe(new Action1<Boolean>() {
             @Override
@@ -108,24 +118,24 @@ public class MainActivity extends AppBaseActivity {
      * 获取自己在环信的信息
      */
     private void initSelfInfo() {
-new SearchUserModel(this).searchUser(SPUtils.getInstance().getString(this, SPUtils.INFO_NAME), new AppBaseResponseCallBack<NovateResponse<SearchUserResponse>>(this) {
-    @Override
-    public void onSuccee(NovateResponse<SearchUserResponse> response) {
-       SearchUserResponse responseData = response.getData();
-        if (responseData != null) {
+        new SearchUserModel(this).searchUser(SPUtils.getInstance().getString(this, SPUtils.INFO_NAME), new AppBaseResponseCallBack<NovateResponse<SearchUserResponse>>(this) {
+            @Override
+            public void onSuccee(NovateResponse<SearchUserResponse> response) {
+                SearchUserResponse responseData = response.getData();
+                if (responseData != null) {
 
-            Contacts mContacts=new Contacts();
-            mContacts.setAvatar_native(responseData.getAvatar_native());
-            mContacts.setUser_id(Integer.valueOf(responseData.getUser_id()));
-            mContacts.setUser_name(responseData.getUser_name());
-            DaoMaster.DevOpenHelper mDevOpenHelper=new DaoMaster.DevOpenHelper(MainActivity.this,"contacts.db",null);
-            SQLiteDatabase db = mDevOpenHelper.getWritableDatabase();
-            DaoMaster mDaoMaster = new DaoMaster(db);
-            DaoSession mDaoSession = mDaoMaster.newSession();
-            mDaoSession.insertOrReplace(mContacts);
-        }
-    }
-});
+                    Contacts mContacts = new Contacts();
+                    mContacts.setAvatar_native(responseData.getAvatar_native());
+                    mContacts.setUser_id(Integer.valueOf(responseData.getUser_id()));
+                    mContacts.setUser_name(responseData.getUser_name());
+                    DaoMaster.DevOpenHelper mDevOpenHelper = new DaoMaster.DevOpenHelper(MainActivity.this, "contacts.db", null);
+                    SQLiteDatabase db = mDevOpenHelper.getWritableDatabase();
+                    DaoMaster mDaoMaster = new DaoMaster(db);
+                    DaoSession mDaoSession = mDaoMaster.newSession();
+                    mDaoSession.insertOrReplace(mContacts);
+                }
+            }
+        });
     }
 
     private void initIM() {
@@ -141,7 +151,7 @@ new SearchUserModel(this).searchUser(SPUtils.getInstance().getString(this, SPUti
             public void onSuccess() {
                 EMClient.getInstance().groupManager().loadAllGroups();
                 EMClient.getInstance().chatManager().loadAllConversations();
-                Logger.e( "登录聊天服务器成功！");
+                Logger.e("登录聊天服务器成功！");
             }
 
             @Override
@@ -295,20 +305,20 @@ new SearchUserModel(this).searchUser(SPUtils.getInstance().getString(this, SPUti
 
     // FIXME: 2017/3/3 当还没创建chatFragment的时候无法刷新
 
-   public void newMsg(){
-       // TODO: 2017/3/2 更新新消息UI
-       runOnUiThread(new Runnable() {
-           @Override
-           public void run() {
-               Toast.makeText(MainActivity.this, "收到新的消息", Toast.LENGTH_SHORT).show();
-               try {
-                   ((ChatFragment) mFragments.get(ChatFragment.class.getName())).onrefreshConversation();
-               } catch (Exception mE) {
-                   mE.printStackTrace();
-               }
-           }
-       });
-   }
+    public void newMsg() {
+        // TODO: 2017/3/2 更新新消息UI
+        runOnUiThread(new Runnable() {
+            @Override
+            public void run() {
+                Toast.makeText(MainActivity.this, "收到新的消息", Toast.LENGTH_SHORT).show();
+                try {
+                    ((ChatFragment) mFragments.get(ChatFragment.class.getName())).onrefreshConversation();
+                } catch (Exception mE) {
+                    mE.printStackTrace();
+                }
+            }
+        });
+    }
 
     @Override
     protected void onResume() {
@@ -322,5 +332,42 @@ new SearchUserModel(this).searchUser(SPUtils.getInstance().getString(this, SPUti
         super.onStop();
         IMHelper.getInstance().popActivity(this);
         EMClient.getInstance().chatManager().removeMessageListener(mIMMessageListenerMain);
+    }
+
+    AlertDialog mDialog;
+
+    @Subscribe(threadMode = ThreadMode.MAIN)
+    public void onMessageEvent(ConnectStateEvent mEvent) {
+        String state = SPUtils.getInstance().getString(this, SPUtils.IM_STATE);
+        if (Integer.valueOf(state) == (EMError.USER_LOGIN_ANOTHER_DEVICE)) {
+            AlertDialog.Builder mBuilder = new AlertDialog.Builder(this);
+            mBuilder.setNegativeButton("取消", new DialogInterface.OnClickListener() {
+                @Override
+                public void onClick(DialogInterface dialog, int which) {
+                    mDialog.dismiss();
+                }
+            });
+            mBuilder.setPositiveButton("重新登陆", new DialogInterface.OnClickListener() {
+                @Override
+                public void onClick(DialogInterface dialog, int which) {
+                    mDialog.dismiss();
+                    SPUtils.getInstance().clearToken(MainActivity.this);
+                    startActivity(new Intent(MainActivity.this, LoginActivity.class));
+                    finish();
+                }
+            });
+            mDialog = mBuilder.create();
+
+            mDialog.setTitle("下线通知");
+            mDialog.setMessage("账号已在其他设备登陆，您被迫下线");
+            mDialog.show();
+        }
+    }
+
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+        EventBus.getDefault().unregister(this);
+
     }
 }

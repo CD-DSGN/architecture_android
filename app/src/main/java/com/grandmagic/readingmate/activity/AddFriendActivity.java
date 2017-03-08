@@ -161,6 +161,7 @@ public class AddFriendActivity extends AppBaseActivity {
             mInviteMessage.setStatus(InviteMessage.InviteMesageStatus.INVITEED);
             mInviteMessage.setReason(reason);
             DBHelper.getInviteDao(this).save(mInviteMessage);
+            Logger.e("添加好友"+mInviteMessage.toString());
         } catch (HyphenateException mE) {
             Logger.e(mE.getMessage());
             mE.printStackTrace();
