@@ -1,8 +1,8 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+              xmlns:app="http://schemas.android.com/apk/res-auto"
               xmlns:tools="http://schemas.android.com/tools"
               android:layout_width="match_parent"
               android:layout_height="match_parent"
-              xmlns:app="http://schemas.android.com/apk/res-auto"
               android:orientation="vertical"
 
               tools:context="com.grandmagic.readingmate.fragment.ChatFragment">
@@ -21,13 +21,13 @@
             />
 
         <ImageView
+            android:id="@+id/add_friend"
             android:layout_width="36px"
             android:layout_height="36px"
             android:layout_alignParentRight="true"
             android:layout_centerVertical="true"
             android:layout_marginRight="20px"
             android:src="@drawable/iv_plus"
-            android:id="@+id/add_friend"
             />
     </RelativeLayout>
 
@@ -43,59 +43,63 @@
             android:layout_height="88px"
             android:layout_gravity="center_horizontal"
             android:layout_marginTop="46px"
-            android:padding="3dp"
             android:background="@drawable/shape_dash_frame"
+            android:padding="3dp"
             >
 
-<RelativeLayout
-    android:layout_margin="3px"
-    android:layout_width="match_parent"
-    android:background="@drawable/bg_round_white"
-    android:layout_height="match_parent">
+            <RelativeLayout
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_margin="3px"
+                android:background="@drawable/bg_round_white">
 
-            <TextView
-                android:id="@+id/tv_friend"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_centerInParent="true"
-                android:text="家友"
-                android:textColor="#1cc9a2"
-                android:textSize="40px"
-                />
+                <TextView
+                    android:id="@+id/tv_friend"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_centerInParent="true"
+                    android:text="家友"
+                    android:textColor="#1cc9a2"
+                    android:textSize="40px"
+                    />
 
-            <ImageView
-                android:id="@+id/iv_friend"
-                android:layout_width="38px"
-                android:layout_height="34px"
-                android:layout_centerVertical="true"
-                android:layout_marginLeft="15px"
-                android:layout_toRightOf="@+id/tv_friend"
-                android:src="@drawable/ic_attachment"
-                />
+                <ImageView
+                    android:id="@+id/iv_friend"
+                    android:layout_width="38px"
+                    android:layout_height="34px"
+                    android:layout_centerVertical="true"
+                    android:layout_marginLeft="15px"
+                    android:layout_toRightOf="@+id/tv_friend"
+                    android:src="@drawable/ic_attachment"
+                    />
 
-            <ImageView
-                android:layout_width="16px"
-                android:layout_height="16px"
-                android:layout_alignTop="@id/iv_friend"
-                android:layout_marginRight="-8px"
-                android:layout_marginTop="-6px"
-                android:layout_toRightOf="@+id/iv_friend"
-                android:src="@drawable/red_point"
-                />
-</RelativeLayout>
+                <ImageView
+                    android:layout_width="16px"
+                    android:layout_height="16px"
+                    android:layout_alignTop="@id/iv_friend"
+                    android:layout_marginRight="-8px"
+                    android:layout_marginTop="-6px"
+                    android:layout_toRightOf="@+id/iv_friend"
+                    android:src="@drawable/red_point"
+                    />
+            </RelativeLayout>
         </RelativeLayout>
+
+        <include layout="@layout/view_imerror"/>
+
         <cn.bingoogolapple.refreshlayout.BGARefreshLayout
             android:id="@+id/refreshLayout"
             android:layout_width="match_parent"
             android:layout_height="match_parent">
-        <com.grandmagic.readingmate.view.SwipRecycleView
-            android:id="@+id/recyclerview"
-            android:layout_width="match_parent"
-            android:layout_height="0dp"
-            android:layout_weight="1"
-            >
 
-        </com.grandmagic.readingmate.view.SwipRecycleView>
+            <com.grandmagic.readingmate.view.SwipRecycleView
+                android:id="@+id/recyclerview"
+                android:layout_width="match_parent"
+                android:layout_height="0dp"
+                android:layout_weight="1"
+                >
+
+            </com.grandmagic.readingmate.view.SwipRecycleView>
         </cn.bingoogolapple.refreshlayout.BGARefreshLayout>
     </LinearLayout>
 </LinearLayout>

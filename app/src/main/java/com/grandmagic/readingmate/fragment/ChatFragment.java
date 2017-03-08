@@ -4,13 +4,17 @@ package com.grandmagic.readingmate.fragment;
 import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
+import android.os.Handler;
+import android.os.Message;
 import android.support.v4.app.Fragment;
 import android.support.v7.widget.LinearLayoutManager;
+import android.util.Log;
 import android.util.Pair;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 
@@ -22,18 +26,27 @@ import com.grandmagic.readingmate.activity.MainActivity;
 import com.grandmagic.readingmate.adapter.MultiItemTypeAdapter;
 import com.grandmagic.readingmate.adapter.RecentConversationDelagate;
 import com.grandmagic.readingmate.base.AppBaseFragment;
+import com.grandmagic.readingmate.event.ConnectStateEvent;
+import com.grandmagic.readingmate.listener.IMConnectionListener;
 import com.grandmagic.readingmate.utils.AutoUtils;
 import com.grandmagic.readingmate.view.SwipRecycleView;
+import com.hyphenate.EMConnectionListener;
+import com.hyphenate.EMError;
 import com.hyphenate.chat.EMClient;
 import com.hyphenate.chat.EMConversation;
 import com.hyphenate.chat.EMMessage;
+import com.orhanobut.logger.Logger;
+import com.tamic.novate.util.SPUtils;
+
+import org.greenrobot.eventbus.EventBus;
+import org.greenrobot.eventbus.Subscribe;
+import org.greenrobot.eventbus.ThreadMode;
 
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Comparator;
 import java.util.List;
 import java.util.Map;
-import java.util.logging.Logger;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
@@ -57,23 +70,29 @@ public class ChatFragment extends AppBaseFragment implements RecentConversationD
     SwipRecycleView mRecyclerview;//最近会话列表
     @BindView(R.id.refreshLayout)
     BGARefreshLayout mRefreshLayout;
+    @BindView(R.id.tv_connect_errormsg)
+    TextView mTvConnectErrormsg;
+    @BindView(R.id.view_error)
+    LinearLayout mViewError;
 
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
-
         View view = inflater.inflate(R.layout.fragment_chat, container, false);
         AutoUtils.auto(view);
         ButterKnife.bind(this, view);
+        EventBus.getDefault().register(this);
         initview();
         return view;
     }
+
 
     MultiItemTypeAdapter mAdapter;
     List<EMConversation> mConversations;
 
     private void initview() {
+        setstate();
         mContext = getActivity();
         mRecyclerview.setLayoutManager(new LinearLayoutManager(mContext));
         mConversations = loadAllConversation();
@@ -83,6 +102,32 @@ public class ChatFragment extends AppBaseFragment implements RecentConversationD
         mAdapter.addItemViewDelegate(mRecentConversationDelagate);
         mRecyclerview.setAdapter(mAdapter);
         initrefreshlayout();
+    }
+
+    @Subscribe(threadMode = ThreadMode.MAIN)
+    public void onMessageEvent(ConnectStateEvent event) {
+        setstate();
+    }
+
+    private void setstate() {
+        String mString = SPUtils.getInstance().getString(getActivity(), SPUtils.IM_STATE);
+        if (mString.equals("0")) {
+            mViewError.setVisibility(View.GONE);
+        } else {
+            mViewError.setVisibility(View.VISIBLE);
+            switch (Integer.valueOf(mString)){
+                case EMError.USER_LOGIN_ANOTHER_DEVICE:
+                    mTvConnectErrormsg.setText("账户在其他设备登陆" + mString);
+                    break;
+                case EMError.USER_REMOVED:
+                    mTvConnectErrormsg.setText("账户被移除" + mString);
+                    break;
+                default:
+                    mTvConnectErrormsg.setText("连接im服务器错误Errcode=" + mString);
+
+                    break;
+            }
+        }
     }
 
     private void initrefreshlayout() {
@@ -133,7 +178,7 @@ public class ChatFragment extends AppBaseFragment implements RecentConversationD
         for (Pair<Long, EMConversation> sortItem : sortList) {
             list.add(sortItem.second);
         }
-        com.orhanobut.logger.Logger.d(list);
+        Logger.d(list);
         return list;
     }
 
@@ -203,12 +248,17 @@ public class ChatFragment extends AppBaseFragment implements RecentConversationD
     public void onitemclick(EMMessage mLastMessage, String mFinalUsername, int position) {
 
         Intent mIntent = new Intent(mContext, ChatActivity.class);
-        mIntent.putExtra(ChatActivity.CHAT_IM_NAME, mLastMessage.direct()== EMMessage.Direct.RECEIVE?
-                mLastMessage.getFrom():mLastMessage.getTo());
-        mIntent.putExtra(ChatActivity.CHAT_NAME,mFinalUsername);
+        mIntent.putExtra(ChatActivity.CHAT_IM_NAME, mLastMessage.direct() == EMMessage.Direct.RECEIVE ?
+                mLastMessage.getFrom() : mLastMessage.getTo());
+        mIntent.putExtra(ChatActivity.CHAT_NAME, mFinalUsername);
         mConversations.get(position).markAllMessagesAsRead();
         onrefreshConversation();
         ((MainActivity) mContext).startActivityForResult(mIntent, REQUEST_READMSG);
     }
 
+    @Override
+    public void onDestroyView() {
+        super.onDestroyView();
+        EventBus.getDefault().unregister(this);
+    }
 }
