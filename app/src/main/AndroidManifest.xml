@@ -170,9 +170,11 @@
                 <action android:name="android.intent.action.USER_PRESENT"/>
             </intent-filter>
         </receiver>
-
         <activity
             android:name=".activity.BookDetailActivity"
+            android:theme="@style/notitle">
+        </activity>
+        <activity android:name=".activity.PersonalInfoEditActivity"
             android:theme="@style/notitle">
         </activity>
     </application>

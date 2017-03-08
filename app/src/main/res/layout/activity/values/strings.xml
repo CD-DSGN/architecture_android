@@ -48,7 +48,7 @@
     <string name="without_wifi">非wifi网络流量</string>
     <string name="clear_cache">清理缓存</string>
     <string name="about_us">关于我们</string>
-    <string name="share">分享阅阅</string>
+    <string name="share_yueyue">分享阅阅</string>
     <string name="feedback_success">反馈意见提交成功，谢谢您的支持</string>
     <string name="current_version">当前版本</string>
     <string name="logout_success">退出成功</string>
@@ -58,4 +58,17 @@
     <string name="subscription">关注</string>
     <string name="subscribed">被关注</string>
     <string name="delete">删除</string>
+    <string name="nickname_default">未编辑昵称</string>
+    <string name="signature_default">个性签名</string>
+    <string name="ben">本</string>
+    <string name="subscribed_books">已扫码书籍</string>
+    <string name="edit_info">编辑资料</string>
+    <string name="collection">收藏</string>
+    <string name="comment_history">评论记录</string>
+    <string name="comment">评论</string>
+    <string name="share">分享</string>
+    <string name="avar">头像</string>
+    <string name="nickname">昵称</string>
+    <string name="signature">签名</string>
+    <string name="gender">性别</string>
 </resources>
