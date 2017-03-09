@@ -71,4 +71,12 @@
     <string name="nickname">昵称</string>
     <string name="signature">签名</string>
     <string name="gender">性别</string>
+    <string name="take_photo">拍照</string>
+    <string name="pick_from_album">从相册选择</string>
+    <string name="save_photo">保存图片</string>
+    <string name="change_avar">更换头像</string>
+    <string name="unset">未设置</string>
+    <string name="edit_nickname">编辑昵称</string>
+    <string name="save">保存</string>
+    <string name="change_sign">修改签名</string>
 </resources>

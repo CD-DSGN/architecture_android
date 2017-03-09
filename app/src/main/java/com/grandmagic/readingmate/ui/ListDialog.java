@@ -10,12 +10,11 @@ import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import com.grandmagic.readingmate.R;
+import com.grandmagic.readingmate.utils.AutoUtils;
 
 import java.util.ArrayList;
 
-import butterknife.BindView;
 import butterknife.ButterKnife;
-import butterknife.OnClick;
 
 /**
  * Created by zhangmengqi on 2017/2/17.
@@ -23,20 +22,27 @@ import butterknife.OnClick;
 
 public class ListDialog extends Dialog {
 
-    @BindView(R.id.title)
-    TextView mTitle;
-    @BindView(R.id.no)
-    Button mNo;
+    View mView;
     TextView mTvItemDlg;
     LinearLayout mLlItemDlg;
-    @BindView(R.id.ll_content)
+
+    TextView mTitle;
+
     LinearLayout mLlContent;
 
+    Button mNo;
+
+
     private String mTitleStr;
+
+    public void setData(ArrayList<String> data) {
+        mData = data;
+    }
+
     private ArrayList<String> mData;
     private String mBtnStr;
 
-    private Context mContext;
+    protected Context mContext;
 
     public void setOnitemClickListener(OnitemClickListener onitemClickListener) {
         mOnitemClickListener = onitemClickListener;
@@ -44,8 +50,24 @@ public class ListDialog extends Dialog {
 
     private OnitemClickListener mOnitemClickListener;
 
-    public ListDialog(Context context, ArrayList data, String title) {
+
+    public ListDialog(Context context) {
         super(context, R.style.CustomDialog);
+        mContext = context;
+    }
+
+    public ListDialog(Context context, String title) {
+        super(context, R.style.CustomDialog);
+        mContext = context;
+        mTitleStr = title;
+    }
+
+    public void setTitleStr(String titleStr) {
+        mTitleStr = titleStr;
+    }
+
+    public ListDialog(Context context, ArrayList data, String title) {
+        super(context, R.style.CustomDialog_bgdim);
         mContext = context;
         mData = data;
         mTitleStr = title;
@@ -54,17 +76,30 @@ public class ListDialog extends Dialog {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.custome_dlg_list_layout);
-        ButterKnife.bind(this);
+        mView = LayoutInflater.from(getContext()).inflate(R.layout.custome_dlg_list_layout, null);
+        setContentView(mView);
+        ButterKnife.bind(mView);
+        AutoUtils.auto(mView);
         initView();
     }
 
     //根据数组元素，动态添加
     private void initView() {
+        mTitle = (TextView) mView.findViewById(R.id.title);
+        mLlContent = (LinearLayout) mView.findViewById(R.id.ll_content);
+        mNo = (Button) mView.findViewById(R.id.no);
+        mNo.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                ListDialog.this.dismiss();
+            }
+        });
+
         mTitle.setText(mTitleStr);
         if (mData != null && mData.size() > 0) {
-            for (int i = 0 ; i < mData.size(); i++) {
-                View v = LayoutInflater.from(mContext).inflate(R.layout.item_list_dlg_basic, null);
+            for (int i = 0; i < mData.size(); i++) {
+                View v = LayoutInflater.from(mContext).inflate(R.layout.item_list_dlg_basic, mLlContent, false);
+                AutoUtils.auto(v);
                 mTvItemDlg = (TextView) v.findViewById(R.id.tv_item_dlg);
                 mTvItemDlg.setText(mData.get(i) + "");
                 mLlContent.addView(v);
@@ -79,10 +114,6 @@ public class ListDialog extends Dialog {
         }
     }
 
-    @OnClick(R.id.no)
-    public void onClick() {
-        dismiss();
-    }
 
 
     public interface OnitemClickListener {
