@@ -76,7 +76,7 @@ public class HomeFragment extends AppBaseFragment implements HomeBookAdapter.Cli
     @BindView(R.id.refreshLayout)
     BGARefreshLayout mRefreshLayout;
     private View rootview;
-    List<DisplayBook.InfoBean> mBookList;
+    List<DisplayBook.InfoBean> mBookList=new ArrayList<>();
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
@@ -86,25 +86,34 @@ public class HomeFragment extends AppBaseFragment implements HomeBookAdapter.Cli
         AutoUtils.auto(rootview);
         ButterKnife.bind(this, rootview);
         mContext = getActivity();
+        initview();
         initdata();
         return rootview;
+    }
+
+    private void initview() {
+        mRecyclerview.setLayoutManager(new LinearLayoutManager(mContext));
+        mBookAdapter = new HomeBookAdapter(mContext, mBookList, mRecyclerview);
+        mBookAdapter.setClickListener(this);
+        mRecyclerview.setAdapter(mBookAdapter);
+        initRefresh();
     }
 
     BookModel mModel;
 
     private void initdata() {
-        mBookList = new ArrayList();
         mModel = new BookModel(getActivity());
-        mModel.loadCollectBook(new AppBaseResponseCallBack<NovateResponse<DisplayBook>>(getActivity()) {
+        mModel.loadCollectBook(new AppBaseResponseCallBack<NovateResponse<DisplayBook>>(getActivity(),true) {
             @Override
             public void onSuccee(NovateResponse<DisplayBook> response) {
                 mBookList.addAll(response.getData().getInfo());
+                mBookAdapter.setData(mBookList);
                 showRecyclerView();
             }
 
             @Override
             public void onError(Throwable e) {
-               super.onError(e);
+                super.onError(e);
                 showEmptyView();
             }
         });
@@ -115,7 +124,7 @@ public class HomeFragment extends AppBaseFragment implements HomeBookAdapter.Cli
      */
     private void showEmptyView() {
         mRelaTitle.setBackgroundColor(getResources().getColor(android.R.color.transparent));
-        mRecyclerview.setVisibility(View.GONE);
+        mRefreshLayout.setVisibility(View.GONE);
         mLayoutNobook.setVisibility(View.VISIBLE);
         rootview.setBackgroundResource(R.drawable.bg_app_deep);
         mTvTitle.setTextColor(mContext.getResources().getColor(R.color.white));
@@ -136,13 +145,12 @@ public class HomeFragment extends AppBaseFragment implements HomeBookAdapter.Cli
         mIvSearch.setVisibility(View.VISIBLE);
         rootview.setBackgroundColor(0xf8f8f8);
         mTvTitle.setTextColor(mContext.getResources().getColor(R.color.text_green));
-        mRecyclerview.setVisibility(View.VISIBLE);
+        mRefreshLayout.setVisibility(View.VISIBLE);
         mLayoutNobook.setVisibility(View.GONE);
-        mRecyclerview.setLayoutManager(new LinearLayoutManager(mContext));
-        mBookAdapter = new HomeBookAdapter(mContext, mBookList, mRecyclerview);
-        mBookAdapter.setClickListener(this);
-        mRecyclerview.setAdapter(mBookAdapter);
 
+    }
+
+    private void initRefresh() {
         BGAStickinessRefreshViewHolder mRefreshViewHolder = new BGAStickinessRefreshViewHolder(mContext, true);
         mRefreshViewHolder.setStickinessColor(R.color.colorAccent);
         mRefreshViewHolder.setRotateImage(R.drawable.bga_refresh_stickiness);
