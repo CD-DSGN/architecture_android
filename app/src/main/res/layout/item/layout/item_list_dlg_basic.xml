@@ -1,20 +1,24 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+              android:id="@+id/ll_item_dlg"
               android:layout_width="match_parent"
-              android:layout_height="match_parent"
-    android:orientation="vertical"
-    android:id="@+id/ll_item_dlg"
+              android:layout_height="116px"
     >
 
     <TextView
         android:id="@+id/tv_item_dlg"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:layout_centerInParent="true"
         android:gravity="center"
-        android:textSize="16sp"
+        android:text="你好"
+        android:textColor="#1cc9a2"
+        android:textSize="36px"
         />
+
     <ImageView
         android:layout_width="match_parent"
-        android:layout_height="5dp"
+        android:layout_height="1px"
+        android:layout_alignParentBottom="true"
         android:src="@drawable/dv_green"/>
-</LinearLayout>
+</RelativeLayout>

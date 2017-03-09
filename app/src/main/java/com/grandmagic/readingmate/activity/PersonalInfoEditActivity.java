@@ -7,7 +7,10 @@ import android.widget.TextView;
 
 import com.grandmagic.readingmate.R;
 import com.grandmagic.readingmate.base.AppBaseActivity;
+import com.grandmagic.readingmate.ui.CustomDialogWithOneBtn;
+import com.grandmagic.readingmate.ui.UploadAvarDlg;
 import com.grandmagic.readingmate.utils.AutoUtils;
+import com.grandmagic.readingmate.utils.ViewUtils;
 import com.grandmagic.readingmate.view.CircleImageView;
 
 import butterknife.BindView;
@@ -33,8 +36,8 @@ public class PersonalInfoEditActivity extends AppBaseActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_personal_info_edit);
-        ButterKnife.bind(this);
         AutoUtils.auto(this);
+        ButterKnife.bind(this);
         initView();
     }
 
@@ -50,13 +53,59 @@ public class PersonalInfoEditActivity extends AppBaseActivity {
                 finish();
                 break;
             case R.id.iv_avar:
+                //弹出相应的dlg
+                new UploadAvarDlg(PersonalInfoEditActivity.this).show();
                 break;
             case R.id.tv_nickname:
+                showNickDialog();
                 break;
             case R.id.tv_signature:
+                showSignDialog();
                 break;
             case R.id.iv_gender:
                 break;
         }
+    }
+
+    private CustomDialogWithOneBtn mSignDlg;
+    private void showSignDialog() {
+        if (mSignDlg == null) {
+            mSignDlg = new CustomDialogWithOneBtn(PersonalInfoEditActivity.this, R.style.CustomDialog_bgdim);
+            mSignDlg.setMaxNum(20);
+            mSignDlg.setOnBtnOnclickListener(new CustomDialogWithOneBtn.BtnOnclickListener(){
+                @Override
+                public void onYesClick() {
+                    ViewUtils.showToast(getString(R.string.save));
+                    //调用接口，修改签名
+                }
+
+            });
+            mSignDlg.setYesStr(getString(R.string.save));
+            mSignDlg.setTitle(getString(R.string.change_sign));
+        }
+        mSignDlg.show();
+        mSignDlg.setNeedTextLimit(true);
+    }
+
+    private CustomDialogWithOneBtn mNickNameDialog;
+
+    private void showNickDialog() {
+        if (mNickNameDialog == null) {
+            mNickNameDialog = new CustomDialogWithOneBtn(PersonalInfoEditActivity.this, R.style.CustomDialog_bgdim);
+            mNickNameDialog.setMaxNum(10);
+            mNickNameDialog.setOnBtnOnclickListener(new CustomDialogWithOneBtn.BtnOnclickListener(){
+                @Override
+                public void onYesClick() {
+                    ViewUtils.showToast(getString(R.string.save));
+                    //调用接口，修改昵称
+
+                }
+
+            });
+            mNickNameDialog.setYesStr(getString(R.string.save));
+            mNickNameDialog.setTitle(getString(R.string.edit_nickname));
+        }
+        mNickNameDialog.show();
+        mNickNameDialog.setNeedTextLimit(true);
     }
 }
