@@ -35,7 +35,8 @@ public class FriendRequestActivity extends AppBaseActivity implements RequestLis
     RecyclerView mRecyclerview;
 
     List<RequestListResponse> mListResponses = new ArrayList<>();
-ContactModel mModel;
+    ContactModel mModel;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -58,14 +59,14 @@ ContactModel mModel;
     }
 
     private void loadDataFromServer() {
-        mModel=new ContactModel(this);
-     mModel.getallRequest(new AppBaseResponseCallBack<NovateResponse<List<RequestListResponse>>>(this) {
-         @Override
-         public void onSuccee(NovateResponse<List<RequestListResponse>> response) {
-             mListResponses.addAll(response.getData());
-             mAdapter.setdata(mListResponses);
-         }
-     });
+        mModel = new ContactModel(this);
+        mModel.getallRequest(new AppBaseResponseCallBack<NovateResponse<List<RequestListResponse>>>(this) {
+            @Override
+            public void onSuccee(NovateResponse<List<RequestListResponse>> response) {
+                mListResponses.addAll(response.getData());
+                mAdapter.setdata(mListResponses);
+            }
+        });
     }
 
     @OnClick(R.id.back)
@@ -73,9 +74,38 @@ ContactModel mModel;
         finish();
     }
 
+    /**
+     * 同意好友请求
+     *
+     * @param data
+     * @param mPosition
+     */
     @Override
-    public void accpet(RequestListResponse data, int mPosition) {
+    public void accpet(RequestListResponse data, final int mPosition) {
+        mModel.acceptFriend(data.getRequest_id(), new AppBaseResponseCallBack<NovateResponse>(this) {
+            @Override
+            public void onSuccee(NovateResponse response) {
+                mListResponses.remove(mPosition);
+                mAdapter.setdata(mListResponses);
+            }
+        });
+    }
 
+    /**
+     * 拒绝好友请求
+     *
+     * @param mData
+     * @param mPosition
+     */
+    @Override
+    public void refuse(RequestListResponse mData, final int mPosition) {
+        mModel.refuseFriend(mData.getRequest_id(), new AppBaseResponseCallBack<NovateResponse>(this) {
+            @Override
+            public void onSuccee(NovateResponse response) {
+                mListResponses.remove(mPosition);
+                mAdapter.setdata(mListResponses);
+            }
+        });
     }
 
 }

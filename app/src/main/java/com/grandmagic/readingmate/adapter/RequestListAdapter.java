@@ -33,16 +33,23 @@ public class RequestListAdapter extends CommonAdapter<RequestListResponse> {
     @Override
     protected void convert(ViewHolder holder, final RequestListResponse data, final int position) {
         holder.setVisible(R.id.bottomline, position == mDatas.size() - 1);
-        holder.setText(R.id.name,data.getUser_name());
-        holder.setText(R.id.verify,data.getMessage());
+        holder.setText(R.id.name, data.getUser_name());
+        holder.setText(R.id.verify, data.getMessage());
         holder.setOnClickListener(R.id.state_todo, new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                if (mStateListener!=null)mStateListener.accpet(data,position);
+                if (mStateListener != null) mStateListener.accpet(data, position);
             }
         });
-        ImageLoader.loadRoundImage(mContext, Environment.BASEULR_PRODUCTION+data.getAvatar_native(), (ImageView) holder.getView(R.id.avatar));
+        holder.setOnClickListener(R.id.delete, new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                if (mStateListener != null) mStateListener.refuse(data, position);
+            }
+        });
+        ImageLoader.loadRoundImage(mContext, Environment.BASEULR_PRODUCTION + data.getAvatar_native(), (ImageView) holder.getView(R.id.avatar));
     }
+
     StateListener mStateListener;
 
     public void setStateListener(StateListener mStateListener) {
@@ -54,7 +61,9 @@ public class RequestListAdapter extends CommonAdapter<RequestListResponse> {
         notifyDataSetChanged();
     }
 
-    public interface StateListener{
+    public interface StateListener {
         void accpet(RequestListResponse mData, int mPosition);
+
+        void refuse(RequestListResponse mData, int mPosition);
     }
 }
