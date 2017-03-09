@@ -18,8 +18,21 @@ public class ContactModel {
         this.mContext = mContext;
     }
 
+    /**
+     * 获取所有好友
+     * @param mBack
+     */
     public void getAllFriendFromServer(AppBaseResponseCallBack mBack){
         Novate mNovate=new Novate.Builder(mContext).build();
         mNovate.executeGet(ApiInterface.SHOWFRIEND,mBack );
 }
+
+    /**
+     * 获取所有好友请求列表
+     * @param mBack
+     */
+    public void getallRequest(AppBaseResponseCallBack mBack) {
+        Novate mNovate=new Novate.Builder(mContext).build();
+        mNovate.executeGet(ApiInterface.REQUESTINFO_REQUESTLIST,mBack );
+    }
 }

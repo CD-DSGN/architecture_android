@@ -9,11 +9,13 @@ import com.bumptech.glide.Glide;
 import com.grandmagic.readingmate.R;
 import com.grandmagic.readingmate.bean.response.FriendRequestBean;
 import com.grandmagic.readingmate.bean.response.InviteMessage;
+import com.grandmagic.readingmate.bean.response.RequestListResponse;
 import com.grandmagic.readingmate.db.DBHelper;
 import com.grandmagic.readingmate.model.SearchUserModel;
 import com.grandmagic.readingmate.utils.ImageLoader;
 import com.hyphenate.chat.EMClient;
 import com.hyphenate.exceptions.HyphenateException;
+import com.tamic.novate.util.Environment;
 import com.zhy.adapter.recyclerview.base.ViewHolder;
 
 import java.util.List;
@@ -21,7 +23,7 @@ import java.util.List;
 /**
  * Created by lps on 2017/2/21.
  */
-public class RequestListAdapter extends CommonAdapter<InviteMessage> {
+public class RequestListAdapter extends CommonAdapter<RequestListResponse> {
 
     public RequestListAdapter(Context context, List datas) {
         super(context, R.layout.item_requestlist, datas);
@@ -29,18 +31,17 @@ public class RequestListAdapter extends CommonAdapter<InviteMessage> {
 
 
     @Override
-    protected void convert(ViewHolder holder, final InviteMessage data, int position) {
+    protected void convert(ViewHolder holder, final RequestListResponse data, final int position) {
         holder.setVisible(R.id.bottomline, position == mDatas.size() - 1);
-        holder.setVisible(R.id.state_todo, data.getStatus()== InviteMessage.InviteMesageStatus.BEINVITEED);
-        holder.setVisible(R.id.state_deal, data.getStatus()== InviteMessage.InviteMesageStatus.BEAGREED||data.getStatus()== InviteMessage.InviteMesageStatus.AGREED);
-        holder.setText(R.id.name,data.getFrom());
-        holder.setText(R.id.verify,data.getReason());
+        holder.setText(R.id.name,data.getUser_name());
+        holder.setText(R.id.verify,data.getMessage());
         holder.setOnClickListener(R.id.state_todo, new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                if (mStateListener!=null)mStateListener.accpet(data);
+                if (mStateListener!=null)mStateListener.accpet(data,position);
             }
         });
+        ImageLoader.loadRoundImage(mContext, Environment.BASEULR_PRODUCTION+data.getAvatar_native(), (ImageView) holder.getView(R.id.avatar));
     }
     StateListener mStateListener;
 
@@ -48,7 +49,12 @@ public class RequestListAdapter extends CommonAdapter<InviteMessage> {
         this.mStateListener = mStateListener;
     }
 
+    public void setdata(List<RequestListResponse> mData) {
+        mDatas = mData;
+        notifyDataSetChanged();
+    }
+
     public interface StateListener{
-        void accpet(InviteMessage mData);
+        void accpet(RequestListResponse mData, int mPosition);
     }
 }

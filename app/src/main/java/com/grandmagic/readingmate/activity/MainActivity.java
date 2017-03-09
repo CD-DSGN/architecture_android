@@ -173,7 +173,7 @@ public class MainActivity extends AppBaseActivity {
         mFragmentManager = getFragmentManager();
         mFragments = new HashMap<>();
         mcurrentFragment = mFragmentManager.findFragmentById(R.id.contentframe);
-        if (mcurrentFragment == null) {//初始化homefragment
+     //初始化homefragment
             Fragment mHomeFragment = createFragment(HomeFragment.class);
             mFragmentManager.beginTransaction().add(R.id.contentframe, mHomeFragment).show(mHomeFragment).commit();
             mcurrentFragment = mHomeFragment;
@@ -181,7 +181,7 @@ public class MainActivity extends AppBaseActivity {
             mcurrentIV.setSelected(true);
             mcurrentTV = mTextHome;
             scalelarge();
-        }
+
         checkVersion();
     }
 

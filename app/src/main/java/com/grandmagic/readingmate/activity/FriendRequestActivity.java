@@ -11,12 +11,10 @@ import android.widget.TextView;
 import com.grandmagic.readingmate.R;
 import com.grandmagic.readingmate.adapter.RequestListAdapter;
 import com.grandmagic.readingmate.base.AppBaseActivity;
-import com.grandmagic.readingmate.bean.response.FriendRequestBean;
-import com.grandmagic.readingmate.bean.response.InviteMessage;
-import com.grandmagic.readingmate.db.DBHelper;
-import com.grandmagic.readingmate.db.InviteMessageDao;
-import com.hyphenate.chat.EMClient;
-import com.hyphenate.exceptions.HyphenateException;
+import com.grandmagic.readingmate.base.AppBaseResponseCallBack;
+import com.grandmagic.readingmate.bean.response.RequestListResponse;
+import com.grandmagic.readingmate.model.ContactModel;
+import com.tamic.novate.NovateResponse;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -36,16 +34,16 @@ public class FriendRequestActivity extends AppBaseActivity implements RequestLis
     @BindView(R.id.recyclerview)
     RecyclerView mRecyclerview;
 
-    List<InviteMessage> mInviteMessages = new ArrayList<>();
-
+    List<RequestListResponse> mListResponses = new ArrayList<>();
+ContactModel mModel;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_friend_request);
         ButterKnife.bind(this);
         setTranslucentStatus(true);
-        loadDataFromDB();
         initview();
+        loadDataFromServer();
     }
 
     RequestListAdapter mAdapter;
@@ -54,14 +52,20 @@ public class FriendRequestActivity extends AppBaseActivity implements RequestLis
         mContext = this;
         mTitle.setText("新阅友");
         mRecyclerview.setLayoutManager(new LinearLayoutManager(mContext));
-        mAdapter = new RequestListAdapter(mContext, mInviteMessages);
+        mAdapter = new RequestListAdapter(mContext, mListResponses);
         mAdapter.setStateListener(this);
         mRecyclerview.setAdapter(mAdapter);
     }
 
-    private void loadDataFromDB() {
-        InviteMessageDao mInviteDao = DBHelper.getInviteDao(this);
-        mInviteMessages = mInviteDao.loadAll();
+    private void loadDataFromServer() {
+        mModel=new ContactModel(this);
+     mModel.getallRequest(new AppBaseResponseCallBack<NovateResponse<List<RequestListResponse>>>(this) {
+         @Override
+         public void onSuccee(NovateResponse<List<RequestListResponse>> response) {
+             mListResponses.addAll(response.getData());
+             mAdapter.setdata(mListResponses);
+         }
+     });
     }
 
     @OnClick(R.id.back)
@@ -70,16 +74,8 @@ public class FriendRequestActivity extends AppBaseActivity implements RequestLis
     }
 
     @Override
-    public void accpet(InviteMessage data) {
-        try {
-            EMClient.getInstance().contactManager().acceptInvitation(data.getFrom());
-            data.setStatus(InviteMessage.InviteMesageStatus.AGREED);
-            DBHelper.getInviteDao(mContext).insertOrReplace(data);//更新数据库
-        } catch (HyphenateException mE) {
-            mE.printStackTrace();
-        }
-        loadDataFromDB();
-        mAdapter.notifyDataSetChanged();
+    public void accpet(RequestListResponse data, int mPosition) {
+
     }
 
 }
