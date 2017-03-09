@@ -1,72 +1,127 @@
 package com.grandmagic.readingmate.bean.response;
 
+import java.util.List;
+
 /**
  * Created by lps on 2017/3/6.
  */
 
 public class SearchUserResponse {
 
+
     /**
-     * user_name : 小花
-     * gender : 1
-     * user_id : 1
-     * avatar_native : /images/18508236987/3fc5d1ac659846368d522a6ea5ffa427.jpg
-     * avatar_thumb : /images/18508236987/thumb_3fc5d1ac659846368d522a6ea5ffa427.jpg
-     * signature : 啦啦啦
+     * collection : [{"book_name":"深入浅出MySQL","is_both_enjoy":2}]
+     * personalinfo : {"user_id":8,"user_name":"小华","gender":1,"signature":"啦啦啦2","avatar_native":"/images/18228170109/751ca8d636454ebebb1190f982031f54.jpg","avatar_thumb":"/images/18228170109/thumb_751ca8d636454ebebb1190f982031f54.jpg"}
      */
 
-    private String user_name;
-    private String gender;
-    private String user_id;
-    private String avatar_native;
-    private String avatar_thumb;
-    private String signature;
+    private PersonalinfoBean personalinfo;
+    private List<CollectionBean> collection;
 
-    public String getUser_name() {
-        return user_name;
+    public PersonalinfoBean getPersonalinfo() {
+        return personalinfo;
     }
 
-    public void setUser_name(String user_name) {
-        this.user_name = user_name;
+    public void setPersonalinfo(PersonalinfoBean personalinfo) {
+        this.personalinfo = personalinfo;
     }
 
-    public String getGender() {
-        return gender;
+    public List<CollectionBean> getCollection() {
+        return collection;
     }
 
-    public void setGender(String gender) {
-        this.gender = gender;
+    public void setCollection(List<CollectionBean> collection) {
+        this.collection = collection;
     }
 
-    public String getUser_id() {
-        return user_id;
+    public static class PersonalinfoBean {
+        /**
+         * user_id : 8
+         * user_name : 小华
+         * gender : 1
+         * signature : 啦啦啦2
+         * avatar_native : /images/18228170109/751ca8d636454ebebb1190f982031f54.jpg
+         * avatar_thumb : /images/18228170109/thumb_751ca8d636454ebebb1190f982031f54.jpg
+         */
+
+        private String user_id;
+        private String user_name;
+        private int gender;
+        private String signature;
+        private String avatar_native;
+        private String avatar_thumb;
+
+        public String getUser_id() {
+            return user_id;
+        }
+
+        public void setUser_id(String mUser_id) {
+            user_id = mUser_id;
+        }
+
+        public String getUser_name() {
+            return user_name;
+        }
+
+        public void setUser_name(String user_name) {
+            this.user_name = user_name;
+        }
+
+        public int getGender() {
+            return gender;
+        }
+
+        public void setGender(int gender) {
+            this.gender = gender;
+        }
+
+        public String getSignature() {
+            return signature;
+        }
+
+        public void setSignature(String signature) {
+            this.signature = signature;
+        }
+
+        public String getAvatar_native() {
+            return avatar_native;
+        }
+
+        public void setAvatar_native(String avatar_native) {
+            this.avatar_native = avatar_native;
+        }
+
+        public String getAvatar_thumb() {
+            return avatar_thumb;
+        }
+
+        public void setAvatar_thumb(String avatar_thumb) {
+            this.avatar_thumb = avatar_thumb;
+        }
     }
 
-    public void setUser_id(String user_id) {
-        this.user_id = user_id;
-    }
+    public static class CollectionBean {
+        /**
+         * book_name : 深入浅出MySQL
+         * is_both_enjoy : 2
+         */
 
-    public String getAvatar_native() {
-        return avatar_native;
-    }
+        private String book_name;
+        private int is_both_enjoy;
 
-    public void setAvatar_native(String avatar_native) {
-        this.avatar_native = avatar_native;
-    }
+        public String getBook_name() {
+            return book_name;
+        }
 
-    public String getAvatar_thumb() {
-        return avatar_thumb;
-    }
+        public void setBook_name(String book_name) {
+            this.book_name = book_name;
+        }
 
-    public void setAvatar_thumb(String avatar_thumb) {
-        this.avatar_thumb = avatar_thumb;
-    }
+        public int getIs_both_enjoy() {
+            return is_both_enjoy;
+        }
 
-    public String getSignature() {
-        return signature;
-    }
-
-    public void setSignature(String signature) {
-        this.signature = signature;
+        public void setIs_both_enjoy(int is_both_enjoy) {
+            this.is_both_enjoy = is_both_enjoy;
+        }
     }
 }

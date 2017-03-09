@@ -16,4 +16,5 @@ public class ApiInterface {
     public  static final String  SEARCH_USER = "friendinfo/searchuser"; //查找用户
     public  static final String  COLLECT_SCAN = "collect/scan"; //根据ISBN查找图书
     public  static final String  COLLECT_BOOKDISPLAY = "collect/bookdisplay"; //首页显示的图书
+    public  static final String  REQUEST_ADD = "requestinfo/requestadd"; //首页显示的图书
 }

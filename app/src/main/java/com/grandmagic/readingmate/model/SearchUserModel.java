@@ -30,15 +30,20 @@ public class SearchUserModel {
 
     public void searchUser(String phone, AppBaseResponseCallBack mBack){
         Novate mNovate=new Novate.Builder(mContext).baseUrl(Environment.BASEULR_PRODUCTION).build();
-//        JSONObject mStringMap=new JSONObject();
-//        try {
-//            mStringMap.put("mobile_phone",phone);
-//        } catch (JSONException mE) {
-//            mE.printStackTrace();
-//        }
         UserInfoRequest mUserInfoRequest=new UserInfoRequest();
         mUserInfoRequest.setMobile_phone(phone);
         String mS = new Gson().toJson(mUserInfoRequest);
         mNovate.executeJson(ApiInterface.SEARCH_USER,mS,mBack);
     }
+public void requestAddFriend(String user_id2,String message,AppBaseResponseCallBack mBack){
+    Novate mNovate=new Novate.Builder(mContext).baseUrl(Environment.BASEULR_PRODUCTION).build();
+  JSONObject mJSONObject=new JSONObject();
+    try {
+        mJSONObject.put("user_id2",user_id2);
+        mJSONObject.put("message",message);
+    } catch (JSONException mE) {
+        mE.printStackTrace();
+    }
+    mNovate.executeJson(ApiInterface.REQUEST_ADD,mJSONObject.toString(),mBack);
+}
 }

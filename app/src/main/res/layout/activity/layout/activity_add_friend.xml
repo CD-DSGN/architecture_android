@@ -100,6 +100,7 @@
                 />
 
             <LinearLayout
+                android:id="@+id/lin_collection"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_below="@+id/text1"
@@ -109,23 +110,6 @@
                 android:orientation="vertical"
                 >
 
-                <TextView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_marginBottom="26px"
-                    android:text="《答案之书》"
-                    android:textColor="#181d1b"
-                    android:textSize="24px"
-                    />
-
-                <TextView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_marginBottom="26px"
-                    android:text="《请回到1998》"
-                    android:textColor="#181d1b"
-                    android:textSize="24px"
-                    />
             </LinearLayout>
 
             <RelativeLayout
@@ -135,7 +119,8 @@
                 android:layout_alignParentBottom="true"
                 android:layout_alignParentRight="true"
                 android:layout_marginBottom="40px"
-                android:layout_marginRight="46px">
+                android:layout_marginRight="46px"
+                android:visibility="gone">
 
                 <ImageView
                     android:id="@+id/iv1"
@@ -145,6 +130,7 @@
                     />
 
                 <TextView
+                    android:id="@+id/hassamebook"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginLeft="10px"
