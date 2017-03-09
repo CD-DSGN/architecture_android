@@ -3,6 +3,7 @@ package com.grandmagic.readingmate.utils;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.content.pm.PackageManager;
 import android.net.Uri;
 import android.support.v7.app.AlertDialog;
 import android.util.Log;
@@ -20,6 +21,9 @@ import com.tamic.novate.NovateResponse;
 import com.tamic.novate.Throwable;
 import com.tamic.novate.download.DownLoadCallBack;
 import com.tamic.novate.util.NetworkUtil;
+
+import org.json.JSONException;
+import org.json.JSONObject;
 
 import java.io.File;
 import java.util.HashMap;
@@ -42,22 +46,33 @@ public class UpdateManager {
 
     public void getVersionCode(final int localVersion) {
         mNovate = new Novate.Builder(mContext).build();
-        mNovate.executeGet(ApiInterface.UPDATE, new HashMap<String, Object>(),
+        JSONObject mJSONObject=new JSONObject();
+        try {
+            mJSONObject.put("client_type",2);
+            mJSONObject.put("version",KitUtils.getVersionName(mContext));
+        } catch (JSONException mE) {
+            mE.printStackTrace();
+        }
+        mNovate.executeJson(ApiInterface.UPDATE,mJSONObject.toString() ,
                 new AppBaseResponseCallBack<NovateResponse<UpdateResponse>>(mContext) {
                     @Override
                     public void onSuccee(NovateResponse<UpdateResponse> response) {
-                        if (localVersion != response.getData().getServersion()) {
-                            showUpdateDialog(response.getData().getUrl());
+//                        if (localVersion != response.getData().getServersion()) {
+//                            showUpdateDialog(response.getData().getUrl());
+//                        }
+                        if (response.getData().isIs_update()){
+                         showUpdateDialog(response.getData().getDown_link(),response.getData().getUpdate_note());
+
                         }
                     }
                 });
     }
 
-    private void showUpdateDialog(final String url) {
+    private void showUpdateDialog(final String url, String mUpdate_note) {
         mDialog = new AlertDialog.Builder(mContext);
         String s = NetworkUtil.isWifi(mContext) ? "您目前在WIFI环境，是否升级" : "您目前不在在WIFI环境，是否升级";
         mDialog.setTitle("有新的版本");
-        mDialog.setMessage(s);
+        mDialog.setMessage(mUpdate_note);
         mDialog.setNegativeButton(R.string.confirm, new DialogInterface.OnClickListener() {
             @Override
             public void onClick(DialogInterface dialog, int which) {
