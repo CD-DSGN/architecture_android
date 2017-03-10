@@ -34,6 +34,8 @@ import butterknife.OnClick;
 
 public class AddFriendActivity extends AppBaseActivity {
 
+    private static final int NOFRIEND = 1;
+    private static final int ISBOTHENJOY = 1;
     @BindView(R.id.back)
     ImageView mBack;
     @BindView(R.id.title)
@@ -59,6 +61,10 @@ public class AddFriendActivity extends AppBaseActivity {
     TextView mHassamebook;
     @BindView(R.id.lin_collection)
     LinearLayout mLinCollection;
+    @BindView(R.id.text1)
+    TextView mText1;
+    @BindView(R.id.rela_addfriend)
+    RelativeLayout mRelaAddfriend;
 
 
     @Override
@@ -106,29 +112,28 @@ public class AddFriendActivity extends AppBaseActivity {
         });
     }
 
+
     String mUser_id;
 
+    /**
+     * 搜索结果展示
+     * @param mSearchUserResponse
+     */
     private void setUserView(SearchUserResponse mSearchUserResponse) {
         mRelaFriend.setVisibility(View.VISIBLE);
         ImageLoader.loadCircleImage(this, Environment.BASEULR_PRODUCTION + mSearchUserResponse.getPersonalinfo().getAvatar_native(), mAvatar);
         mName.setText(mSearchUserResponse.getPersonalinfo().getUser_name());
         mUser_id = mSearchUserResponse.getPersonalinfo().getUser_id();
-        if (mUser_id.equals(SPUtils.getInstance().getString(this, SPUtils.IM_NAME))) {
-            mIvAddfriend.setVisibility(View.GONE);
-        }
-        if (IMHelper.getInstance().getUserInfo(mUser_id) != null) {
-            mIvAddfriend.setVisibility(mUser_id.equals(SPUtils.getInstance().getString(this, SPUtils.IM_NAME))//如果搜索的是自己
-                    || IMHelper.getInstance().getUserInfo(mUser_id) != null ? View.GONE : View.VISIBLE);//或这已经是好友关系
-        }
+    mRelaAddfriend.setVisibility(mSearchUserResponse.getIs_friend()==NOFRIEND?View.GONE:View.VISIBLE);
         setCollectionbook(mSearchUserResponse.getCollection());
     }
 
     private void initview() {
-        mTitle.setText("添加家友");
+        mTitle.setText("添加读友");
     }
 
 
-    @OnClick({R.id.back, R.id.rela_friend, R.id.iv_addfriend})
+    @OnClick({R.id.back, R.id.rela_friend, R.id.rela_addfriend})
     public void onClick(View view) {
         switch (view.getId()) {
             case R.id.back:
@@ -137,7 +142,7 @@ public class AddFriendActivity extends AppBaseActivity {
             case R.id.rela_friend:
                 startActivity(new Intent(AddFriendActivity.this, FriendDetailActivity.class));
                 break;
-            case R.id.iv_addfriend:
+            case R.id.rela_addfriend:
                 showAddFriendDialog();
                 break;
         }
@@ -181,7 +186,7 @@ public class AddFriendActivity extends AppBaseActivity {
             @Override
             public void onSuccee(NovateResponse response) {
                 Toast.makeText(AddFriendActivity.this, "" + response.getMessage(), Toast.LENGTH_SHORT).show();
-                mIvAddfriend.setVisibility(View.GONE);
+                mRelaAddfriend.setVisibility(View.GONE);
             }
         });
     }
@@ -192,12 +197,12 @@ public class AddFriendActivity extends AppBaseActivity {
         for (SearchUserResponse.CollectionBean coll : mCollectionbook) {
             TextView mTextView = new TextView(this);
             mTextView.setText("《" + coll.getBook_name() + "》");
-            if (coll.getIs_both_enjoy() == 2) {
+            if (coll.getIs_both_enjoy() == ISBOTHENJOY) {
                 hassamebook = true;
                 mTextView.setTextColor(getResources().getColor(R.color.text_green));
             }
             mLinCollection.addView(mTextView);
         }
-        mRelaSameInterest.setVisibility(hassamebook?View.VISIBLE:View.GONE);
+        mRelaSameInterest.setVisibility(hassamebook ? View.VISIBLE : View.GONE);
     }
 }

@@ -8,13 +8,14 @@ import java.util.List;
 
 public class SearchUserResponse {
 
-
     /**
-     * collection : [{"book_name":"深入浅出MySQL","is_both_enjoy":2}]
+     * collection : [{"book_name":"深入浅出MySQL","is_both_enjoy":1}]
      * personalinfo : {"user_id":8,"user_name":"小华","gender":1,"signature":"啦啦啦2","avatar_native":"/images/18228170109/751ca8d636454ebebb1190f982031f54.jpg","avatar_thumb":"/images/18228170109/thumb_751ca8d636454ebebb1190f982031f54.jpg"}
+     * is_friend : 2
      */
 
     private PersonalinfoBean personalinfo;
+    private int is_friend;
     private List<CollectionBean> collection;
 
     public PersonalinfoBean getPersonalinfo() {
@@ -23,6 +24,14 @@ public class SearchUserResponse {
 
     public void setPersonalinfo(PersonalinfoBean personalinfo) {
         this.personalinfo = personalinfo;
+    }
+
+    public int getIs_friend() {
+        return is_friend;
+    }
+
+    public void setIs_friend(int is_friend) {
+        this.is_friend = is_friend;
     }
 
     public List<CollectionBean> getCollection() {
@@ -102,7 +111,7 @@ public class SearchUserResponse {
     public static class CollectionBean {
         /**
          * book_name : 深入浅出MySQL
-         * is_both_enjoy : 2
+         * is_both_enjoy : 1
          */
 
         private String book_name;
