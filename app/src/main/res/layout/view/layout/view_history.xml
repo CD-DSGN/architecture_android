@@ -1,8 +1,8 @@
 <?xml version="1.0" encoding="utf-8"?>
 <merge xmlns:android="http://schemas.android.com/apk/res/android"
-              android:layout_width="match_parent"
-              android:layout_height="match_parent"
-              android:orientation="vertical">
+       android:layout_width="match_parent"
+       android:layout_height="match_parent"
+       android:orientation="vertical">
 
     <RelativeLayout
         android:layout_width="720px"
@@ -10,12 +10,13 @@
         android:layout_marginLeft="34px"
         >
 
-        <ImageView
+        <View
             android:id="@+id/dashline_scan"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
+            android:layout_width="match_parent"
+            android:layout_height="3px"
             android:layout_marginTop="120px"
-            android:src="@drawable/dv_green"/>
+            android:layerType="software"
+            android:src="@drawable/shape_white_line"/>
 
         <ImageView
             android:id="@+id/iv_scanlist"
@@ -34,8 +35,8 @@
             android:layout_marginLeft="14px"
             android:layout_toRightOf="@+id/iv_scanlist"
             android:text="扫描记录"
-            android:textColor="#086651"
-            android:textSize="26px"
+            android:textColor="@color/white"
+            android:textSize="30px"
 
             />
     </RelativeLayout>
@@ -46,8 +47,10 @@
         android:layout_height="wrap_content"
         android:orientation="vertical"
         >
-<include layout="@layout/view_searchhis"/>
+
+        <include layout="@layout/view_searchhis"/>
     </LinearLayout>
+
     <RelativeLayout
         android:layout_width="720px"
         android:layout_height="wrap_content"
@@ -59,7 +62,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginTop="120px"
-            android:src="@drawable/dv_green"/>
+            android:src="@drawable/shape_white_line"/>
 
         <ImageView
             android:id="@+id/iv_searchlist"
@@ -78,8 +81,8 @@
             android:layout_marginLeft="14px"
             android:layout_toRightOf="@+id/iv_searchlist"
             android:text="书籍列表"
-            android:textColor="#086651"
-            android:textSize="26px"
+            android:textColor="@color/white"
+            android:textSize="30px"
 
             />
     </RelativeLayout>
@@ -90,9 +93,13 @@
         android:layout_height="wrap_content"
         android:orientation="vertical"
         >
+
         <include layout="@layout/view_searchhis"/>
+
         <include layout="@layout/view_searchhis"/>
+
         <include layout="@layout/view_searchhis"/>
+
         <include layout="@layout/view_searchhis"/>
     </LinearLayout>
 </merge>

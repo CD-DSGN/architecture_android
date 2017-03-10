@@ -132,7 +132,7 @@ public class HomeFragment extends AppBaseFragment implements HomeBookAdapter.Cli
     HomeBookAdapter mBookAdapter;
 
     private void showRecyclerView() {
-        ((MainActivity) mContext).setSystemBarColor(android.R.color.transparent);
+        ((MainActivity) mContext).setSystemBarColor(android.R.color.white);
         mLayoutNobook.setVisibility(View.GONE);
         mHomeviewBook.setVisibility(View.VISIBLE);
 

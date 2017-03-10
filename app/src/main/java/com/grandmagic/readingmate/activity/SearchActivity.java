@@ -30,8 +30,6 @@ public class SearchActivity extends AppBaseActivity {
     TextView mTextView;
     @BindView(R.id.hotSearch_Flow)
     FlowLayout mHotSearchFlow;
-    @BindView(R.id.dashline_scan)
-    ImageView mDashlineScan;
     @BindView(R.id.iv_scanlist)
     ImageView mIvScanlist;
 
@@ -41,10 +39,6 @@ public class SearchActivity extends AppBaseActivity {
 
     @BindView(R.id.iv_searchlist)
     ImageView mIvSearchlist;
-
-
-    @BindView(R.id.dashline_search)
-    ImageView mDashlineSearch;
     @BindView(R.id.bookname)
     TextView mBookname;
     @BindView(R.id.timeOrauthor)

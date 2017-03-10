@@ -10,12 +10,11 @@
         android:id="@+id/homeview_book"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:background="@color/white"
+
         >
 
         <android.support.design.widget.AppBarLayout
             android:layout_width="match_parent"
-
             android:layout_height="wrap_content"
             android:background="@android:color/transparent"
             app:elevation="0dp"
@@ -27,13 +26,14 @@
                 android:layout_width="match_parent"
                 android:layout_height="118px"
                 android:paddingTop="30px"
+                android:background="@color/white"
                 app:layout_scrollFlags="scroll|enterAlways"
                 >
 
                 <ImageView
                     android:id="@+id/iv_search"
-                    android:layout_width="33px"
-                    android:layout_height="33px"
+                    android:layout_width="34px"
+                    android:layout_height="34px"
                     android:layout_centerVertical="true"
                     android:layout_marginLeft="62px"
                     android:src="@drawable/ic_search_small"
@@ -41,8 +41,8 @@
 
                 <ImageView
                     android:id="@+id/iv_camera"
-                    android:layout_width="35px"
-                    android:layout_height="27px"
+                    android:layout_width="40px"
+                    android:layout_height="32px"
                     android:layout_alignParentRight="true"
                     android:layout_centerVertical="true"
                     android:layout_marginRight="62px"
@@ -55,8 +55,8 @@
                     android:layout_height="wrap_content"
                     android:layout_centerInParent="true"
                     android:text="读家"
-                    android:textColor="@color/text_green"
-                    android:textSize="20sp"
+                    android:textColor="@color/text_black"
+                    android:textSize="36px"
                     />
             </RelativeLayout>
         </android.support.design.widget.AppBarLayout>

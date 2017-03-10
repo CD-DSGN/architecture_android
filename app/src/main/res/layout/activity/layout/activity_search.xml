@@ -4,7 +4,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@drawable/bg_app"
+    android:background="@color/text_green"
     android:orientation="vertical"
     tools:context="com.grandmagic.readingmate.activity.SearchActivity">
 
@@ -12,7 +12,7 @@
         android:layout_width="720px"
         android:layout_height="90px"
         android:layout_gravity="center_horizontal"
-        android:layout_marginTop="170px"
+        android:layout_marginTop="90px"
         android:background="@drawable/bg_white_green_board">
 
         <ImageView
@@ -32,11 +32,11 @@
             android:layout_toRightOf="@+id/iv_search"
             android:background="@null"
             android:hint="关键字搜索"
+            android:imeOptions="actionSearch"
             android:paddingLeft="24px"
             android:textColor="#999999"
             android:textColorHint="#999999"
             android:textSize="22px"
-            android:imeOptions="actionSearch"
             />
     </RelativeLayout>
 

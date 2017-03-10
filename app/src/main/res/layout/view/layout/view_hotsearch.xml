@@ -10,10 +10,10 @@
         android:layout_height="wrap_content"
         android:layout_marginBottom="34px"
         android:layout_marginLeft="62px"
-        android:layout_marginTop="42px"
+        android:layout_marginTop="52px"
         android:text="热门搜索"
-        android:textColor="#086651"
-        android:textSize="24px"
+        android:textColor="#fefefe"
+        android:textSize="30px"
         android:visibility="visible"/>
 
     <com.grandmagic.readingmate.view.FlowLayout
@@ -21,7 +21,6 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginLeft="62px"
-        android:textSize="24px"
         android:visibility="visible"
         android:orientation="horizontal"
         >
@@ -31,35 +30,35 @@
             android:layout_height="wrap_content"
             android:layout_margin="5dp"
             android:text="《当幸福来敲门》"
-            android:textColor="#e6177b5b"
-            android:textSize="24px"
+            android:textColor="#e6ffff"
+            android:textSize="28px"
             />
 
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_margin="5dp"
-            android:textSize="24px"
+            android:textSize="28px"
             android:text="《C++》"
-            android:textColor="#e6177b5b"
+            android:textColor="#e6ffff"
             />
 
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_margin="5dp"
-            android:textSize="24px"
+            android:textSize="28px"
             android:text="《数据结构与算法》"
-            android:textColor="#e6177b5b"
+            android:textColor="#e6ffff"
             />
 
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_margin="5dp"
-            android:textSize="24px"
+            android:textSize="28px"
             android:text="《JVM深入》"
-            android:textColor="#e6177b5b"
+            android:textColor="#e6ffff"
             />
 
         <TextView
@@ -67,17 +66,17 @@
             android:layout_height="wrap_content"
             android:layout_margin="5dp"
             android:text="《从你的全世界路过》"
-            android:textSize="24px"
-            android:textColor="#e6177b5b"
+            android:textSize="28px"
+            android:textColor="#e6ffff"
             />
 
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_margin="5dp"
-            android:textSize="24px"
+            android:textSize="28px"
             android:text="《啊可能是》"
-            android:textColor="#e6177b5b"
+            android:textColor="#e6ffff"
             />
 
         <TextView
@@ -85,8 +84,8 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_margin="5dp"
-            android:textSize="24px"
+            android:textSize="28px"
             android:text="《JVM深入》"
-            android:textColor="#e6177b5b"/>
+            android:textColor="#e6ffff"/>
     </com.grandmagic.readingmate.view.FlowLayout>
 </merge>

@@ -35,6 +35,7 @@
                 android:layout_alignParentBottom="true"
                 android:layout_centerHorizontal="true"
                 android:button="@null"
+                android:textColor="#666666"
                 android:text="@string/home"
                 android:textSize="22px"
                 />
@@ -67,6 +68,7 @@
                 android:button="@null"
                 android:text="家友"
                 android:textSize="22px"
+                android:textColor="#666666"
                 />
 
             <ImageView
@@ -96,6 +98,7 @@
                 android:layout_centerHorizontal="true"
                 android:button="@null"
                 android:text="@string/search"
+                android:textColor="#666666"
                 android:textSize="22px"
                 />
 
@@ -126,6 +129,7 @@
                 android:layout_centerHorizontal="true"
                 android:button="@null"
                 android:text="@string/mine"
+                android:textColor="#666666"
                 android:textSize="22px"
                 />
 
@@ -133,10 +137,10 @@
                 android:id="@+id/iv_person"
                 android:layout_width="34px"
                 android:layout_height="34px"
-                android:layout_alignParentTop="true"
                 android:layout_centerHorizontal="true"
                 android:layout_marginBottom="8px"
                 android:layout_marginTop="6px"
+                android:layout_above="@id/text_person"
                 android:src="@drawable/selector_person"/>
         </RelativeLayout>
     </LinearLayout>
