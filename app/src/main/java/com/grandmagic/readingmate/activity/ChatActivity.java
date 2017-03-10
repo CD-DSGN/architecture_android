@@ -1,5 +1,6 @@
 package com.grandmagic.readingmate.activity;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
@@ -13,6 +14,7 @@ import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import com.grandmagic.readingmate.R;
+import com.grandmagic.readingmate.adapter.ChatItemViewDelegate;
 import com.grandmagic.readingmate.adapter.MessageIMGRecDelagate;
 import com.grandmagic.readingmate.adapter.MessageIMGSendDelagate;
 import com.grandmagic.readingmate.adapter.MessageTextRecDelagate;
@@ -38,7 +40,7 @@ import butterknife.OnClick;
 /**
  * 聊天界面
  */
-public class ChatActivity extends AppBaseActivity implements EMMessageListener {
+public class ChatActivity extends AppBaseActivity implements EMMessageListener,ChatItemViewDelegate.chatClickListener {
     private static final String TAG = "ChatActivity";
     public static final String CHAT_NAME = "chat_name";
     public static final String CHAT_IM_NAME = "chat_im_name";
@@ -146,10 +148,10 @@ public class ChatActivity extends AppBaseActivity implements EMMessageListener {
         toChatUserName = getIntent().getStringExtra(CHAT_IM_NAME);
         mMessagerecyclerview.setLayoutManager(new LinearLayoutManager(this));
         mAdapter = new MultiItemTypeAdapter(this, mMessageList);
-        mAdapter.addItemViewDelegate(new MessageTextSendDelagate(this));
-        mAdapter.addItemViewDelegate(new MessageTextRecDelagate(this));
-        mAdapter.addItemViewDelegate(new MessageIMGSendDelagate(this));
-        mAdapter.addItemViewDelegate(new MessageIMGRecDelagate(this));
+        mAdapter.addItemViewDelegate(new MessageTextSendDelagate(this).setChatClickListener(this));
+        mAdapter.addItemViewDelegate(new MessageTextRecDelagate(this).setChatClickListener(this));
+        mAdapter.addItemViewDelegate(new MessageIMGSendDelagate(this).setChatClickListener(this));
+        mAdapter.addItemViewDelegate(new MessageIMGRecDelagate(this).setChatClickListener(this));
         mMessagerecyclerview.setAdapter(mAdapter);
         conversationInit();
     }
@@ -255,5 +257,13 @@ public class ChatActivity extends AppBaseActivity implements EMMessageListener {
         super.onStop();
         EMClient.getInstance().chatManager().removeMessageListener(this);//移除监听
         IMHelper.getInstance().popActivity(this);
+    }
+
+    /**
+     * 点击头像事件
+     */
+    @Override
+    public void clickAvatar() {
+       startActivity(new Intent(ChatActivity.this,FriendDetailActivity.class));
     }
 }

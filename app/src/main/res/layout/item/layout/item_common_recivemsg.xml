@@ -1,9 +1,9 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-              android:layout_width="match_parent"
-              android:layout_height="wrap_content"
-              android:layout_marginTop="10px"
-              android:orientation="horizontal"
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="10px"
+                android:orientation="horizontal"
     >
 
     <ImageView
@@ -15,14 +15,30 @@
         />
 
     <RelativeLayout
-        android:layout_width="wrap_content"
+        android:id="@+id/contentView"
 
+        android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:padding="5dp"
-     android:id="@+id/contentView"
-        android:background="@drawable/bg_chat_reciver">
+        android:layout_toRightOf="@id/avatar"
+        android:background="@drawable/bg_chat_reciver"
+        android:padding="5dp">
 
     </RelativeLayout>
 
+    <ImageView
+        android:id="@+id/send_status"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_toRightOf="@+id/contentView"
+        android:src="@drawable/em_login_error_icon"
+        android:visibility="gone"
+        />
 
-</LinearLayout>
+    <ProgressBar
+        android:id="@+id/status_prgress"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_toRightOf="@+id/contentView"
+        />
+
+</RelativeLayout>
