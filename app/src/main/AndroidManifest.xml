@@ -82,7 +82,7 @@
             android:label="@string/title_activity_login"
             android:launchMode="singleTask"
             android:theme="@style/notitle"
-            android:windowSoftInputMode="stateVisible|adjustResize">
+            android:windowSoftInputMode="stateHidden|stateUnchanged">
         </activity>
         <activity
             android:name=".activity.RegisterActivity"

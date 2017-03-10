@@ -116,6 +116,7 @@ public class LoginActivity extends AppBaseActivity implements View.OnClickListen
                 dashline_login.setVisibility(position == 1 ? View.VISIBLE : View.GONE);
             }
         });
+        mViewpager.setCurrentItem(1);
     }
 
     private void initLoginView(View mView) {

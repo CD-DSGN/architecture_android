@@ -45,11 +45,11 @@
             <View
                 android:id="@+id/line_register"
                 android:layout_width="84px"
-                android:layout_height="2px"
+                android:layout_height="3px"
                 android:layout_alignLeft="@+id/title_register"
                 android:layout_below="@+id/title_register"
-                android:background="@drawable/dashline"
-
+                android:background="@drawable/shape_white_line"
+                android:layerType="software"
                 />
         </RelativeLayout>
 
@@ -64,10 +64,11 @@
             <View
                 android:id="@+id/line_login"
                 android:layout_width="84px"
-                android:layout_height="2px"
+                android:layout_height="3px"
                 android:layout_alignLeft="@+id/title_login"
                 android:layout_below="@+id/title_login"
-                android:background="@drawable/dashline"
+                android:background="@drawable/shape_white_line"
+                android:layerType="software"
                 android:visibility="gone"
                 />
 
@@ -76,12 +77,12 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
 
+                android:layout_alignParentEnd="true"
+                android:layout_alignParentRight="true"
+                android:layout_alignParentTop="true"
                 android:text="@string/login"
                 android:textColor="@color/white"
-                android:textSize="34px"
-                android:layout_alignParentTop="true"
-                android:layout_alignParentRight="true"
-                android:layout_alignParentEnd="true"/>
+                android:textSize="34px"/>
         </RelativeLayout>
     </RelativeLayout>
 
