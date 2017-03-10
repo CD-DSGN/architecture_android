@@ -4,7 +4,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical"
-    android:background="@drawable/bg_login"
+    android:background="@color/text_green"
     android:fitsSystemWindows="true"
 >
 <include layout="@layout/title_layout" >
@@ -17,7 +17,7 @@
         android:layout_gravity="center_horizontal"
         android:textColor="@color/white"
         android:layout_marginTop="50px"
-        android:textSize="26px"
+        android:textSize="28px"
         />
     <RelativeLayout
         android:layout_width="626px"
@@ -29,8 +29,9 @@
             android:id="@+id/dashline_phone"
             android:layout_width="match_parent"
             android:layout_height="3px"
+            android:layerType="software"
             android:layout_marginTop="138px"
-            android:background="@drawable/dashline"
+            android:background="@drawable/shape_white_line"
             />
 
         <EditText
@@ -39,7 +40,7 @@
             android:layout_height="wrap_content"
             android:layout_alignBottom="@id/dashline_phone"
             android:background="@null"
-            android:hint="@string/phone"
+            android:hint="手机号"
             android:inputType="phone"
             android:maxLines="1"
             android:paddingBottom="24px"
@@ -47,7 +48,7 @@
             android:paddingTop="20px"
             android:textColor="@color/white"
             android:textColorHint="@color/white"
-            android:textSize="24px"
+            android:textSize="28px"
             android:theme="@style/et_pass"
             />
 
@@ -74,10 +75,10 @@
         android:text="@string/next_step"
         android:layout_gravity="center_horizontal"
         android:gravity="center"
-        android:background="@drawable/bg_btn_login"
+        android:background="@drawable/shape_round_white"
         android:layout_marginTop="128px"
-        android:textColor="@color/white"
-        android:textSize="30px"
+        android:textColor="@color/text_green"
+        android:textSize="36px"
         android:id="@+id/tv_next"
         />
 </LinearLayout>

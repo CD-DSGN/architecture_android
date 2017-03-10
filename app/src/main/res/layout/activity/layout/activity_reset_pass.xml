@@ -5,7 +5,7 @@
 android:orientation="vertical"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@drawable/bg_login"
+    android:background="@color/text_green"
     android:fitsSystemWindows="true"
 >
 <include layout="@layout/title_layout"></include>
@@ -20,7 +20,8 @@ android:orientation="vertical"
             android:layout_width="match_parent"
             android:layout_height="3px"
             android:layout_marginTop="118px"
-            android:background="@drawable/dashline"
+            android:background="@drawable/shape_white_line"
+            android:layerType="software"
             />
 
         <ImageView
@@ -46,7 +47,7 @@ android:orientation="vertical"
             android:paddingTop="20px"
             android:textColor="@color/white"
             android:textColorHint="@color/white"
-            android:textSize="24px"
+            android:textSize="28px"
             android:theme="@style/et_pass"/>
 
     </RelativeLayout>
@@ -61,7 +62,9 @@ android:orientation="vertical"
             android:layout_width="match_parent"
             android:layout_height="3px"
             android:layout_marginTop="118px"
-            android:background="@drawable/dashline"
+            android:layerType="software"
+
+            android:background="@drawable/shape_white_line"
             />
 
         <ImageView
@@ -93,12 +96,12 @@ android:orientation="vertical"
             android:hint="@string/password"
             android:inputType="textPassword"
             android:maxLines="1"
-            android:paddingBottom="24px"
+            android:paddingBottom="28px"
             android:paddingLeft="48px"
             android:paddingTop="20px"
             android:textColor="@color/white"
             android:textColorHint="@color/white"
-            android:textSize="24px"
+            android:textSize="28px"
             />
     </RelativeLayout>
 
@@ -113,7 +116,8 @@ android:orientation="vertical"
             android:layout_width="match_parent"
             android:layout_height="3px"
             android:layout_marginTop="118px"
-            android:background="@drawable/dashline"
+            android:layerType="software"
+            android:background="@drawable/shape_white_line"
             />
 
         <ImageView
@@ -140,7 +144,7 @@ android:orientation="vertical"
             android:paddingTop="20px"
             android:textColor="@color/white"
             android:textColorHint="@color/white"
-            android:textSize="24px"
+            android:textSize="28px"
             />
 
 
@@ -159,11 +163,12 @@ android:orientation="vertical"
         android:layout_width="626px"
         android:layout_height="82px"
         android:text="@string/reset"
-        android:textColor="@color/white"
+        android:textColor="@color/text_green"
         android:layout_gravity="center_horizontal"
         android:gravity="center"
-        android:background="@drawable/bg_btn_login"
+        android:background="@drawable/shape_round_white"
         android:layout_marginTop="90px"
         android:id="@+id/reset"
+        android:textSize="36px"
         />
 </LinearLayout>
