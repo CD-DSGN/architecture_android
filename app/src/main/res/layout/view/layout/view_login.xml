@@ -6,7 +6,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical"
-    tools:background="@drawable/bg_login">
+    tools:background="@color/text_green">
 
     <RelativeLayout
         android:layout_width="626px"
@@ -20,7 +20,7 @@
             android:layout_width="match_parent"
             android:layout_height="3px"
             android:layout_marginTop="138px"
-            android:background="@drawable/dashline"
+            android:background="@drawable/shape_white_line"
             />
 
         <EditText
@@ -28,16 +28,16 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_alignBottom="@id/dashline_phone"
-            android:paddingBottom="24px"
-            android:paddingTop="20px"
             android:background="@null"
             android:hint="@string/phone"
             android:inputType="phone"
             android:maxLines="1"
+            android:paddingBottom="24px"
             android:paddingLeft="48px"
+            android:paddingTop="20px"
             android:textColor="@color/white"
             android:textColorHint="@color/white"
-            android:textSize="24px"
+            android:textSize="28px"
             android:theme="@style/et_pass"/>
 
         <ImageView
@@ -71,9 +71,9 @@
         <View
             android:id="@+id/dashline_pass"
             android:layout_width="match_parent"
-            android:layout_height="3px"
+            android:layout_height="1dp"
             android:layout_marginTop="138px"
-            android:background="@drawable/dashline"
+            android:background="@drawable/shape_white_line"
             />
 
         <EditText
@@ -81,16 +81,16 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_alignBottom="@id/dashline_pass"
-            android:paddingBottom="24px"
             android:background="@null"
             android:hint="@string/password"
-            android:paddingTop="20px"
             android:maxLines="1"
+            android:paddingBottom="24px"
             android:paddingLeft="48px"
+            android:paddingTop="20px"
             android:password="true"
             android:textColor="@color/white"
             android:textColorHint="@color/white"
-            android:textSize="24px"
+            android:textSize="28px"
             />
 
         <ImageView
@@ -118,10 +118,10 @@
         android:layout_height="82px"
         android:layout_gravity="center_horizontal"
         android:layout_marginTop="50dp"
-        android:background="@drawable/bg_btn_login"
+        android:background="@drawable/shape_round_white"
         android:text="@string/loginnow"
-        android:textColor="@color/white"
-        android:textSize="30px"
+        android:textColor="@color/text_green"
+        android:textSize="36px"
         />
 
     <TextView
@@ -129,7 +129,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_gravity="center_horizontal"
-        android:layout_marginTop="10dp"
+        android:layout_marginTop="38px"
         android:text="@string/forget_pass"
         android:textColor="#f8f8f8"
         android:textSize="22px"

@@ -112,6 +112,7 @@ public class MainActivity extends AppBaseActivity {
         });
         initIM();
         initSelfInfo();
+        setTranslucentStatus(true);
     }
 
     /**

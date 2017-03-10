@@ -4,17 +4,17 @@
     android:id="@+id/activity_main"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@drawable/bg_login"
+    android:background="@color/text_green"
     android:orientation="vertical"
     >
 
     <ImageView
         android:id="@+id/iv_logo"
-        android:layout_width="wrap_content"
-        android:layout_height="94px"
+        android:layout_width="184px"
+        android:layout_height="184px"
         android:layout_gravity="center_horizontal"
         android:layout_marginTop="120px"
-        android:src="@mipmap/ic_launcher"
+        android:src="@drawable/logn_text"
         android:visibility="visible"
         />
 
@@ -22,7 +22,7 @@
     <RelativeLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginTop="90px"
+        android:layout_marginTop="84px"
         android:gravity="center_horizontal">
 
         <RelativeLayout
@@ -61,17 +61,6 @@
             android:layout_marginRight="260px"
             android:layout_toRightOf="@id/relativelayout_register">
 
-            <TextView
-                android:id="@+id/title_login"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_alignParentRight="true"
-
-                android:text="@string/login"
-                android:textColor="@color/white"
-                android:textSize="34px"
-                />
-
             <View
                 android:id="@+id/line_login"
                 android:layout_width="84px"
@@ -81,6 +70,18 @@
                 android:background="@drawable/dashline"
                 android:visibility="gone"
                 />
+
+            <TextView
+                android:id="@+id/title_login"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+
+                android:text="@string/login"
+                android:textColor="@color/white"
+                android:textSize="34px"
+                android:layout_alignParentTop="true"
+                android:layout_alignParentRight="true"
+                android:layout_alignParentEnd="true"/>
         </RelativeLayout>
     </RelativeLayout>
 

@@ -4,7 +4,7 @@
               android:layout_width="match_parent"
               android:layout_height="match_parent"
               android:orientation="vertical"
-              tools:background="@drawable/bg_login">
+              tools:background="@color/text_green">
 
 
     <RelativeLayout
@@ -18,7 +18,7 @@
             android:layout_width="match_parent"
             android:layout_height="3px"
             android:layout_marginTop="138px"
-            android:background="@drawable/dashline"
+            android:background="@drawable/shape_white_line"
             />
 
         <EditText
@@ -35,7 +35,7 @@
             android:paddingTop="20px"
             android:textColor="@color/white"
             android:textColorHint="@color/white"
-            android:textSize="24px"
+            android:textSize="26px"
             android:theme="@style/et_pass"
             />
 
@@ -68,7 +68,7 @@
             android:layout_width="match_parent"
             android:layout_height="3px"
             android:layout_marginTop="118px"
-            android:background="@drawable/dashline"
+            android:background="@drawable/shape_white_line"
             />
 
         <ImageView
@@ -87,11 +87,11 @@
             android:layout_alignRight="@id/rg_dashline_verify"
             android:layout_marginBottom="22px"
             android:layout_marginTop="22px"
-            android:background="@drawable/bg_btn_login"
+            android:background="@drawable/shape_round_white"
             android:gravity="center"
             android:text="@string/send_code"
-            android:textColor="@color/white"
-            android:textSize="24px"
+            android:textColor="@color/text_green"
+            android:textSize="26px"
             />
 
         <EditText
@@ -109,7 +109,7 @@
             android:paddingTop="20px"
             android:textColor="@color/white"
             android:textColorHint="@color/white"
-            android:textSize="24px"
+            android:textSize="26px"
             android:theme="@style/et_pass"/>
 
     </RelativeLayout>
@@ -125,7 +125,7 @@
             android:layout_width="match_parent"
             android:layout_height="3px"
             android:layout_marginTop="118px"
-            android:background="@drawable/dashline"
+            android:background="@drawable/shape_white_line"
             />
 
         <ImageView
@@ -162,7 +162,7 @@
             android:paddingTop="20px"
             android:textColor="@color/white"
             android:textColorHint="@color/white"
-            android:textSize="24px"
+            android:textSize="26px"
             />
     </RelativeLayout>
 
@@ -177,7 +177,7 @@
             android:layout_width="match_parent"
             android:layout_height="3px"
             android:layout_marginTop="118px"
-            android:background="@drawable/dashline"
+            android:background="@drawable/shape_white_line"
             />
 
         <ImageView
@@ -204,7 +204,7 @@
             android:paddingTop="20px"
             android:textColor="@color/white"
             android:textColorHint="@color/white"
-            android:textSize="24px"
+            android:textSize="26px"
             />
 
 
@@ -226,9 +226,9 @@
         android:layout_height="82px"
         android:layout_gravity="center_horizontal"
         android:layout_marginTop="80px"
-        android:background="@drawable/bg_btn_login"
+        android:background="@drawable/shape_round_white"
         android:text="@string/registernow"
-        android:textColor="@color/white"
-        android:textSize="30px"
+        android:textColor="@color/text_green"
+        android:textSize="36px"
         />
 </LinearLayout>
