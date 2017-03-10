@@ -3,11 +3,13 @@ package com.grandmagic.readingmate.activity;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.ImageView;
+import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import com.grandmagic.readingmate.R;
 import com.grandmagic.readingmate.base.AppBaseActivity;
 import com.grandmagic.readingmate.ui.CustomDialogWithOneBtn;
+import com.grandmagic.readingmate.ui.GenderListDialog;
 import com.grandmagic.readingmate.ui.UploadAvarDlg;
 import com.grandmagic.readingmate.utils.AutoUtils;
 import com.grandmagic.readingmate.utils.ViewUtils;
@@ -31,6 +33,8 @@ public class PersonalInfoEditActivity extends AppBaseActivity {
     TextView mTvSignature;
     @BindView(R.id.iv_gender)
     ImageView mIvGender;
+    @BindView(R.id.rl_set_gender)
+    RelativeLayout mRlSetGender;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -46,7 +50,7 @@ public class PersonalInfoEditActivity extends AppBaseActivity {
     }
 
 
-    @OnClick({R.id.back, R.id.iv_avar, R.id.tv_nickname, R.id.tv_signature, R.id.iv_gender})
+    @OnClick({R.id.back, R.id.iv_avar, R.id.tv_nickname, R.id.tv_signature, R.id.rl_set_gender})
     public void onClick(View view) {
         switch (view.getId()) {
             case R.id.back:
@@ -62,17 +66,27 @@ public class PersonalInfoEditActivity extends AppBaseActivity {
             case R.id.tv_signature:
                 showSignDialog();
                 break;
-            case R.id.iv_gender:
+            case R.id.rl_set_gender:
+                showSetGenderDlg();
                 break;
         }
     }
 
+    private GenderListDialog mGenderDlg;
+    private void showSetGenderDlg() {
+        if (mGenderDlg == null) {
+            mGenderDlg = new GenderListDialog(PersonalInfoEditActivity.this);
+        }
+        mGenderDlg.show();
+    }
+
     private CustomDialogWithOneBtn mSignDlg;
+
     private void showSignDialog() {
         if (mSignDlg == null) {
             mSignDlg = new CustomDialogWithOneBtn(PersonalInfoEditActivity.this, R.style.CustomDialog_bgdim);
             mSignDlg.setMaxNum(20);
-            mSignDlg.setOnBtnOnclickListener(new CustomDialogWithOneBtn.BtnOnclickListener(){
+            mSignDlg.setOnBtnOnclickListener(new CustomDialogWithOneBtn.BtnOnclickListener() {
                 @Override
                 public void onYesClick() {
                     ViewUtils.showToast(getString(R.string.save));
@@ -93,7 +107,7 @@ public class PersonalInfoEditActivity extends AppBaseActivity {
         if (mNickNameDialog == null) {
             mNickNameDialog = new CustomDialogWithOneBtn(PersonalInfoEditActivity.this, R.style.CustomDialog_bgdim);
             mNickNameDialog.setMaxNum(10);
-            mNickNameDialog.setOnBtnOnclickListener(new CustomDialogWithOneBtn.BtnOnclickListener(){
+            mNickNameDialog.setOnBtnOnclickListener(new CustomDialogWithOneBtn.BtnOnclickListener() {
                 @Override
                 public void onYesClick() {
                     ViewUtils.showToast(getString(R.string.save));
@@ -108,4 +122,5 @@ public class PersonalInfoEditActivity extends AppBaseActivity {
         mNickNameDialog.show();
         mNickNameDialog.setNeedTextLimit(true);
     }
+
 }

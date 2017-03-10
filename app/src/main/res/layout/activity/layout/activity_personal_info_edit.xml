@@ -23,11 +23,11 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_centerVertical="true"
+            android:layout_marginLeft="66px"
             android:gravity="center_vertical"
             android:text="@string/avar"
             android:textColor="#181e1d"
             android:textSize="32px"
-            android:layout_marginLeft="66px"
             />
 
         <com.grandmagic.readingmate.view.CircleImageView
@@ -58,11 +58,11 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_centerVertical="true"
+            android:layout_marginLeft="66px"
             android:gravity="center_vertical"
             android:text="@string/nickname"
             android:textColor="#181e1d"
             android:textSize="32px"
-            android:layout_marginLeft="66px"
             />
 
         <TextView
@@ -72,10 +72,10 @@
             android:layout_alignParentRight="true"
             android:layout_centerVertical="true"
             android:layout_marginRight="66px"
-            android:textColor="#999999"
-            android:textSize="30px"
+            android:clickable="true"
             android:text="@string/unset"
-            android:clickable="true"/>
+            android:textColor="#999999"
+            android:textSize="30px"/>
 
         <ImageView
             android:layout_width="match_parent"
@@ -98,11 +98,11 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_centerVertical="true"
+            android:layout_marginLeft="66px"
             android:gravity="center_vertical"
             android:text="@string/signature"
             android:textColor="#181e1d"
             android:textSize="32px"
-            android:layout_marginLeft="66px"
             />
 
 
@@ -113,10 +113,10 @@
             android:layout_alignParentRight="true"
             android:layout_centerVertical="true"
             android:layout_marginRight="66px"
-            android:textColor="#999999"
-            android:textSize="30px"
+            android:clickable="true"
             android:text="@string/unset"
-            android:clickable="true"/>
+            android:textColor="#999999"
+            android:textSize="30px"/>
 
 
         <ImageView
@@ -140,35 +140,44 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_centerVertical="true"
+            android:layout_marginLeft="66px"
             android:gravity="center_vertical"
             android:text="@string/gender"
             android:textColor="#181e1d"
             android:textSize="32px"
-            android:layout_marginLeft="66px"
             />
 
 
-        <TextView
-            android:id="@+id/tv_gender"
+        <RelativeLayout
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_alignParentRight="true"
+            android:layout_alignParentRight = "true"
             android:layout_centerVertical="true"
-            android:layout_marginLeft="10px"
-            android:layout_marginRight="66px"
-            android:textColor="#999999"
-            android:textSize="30px"
-            android:text="女"
-            />
+            android:id="@+id/rl_set_gender">
 
-        <ImageView
-            android:id="@+id/iv_gender"
-            android:layout_width="28px"
-            android:layout_height="28px"
-            android:layout_centerVertical="true"
-            android:layout_toLeftOf="@id/tv_gender"
-            android:src="@drawable/iv_female"
-            />
+            <TextView
+                android:id="@+id/tv_gender"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignParentRight="true"
+                android:layout_centerVertical="true"
+                android:layout_marginLeft="10px"
+                android:layout_marginRight="66px"
+                android:text="女"
+                android:textColor="#999999"
+                android:textSize="30px"
+                />
+
+            <ImageView
+                android:id="@+id/iv_gender"
+                android:layout_width="28px"
+                android:layout_height="28px"
+                android:layout_centerVertical="true"
+                android:layout_toLeftOf="@id/tv_gender"
+                android:src="@drawable/iv_female"
+                />
+        </RelativeLayout>
+
 
         <ImageView
             android:layout_width="match_parent"

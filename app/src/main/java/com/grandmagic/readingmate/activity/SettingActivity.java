@@ -2,56 +2,50 @@ package com.grandmagic.readingmate.activity;
 
 import android.content.Intent;
 import android.os.Bundle;
-import android.support.v7.widget.SwitchCompat;
-import android.text.TextUtils;
 import android.view.View;
-import android.widget.CompoundButton;
+import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.grandmagic.readingmate.R;
 import com.grandmagic.readingmate.base.AppBaseActivity;
 import com.grandmagic.readingmate.base.AppBaseResponseCallBack;
-import com.grandmagic.readingmate.bean.request.FeedBackRequestBean;
-import com.grandmagic.readingmate.model.FeedBackModel;
 import com.grandmagic.readingmate.model.LoginModel;
-import com.grandmagic.readingmate.ui.CustomDialog;
-import com.grandmagic.readingmate.ui.ListDialog;
+import com.grandmagic.readingmate.utils.AutoUtils;
 import com.grandmagic.readingmate.utils.KitUtils;
-import com.tamic.novate.util.SPUtils;
 import com.grandmagic.readingmate.utils.ViewUtils;
 import com.tamic.novate.NovateResponse;
 import com.tamic.novate.Throwable;
-
-import java.util.ArrayList;
+import com.tamic.novate.util.SPUtils;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
 
-public class SettingActivity extends AppBaseActivity implements CompoundButton.OnCheckedChangeListener {
-    @BindView(R.id.feed_back)
-    TextView mFeedBack;
+public class SettingActivity extends AppBaseActivity {
     @BindView(R.id.logout)
     TextView mLogout;
     @BindView(R.id.tv_setting_current_version)
     TextView mTvSettingCurrentVersion;
 
-    SwitchCompat mSwitchSettingPush;
+
     @BindView(R.id.tv_setting_account)
     TextView mTvSettingAccount;
     @BindView(R.id.tv_setting_mobile)
     TextView mTvSettingMobile;
-    @BindView(R.id.tv_seeting_points)
-    TextView mTvSeetingPoints;
-    @BindView(R.id.ib_settings_non_wifi)
-    ImageView mIvSettingsNonWifi;
+    @BindView(R.id.back)
+    ImageView mBack;
+    @BindView(R.id.title)
+    TextView mTitle;
+    @BindView(R.id.switch_setting_push)
+    ImageButton mSwitchSettingPush;
 
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_setting);
+        AutoUtils.auto(this);
         ButterKnife.bind(this);
         initView();
         loadData();
@@ -62,18 +56,26 @@ public class SettingActivity extends AppBaseActivity implements CompoundButton.O
         //1.获取绑定手机、账号、积分
         mTvSettingAccount.setText("多情剑客无情剑");
         mTvSettingMobile.setText("13518143569");
-        mTvSeetingPoints.setText("2000");
     }
 
     private void initView() {
         //设置版本信息
-        mSwitchSettingPush = (SwitchCompat) findViewById(R.id.switch_setting_push);
+        //        mSwitchSettingPush = (SwitchCompat) findViewById(R.id.switch_setting_push);
+        mTitle.setText(getString(R.string.settings));
         String Version_name = KitUtils.getVersionName(SettingActivity.this);
         mTvSettingCurrentVersion.setText(Version_name);
         //根据sp信息，设置推送通知的打开和关闭状态
         //1.sp没有相关信息，默认为打开状态
         boolean checked = SPUtils.getInstance().getPushSetting(SettingActivity.this);
-        mSwitchSettingPush.setChecked(checked);
+        changeSwitch(checked);
+    }
+
+    private void changeSwitch(boolean checked) {
+        if (checked) {
+            mSwitchSettingPush.setBackgroundResource(R.drawable.ic_off);
+        }else{
+            mSwitchSettingPush.setBackgroundResource(R.drawable.ic_on);
+        }
     }
 
     private void logout() {
@@ -102,100 +104,21 @@ public class SettingActivity extends AppBaseActivity implements CompoundButton.O
         startActivity(intent);
     }
 
-
-    //处理用户反馈
-    private void feedback() {
-        //显示dialog
-        showFeedBackDialog();
-
-    }
-
-    private void sendfeedBackNetworkData(String content) {
-        new FeedBackModel(SettingActivity.this, new FeedBackRequestBean(content),
-                new AppBaseResponseCallBack<NovateResponse<Object>>(SettingActivity.this, true) {
-                    @Override
-                    public void onSuccee(NovateResponse<Object> response) {
-                        ViewUtils.showToast(getString(R.string.feedback_success));
-                    }
-                }).feedBack();
-    }
-
-    private void showFeedBackDialog() {
-        final CustomDialog customDialog = new CustomDialog(this);
-        customDialog.setTitle(getString(R.string.your_feedback));
-        customDialog.setMaxNum(300).setOnBtnOnclickListener(new CustomDialog.BtnOnclickListener() {
-            @Override
-            public void onYesClick() {
-                String content = customDialog.getMessage();
-                if (TextUtils.isEmpty(content)) {
-                    ViewUtils.showToast(getString(R.string.feedback_content_empty));
-                    return;
-                } else {
-                    sendfeedBackNetworkData(content);
-                }
-                customDialog.dismiss();
-            }
-
-            @Override
-            public void onNoClick() {
-                customDialog.dismiss();
-            }
-        });
-        customDialog.show();
-    }
-
-
-    @OnClick({R.id.feed_back, R.id.logout, R.id.ib_settings_non_wifi})
+    @OnClick({R.id.logout, R.id.back, R.id.switch_setting_push})
     public void onClick(View view) {
         switch (view.getId()) {
-            case R.id.feed_back:
-                feedback();
-                break;
             case R.id.logout:
                 logout();
                 break;
-            case R.id.ib_settings_non_wifi:
-                show_set_wifi_dlg();
-                break;
+            case R.id.back:
+                finish();
+            case R.id.switch_setting_push:
+                boolean checked = SPUtils.getInstance().getPushSetting(SettingActivity.this);
+                changeSwitch(!checked);
+                //保存状态
+                SPUtils.getInstance().setPushSetting(this, !checked);
             default:
                 break;
-        }
-    }
-
-    private void show_set_wifi_dlg() {
-        ArrayList<String> data = new ArrayList<String>();
-        data.add("最佳效果 (下载大图)");
-        data.add("较省流量 (阅能下载)");
-        data.add("极省流量 (不下载图)");
-        ListDialog listDialog = new ListDialog(this, data, "非wifi网络流量");
-        listDialog.setOnitemClickListener(new ListDialog.OnitemClickListener() {
-            @Override
-            public void onClick(int postion) {
-                switch(postion) {
-                    case 0:
-                        ViewUtils.showToast("显示大图");
-                        break;
-                    case 1:
-                        ViewUtils.showToast("显示中图");
-                        break;
-                    case 2:
-                        ViewUtils.showToast("无图");
-                        break;
-                    default:
-                        break;
-                }
-            }
-        });
-        listDialog.show();
-    }
-
-
-    @Override
-    public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
-        if (buttonView.getId() == R.id.switch_setting_push) {
-            //        保存开关状态
-            ViewUtils.showToast("开关状态" + isChecked);
-            SPUtils.getInstance().setPushSetting(SettingActivity.this, isChecked);
         }
     }
 

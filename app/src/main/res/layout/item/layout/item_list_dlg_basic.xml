@@ -18,7 +18,7 @@
 
     <ImageView
         android:layout_width="match_parent"
-        android:layout_height="1px"
+        android:layout_height="2px"
         android:layout_alignParentBottom="true"
         android:src="@drawable/dv_green"/>
 </RelativeLayout>
