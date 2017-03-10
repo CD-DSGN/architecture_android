@@ -17,6 +17,7 @@ import com.grandmagic.readingmate.R;
 import com.grandmagic.readingmate.activity.PersonalInfoEditActivity;
 import com.grandmagic.readingmate.activity.SettingActivity;
 import com.grandmagic.readingmate.adapter.MyCommentAdapter;
+import com.grandmagic.readingmate.base.AppBaseActivity;
 import com.grandmagic.readingmate.base.AppBaseFragment;
 import com.grandmagic.readingmate.utils.AutoUtils;
 
@@ -85,5 +86,19 @@ public class PersonalFragment extends AppBaseFragment {
             default:
                 break;
         }
+    }
+    @Override
+    public void onResume() {
+        super.onResume();
+        setSystemBarColor(false);
+    }
+
+    @Override
+    public void onHiddenChanged(boolean hidden) {
+        setSystemBarColor(hidden);
+    }
+
+    private void setSystemBarColor(boolean hidden) {
+        if (!hidden) ((AppBaseActivity) (mContext)).setSystemBarColor(android.R.color.white);
     }
 }

@@ -25,6 +25,7 @@ import com.grandmagic.readingmate.activity.FriendActivity;
 import com.grandmagic.readingmate.activity.MainActivity;
 import com.grandmagic.readingmate.adapter.MultiItemTypeAdapter;
 import com.grandmagic.readingmate.adapter.RecentConversationDelagate;
+import com.grandmagic.readingmate.base.AppBaseActivity;
 import com.grandmagic.readingmate.base.AppBaseFragment;
 import com.grandmagic.readingmate.event.ConnectStateEvent;
 import com.grandmagic.readingmate.listener.IMConnectionListener;
@@ -115,7 +116,7 @@ public class ChatFragment extends AppBaseFragment implements RecentConversationD
             mViewError.setVisibility(View.GONE);
         } else {
             mViewError.setVisibility(View.VISIBLE);
-            switch (Integer.valueOf(mString)){
+            switch (Integer.valueOf(mString)) {
                 case EMError.USER_LOGIN_ANOTHER_DEVICE:
                     mTvConnectErrormsg.setText("账户在其他设备登陆" + mString);
                     break;
@@ -261,4 +262,20 @@ public class ChatFragment extends AppBaseFragment implements RecentConversationD
         super.onDestroyView();
         EventBus.getDefault().unregister(this);
     }
+
+    @Override
+    public void onResume() {
+        super.onResume();
+        setSystemBarColor(false);
+    }
+
+    @Override
+    public void onHiddenChanged(boolean hidden) {
+        setSystemBarColor(hidden);
+    }
+
+    private void setSystemBarColor(boolean hidden) {
+        if (!hidden) ((AppBaseActivity) (mContext)).setSystemBarColor(android.R.color.darker_gray);
+    }
+
 }

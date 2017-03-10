@@ -74,6 +74,7 @@ public class HomeFragment extends AppBaseFragment implements HomeBookAdapter.Cli
     @BindView(R.id.homeview_book)
     CoordinatorLayout mHomeviewBook;
     private View rootview;
+    boolean isEmpty = false;
     List<DisplayBook.InfoBean> mBookList = new ArrayList<>();
 
     @Override
@@ -107,12 +108,14 @@ public class HomeFragment extends AppBaseFragment implements HomeBookAdapter.Cli
                 mBookList.addAll(response.getData().getInfo());
                 mBookAdapter.setData(mBookList);
                 showRecyclerView();
+                isEmpty = false;
             }
 
             @Override
             public void onError(Throwable e) {
                 super.onError(e);
                 showEmptyView();
+                isEmpty = true;
             }
         });
     }
@@ -121,7 +124,6 @@ public class HomeFragment extends AppBaseFragment implements HomeBookAdapter.Cli
      * 显示没有书的时候的页面
      */
     private void showEmptyView() {
-        ((MainActivity) getActivity()).setSystemBarColor(R.color.text_green);
         mLayoutNobook.setVisibility(View.VISIBLE);
         mHomeviewBook.setVisibility(View.GONE);
     }
@@ -132,7 +134,6 @@ public class HomeFragment extends AppBaseFragment implements HomeBookAdapter.Cli
     HomeBookAdapter mBookAdapter;
 
     private void showRecyclerView() {
-        ((MainActivity) mContext).setSystemBarColor(android.R.color.white);
         mLayoutNobook.setVisibility(View.GONE);
         mHomeviewBook.setVisibility(View.VISIBLE);
 
@@ -247,5 +248,21 @@ public class HomeFragment extends AppBaseFragment implements HomeBookAdapter.Cli
         } else if (requestCode == REQUEST_BOOKDETAIL && requestCode == Activity.RESULT_OK) {
 //如果从图书详情页需要返回做什么处理。可以在这里处理
         }
+    }
+
+    @Override
+    public void onResume() {
+        super.onResume();
+        setSystemBarColor(false);
+    }
+
+    @Override
+    public void onHiddenChanged(boolean hidden) {
+        setSystemBarColor(hidden);
+    }
+
+    private void setSystemBarColor(boolean hidden) {
+        if (!hidden)
+            ((MainActivity) mContext).setSystemBarColor(isEmpty ? R.color.text_green : android.R.color.white);
     }
 }

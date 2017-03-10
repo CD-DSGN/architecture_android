@@ -21,6 +21,7 @@ import com.baidu.location.LocationClient;
 import com.baidu.location.LocationClientOption;
 import com.baidu.location.Poi;
 import com.grandmagic.readingmate.R;
+import com.grandmagic.readingmate.base.AppBaseActivity;
 import com.grandmagic.readingmate.base.AppBaseFragment;
 import com.grandmagic.readingmate.listener.LocationListener;
 import com.grandmagic.readingmate.view.IrregularImageView;
@@ -145,5 +146,22 @@ public class SearchFragment extends AppBaseFragment {
                 }
             }
         });
+    }
+
+    @Override
+    public void onHiddenChanged(boolean hidden) {
+        setSystemBarColor(hidden);
+    }
+
+    @Override
+    public void onResume() {
+        super.onResume();
+        setSystemBarColor(false);
+    }
+
+    private void setSystemBarColor(boolean hidden) {
+        if (!hidden){
+            ((AppBaseActivity)getActivity()).setSystemBarColor(R.color.bg_search);
+        }
     }
 }
