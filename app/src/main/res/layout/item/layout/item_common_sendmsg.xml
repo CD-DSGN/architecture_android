@@ -38,5 +38,6 @@
         android:layout_height="wrap_content"
         android:id="@+id/status_prgress"
         android:layout_toLeftOf="@+id/contentView"
+        android:visibility="gone"
         />
 </RelativeLayout>

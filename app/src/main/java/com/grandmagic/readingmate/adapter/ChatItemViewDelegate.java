@@ -82,6 +82,7 @@ public abstract class ChatItemViewDelegate implements ItemViewDelegate<EMMessage
                 progress.setVisibility(View.VISIBLE);
 
             }
+
         });
         holderView.addView(childView);
     }
