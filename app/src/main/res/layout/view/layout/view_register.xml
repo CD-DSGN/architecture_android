@@ -19,6 +19,7 @@
             android:layout_height="3px"
             android:layout_marginTop="138px"
             android:background="@drawable/shape_white_line"
+            android:layerType="software"
             />
 
         <EditText
@@ -69,6 +70,7 @@
             android:layout_height="3px"
             android:layout_marginTop="118px"
             android:background="@drawable/shape_white_line"
+            android:layerType="software"
             />
 
         <ImageView
@@ -126,6 +128,7 @@
             android:layout_height="3px"
             android:layout_marginTop="118px"
             android:background="@drawable/shape_white_line"
+            android:layerType="software"
             />
 
         <ImageView
@@ -177,6 +180,7 @@
             android:layout_width="match_parent"
             android:layout_height="3px"
             android:layout_marginTop="118px"
+            android:layerType="software"
             android:background="@drawable/shape_white_line"
             />
 

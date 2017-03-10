@@ -20,6 +20,7 @@
             android:layout_width="match_parent"
             android:layout_height="3px"
             android:layout_marginTop="138px"
+            android:layerType="software"
             android:background="@drawable/shape_white_line"
             />
 
@@ -71,8 +72,9 @@
         <View
             android:id="@+id/dashline_pass"
             android:layout_width="match_parent"
-            android:layout_height="1dp"
+            android:layout_height="3px"
             android:layout_marginTop="138px"
+            android:layerType="software"
             android:background="@drawable/shape_white_line"
             />
 
