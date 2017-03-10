@@ -14,6 +14,7 @@ import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import com.grandmagic.readingmate.R;
+import com.grandmagic.readingmate.activity.CollectionActivity;
 import com.grandmagic.readingmate.activity.PersonalInfoEditActivity;
 import com.grandmagic.readingmate.activity.SettingActivity;
 import com.grandmagic.readingmate.adapter.MyCommentAdapter;
@@ -77,6 +78,8 @@ public class PersonalFragment extends AppBaseFragment {
                 startActivity(intent_edit);
                 break;
             case R.id.ll_collect:
+                Intent intent_collection = new Intent(mContext, CollectionActivity.class);
+                startActivity(intent_collection);
                 break;
             case R.id.ll_setting:
                 Intent intent_setting = new Intent(mContext, SettingActivity.class);
