@@ -23,5 +23,8 @@ public abstract class CommonAdapter<T> extends com.zhy.adapter.recyclerview.Comm
         AutoUtils.auto(itemView);
     }
 
-
+    public void refreshData(List data) {
+        mDatas = data;
+        notifyDataSetChanged();
+    }
 }

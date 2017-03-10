@@ -32,6 +32,7 @@
             android:layout_toRightOf="@+id/iv_search"
             android:background="@null"
             android:hint="关键字搜索"
+            android:singleLine="true"
             android:imeOptions="actionSearch"
             android:paddingLeft="24px"
             android:textColor="#999999"
@@ -40,11 +41,12 @@
             />
     </RelativeLayout>
 
-    <include layout="@layout/view_hotsearch">
+    <include layout="@layout/view_hotsearch"
+        >
 
     </include>
 
-    <include layout="@layout/view_history"/>
+    <include layout="@layout/view_searchresult"/>
 
 
 </LinearLayout>

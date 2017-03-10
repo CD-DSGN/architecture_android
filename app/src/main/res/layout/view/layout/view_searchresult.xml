@@ -1,8 +1,10 @@
 <?xml version="1.0" encoding="utf-8"?>
-<merge xmlns:android="http://schemas.android.com/apk/res/android"
-       android:layout_width="match_parent"
-       android:layout_height="match_parent"
-       android:orientation="vertical">
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+              android:id="@+id/view_search"
+              android:layout_width="match_parent"
+              android:layout_height="match_parent"
+              android:background="@color/text_green"
+              android:orientation="vertical">
 
     <RelativeLayout
         android:layout_width="720px"
@@ -87,19 +89,11 @@
             />
     </RelativeLayout>
 
-    <LinearLayout
-        android:id="@+id/lin_searchhis"
+    <android.support.v7.widget.RecyclerView
+        android:id="@+id/recyclerview_book"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:orientation="vertical"
         >
-
-        <include layout="@layout/view_searchhis"/>
-
-        <include layout="@layout/view_searchhis"/>
-
-        <include layout="@layout/view_searchhis"/>
-
-        <include layout="@layout/view_searchhis"/>
-    </LinearLayout>
-</merge>
+    </android.support.v7.widget.RecyclerView>
+</LinearLayout>
