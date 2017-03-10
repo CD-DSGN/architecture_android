@@ -33,14 +33,14 @@ public class ListDialog extends Dialog {
     Button mNo;
 
 
-    private String mTitleStr;
+    protected String mTitleStr;
 
     public void setData(ArrayList<String> data) {
         mData = data;
     }
 
-    private ArrayList<String> mData;
-    private String mBtnStr;
+    protected ArrayList<String> mData;
+    protected String mBtnStr;
 
     protected Context mContext;
 
@@ -48,16 +48,16 @@ public class ListDialog extends Dialog {
         mOnitemClickListener = onitemClickListener;
     }
 
-    private OnitemClickListener mOnitemClickListener;
+    protected OnitemClickListener mOnitemClickListener;
 
 
     public ListDialog(Context context) {
-        super(context, R.style.CustomDialog);
+        super(context, R.style.CustomDialog_bgdim);
         mContext = context;
     }
 
     public ListDialog(Context context, String title) {
-        super(context, R.style.CustomDialog);
+        super(context, R.style.CustomDialog_bgdim);
         mContext = context;
         mTitleStr = title;
     }
@@ -84,18 +84,8 @@ public class ListDialog extends Dialog {
     }
 
     //根据数组元素，动态添加
-    private void initView() {
-        mTitle = (TextView) mView.findViewById(R.id.title);
-        mLlContent = (LinearLayout) mView.findViewById(R.id.ll_content);
-        mNo = (Button) mView.findViewById(R.id.no);
-        mNo.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                ListDialog.this.dismiss();
-            }
-        });
-
-        mTitle.setText(mTitleStr);
+    protected void initView() {
+        initial();
         if (mData != null && mData.size() > 0) {
             for (int i = 0; i < mData.size(); i++) {
                 View v = LayoutInflater.from(mContext).inflate(R.layout.item_list_dlg_basic, mLlContent, false);
@@ -114,6 +104,19 @@ public class ListDialog extends Dialog {
         }
     }
 
+    protected void initial() {
+        mTitle = (TextView) mView.findViewById(R.id.title);
+        mLlContent = (LinearLayout) mView.findViewById(R.id.ll_content);
+        mNo = (Button) mView.findViewById(R.id.no);
+        mNo.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                ListDialog.this.dismiss();
+            }
+        });
+
+        mTitle.setText(mTitleStr);
+    }
 
 
     public interface OnitemClickListener {

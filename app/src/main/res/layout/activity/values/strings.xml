@@ -48,7 +48,7 @@
     <string name="without_wifi">非wifi网络流量</string>
     <string name="clear_cache">清理缓存</string>
     <string name="about_us">关于我们</string>
-    <string name="share_yueyue">分享阅阅</string>
+    <string name="share_dujia">分享读家</string>
     <string name="feedback_success">反馈意见提交成功，谢谢您的支持</string>
     <string name="current_version">当前版本</string>
     <string name="logout_success">退出成功</string>
@@ -79,4 +79,7 @@
     <string name="edit_nickname">编辑昵称</string>
     <string name="save">保存</string>
     <string name="change_sign">修改签名</string>
+    <string name="choose_gender">选择性别</string>
+    <string name="male">男</string>
+    <string name="female">女</string>
 </resources>
