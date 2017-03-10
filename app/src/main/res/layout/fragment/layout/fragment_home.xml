@@ -1,26 +1,33 @@
-<android.support.design.widget.CoordinatorLayout
-    xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
-    android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    android:background="@color/white"
-    >
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+             xmlns:app="http://schemas.android.com/apk/res-auto"
+             android:layout_width="match_parent"
+             android:layout_height="match_parent"
+             android:fitsSystemWindows="true">
 
-    <android.support.design.widget.AppBarLayout
-        app:elevation="0dp"
+    <android.support.design.widget.CoordinatorLayout
+        xmlns:android="http://schemas.android.com/apk/res/android"
+        xmlns:app="http://schemas.android.com/apk/res-auto"
+        android:id="@+id/homeview_book"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:background="@android:color/transparent"
-  >
+        android:layout_height="match_parent"
+        android:background="@color/white"
+        >
+
+        <android.support.design.widget.AppBarLayout
+            android:layout_width="match_parent"
+
+            android:layout_height="wrap_content"
+            android:background="@android:color/transparent"
+            app:elevation="0dp"
+            >
 
 
             <RelativeLayout
                 xmlns:app="http://schemas.android.com/apk/res-auto"
                 android:layout_width="match_parent"
                 android:layout_height="118px"
-                app:layout_scrollFlags="scroll|enterAlways"
                 android:paddingTop="30px"
-                android:id="@+id/rela_title"
+                app:layout_scrollFlags="scroll|enterAlways"
                 >
 
                 <ImageView
@@ -46,31 +53,33 @@
                     android:id="@+id/tv_title"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                   android:layout_centerInParent="true"
+                    android:layout_centerInParent="true"
                     android:text="读家"
-                    android:textColor="@color/white"
+                    android:textColor="@color/text_green"
                     android:textSize="20sp"
                     />
             </RelativeLayout>
-    </android.support.design.widget.AppBarLayout>
+        </android.support.design.widget.AppBarLayout>
 
-<cn.bingoogolapple.refreshlayout.BGARefreshLayout
-    android:id="@+id/refreshLayout"
-    app:layout_behavior="@string/appbar_scrolling_view_behavior"
-    android:layout_width="match_parent"
-    android:layout_height="match_parent">
+        <cn.bingoogolapple.refreshlayout.BGARefreshLayout
+            android:id="@+id/refreshLayout"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            app:layout_behavior="@string/appbar_scrolling_view_behavior">
 
 
-    <android.support.v7.widget.RecyclerView
-        android:id="@+id/recyclerview"
-        android:layout_width="match_parent"
-        android:layout_height="0dp"
-        android:layout_weight="1"
-        android:visibility="visible"
-     >
-    </android.support.v7.widget.RecyclerView>
-</cn.bingoogolapple.refreshlayout.BGARefreshLayout>
+            <android.support.v7.widget.RecyclerView
+                android:id="@+id/recyclerview"
+                android:layout_width="match_parent"
+                android:layout_height="0dp"
+                android:layout_weight="1"
+                android:visibility="visible"
+                >
+            </android.support.v7.widget.RecyclerView>
+        </cn.bingoogolapple.refreshlayout.BGARefreshLayout>
+    </android.support.design.widget.CoordinatorLayout>
 
-    <include layout="@layout/homeview_nobook" android:visibility="gone"/>
-
-</android.support.design.widget.CoordinatorLayout>
+    <include
+        layout="@layout/homeview_nobook"
+        android:visibility="gone"/>
+</FrameLayout>

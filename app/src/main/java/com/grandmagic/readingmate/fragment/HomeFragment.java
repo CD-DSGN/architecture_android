@@ -5,10 +5,10 @@ import android.Manifest;
 import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
-import android.graphics.Color;
 import android.graphics.drawable.BitmapDrawable;
 import android.os.Bundle;
 import android.os.Handler;
+import android.support.design.widget.CoordinatorLayout;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.view.Gravity;
@@ -19,7 +19,6 @@ import android.view.WindowManager;
 import android.widget.FrameLayout;
 import android.widget.ImageView;
 import android.widget.PopupWindow;
-import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -34,9 +33,8 @@ import com.grandmagic.readingmate.base.AppBaseResponseCallBack;
 import com.grandmagic.readingmate.bean.response.DisplayBook;
 import com.grandmagic.readingmate.dialog.HintDialog;
 import com.grandmagic.readingmate.model.BookModel;
-import com.grandmagic.readingmate.permission.CameraPermission;
 import com.grandmagic.readingmate.utils.AutoUtils;
-import com.tamic.novate.Novate;
+import com.orhanobut.logger.Logger;
 import com.tamic.novate.NovateResponse;
 import com.tamic.novate.Throwable;
 import com.tbruyelle.rxpermissions.RxPermissions;
@@ -71,12 +69,12 @@ public class HomeFragment extends AppBaseFragment implements HomeBookAdapter.Cli
     ImageView mIvSearch;
     @BindView(R.id.iv_camera)
     ImageView mIvCamera;
-    @BindView(R.id.rela_title)
-    RelativeLayout mRelaTitle;
     @BindView(R.id.refreshLayout)
     BGARefreshLayout mRefreshLayout;
+    @BindView(R.id.homeview_book)
+    CoordinatorLayout mHomeviewBook;
     private View rootview;
-    List<DisplayBook.InfoBean> mBookList=new ArrayList<>();
+    List<DisplayBook.InfoBean> mBookList = new ArrayList<>();
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
@@ -103,7 +101,7 @@ public class HomeFragment extends AppBaseFragment implements HomeBookAdapter.Cli
 
     private void initdata() {
         mModel = new BookModel(getActivity());
-        mModel.loadCollectBook(new AppBaseResponseCallBack<NovateResponse<DisplayBook>>(getActivity(),true) {
+        mModel.loadCollectBook(new AppBaseResponseCallBack<NovateResponse<DisplayBook>>(getActivity(), true) {
             @Override
             public void onSuccee(NovateResponse<DisplayBook> response) {
                 mBookList.addAll(response.getData().getInfo());
@@ -123,14 +121,9 @@ public class HomeFragment extends AppBaseFragment implements HomeBookAdapter.Cli
      * 显示没有书的时候的页面
      */
     private void showEmptyView() {
-        mRelaTitle.setBackgroundColor(getResources().getColor(android.R.color.transparent));
-        mRefreshLayout.setVisibility(View.GONE);
-        mLayoutNobook.setVisibility(View.VISIBLE);
-        rootview.setBackgroundResource(R.drawable.bg_app_deep);
-        mTvTitle.setTextColor(mContext.getResources().getColor(R.color.white));
-        mIvCamera.setVisibility(View.GONE);
-        mIvSearch.setVisibility(View.GONE);
         ((MainActivity) getActivity()).setSystemBarColor(R.color.text_green);
+        mLayoutNobook.setVisibility(View.VISIBLE);
+        mHomeviewBook.setVisibility(View.GONE);
     }
 
     /**
@@ -139,14 +132,9 @@ public class HomeFragment extends AppBaseFragment implements HomeBookAdapter.Cli
     HomeBookAdapter mBookAdapter;
 
     private void showRecyclerView() {
-        mRelaTitle.setBackgroundColor(Color.WHITE);
-        ((MainActivity) mContext).setSystemBarColor(R.color.white);
-        mIvCamera.setVisibility(View.VISIBLE);
-        mIvSearch.setVisibility(View.VISIBLE);
-        rootview.setBackgroundColor(0xf8f8f8);
-        mTvTitle.setTextColor(mContext.getResources().getColor(R.color.text_green));
-        mRefreshLayout.setVisibility(View.VISIBLE);
+        ((MainActivity) mContext).setSystemBarColor(android.R.color.transparent);
         mLayoutNobook.setVisibility(View.GONE);
+        mHomeviewBook.setVisibility(View.VISIBLE);
 
     }
 
@@ -195,11 +183,7 @@ public class HomeFragment extends AppBaseFragment implements HomeBookAdapter.Cli
                 startActivity(new Intent(getActivity(), SearchActivity.class));
                 break;
             case R.id.tv_title:
-                if (mRecyclerview.getVisibility() == View.GONE) {
-                    showRecyclerView();
-                } else {
-                    showEmptyView();
-                }
+
                 break;
 
 

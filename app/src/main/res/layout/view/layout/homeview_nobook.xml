@@ -1,11 +1,19 @@
 <?xml version="1.0" encoding="utf-8"?>
 <FrameLayout
     xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:id="@+id/layout_nobook"
-    android:visibility="gone"
+    android:background="@color/text_green"
     android:layout_width="match_parent"
     android:layout_height="match_parent">
 
+    <ImageView
+        android:layout_width="184px"
+        android:layout_height="184px"
+        android:src="@drawable/logo"
+        android:layout_gravity="center_horizontal"
+        android:layout_marginTop="80px"
+        />
     <ImageView
         android:layout_width="304px"
         android:layout_height="150px"
@@ -26,30 +34,33 @@
             android:gravity="center_horizontal"
             android:orientation="vertical">
 
-            <ImageView
-                android:layout_width="350px"
-                android:layout_height="30px"
-                android:layout_marginTop="246px"
-                android:src="@drawable/txt_main_start_read"
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="320px"
+                android:text="开启一本书的探阅"
+                android:textColor="#fefefe"
+                android:gravity="center_horizontal"
+                android:textSize="32px"
                 />
 
             <ImageView
                 android:layout_width="122px"
                 android:layout_height="96px"
                 android:layout_marginBottom="32px"
-                android:layout_marginTop="96px"
-                android:src="@drawable/ic_camera_large"
+                android:layout_marginTop="36px"
+                android:src="@drawable/camera"
                 />
 
             <TextView
                 android:id="@+id/pop_scan"
                 android:layout_width="354px"
-                android:layout_height="82px"
-                android:background="@drawable/bg_btn_login"
+                android:layout_height="74px"
                 android:gravity="center"
                 android:text="立即扫描"
-                android:textColor="@color/white"
-                android:textSize="30px"
+                android:background="@drawable/bg_scan_btn"
+                android:textColor="@color/text_green"
+                android:textSize="36px"
                 />
 
             <ImageView
