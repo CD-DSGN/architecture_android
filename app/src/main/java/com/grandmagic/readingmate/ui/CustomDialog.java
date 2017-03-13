@@ -166,9 +166,7 @@ public class CustomDialog extends Dialog {
      */
     public void setMessage(String message) {
         messageStr = message;
-        if (!TextUtils.isEmpty(messageStr)) {
-            messageEt.setText(messageStr);
-        }
+        messageEt.setText(messageStr);
     }
 
     /**

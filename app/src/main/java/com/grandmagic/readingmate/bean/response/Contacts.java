@@ -1,5 +1,7 @@
 package com.grandmagic.readingmate.bean.response;
 
+import android.text.TextUtils;
+
 import com.tamic.novate.util.Environment;
 
 import org.greenrobot.greendao.annotation.Entity;
@@ -52,7 +54,7 @@ private String remark;
     }
 
     public String getUser_name() {
-        return user_name;
+        return TextUtils.isEmpty(remark)?user_name:remark;//如果有昵称返回昵称
     }
 
     public String getPyName() {

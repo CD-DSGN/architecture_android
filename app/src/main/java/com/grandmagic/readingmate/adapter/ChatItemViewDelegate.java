@@ -1,6 +1,7 @@
 package com.grandmagic.readingmate.adapter;
 
 import android.content.Context;
+import android.util.Log;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
@@ -40,7 +41,6 @@ public abstract class ChatItemViewDelegate implements ItemViewDelegate<EMMessage
         mDirect = item.direct();
         return isForViewType(item);
     }
-
     @Override
     public void convert(ViewHolder holder, EMMessage mChatMessage, int position) {
         Contacts mUserInfo = IMHelper.getInstance()
@@ -84,7 +84,10 @@ public abstract class ChatItemViewDelegate implements ItemViewDelegate<EMMessage
             }
 
         });
-        holderView.addView(childView);
+        //此方法似乎会被多次调用。导致=视图重复add进来
+        if (holderView.getChildCount()==0) {
+            holderView.addView(childView);
+        }
     }
 
     protected abstract void childConvert(ViewHolder mHolder, EMMessage mChatMessage, int mPosition);
