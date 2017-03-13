@@ -1,5 +1,8 @@
 package com.grandmagic.readingmate.bean.response;
 
+import com.google.gson.annotations.JsonAdapter;
+import com.google.gson.internal.bind.ListTypeAdapterFactory;
+
 import java.util.List;
 
 /**
@@ -9,13 +12,14 @@ import java.util.List;
 public class SearchUserResponse {
 
     /**
-     * collection : [{"book_name":"深入浅出MySQL","is_both_enjoy":1}]
+     * collection : [{"book_name":"深入浅出MySQL","is_both_enjoy":1}] “”
      * personalinfo : {"user_id":8,"user_name":"小华","gender":1,"signature":"啦啦啦2","avatar_native":"/images/18228170109/751ca8d636454ebebb1190f982031f54.jpg","avatar_thumb":"/images/18228170109/thumb_751ca8d636454ebebb1190f982031f54.jpg"}
      * is_friend : 2
      */
 
     private PersonalinfoBean personalinfo;
     private int is_friend;
+    @JsonAdapter(ListTypeAdapterFactory.class)
     private List<CollectionBean> collection;
 
     public PersonalinfoBean getPersonalinfo() {

@@ -60,7 +60,7 @@ public class FriendActivity extends AppBaseActivity {
     IndexBar mIndexbar;
     @BindView(R.id.hintText)
     TextView mHintText;
-    List<Contacts> mAdapterData = new ArrayList<>();
+    List<Contacts> mAdapterData = new ArrayList<>();//最终adapter需要的列表
     @BindView(R.id.titlelayout)
     RelativeLayout mTitlelayout;
     private static final String TAG = "FriendActivity";
@@ -77,8 +77,8 @@ public class FriendActivity extends AppBaseActivity {
         initdata();
     }
 
-    List<Contacts> mSouseDatas = new ArrayList<>();
-    List<String> mLetters = new ArrayList<>();
+    List<Contacts> mSouseDatas = new ArrayList<>();//服务端返回的列表
+    List<String> mLetters = new ArrayList<>();//首字母 A，B。。Z
 
     private void initdata() {//模拟假数据
         initServerData();

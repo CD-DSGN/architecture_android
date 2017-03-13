@@ -1,5 +1,8 @@
 package com.grandmagic.readingmate.bean.response;
 
+import com.google.gson.annotations.JsonAdapter;
+import com.google.gson.internal.bind.ListTypeAdapterFactory;
+
 import java.util.List;
 
 /**
@@ -18,6 +21,7 @@ public class BookSearchResponse {
     private int total_num;
     private int num;
     private List<SearchResultBean> search_result;
+    @JsonAdapter(ListTypeAdapterFactory.class)
     private List<?> scan_record;
 
     public int getTotal_num() {
