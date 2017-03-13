@@ -23,4 +23,5 @@ public class ApiInterface {
     public  static final String  BOOK_SEARCH= "keyword/booksearch"; //根据关键字搜索图书
     public  static final String  BOOK_HOT= "keyword/gethotword"; //获取热门搜索
     public  static final String  REMOVE_FRIEEND= "friendinfo/removefriend"; //解除好友关系
+    public  static final String  REMARK_FRIEND= "friendinfo/remarkfriend"; //设置备注
 }

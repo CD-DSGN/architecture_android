@@ -173,14 +173,7 @@ public class AddFriendActivity extends AppBaseActivity {
      * @param reason
      */
     private void addContact(String reason) {
-        if (mUser_id.equals(SPUtils.getInstance().getString(this, SPUtils.IM_NAME))) {
-            Toast.makeText(this, "不能添加自己为好友", Toast.LENGTH_SHORT).show();
-            return;
-        }
-        if (IMHelper.getInstance().getUserInfo(mUser_id) != null) {
-            Toast.makeText(this, "你们已经是好友了,不能再添加", Toast.LENGTH_SHORT).show();
-            return;
-        }
+
         InputMethodUtils.hide(AddFriendActivity.this);
         mModel.requestAddFriend(mUser_id, reason, new AppBaseResponseCallBack<NovateResponse>(this) {
             @Override

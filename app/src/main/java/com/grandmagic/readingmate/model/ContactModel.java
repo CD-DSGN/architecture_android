@@ -88,4 +88,16 @@ public class ContactModel {
         mNovate.executeJson(ApiInterface.REMOVE_FRIEEND,mJSONObject.toString(),b);
 
     }
+
+    public void remarkName(String mUser_id, String mMessage, AppBaseResponseCallBack callback) {
+        Novate mNovate=new Novate.Builder(mContext).build();
+        JSONObject mJSONObject=new JSONObject();
+        try {
+            mJSONObject.put("user_id2",mUser_id);
+            mJSONObject.put("remark",mMessage);
+        } catch (JSONException mE) {
+            mE.printStackTrace();
+        }
+        mNovate.executeJson(ApiInterface.REMARK_FRIEND,mJSONObject.toString(),callback);
+    }
 }

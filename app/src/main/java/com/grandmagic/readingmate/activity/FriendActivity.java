@@ -6,6 +6,7 @@ import android.database.sqlite.SQLiteDatabase;
 import android.graphics.Color;
 import android.os.Bundle;
 import android.support.v7.widget.LinearLayoutManager;
+import android.text.TextUtils;
 import android.util.Log;
 import android.view.View;
 import android.widget.ImageView;
@@ -47,7 +48,7 @@ import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
 
-public class FriendActivity extends AppBaseActivity {
+public class FriendActivity extends AppBaseActivity implements ContactItemDelagate.remarkListener {
     public static final int REQUEST_NEWFRIEND = 1;
     @BindView(R.id.back)
     ImageView mBack;
@@ -107,9 +108,6 @@ public class FriendActivity extends AppBaseActivity {
      * 生成adapter需要的list
      */
     private void initadapterData() {
-        DaoMaster.DevOpenHelper mDevOpenHelper = new DaoMaster.DevOpenHelper(this, "contacts.db", null);
-        SQLiteDatabase db = mDevOpenHelper.getWritableDatabase();
-        DaoMaster mDaoMaster = new DaoMaster(db);
         for (int i = 0; i < mLetters.size(); i++) {
             String letter = mLetters.get(i);
             mAdapterData.get(mAdapterData.size() - 1).setNeedline(false);
@@ -120,8 +118,7 @@ public class FriendActivity extends AppBaseActivity {
                     Contacts mContacts1 = new Contacts(Contacts.TYPE.TYPE_FRIEND, mSouseDatas.get(j).getUser_id(),
                             mSouseDatas.get(j).getUser_name(),
                             mSouseDatas.get(j).getAvatar_native());
-                    DaoSession mDaoSession = mDaoMaster.newSession();
-                    mDaoSession.insertOrReplace(mContacts1);
+                    mContacts1.setRemark(mSouseDatas.get(j).getRemark());
                     mAdapterData.add(mContacts1);
                 }
             }
@@ -138,13 +135,13 @@ public class FriendActivity extends AppBaseActivity {
         for (int i = 0; i < mSize; i++) {
             Contacts data = mSouseDatas.get(i);
             StringBuilder pySb = new StringBuilder();
-            String dataName = data.getUser_name();
+            String dataName = TextUtils.isEmpty(data.getRemark())?data.getUser_name(): data.getRemark();//如果有备注就按备注的处理
             for (int j = 0; dataName != null && j < dataName.length(); j++) {
                 pySb.append(Pinyin.toPinyin(dataName.charAt(j)));
             }
             data.setPyName(pySb.toString());//转化后的拼音
             String letter = pySb.length() > 0 ? pySb.substring(0, 1) : "#";//首字母
-            if (letter.matches("[A-Z]")) {
+            if (letter.matches("[A-Za-z]")) {
                 data.setLetter(letter);
             } else {
                 data.setLetter("#");
@@ -200,7 +197,7 @@ public class FriendActivity extends AppBaseActivity {
         LinearLayoutManager mLinearLayoutManager = new LinearLayoutManager(mContext);
         mRecyclerviewFriend.setLayoutManager(mLinearLayoutManager);
         mAdapter = new MultiItemTypeAdapter(mContext, mAdapterData);
-        mAdapter.addItemViewDelegate(new ContactItemDelagate(mContext)).
+        mAdapter.addItemViewDelegate(new ContactItemDelagate(mContext).setRemarkListener(this)).
                 addItemViewDelegate(new ContactLetterDelagate()).
                 addItemViewDelegate(new ContactNewFriendDelagate(mContext));
         mRecyclerviewFriend.setAdapter(mAdapter);
@@ -236,5 +233,16 @@ public class FriendActivity extends AppBaseActivity {
     protected void onDestroy() {
         super.onDestroy();
         EventBus.getDefault().unregister(this);
+    }
+
+    /**
+     * 设置备注
+     * @param mMessage
+     * @param mRemarkPosition
+     */
+    @Override
+    public void remark(String mMessage, int mRemarkPosition) {
+        mAdapterData.get(mRemarkPosition).setRemark(mMessage);
+        mAdapter.setData(mAdapterData);
     }
 }
