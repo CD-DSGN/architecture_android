@@ -24,6 +24,7 @@
     </android.support.v7.widget.RecyclerView>
 
     <RelativeLayout
+        android:layout_marginBottom="10px"
         android:id="@+id/rela_input"
         android:layout_alignParentBottom="true"
         android:layout_width="match_parent"
@@ -36,26 +37,29 @@
             android:layout_height="wrap_content"
             android:layout_marginLeft="20px"
             android:layout_centerVertical="true"
-            android:src="@drawable/ic_camera_small"
+            android:src="@drawable/chat_carmera"
+            android:layout_marginRight="10px"
             />
 
         <EditText
             android:id="@+id/et_input"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
+            android:layout_height="50px"
             android:layout_toLeftOf="@+id/voice"
             android:imeOptions="actionSend"
             android:inputType="text"
+            android:background="@drawable/chat_edit"
             android:layout_toRightOf="@id/iv_select_img"/>
 
         <ImageView
             android:id="@+id/voice"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
+            android:layout_width="40px"
+            android:layout_height="40px"
             android:layout_alignParentRight="true"
             android:layout_centerVertical="true"
             android:layout_marginRight="20px"
-            android:src="@drawable/ic_book"
+            android:layout_marginLeft="10px"
+            android:src="@drawable/chat_voice"
             />
     </RelativeLayout>
 </RelativeLayout>
