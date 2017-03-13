@@ -1,10 +1,12 @@
 package com.grandmagic.readingmate.activity;
 
+import android.graphics.Color;
 import android.os.Bundle;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.text.Editable;
 import android.text.TextWatcher;
+import android.util.TypedValue;
 import android.view.KeyEvent;
 import android.view.View;
 import android.view.inputmethod.EditorInfo;
@@ -18,6 +20,7 @@ import com.grandmagic.readingmate.adapter.SearchBookAdapter;
 import com.grandmagic.readingmate.base.AppBaseActivity;
 import com.grandmagic.readingmate.base.AppBaseResponseCallBack;
 import com.grandmagic.readingmate.bean.response.BookSearchResponse;
+import com.grandmagic.readingmate.bean.response.HotWordResponse;
 import com.grandmagic.readingmate.model.BookModel;
 import com.grandmagic.readingmate.utils.AutoUtils;
 import com.grandmagic.readingmate.view.FlowLayout;
@@ -37,8 +40,6 @@ public class SearchActivity extends AppBaseActivity {
     @BindView(R.id.et_search)
     EditText mEtSearch;
     @BindView(R.id.tv_hotSearch)
-    TextView mTvHotSearch;
-    @BindView(R.id.textView)
     TextView mTextView;
     @BindView(R.id.hotSearch_Flow)
     FlowLayout mHotSearchFlow;
@@ -57,7 +58,7 @@ public class SearchActivity extends AppBaseActivity {
     LinearLayout mViewSearch;
     @BindView(R.id.view_hotSearch)
     LinearLayout mViewHotSearch;
-    private List<BookSearchResponse> bookListData = new ArrayList<>();
+    private List<BookSearchResponse.SearchResultBean> bookListData = new ArrayList<>();
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -69,6 +70,41 @@ public class SearchActivity extends AppBaseActivity {
         AutoUtils.auto(this);
         initListener();
         initview();
+        initdata();
+    }
+
+    /**
+     * 加载热门搜索
+     */
+    private void initdata() {
+        mModel.getHotword(new AppBaseResponseCallBack<NovateResponse<HotWordResponse>>(this) {
+            @Override
+            public void onSuccee(NovateResponse<HotWordResponse> response) {
+                setHotView(response.getData().getHotword());
+            }
+        });
+    }
+
+    /**
+     * 加载热门搜索的UI
+     * @param mHotword
+     */
+    private void setHotView(List<String> mHotword) {
+        for (final String s : mHotword) {
+            TextView mTextView = new TextView(this);
+            mTextView.setText(s);
+            mTextView.setTextColor(Color.parseColor("#e6ffff"));
+            mTextView.setTextSize(TypedValue.COMPLEX_UNIT_PX,28);
+            AutoUtils.auto(mTextView);
+            mTextView.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    mEtSearch.setText(s);
+                    search(s);
+                }
+            });
+            mHotSearchFlow.addView(mTextView);
+        }
     }
 
     SearchBookAdapter mAdapter;
@@ -89,7 +125,6 @@ public class SearchActivity extends AppBaseActivity {
             public void onTextChanged(CharSequence s, int start, int before, int count) {
                 mViewHotSearch.setVisibility(s.length() > 0 ? View.GONE : View.VISIBLE);
                 mViewSearch.setVisibility(s.length() > 0 ? View.VISIBLE : View.GONE);
-
             }
 
             @Override
@@ -111,11 +146,12 @@ public class SearchActivity extends AppBaseActivity {
         });
     }
 
+    // TODO: 2017/3/13 扫码记录（限制5条）暂时没有 ，还没处理，
     private void search(String mString) {
-        mModel.searchBook(mString, new AppBaseResponseCallBack<NovateResponse<List<BookSearchResponse>>>(this) {
+        mModel.searchBook(mString, new AppBaseResponseCallBack<NovateResponse<BookSearchResponse>>(this) {
             @Override
-            public void onSuccee(NovateResponse<List<BookSearchResponse>> response) {
-                bookListData.addAll(response.getData());
+            public void onSuccee(NovateResponse<BookSearchResponse> response) {
+                bookListData.addAll(response.getData().getSearch_result());
                 mAdapter.refreshData(bookListData);
             }
         });

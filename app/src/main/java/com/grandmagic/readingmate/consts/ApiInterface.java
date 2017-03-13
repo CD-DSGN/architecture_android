@@ -21,4 +21,5 @@ public class ApiInterface {
     public  static final String  REQUEST_REFUSE= "requestinfo/requestrefuse"; //拒绝好友请求
     public  static final String  REQUEST_AGREE= "requestinfo/requestagree"; //同意好友请求
     public  static final String  BOOK_SEARCH= "keyword/booksearch"; //根据关键字搜索图书
+    public  static final String  BOOK_HOT= "keyword/gethotword"; //获取热门搜索
 }

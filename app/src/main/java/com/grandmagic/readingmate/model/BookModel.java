@@ -62,4 +62,9 @@ public class BookModel {
         }
         mNovate.executeJson(ApiInterface.BOOK_SEARCH, mJSONObject.toString(), mAppBaseResponseCallBack);
     }
+
+    public void getHotword(AppBaseResponseCallBack b) {
+        Novate mNovate=new Novate.Builder(mContext).build();
+        mNovate.executeGet(ApiInterface.BOOK_HOT,b);
+    }
 }
