@@ -4,11 +4,8 @@ package com.grandmagic.readingmate.fragment;
 import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
-import android.os.Handler;
-import android.os.Message;
 import android.support.v4.app.Fragment;
 import android.support.v7.widget.LinearLayoutManager;
-import android.util.Log;
 import android.util.Pair;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -22,16 +19,16 @@ import com.grandmagic.readingmate.R;
 import com.grandmagic.readingmate.activity.AddFriendActivity;
 import com.grandmagic.readingmate.activity.ChatActivity;
 import com.grandmagic.readingmate.activity.FriendActivity;
+import com.grandmagic.readingmate.activity.FriendDetailActivity;
 import com.grandmagic.readingmate.activity.MainActivity;
 import com.grandmagic.readingmate.adapter.MultiItemTypeAdapter;
 import com.grandmagic.readingmate.adapter.RecentConversationDelagate;
 import com.grandmagic.readingmate.base.AppBaseActivity;
 import com.grandmagic.readingmate.base.AppBaseFragment;
 import com.grandmagic.readingmate.event.ConnectStateEvent;
-import com.grandmagic.readingmate.listener.IMConnectionListener;
+import com.grandmagic.readingmate.event.ContactDeleteEvent;
 import com.grandmagic.readingmate.utils.AutoUtils;
 import com.grandmagic.readingmate.view.SwipRecycleView;
-import com.hyphenate.EMConnectionListener;
 import com.hyphenate.EMError;
 import com.hyphenate.chat.EMClient;
 import com.hyphenate.chat.EMConversation;
@@ -86,6 +83,18 @@ public class ChatFragment extends AppBaseFragment implements RecentConversationD
         EventBus.getDefault().register(this);
         initview();
         return view;
+    }
+
+    @Override
+    public void onResume() {
+        super.onResume();
+        setSystemBarColor(false);
+    }
+
+    @Override
+    public void onDestroyView() {
+        super.onDestroyView();
+        EventBus.getDefault().unregister(this);
     }
 
 
@@ -258,18 +267,6 @@ public class ChatFragment extends AppBaseFragment implements RecentConversationD
     }
 
     @Override
-    public void onDestroyView() {
-        super.onDestroyView();
-        EventBus.getDefault().unregister(this);
-    }
-
-    @Override
-    public void onResume() {
-        super.onResume();
-        setSystemBarColor(false);
-    }
-
-    @Override
     public void onHiddenChanged(boolean hidden) {
         setSystemBarColor(hidden);
     }
@@ -278,4 +275,9 @@ public class ChatFragment extends AppBaseFragment implements RecentConversationD
         if (!hidden) ((AppBaseActivity) (mContext)).setSystemBarColor(android.R.color.darker_gray);
     }
 
+    @Subscribe(threadMode = ThreadMode.MAIN)
+    public void contactDelete(ContactDeleteEvent mEvent){
+        EMClient.getInstance().chatManager().deleteConversation(mEvent.getUser_id(),true);
+        onrefreshConversation();
+    }
 }

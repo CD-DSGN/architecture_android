@@ -1,5 +1,6 @@
 package com.grandmagic.readingmate.activity;
 
+import android.graphics.drawable.BitmapDrawable;
 import android.os.Bundle;
 import android.os.Handler;
 import android.support.design.widget.AppBarLayout;
@@ -8,16 +9,28 @@ import android.support.design.widget.CoordinatorLayout;
 import android.support.design.widget.FloatingActionButton;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.view.Gravity;
+import android.view.LayoutInflater;
 import android.view.View;
+import android.view.WindowManager;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
+import android.widget.PopupWindow;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import com.grandmagic.readingmate.R;
 import com.grandmagic.readingmate.adapter.CommentsAdapter;
 import com.grandmagic.readingmate.base.AppBaseActivity;
+import com.grandmagic.readingmate.base.AppBaseResponseCallBack;
+import com.grandmagic.readingmate.event.ContactDeleteEvent;
+import com.grandmagic.readingmate.model.ContactModel;
 import com.grandmagic.readingmate.utils.AutoUtils;
 import com.grandmagic.readingmate.utils.ImageLoader;
+import com.hyphenate.chat.EMClient;
+import com.tamic.novate.NovateResponse;
+
+import org.greenrobot.eventbus.EventBus;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -29,7 +42,8 @@ import cn.bingoogolapple.refreshlayout.BGARefreshLayout;
 import cn.bingoogolapple.refreshlayout.BGAStickinessRefreshViewHolder;
 
 public class FriendDetailActivity extends AppBaseActivity {
-
+    ContactModel mModel;
+public static final String USER_ID="userid";
     @BindView(R.id.back)
     ImageView mBack;
     @BindView(R.id.title)
@@ -46,6 +60,8 @@ public class FriendDetailActivity extends AppBaseActivity {
     TextView mName;
     @BindView(R.id.iv_coll_1)
     ImageView mIvColl1;
+    @BindView(R.id.title_more)
+    ImageView mTitleMore;
     @BindView(R.id.recyclerview)
     RecyclerView mRecyclerview;
     @BindView(R.id.collapsingtoolbarlayout)
@@ -59,7 +75,9 @@ public class FriendDetailActivity extends AppBaseActivity {
     private static final String TAG = "FriendDetailActivity";
     @BindView(R.id.refreshLayout)
     BGARefreshLayout mRefreshLayout;
-
+    @BindView(R.id.rootview)
+    LinearLayout mRootview;
+String userid;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -68,12 +86,19 @@ public class FriendDetailActivity extends AppBaseActivity {
         AutoUtils.auto(this);
         setTranslucentStatus(true);
         initview();
+        initdata();
+    }
+
+    private void initdata() {
+        mModel=new ContactModel(this);
+        userid=getIntent().getStringExtra(USER_ID);
     }
 
     CommentsAdapter mAdapter;
     List<String> mStrings = new ArrayList<>();
 
     private void initview() {
+        mTitleMore.setVisibility(View.VISIBLE);
         mTitle.setText("详细信息");
         ImageLoader.loadCircleImage(this, "http://pic.ytqmx.com:82/2014/0831/01/11.jpg!960.jpg"
                 , mAvatar);
@@ -142,7 +167,7 @@ public class FriendDetailActivity extends AppBaseActivity {
         });
     }
 
-    @OnClick({R.id.back, R.id.recommend, R.id.fab})
+    @OnClick({R.id.back, R.id.recommend, R.id.fab, R.id.title_more})
     public void onClick(View view) {
         switch (view.getId()) {
             case R.id.back:
@@ -152,6 +177,60 @@ public class FriendDetailActivity extends AppBaseActivity {
                 break;
             case R.id.fab:
                 break;
+            case R.id.title_more:
+                showDeletePop();
+                break;
         }
+    }
+
+    PopupWindow mPopupWindow;
+
+    private void showDeletePop() {
+        if (mPopupWindow == null) {
+            View mpopview = LayoutInflater.from(this).inflate(R.layout.pop_deletefriend, null);
+            mpopview.findViewById(R.id.delete).setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    deleteFriend();
+                    mPopupWindow.dismiss();
+                }
+            });
+            mpopview.findViewById(R.id.cancle).setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    mPopupWindow.dismiss();
+                }
+            });
+            AutoUtils.auto(mpopview);
+            mPopupWindow = new PopupWindow(mpopview, WindowManager.LayoutParams.MATCH_PARENT, WindowManager.LayoutParams.WRAP_CONTENT, true);
+            mPopupWindow.setBackgroundDrawable(new BitmapDrawable());
+            mPopupWindow.setClippingEnabled(true);
+            mPopupWindow.setOutsideTouchable(true);
+            mPopupWindow.setOnDismissListener(new PopupWindow.OnDismissListener() {
+                @Override
+                public void onDismiss() {
+                    WindowManager.LayoutParams params = getWindow().getAttributes();
+                    params.alpha = 1.0f;
+                    getWindow().setAttributes(params);
+                }
+            });
+        }
+        mPopupWindow.showAtLocation(mRootview, Gravity.BOTTOM, 0, 0);
+        WindowManager.LayoutParams params = getWindow().getAttributes();
+        params.alpha = 0.7f;
+        getWindow().setAttributes(params);
+    }
+
+    /**
+     * 删除好友
+     */
+    private void deleteFriend() {
+        mModel.deleteContact( userid,new AppBaseResponseCallBack<NovateResponse>(this){
+            @Override
+            public void onSuccee(NovateResponse response) {
+                EventBus.getDefault().post(new ContactDeleteEvent(userid));
+                finish();
+            }
+        });
     }
 }

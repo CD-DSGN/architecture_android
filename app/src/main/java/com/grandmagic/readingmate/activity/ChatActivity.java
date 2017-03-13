@@ -45,6 +45,7 @@ public class ChatActivity extends AppBaseActivity implements EMMessageListener,C
     public static final String CHAT_NAME = "chat_name";
     public static final String CHAT_IM_NAME = "chat_im_name";
     public static final String CHAT_TYPE = "chat_type";
+    public static final int REQUEST_DETAIL=101;
     //聊天的在环信的name,为我们的userid
     private String toChatUserName;
     private int chat_type;
@@ -264,6 +265,10 @@ public class ChatActivity extends AppBaseActivity implements EMMessageListener,C
      */
     @Override
     public void clickAvatar() {
-       startActivity(new Intent(ChatActivity.this,FriendDetailActivity.class));
+        Intent mIntent = new Intent(ChatActivity.this, FriendDetailActivity.class);
+        mIntent.putExtra(FriendDetailActivity.USER_ID,toChatUserName);
+        startActivityForResult(mIntent,REQUEST_DETAIL);
     }
+
+
 }

@@ -24,6 +24,7 @@ import com.grandmagic.readingmate.bean.response.Contacts;
 import com.grandmagic.readingmate.bean.response.DataBean;
 import com.grandmagic.readingmate.db.DaoMaster;
 import com.grandmagic.readingmate.db.DaoSession;
+import com.grandmagic.readingmate.event.ContactDeleteEvent;
 import com.grandmagic.readingmate.model.ContactModel;
 import com.grandmagic.readingmate.utils.AutoUtils;
 import com.grandmagic.readingmate.view.IndexBar;
@@ -32,6 +33,10 @@ import com.hyphenate.chat.EMClient;
 import com.hyphenate.exceptions.HyphenateException;
 import com.orhanobut.logger.Logger;
 import com.tamic.novate.NovateResponse;
+
+import org.greenrobot.eventbus.EventBus;
+import org.greenrobot.eventbus.Subscribe;
+import org.greenrobot.eventbus.ThreadMode;
 
 import java.util.ArrayList;
 import java.util.Collections;
@@ -67,6 +72,7 @@ public class FriendActivity extends AppBaseActivity {
         ButterKnife.bind(this);
         AutoUtils.auto(this);
         setTranslucentStatus(true);
+        EventBus.getDefault().register(this);
         initview();
         initdata();
     }
@@ -221,6 +227,14 @@ public class FriendActivity extends AppBaseActivity {
     }
 
     ContactModel mModel = new ContactModel(this);
+    @Subscribe(threadMode = ThreadMode.MAIN)
+    public void contactDelete(ContactDeleteEvent mEvent){
+      initServerData();
+    }
 
-
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+        EventBus.getDefault().unregister(this);
+    }
 }

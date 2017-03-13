@@ -71,4 +71,21 @@ public class ContactModel {
         }
         mNovate.executeJson(ApiInterface.REQUEST_AGREE,mJSONObject.toString(),mAppBaseResponseCallBack );
     }
+
+    /**
+     * 解除好友关系
+     * @param mUserid
+     * @param b
+     */
+    public void deleteContact(String mUserid, AppBaseResponseCallBack b) {
+      Novate mNovate=new Novate.Builder(mContext).build();
+        JSONObject mJSONObject=new JSONObject();
+        try {
+            mJSONObject.put("user_id2",mUserid);
+        } catch (JSONException mE) {
+            mE.printStackTrace();
+        }
+        mNovate.executeJson(ApiInterface.REMOVE_FRIEEND,mJSONObject.toString(),b);
+
+    }
 }
