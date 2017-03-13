@@ -21,6 +21,7 @@ import com.grandmagic.readingmate.adapter.MessageTextRecDelagate;
 import com.grandmagic.readingmate.adapter.MessageTextSendDelagate;
 import com.grandmagic.readingmate.adapter.MultiItemTypeAdapter;
 import com.grandmagic.readingmate.base.AppBaseActivity;
+import com.grandmagic.readingmate.event.ContactDeleteEvent;
 import com.grandmagic.readingmate.utils.AutoUtils;
 import com.grandmagic.readingmate.utils.IMHelper;
 import com.hyphenate.EMCallBack;
@@ -29,6 +30,10 @@ import com.hyphenate.chat.EMClient;
 import com.hyphenate.chat.EMConversation;
 import com.hyphenate.chat.EMMessage;
 import com.orhanobut.logger.Logger;
+
+import org.greenrobot.eventbus.EventBus;
+import org.greenrobot.eventbus.Subscribe;
+import org.greenrobot.eventbus.ThreadMode;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -40,12 +45,12 @@ import butterknife.OnClick;
 /**
  * 聊天界面
  */
-public class ChatActivity extends AppBaseActivity implements EMMessageListener,ChatItemViewDelegate.chatClickListener {
+public class ChatActivity extends AppBaseActivity implements EMMessageListener, ChatItemViewDelegate.chatClickListener {
     private static final String TAG = "ChatActivity";
     public static final String CHAT_NAME = "chat_name";
     public static final String CHAT_IM_NAME = "chat_im_name";
     public static final String CHAT_TYPE = "chat_type";
-    public static final int REQUEST_DETAIL=101;
+    public static final int REQUEST_DETAIL = 101;
     //聊天的在环信的name,为我们的userid
     private String toChatUserName;
     private int chat_type;
@@ -75,6 +80,7 @@ public class ChatActivity extends AppBaseActivity implements EMMessageListener,C
         ButterKnife.bind(this);
         AutoUtils.auto(this);
         setTranslucentStatus(true);
+        EventBus.getDefault().register(this);
         initview();
         initlistener();
     }
@@ -122,18 +128,18 @@ public class ChatActivity extends AppBaseActivity implements EMMessageListener,C
         mMessage.setMessageStatusCallback(new EMCallBack() {
             @Override
             public void onSuccess() {
-                Log.e(TAG, "setMessageStatusCallback  onSuccess: " );
+                Log.e(TAG, "setMessageStatusCallback  onSuccess: ");
             }
 
             @Override
             public void onError(int mI, String mS) {
-                Logger.e( "setMessageStatusCallback  onError: " +mI+mS);
+                Logger.e("setMessageStatusCallback  onError: " + mI + mS);
 
             }
 
             @Override
             public void onProgress(int mI, String mS) {
-              Logger.e("setMessageStatusCallback  onProgress: "+mI+mS );
+                Logger.e("setMessageStatusCallback  onProgress: " + mI + mS);
 
             }
         });
@@ -266,9 +272,18 @@ public class ChatActivity extends AppBaseActivity implements EMMessageListener,C
     @Override
     public void clickAvatar() {
         Intent mIntent = new Intent(ChatActivity.this, FriendDetailActivity.class);
-        mIntent.putExtra(FriendDetailActivity.USER_ID,toChatUserName);
-        startActivityForResult(mIntent,REQUEST_DETAIL);
+        mIntent.putExtra(FriendDetailActivity.USER_ID, toChatUserName);
+        startActivityForResult(mIntent, REQUEST_DETAIL);
     }
 
+    @Subscribe(threadMode = ThreadMode.MAIN)
+    public void contactDelete(ContactDeleteEvent mEvent) {
+        finish();
+    }
 
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+        EventBus.getDefault().unregister(this);
+    }
 }
