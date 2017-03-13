@@ -41,6 +41,8 @@ import java.util.List;
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
+import cn.bingoogolapple.refreshlayout.BGARefreshLayout;
+import cn.bingoogolapple.refreshlayout.BGAStickinessRefreshViewHolder;
 
 /**
  * 聊天界面
@@ -51,6 +53,8 @@ public class ChatActivity extends AppBaseActivity implements EMMessageListener, 
     public static final String CHAT_IM_NAME = "chat_im_name";
     public static final String CHAT_TYPE = "chat_type";
     public static final int REQUEST_DETAIL = 101;
+    @BindView(R.id.refreshLayout)
+    BGARefreshLayout mRefreshLayout;
     //聊天的在环信的name,为我们的userid
     private String toChatUserName;
     private int chat_type;
@@ -71,6 +75,7 @@ public class ChatActivity extends AppBaseActivity implements EMMessageListener, 
     @BindView(R.id.voice)
     ImageView mVoice;
     private EMConversation mConversation;
+    private int DEFAULT_PAGESIZE=10;//默认显示消息数量和加载更多时候显示的消息数量
 
 
     @Override
@@ -99,6 +104,41 @@ public class ChatActivity extends AppBaseActivity implements EMMessageListener, 
                 return false;
             }
         });
+    }
+
+    private void initrefreshlayout() {
+        BGAStickinessRefreshViewHolder mRefreshViewHolder = new BGAStickinessRefreshViewHolder(this, false);
+        mRefreshViewHolder.setStickinessColor(R.color.colorAccent);
+        mRefreshViewHolder.setRotateImage(R.drawable.bga_refresh_stickiness);
+//        mRefreshLayout.offsetTopAndBottom(88);
+        mRefreshLayout.setRefreshViewHolder(mRefreshViewHolder);
+        mRefreshLayout.setDelegate(new BGARefreshLayout.BGARefreshLayoutDelegate() {
+            @Override
+            public void onBGARefreshLayoutBeginRefreshing(BGARefreshLayout refreshLayout) {
+            loadMoreMsg();
+                mRefreshLayout.endRefreshing();
+            }
+
+            @Override
+            public boolean onBGARefreshLayoutBeginLoadingMore(BGARefreshLayout refreshLayout) {
+                return false;
+            }
+        });
+    }
+
+    /**
+     * 下拉加载更多的消息
+     */
+    private void loadMoreMsg() {
+        int mMsgCount = mConversation.getAllMsgCount();
+        if (mMsgCount>DEFAULT_PAGESIZE){
+            List<EMMessage> mEMMessages = mConversation.loadMoreMsgFromDB(mMessageList.get(0).getMsgId(), DEFAULT_PAGESIZE);
+            mMessageList.addAll(0,mEMMessages);
+            mAdapter.setData(mMessageList);
+            mRefreshLayout.endRefreshing();
+        }else {
+            mRefreshLayout.endRefreshing();
+        }
     }
 
     /**
@@ -161,6 +201,7 @@ public class ChatActivity extends AppBaseActivity implements EMMessageListener, 
         mAdapter.addItemViewDelegate(new MessageIMGRecDelagate(this).setChatClickListener(this));
         mMessagerecyclerview.setAdapter(mAdapter);
         conversationInit();
+        initrefreshlayout();
     }
 
     // FIXME: 2017/3/2 mConversation有时候返回空，环信处理的比较奇怪
@@ -170,9 +211,8 @@ public class ChatActivity extends AppBaseActivity implements EMMessageListener, 
         if (mConversation == null) return;
         mConversation.markAllMessagesAsRead();
         final List<EMMessage> msgs = mConversation.getAllMessages();
-        mMessageList.addAll(msgs);
         int msgCount = msgs != null ? msgs.size() : 0;
-        int pagesize = 20;//默认最左加载最近的20条。其他通过用户下拉刷新获取
+        int pagesize = DEFAULT_PAGESIZE;//默认最左加载最近的20条。其他通过用户下拉刷新获取
         if (msgCount < mConversation.getAllMsgCount() && msgCount < pagesize) {
             String msgId = null;
             if (msgs != null && msgs.size() > 0) {
@@ -180,6 +220,8 @@ public class ChatActivity extends AppBaseActivity implements EMMessageListener, 
             }
             List<EMMessage> mEMMessages = mConversation.loadMoreMsgFromDB(msgId, pagesize - msgCount);
             mMessageList.addAll(mEMMessages);
+        }else if (msgs!=null){
+            mMessageList.addAll(msgs);
         }
         mAdapter.setData(mMessageList);
     }

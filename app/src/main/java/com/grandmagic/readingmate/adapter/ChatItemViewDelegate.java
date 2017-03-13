@@ -9,6 +9,7 @@ import android.widget.RelativeLayout;
 
 import com.grandmagic.readingmate.R;
 import com.grandmagic.readingmate.bean.response.Contacts;
+import com.grandmagic.readingmate.utils.DateUtil;
 import com.grandmagic.readingmate.utils.IMHelper;
 import com.grandmagic.readingmate.utils.ImageLoader;
 import com.hyphenate.EMCallBack;
@@ -41,8 +42,10 @@ public abstract class ChatItemViewDelegate implements ItemViewDelegate<EMMessage
         mDirect = item.direct();
         return isForViewType(item);
     }
+
     @Override
     public void convert(ViewHolder holder, EMMessage mChatMessage, int position) {
+        holder.setText(R.id.time, DateUtil.getMillon(mChatMessage.getMsgTime()));
         Contacts mUserInfo = IMHelper.getInstance()
                 .getUserInfo(mChatMessage.getFrom());
         if (mUserInfo != null) {
@@ -84,10 +87,10 @@ public abstract class ChatItemViewDelegate implements ItemViewDelegate<EMMessage
             }
 
         });
-        //此方法似乎会被多次调用。导致=视图重复add进来
-        if (holderView.getChildCount()==0) {
-            holderView.addView(childView);
-        }
+        // FIXME 此方法似乎会被多次调用。导致=视图重复add进来,暂时先移除其他view。
+        holderView.removeAllViews();
+        holderView.addView(childView);
+
     }
 
     protected abstract void childConvert(ViewHolder mHolder, EMMessage mChatMessage, int mPosition);
