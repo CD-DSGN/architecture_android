@@ -3,6 +3,9 @@ package com.grandmagic.readingmate.activity;
 import android.os.Bundle;
 import android.support.v4.view.ViewPager;
 import android.view.View;
+import android.view.ViewGroup;
+import android.widget.Button;
+import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
@@ -13,6 +16,7 @@ import com.grandmagic.readingmate.adapter.CommonPagerAdapter;
 import com.grandmagic.readingmate.base.AppBaseActivity;
 import com.grandmagic.readingmate.model.BookModel;
 import com.grandmagic.readingmate.utils.AutoUtils;
+import com.grandmagic.readingmate.utils.DensityUtil;
 import com.grandmagic.readingmate.view.HotcommentView;
 import com.grandmagic.readingmate.view.IrregularImageView;
 import com.grandmagic.readingmate.view.StarView;
@@ -24,7 +28,7 @@ import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
 
-public class BookDetailActivity extends AppBaseActivity {
+public class BookDetailActivity extends AppBaseActivity implements View.OnLayoutChangeListener {
     public static final String ISBN_CODE = "isbn_code";
     @BindView(R.id.back)
     ImageView mBack;
@@ -68,6 +72,18 @@ public class BookDetailActivity extends AppBaseActivity {
     ImageView mIv1;
     @BindView(R.id.bottomlayout)
     LinearLayout mBottomlayout;
+    @BindView(R.id.tv1)
+    TextView mTv1;
+    @BindView(R.id.rela_rating)
+    RelativeLayout mRelaRating;
+    @BindView(R.id.submit)
+    Button mSubmit;
+    @BindView(R.id.activityView)
+    RelativeLayout mActivityView;
+    @BindView(R.id.lin_share)
+    LinearLayout mLinShare;
+    @BindView(R.id.et_comment)
+    EditText mEtComment;
 
 
     @Override
@@ -79,6 +95,11 @@ public class BookDetailActivity extends AppBaseActivity {
         setTranslucentStatus(true);
         initdata();
         initView();
+        initlistener();
+    }
+
+    private void initlistener() {
+        mBottomlayout.addOnLayoutChangeListener(this);
     }
 
     private void initView() {
@@ -100,5 +121,24 @@ public class BookDetailActivity extends AppBaseActivity {
     @OnClick(R.id.back)
     public void onClick() {
         finish();
+    }
+
+    @Override
+    public void onLayoutChange(View v, int left, int top, int right, int bottom, int oldLeft, int oldTop, int oldRight, int oldBottom) {
+        LinearLayout.LayoutParams mParams = (LinearLayout.LayoutParams) mEtComment.getLayoutParams();
+
+        if (oldBottom!=0&&bottom!=0&&oldBottom - bottom > DensityUtil.getScreenHeight(this) / 3) {
+//            键盘弹出
+            mRelaRating.setVisibility(View.VISIBLE);
+            mLinShare.setVisibility(View.GONE);
+            mParams.height=4*mEtComment.getMeasuredHeight();
+
+        } else if (oldBottom!=0&&bottom!=0&&bottom - oldBottom > DensityUtil.getScreenHeight(this) / 3) {
+            mRelaRating.setVisibility(View.GONE);
+            mLinShare.setVisibility(View.VISIBLE);
+            mParams.height=mEtComment.getMeasuredHeight()/4;
+//            键盘收起
+        }
+        mEtComment.setLayoutParams(mParams);
     }
 }

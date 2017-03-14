@@ -5,6 +5,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:fitsSystemWindows="true"
+    android:id="@+id/activityView"
     android:orientation="vertical">
 
     <include layout="@layout/title_layout"/>
@@ -65,11 +66,11 @@
                         />
 
                     <TextView
+                        android:id="@+id/collectionNum"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_gravity="right|center_vertical"
                         android:text="100"
-                        android:id="@+id/collectionNum"
                         />
                 </LinearLayout>
             </LinearLayout>
@@ -143,50 +144,5 @@
         </LinearLayout>
     </android.support.design.widget.CoordinatorLayout>
 
-    <LinearLayout
-        android:id="@+id/bottomlayout"
-        android:layout_width="match_parent"
-        android:layout_height="70px"
-        android:layout_alignParentBottom="true"
-        android:background="#f8f8f8"
-        android:focusable="true"
-        android:gravity="center_vertical"
-        android:orientation="horizontal"
-        android:paddingLeft="20px"
-        android:paddingRight="20px"
-        >
-
-        <ImageView
-            android:id="@+id/iv1"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:src="@drawable/iv_comment"
-            />
-
-        <EditText
-            android:layout_width="0dp"
-            android:layout_height="match_parent"
-            android:layout_marginBottom="5px"
-            android:layout_marginTop="5px"
-            android:layout_weight="1"
-            android:background="@drawable/bg_comment"
-            android:hint="写评论"
-            android:paddingLeft="20px"
-            android:textColor="#999999"
-            android:textSize="24px"
-            />
-
-        <ImageView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:src="@drawable/ic_share"
-
-            />
-
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="分享"
-            />
-    </LinearLayout>
+    <include layout="@layout/view_comment"/>
 </RelativeLayout>
