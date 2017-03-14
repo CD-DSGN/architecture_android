@@ -16,6 +16,7 @@ import com.hyphenate.chat.EMConversation;
 import com.hyphenate.chat.EMMessage;
 import com.hyphenate.chat.EMTextMessageBody;
 import com.tamic.novate.util.Environment;
+import com.tamic.novate.util.SPUtils;
 import com.zhy.adapter.recyclerview.base.ItemViewDelegate;
 import com.zhy.adapter.recyclerview.base.ViewHolder;
 
@@ -60,7 +61,11 @@ public class RecentConversationDelagate implements ItemViewDelegate<EMConversati
             }else if (mLastMessage.getType()== EMMessage.Type.VOICE){
                 holder.setText(R.id.content,"[语音]");
             }
-            imNname = mLastMessage.direct() == EMMessage.Direct.RECEIVE ? mLastMessage.getFrom() : mLastMessage.getTo();
+            imNname =data.conversationId();
+            String mImName = SPUtils.getInstance().getString(mContext, SPUtils.IM_NAME);
+            if (imNname.equals(mImName)){//这里显示的时候要显示对方的信息而不是自己的
+                imNname=mLastMessage.getFrom().equals(imNname)?mLastMessage.getTo():mLastMessage.getFrom();
+            }
             //从本地获取联系人信息
             final Contacts mUserInfo = IMHelper.getInstance().getUserInfo(imNname);
 

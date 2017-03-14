@@ -137,6 +137,7 @@ public class ChatActivity extends AppBaseActivity implements EMMessageListener, 
      * 下拉加载更多的消息
      */
     private void loadMoreMsg() {
+        if (mConversation==null) return;
         int mMsgCount = mConversation.getAllMsgCount();
         if (mMsgCount > DEFAULT_PAGESIZE) {
             List<EMMessage> mEMMessages = mConversation.loadMoreMsgFromDB(mMessageList.get(0).getMsgId(), DEFAULT_PAGESIZE);
@@ -193,10 +194,10 @@ public class ChatActivity extends AppBaseActivity implements EMMessageListener, 
         initrefreshlayout();
     }
 
-    // FIXME: 2017/3/2 mConversation有时候返回空，环信处理的比较奇怪
 
     private void conversationInit() {
-        mConversation = EMClient.getInstance().chatManager().getConversation(toChatUserName);
+        //这里需要传三个参数的。一个参数的方法有时候会返回null
+        mConversation = EMClient.getInstance().chatManager().getConversation(toChatUserName, EMConversation.EMConversationType.Chat,true);
         if (mConversation == null) return;
         mConversation.markAllMessagesAsRead();
         final List<EMMessage> msgs = mConversation.getAllMessages();

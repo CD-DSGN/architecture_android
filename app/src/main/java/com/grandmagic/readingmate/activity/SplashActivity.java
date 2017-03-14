@@ -13,6 +13,7 @@ import com.grandmagic.readingmate.db.DaoMaster;
 import com.grandmagic.readingmate.db.DaoSession;
 import com.grandmagic.readingmate.model.ContactModel;
 import com.grandmagic.readingmate.utils.AutoUtils;
+import com.hyphenate.chat.EMClient;
 import com.tamic.novate.util.SPUtils;
 import com.orhanobut.logger.Logger;
 import com.tamic.novate.NovateResponse;
@@ -67,6 +68,8 @@ public class SplashActivity extends AppBaseActivity {
                         mDaoSession.insertOrReplace(mContacts);
                         Logger.e(mContacts.toString());
                     }
+                    EMClient.getInstance().chatManager().loadAllConversations();
+                    EMClient.getInstance().groupManager().loadAllGroups();
                     startActivity(new Intent(SplashActivity.this, MainActivity.class));
                     finish();
                 }
