@@ -35,6 +35,7 @@ public class CollectionActivity extends AppBaseActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        setTranslucentStatus(true);
         setContentView(R.layout.activity_collection);
         ButterKnife.bind(this);
         AutoUtils.auto(this);

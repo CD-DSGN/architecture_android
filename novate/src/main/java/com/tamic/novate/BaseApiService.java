@@ -57,7 +57,7 @@ public interface BaseApiService {
     @POST()
     Observable<ResponseBody> upLoadImage(
             @Url() String url,
-            @Part("image\"; filename=\"image.jpg") RequestBody requestBody);
+            @Part("imgpath\"; filename=\"image.jpg") RequestBody requestBody);
 
     //    @Multipart
     //    @POST()

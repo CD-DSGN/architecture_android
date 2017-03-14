@@ -5,7 +5,7 @@ package com.grandmagic.readingmate.consts;
  */
 
 public class ApiErrorConsts {
-    public static int token_invalide = 100; // 未登录或登录过期
+    public static int token_invalid = 1000010; // 未登录或登录过期
 
 
 

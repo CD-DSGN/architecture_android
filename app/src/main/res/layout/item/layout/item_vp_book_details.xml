@@ -190,6 +190,6 @@
         android:layout_height="415px"
         android:layout_marginLeft="26px"
         android:scaleType="fitXY"
-        android:src="@drawable/bg_app"
+        android:src="@drawable/iv_no_book"
         />
 </FrameLayout>
