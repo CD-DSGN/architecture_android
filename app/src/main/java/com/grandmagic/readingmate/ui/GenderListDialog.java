@@ -8,7 +8,6 @@ import android.widget.TextView;
 
 import com.grandmagic.readingmate.R;
 import com.grandmagic.readingmate.utils.AutoUtils;
-import com.grandmagic.readingmate.utils.ViewUtils;
 
 import java.util.ArrayList;
 
@@ -16,7 +15,7 @@ import java.util.ArrayList;
  * Created by zhangmengqi on 2017/3/9.
  */
 
-public class GenderListDialog extends ListDialog implements ListDialog.OnitemClickListener{
+public class GenderListDialog extends ListDialog{
 
     ImageView mIvItemDlg;
     public GenderListDialog(Context context) {
@@ -25,7 +24,7 @@ public class GenderListDialog extends ListDialog implements ListDialog.OnitemCli
         data.add(mContext.getString(R.string.male));
         data.add(mContext.getString(R.string.female));
         setData(data);
-        setOnitemClickListener(this);
+
     }
 
     @Override
@@ -55,12 +54,5 @@ public class GenderListDialog extends ListDialog implements ListDialog.OnitemCli
 
     }
 
-    @Override
-    public void onClick(int postion) {
-        if (postion == 0) {
-            ViewUtils.showToast("点击男");
-        } else {
-            ViewUtils.showToast("点击女");
-        }
-    }
+
 }

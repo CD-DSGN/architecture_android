@@ -85,4 +85,7 @@
     <string name="collect">收藏</string>
     <string name="publisher">出版商:</string>
     <string name="publish_time">出版时间:</string>
+    <string name="reselect_gender">请重新选择性别</string>
+    <string name="sign_empty">签名不能为空</string>
+    <string name="nikc_name_empty">昵称不能为空</string>
 </resources>

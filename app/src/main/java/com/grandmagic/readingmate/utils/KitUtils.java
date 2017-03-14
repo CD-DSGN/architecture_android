@@ -5,6 +5,8 @@ import android.content.pm.PackageInfo;
 import android.content.pm.PackageManager;
 import android.text.TextUtils;
 
+import com.tamic.novate.util.Environment;
+
 /**
  * Created by zhangmengqi on 2017/2/9.
  */
@@ -50,6 +52,10 @@ public class KitUtils {
         }
 
         return pi;
+    }
+
+    public static String getAbsoluteUrl(String url) {
+        return Environment.getUrl() + url;
     }
 
 }

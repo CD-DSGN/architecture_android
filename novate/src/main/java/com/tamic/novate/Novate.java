@@ -3,6 +3,7 @@ package com.tamic.novate;
 import android.content.Context;
 import android.support.annotation.NonNull;
 import android.util.Log;
+import android.webkit.URLUtil;
 
 import com.facebook.stetho.okhttp3.StethoInterceptor;
 import com.google.gson.Gson;
@@ -609,7 +610,8 @@ public class Novate {
      * @return
      */
     public <T> T uploadImage(String url, File file, Subscriber<ResponseBody> subscriber) {
-        return (T) apiManager.upLoadImage(url, Utils.createImage(file))
+        String token = SPUtils.getInstance().getToken(mContext);
+        return (T) apiManager.upLoadImage(Utils.getUrlWithToken(url, token), Utils.createImage(file))
                 .compose(schedulersTransformer)
                 .compose(handleErrTransformer())
                 .subscribe(subscriber);

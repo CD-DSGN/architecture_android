@@ -1,10 +1,9 @@
 package com.grandmagic.readingmate.base;
 
+import android.app.Activity;
 import android.app.ProgressDialog;
 import android.content.Context;
 import android.content.Intent;
-import android.view.View;
-import android.widget.ProgressBar;
 import android.widget.Toast;
 
 import com.grandmagic.readingmate.activity.LoginActivity;
@@ -29,6 +28,7 @@ public abstract class AppBaseResponseCallBack<T> implements Novate.ResponseCallB
     public AppBaseResponseCallBack(Context context, boolean needLoading) {
         mContext = context;
         mNeedLoading = needLoading;
+
         mLoadingView = (Object) new ProgressDialog(context);
     }
 
@@ -55,7 +55,7 @@ public abstract class AppBaseResponseCallBack<T> implements Novate.ResponseCallB
         Logger.e(e.getMessage());
         dismissLoading();
         if (e != null) {
-            if (e.getCode() != ApiErrorConsts.token_invalide) {
+            if (e.getCode() != ApiErrorConsts.token_invalid) {
                 Toast.makeText(mContext, e.getMessage() + "", Toast.LENGTH_SHORT).show();
             } else {
                 Intent intent = new Intent(mContext, LoginActivity.class);
@@ -68,7 +68,7 @@ public abstract class AppBaseResponseCallBack<T> implements Novate.ResponseCallB
 
     private void showLoading() {
         //加载loading图
-        if (mNeedLoading && mLoadingView != null) {
+        if (mNeedLoading && mLoadingView != null && !((Activity)mContext).isFinishing()) {
             if (mLoadingView instanceof ProgressDialog) {
                 ((ProgressDialog) mLoadingView).show();
             }
