@@ -4,7 +4,9 @@ import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
 import android.graphics.Color;
+import android.net.Uri;
 import android.os.Bundle;
+import android.os.Environment;
 import android.provider.MediaStore;
 import android.text.TextUtils;
 import android.view.View;
@@ -25,9 +27,12 @@ import com.grandmagic.readingmate.ui.ListDialog;
 import com.grandmagic.readingmate.ui.UploadAvarDlg;
 import com.grandmagic.readingmate.utils.AutoUtils;
 import com.grandmagic.readingmate.utils.KitUtils;
+import com.grandmagic.readingmate.utils.ViewUtils;
 import com.grandmagic.readingmate.view.CircleImageView;
 import com.tamic.novate.Novate;
 import com.tamic.novate.NovateResponse;
+import com.tamic.novate.Throwable;
+import com.tamic.novate.download.DownLoadCallBack;
 import com.yuyh.library.imgsel.ImageLoader;
 import com.yuyh.library.imgsel.ImgSelActivity;
 import com.yuyh.library.imgsel.ImgSelConfig;
@@ -57,12 +62,18 @@ public class PersonalInfoEditActivity extends AppBaseActivity {
     ImageView mIvGender;
     @BindView(R.id.rl_set_gender)
     RelativeLayout mRlSetGender;
+    @BindView(R.id.tv_gender)
+    TextView mTvGender;
 
     private UserInfoModel mUserInfoModel;
     private UploadAvarDlg mUploadAvarDlg;
 
     private static int SEL_IMG = 1;
     private static int TAKE_PHOTO = 2;
+
+    private String mPhotoName;
+
+    private UserInfoResponseBean mUserInfoResponseBean;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -83,30 +94,33 @@ public class PersonalInfoEditActivity extends AppBaseActivity {
                     @Override
                     public void onSuccee(NovateResponse<UserInfoResponseBean> response) {
                         if (response != null && response.getData() != null) {
-                            UserInfoResponseBean userInfoResponseBean = response.getData();
-                            if (!TextUtils.isEmpty(userInfoResponseBean.getUser_name())) {
-                                mTvNickname.setText(userInfoResponseBean.getUser_name());
-                            }
-
-                            if (!TextUtils.isEmpty(userInfoResponseBean.getSignature())) {
-                                mTvSignature.setText(userInfoResponseBean.getSignature());
-                            }
-
-                            setGenderView(userInfoResponseBean.getGender());
-
-                            ImageUrlResponseBean imageUrlResponseBean = userInfoResponseBean.getAvatar_url();
-                            if (imageUrlResponseBean!= null) {
-                                if (!TextUtils.isEmpty(imageUrlResponseBean.getLarge())) {
-                                    com.grandmagic.readingmate.utils.ImageLoader.loadCircleImage(
-                                            PersonalInfoEditActivity.this,
-                                            KitUtils.getAbsoluteUrl(imageUrlResponseBean.getLarge()), mIvAvar);
-                                }
-                            }
-
+                            mUserInfoResponseBean = response.getData();
+                            setView(mUserInfoResponseBean);
                         }
                     }
                 });
-                mUserInfoModel.getUserInfo();
+        mUserInfoModel.getUserInfo();
+    }
+
+    private void setView(UserInfoResponseBean userInfoResponseBean) {
+        if (!TextUtils.isEmpty(userInfoResponseBean.getUser_name())) {
+            mTvNickname.setText(userInfoResponseBean.getUser_name());
+        }
+
+        if (!TextUtils.isEmpty(userInfoResponseBean.getSignature())) {
+            mTvSignature.setText(userInfoResponseBean.getSignature());
+        }
+
+        setGenderView(userInfoResponseBean.getGender());
+
+        ImageUrlResponseBean imageUrlResponseBean = userInfoResponseBean.getAvatar_url();
+        if (imageUrlResponseBean != null) {
+            if (!TextUtils.isEmpty(imageUrlResponseBean.getLarge())) {
+                com.grandmagic.readingmate.utils.ImageLoader.loadCircleImage(
+                        PersonalInfoEditActivity.this,
+                        KitUtils.getAbsoluteUrl(imageUrlResponseBean.getLarge()), mIvAvar);
+            }
+        }
     }
 
     private void initView() {
@@ -129,14 +143,16 @@ public class PersonalInfoEditActivity extends AppBaseActivity {
                         public void onClick(int postion) {
                             switch (postion) {
                                 case 0:             //拍照
+                                    takePhoto();
                                     break;
                                 case 1:
                                     pickFromAlbum();
                                     break;          //从相册选择
                                 case 2:
+                                    download();
                                     break;          //保存图片
                             }
-
+                            mUploadAvarDlg.dismiss();
                         }
                     });
 
@@ -154,6 +170,29 @@ public class PersonalInfoEditActivity extends AppBaseActivity {
                 showSetGenderDlg();
                 break;
         }
+    }
+
+    private void download() {
+        if (mUserInfoResponseBean != null) {
+            ImageUrlResponseBean image_url = mUserInfoResponseBean.getAvatar_url();
+            if (image_url != null) {
+                String url = image_url.getLarge();
+                Novate novate = new Novate.Builder(this).build();
+                novate.download(KitUtils.getAbsoluteUrl(url), new DownLoadCallBack() {
+                    @Override
+                    public void onError(Throwable e) {
+                        ViewUtils.showToast("下载失败");
+                    }
+
+                    @Override
+                    public void onSucess(String key, String path, String name, long fileSize) {
+                        ViewUtils.showToast("下载成功");
+                    }
+                });
+            }
+        }
+
+
     }
 
     private GenderListDialog mGenderDlg;
@@ -225,9 +264,11 @@ public class PersonalInfoEditActivity extends AppBaseActivity {
 
     public void setGenderView(int genderView) {
         if (genderView == 1) {   //女
-            mIvGender.setBackgroundResource(R.drawable.iv_female);
+            mIvGender.setImageResource(R.drawable.iv_female);
+            mTvGender.setText(getString(R.string.female));
         } else if (genderView == 2) {                  //男
-            mIvGender.setBackgroundResource(R.drawable.iv_male);
+            mIvGender.setImageResource(R.drawable.iv_male);
+            mTvGender.setText(getString(R.string.male));
         } else {  //未设置
 
         }
@@ -242,32 +283,38 @@ public class PersonalInfoEditActivity extends AppBaseActivity {
                 String path = paths.get(0);
                 File file = new File(path);
 
-                Novate novate = new Novate.Builder(this).build();
-
-                novate.uploadImage(ApiInterface.upload_avar, file, new Subscriber<ResponseBody>() {
-                    @Override
-                    public void onCompleted() {
-
-                    }
-
-                    @Override
-                    public void onError(Throwable e) {
-
-                    }
-
-                    @Override
-                    public void onNext(ResponseBody responseBody) {
-
-                    }
-                });
+                upload_img(file);
                 return;
             }
 
-            if (requestCode == TAKE_PHOTO) {  //从相册选择
-                takePhoto();
+            if (requestCode == TAKE_PHOTO) {  //拍照
+                File file = new File(Environment.getExternalStorageDirectory(), mPhotoName);
+                upload_img(file);
                 return;
             }
         }
+    }
+
+    private void upload_img(File file) {
+        Novate novate = new Novate.Builder(this).build();
+
+        novate.uploadImage(ApiInterface.upload_avar, file, new Subscriber<ResponseBody>() {
+            @Override
+            public void onCompleted() {
+
+            }
+
+            @Override
+            public void onError(java.lang.Throwable e) {
+
+            }
+
+
+            @Override
+            public void onNext(ResponseBody responseBody) {
+
+            }
+        });
     }
 
 
@@ -282,6 +329,8 @@ public class PersonalInfoEditActivity extends AppBaseActivity {
         ImgSelConfig config = new ImgSelConfig.Builder(this, loader)
                 // 是否多选
                 .multiSelect(false)
+                //是否记住以前的选择
+                .rememberSelected(false)
                 // “确定”按钮背景色
                 .btnBgColor(Color.GRAY)
                 // “确定”按钮文字颜色
@@ -306,6 +355,10 @@ public class PersonalInfoEditActivity extends AppBaseActivity {
     private void takePhoto() {
         //需要权限
         Intent intent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
-        startActivity(intent);
+        mPhotoName = "DSGN:" + System.currentTimeMillis() + ".jpg";
+        intent.putExtra(MediaStore.EXTRA_OUTPUT, Uri.fromFile(new File(Environment
+                .getExternalStorageDirectory(), mPhotoName
+        )));
+        startActivityForResult(intent, TAKE_PHOTO);
     }
 }

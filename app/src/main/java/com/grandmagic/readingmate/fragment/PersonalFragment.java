@@ -94,24 +94,7 @@ public class PersonalFragment extends AppBaseFragment {
                     if (response != null && response.getData() != null) {
                         mUserInfoResponseBean = (UserInfoResponseBean) response.getData();
                         //设置相应的数据
-                        ImageUrlResponseBean imageUrlResponseBean = mUserInfoResponseBean.getAvatar_url();
-                        if ( imageUrlResponseBean != null) {
-                            String url = imageUrlResponseBean.getLarge();
-                            if (!TextUtils.isEmpty(url)) {
-                                ImageLoader.loadCircleImage(mContext, KitUtils.getAbsoluteUrl(url),
-                                        mIvFragPersonalHeader);
-                            }
-                        }
-
-                        if (!TextUtils.isEmpty(mUserInfoResponseBean.getSignature())) {
-                            mTvFragPersonalSignature.setText(mUserInfoResponseBean.getSignature());
-                        }
-
-                        if (!TextUtils.isEmpty(mUserInfoResponseBean.getUser_name())) {
-                            mTvFragPersonalNickname.setText(mUserInfoResponseBean.getUser_name());
-                        }
-
-                        setGenderView(mUserInfoResponseBean.getGender());
+                        setPersonalView();
 
                     }
                 }
@@ -119,6 +102,27 @@ public class PersonalFragment extends AppBaseFragment {
         }
         mUserInfoModel.getUserInfo();
 
+    }
+
+    private void setPersonalView() {
+        ImageUrlResponseBean imageUrlResponseBean = mUserInfoResponseBean.getAvatar_url();
+        if ( imageUrlResponseBean != null) {
+            String url = imageUrlResponseBean.getLarge();
+            if (!TextUtils.isEmpty(url)) {
+                ImageLoader.loadCircleImage(mContext, KitUtils.getAbsoluteUrl(url),
+                        mIvFragPersonalHeader);
+            }
+        }
+
+        if (!TextUtils.isEmpty(mUserInfoResponseBean.getSignature())) {
+            mTvFragPersonalSignature.setText(mUserInfoResponseBean.getSignature());
+        }
+
+        if (!TextUtils.isEmpty(mUserInfoResponseBean.getUser_name())) {
+            mTvFragPersonalNickname.setText(mUserInfoResponseBean.getUser_name());
+        }
+
+        setGenderView(mUserInfoResponseBean.getGender());
     }
 
     private void initView() {
@@ -171,13 +175,14 @@ public class PersonalFragment extends AppBaseFragment {
 
     public void setGenderView(int genderView) {
         if (genderView == 1) {   //女
-            mIcFragPersonalMale.setVisibility(View.VISIBLE);
-            mIcFragPersonalFemale.setVisibility(View.GONE);
-        }else if(genderView == 2){                  //男
             mIcFragPersonalMale.setVisibility(View.GONE);
             mIcFragPersonalFemale.setVisibility(View.VISIBLE);
+        }else if(genderView == 2){                  //男
+            mIcFragPersonalMale.setVisibility(View.VISIBLE);
+            mIcFragPersonalFemale.setVisibility(View.GONE);
         }else{  //未设置
-
+            mIcFragPersonalFemale.setVisibility(View.VISIBLE);
+            mIcFragPersonalMale.setVisibility(View.VISIBLE);
         }
     }
 }

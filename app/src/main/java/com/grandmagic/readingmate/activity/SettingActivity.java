@@ -45,6 +45,7 @@ public class SettingActivity extends AppBaseActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_setting);
+        setTranslucentStatus(true);
         AutoUtils.auto(this);
         ButterKnife.bind(this);
         initView();
