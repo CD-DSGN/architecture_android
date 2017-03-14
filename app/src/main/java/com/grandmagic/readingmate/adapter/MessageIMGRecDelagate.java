@@ -33,7 +33,7 @@ public class MessageIMGRecDelagate extends ChatItemViewDelegate {
     @Override
     protected void childConvert(ViewHolder mHolder, EMMessage data, int mPosition) {
         EMImageMessageBody  mBody= (EMImageMessageBody) data.getBody();
-        ImageLoader.loadRoundImage(mContext,mBody.getRemoteUrl(), (ImageView) mHolder.getView(R.id.image));
+        ImageLoader.loadRoundImage(mContext,mBody.getLocalUrl(), (ImageView) mHolder.getView(R.id.image));
     }
 
     @Override

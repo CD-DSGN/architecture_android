@@ -1,6 +1,8 @@
 package com.grandmagic.readingmate.activity;
 
+import android.content.Context;
 import android.content.Intent;
+import android.graphics.Color;
 import android.os.Bundle;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
@@ -30,6 +32,10 @@ import com.hyphenate.chat.EMClient;
 import com.hyphenate.chat.EMConversation;
 import com.hyphenate.chat.EMMessage;
 import com.orhanobut.logger.Logger;
+import com.yuyh.library.imgsel.ImageLoader;
+import com.yuyh.library.imgsel.ImgSelActivity;
+import com.yuyh.library.imgsel.ImgSelConfig;
+import com.yuyh.library.imgsel.common.Constant;
 
 import org.greenrobot.eventbus.EventBus;
 import org.greenrobot.eventbus.Subscribe;
@@ -53,6 +59,7 @@ public class ChatActivity extends AppBaseActivity implements EMMessageListener, 
     public static final String CHAT_IM_NAME = "chat_im_name";
     public static final String CHAT_TYPE = "chat_type";
     public static final int REQUEST_DETAIL = 101;
+    private static final int REQUEST_SELIMG = 102;
     @BindView(R.id.refreshLayout)
     BGARefreshLayout mRefreshLayout;
     //聊天的在环信的name,为我们的userid
@@ -75,7 +82,7 @@ public class ChatActivity extends AppBaseActivity implements EMMessageListener, 
     @BindView(R.id.voice)
     ImageView mVoice;
     private EMConversation mConversation;
-    private int DEFAULT_PAGESIZE=10;//默认显示消息数量和加载更多时候显示的消息数量
+    private int DEFAULT_PAGESIZE = 10;//默认显示消息数量和加载更多时候显示的消息数量
 
 
     @Override
@@ -115,7 +122,7 @@ public class ChatActivity extends AppBaseActivity implements EMMessageListener, 
         mRefreshLayout.setDelegate(new BGARefreshLayout.BGARefreshLayoutDelegate() {
             @Override
             public void onBGARefreshLayoutBeginRefreshing(BGARefreshLayout refreshLayout) {
-            loadMoreMsg();
+                loadMoreMsg();
                 mRefreshLayout.endRefreshing();
             }
 
@@ -131,12 +138,12 @@ public class ChatActivity extends AppBaseActivity implements EMMessageListener, 
      */
     private void loadMoreMsg() {
         int mMsgCount = mConversation.getAllMsgCount();
-        if (mMsgCount>DEFAULT_PAGESIZE){
+        if (mMsgCount > DEFAULT_PAGESIZE) {
             List<EMMessage> mEMMessages = mConversation.loadMoreMsgFromDB(mMessageList.get(0).getMsgId(), DEFAULT_PAGESIZE);
-            mMessageList.addAll(0,mEMMessages);
+            mMessageList.addAll(0, mEMMessages);
             mAdapter.setData(mMessageList);
             mRefreshLayout.endRefreshing();
-        }else {
+        } else {
             mRefreshLayout.endRefreshing();
         }
     }
@@ -165,24 +172,6 @@ public class ChatActivity extends AppBaseActivity implements EMMessageListener, 
         mAdapter.setData(mMessageList);
         mEtInput.setText("");
         mMessagerecyclerview.smoothScrollToPosition(mMessageList.size() - 1);
-        mMessage.setMessageStatusCallback(new EMCallBack() {
-            @Override
-            public void onSuccess() {
-                Log.e(TAG, "setMessageStatusCallback  onSuccess: ");
-            }
-
-            @Override
-            public void onError(int mI, String mS) {
-                Logger.e("setMessageStatusCallback  onError: " + mI + mS);
-
-            }
-
-            @Override
-            public void onProgress(int mI, String mS) {
-                Logger.e("setMessageStatusCallback  onProgress: " + mI + mS);
-
-            }
-        });
     }
 
     MultiItemTypeAdapter mAdapter;
@@ -220,7 +209,7 @@ public class ChatActivity extends AppBaseActivity implements EMMessageListener, 
             }
             List<EMMessage> mEMMessages = mConversation.loadMoreMsgFromDB(msgId, pagesize - msgCount);
             mMessageList.addAll(mEMMessages);
-        }else if (msgs!=null){
+        } else if (msgs != null) {
             mMessageList.addAll(msgs);
         }
         mAdapter.setData(mMessageList);
@@ -234,12 +223,44 @@ public class ChatActivity extends AppBaseActivity implements EMMessageListener, 
                 finish();
                 break;
             case R.id.iv_select_img:
-                // TODO: 2017/2/22 从相册选择图片
+                chooseImg();
                 break;
             case R.id.voice:
                 // TODO: 2017/2/22 录音
                 break;
         }
+    }
+
+    private void chooseImg() {
+        ImageLoader mLoader = new ImageLoader() {
+            @Override
+            public void displayImage(Context context, String path, ImageView imageView) {
+                com.grandmagic.readingmate.utils.ImageLoader.loadImage(ChatActivity.this, path, imageView);
+            }
+        };
+        ImgSelConfig mConfig = new ImgSelConfig.Builder(this, mLoader)
+                .multiSelect(false)
+                .btnBgColor(Color.GRAY)// “确定”按钮背景 色
+                // “确定”按钮文字颜色
+                .btnTextColor(Color.BLUE)
+                // 使用沉浸式状态栏
+                .statusBarColor(Color.parseColor("#3F51B5"))
+                // 返回图标ResId
+                .backResId(R.drawable.ic_back)
+                // 标题
+                .title("图片")
+                // 标题文字颜色
+                .titleColor(Color.WHITE)
+                // TitleBar背景色
+                .titleBgColor(Color.parseColor("#3F51B5"))
+                // 裁剪大小。needCrop为true的时候配置
+//                .cropSize(1, 1, 200, 200)
+                .needCrop(false)
+                // 第一个是否显示相机
+                .needCamera(true)
+                .build();
+        // 跳转到图片选择器
+        ImgSelActivity.startActivity(this, mConfig, REQUEST_SELIMG);
     }
 
     /**
@@ -316,6 +337,27 @@ public class ChatActivity extends AppBaseActivity implements EMMessageListener, 
         Intent mIntent = new Intent(ChatActivity.this, FriendDetailActivity.class);
         mIntent.putExtra(FriendDetailActivity.USER_ID, toChatUserName);
         startActivityForResult(mIntent, REQUEST_DETAIL);
+    }
+
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+        if (requestCode == REQUEST_SELIMG && resultCode == RESULT_OK) {
+            Constant.imageList.clear();
+            List<String> path = data.getStringArrayListExtra(ImgSelActivity.INTENT_RESULT);
+            sendImgMessage(path.get(0));
+        }
+    }
+
+    /**
+     * 创建图片类型消息发送
+     * @param path
+     */
+    private void sendImgMessage(String path) {
+        //imagePath为图片本地路径，false为不发送原图（默认超过100k的图片会压缩后发给对方），需要发送原图传true
+        EMMessage mMessage = EMMessage.createImageSendMessage(path, false, toChatUserName);
+//如果是群聊，设置chattype，默认是单聊
+        sendMessage(mMessage);
     }
 
     @Subscribe(threadMode = ThreadMode.MAIN)
