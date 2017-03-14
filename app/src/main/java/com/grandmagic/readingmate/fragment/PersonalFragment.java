@@ -31,6 +31,7 @@ import com.grandmagic.readingmate.utils.ImageLoader;
 import com.grandmagic.readingmate.utils.KitUtils;
 import com.grandmagic.readingmate.view.CircleImageView;
 import com.tamic.novate.NovateResponse;
+import com.zhy.adapter.recyclerview.wrapper.HeaderAndFooterWrapper;
 
 import java.util.ArrayList;
 
@@ -43,7 +44,7 @@ import butterknife.OnClick;
  */
 public class PersonalFragment extends AppBaseFragment {
     Context mContext;
-    @BindView(R.id.rv_my_comments)
+
     RecyclerView mRvMyComments;
     @BindView(R.id.tv_edit_personal_info)
     TextView mTvEditPersonalInfo;
@@ -66,6 +67,11 @@ public class PersonalFragment extends AppBaseFragment {
 
     UserInfoModel mUserInfoModel;
     UserInfoResponseBean mUserInfoResponseBean = new UserInfoResponseBean();
+    private MyCommentAdapter mMAdapter;
+    private HeaderAndFooterWrapper mMHeaderAndFooterWrapper;
+    private View mView;
+
+    public static boolean NEED_REFRESH = false;
 
     public PersonalFragment() {
 
@@ -77,7 +83,7 @@ public class PersonalFragment extends AppBaseFragment {
                              Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_personal, container, false);
         AutoUtils.auto(view);
-        ButterKnife.bind(this, view);
+        mRvMyComments = (RecyclerView) view.findViewById(R.id.rv_my_comments);
         mContext = getActivity();
 
         initView();
@@ -126,13 +132,23 @@ public class PersonalFragment extends AppBaseFragment {
     }
 
     private void initView() {
-        mRvMyComments.setLayoutManager(new LinearLayoutManager(mContext));
+
         ArrayList<String> data = new ArrayList<>();
         for (int i = 0; i < 50; i++) {
             data.add("电影不错");
             data.add("结局缺乏新意，其他没什么");
         }
-        mRvMyComments.setAdapter(new MyCommentAdapter(mContext, data));
+        mRvMyComments.setLayoutManager(new LinearLayoutManager(mContext));
+        mView = LayoutInflater.from(mContext).inflate(R.layout.personal_fragment_header, mRvMyComments, false);
+        ButterKnife.bind(this,mView);
+        mMAdapter = new MyCommentAdapter(mContext, data);
+        mMHeaderAndFooterWrapper = new HeaderAndFooterWrapper(mMAdapter);
+
+        AutoUtils.auto(mView);
+
+        mMHeaderAndFooterWrapper.addHeaderView(mView);
+        mRvMyComments.setAdapter(mMHeaderAndFooterWrapper);
+        mMHeaderAndFooterWrapper.notifyDataSetChanged();
     }
 
 
@@ -162,6 +178,9 @@ public class PersonalFragment extends AppBaseFragment {
     public void onResume() {
         super.onResume();
         setSystemBarColor(false);
+        if (NEED_REFRESH) {
+            mUserInfoModel.getUserInfo();
+        }
     }
 
     @Override
@@ -185,4 +204,9 @@ public class PersonalFragment extends AppBaseFragment {
             mIcFragPersonalMale.setVisibility(View.VISIBLE);
         }
     }
+
+
+
+
+
 }

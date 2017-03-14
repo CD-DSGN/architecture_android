@@ -20,6 +20,7 @@ import com.grandmagic.readingmate.base.AppBaseResponseCallBack;
 import com.grandmagic.readingmate.bean.response.ImageUrlResponseBean;
 import com.grandmagic.readingmate.bean.response.UserInfoResponseBean;
 import com.grandmagic.readingmate.consts.ApiInterface;
+import com.grandmagic.readingmate.fragment.PersonalFragment;
 import com.grandmagic.readingmate.model.UserInfoModel;
 import com.grandmagic.readingmate.ui.CustomDialogWithOneBtn;
 import com.grandmagic.readingmate.ui.GenderListDialog;
@@ -93,6 +94,7 @@ public class PersonalInfoEditActivity extends AppBaseActivity {
 
                     @Override
                     public void onSuccee(NovateResponse<UserInfoResponseBean> response) {
+                        PersonalFragment.NEED_REFRESH = true;
                         if (response != null && response.getData() != null) {
                             mUserInfoResponseBean = response.getData();
                             setView(mUserInfoResponseBean);
@@ -297,7 +299,7 @@ public class PersonalInfoEditActivity extends AppBaseActivity {
 
     private void upload_img(File file) {
         Novate novate = new Novate.Builder(this).build();
-
+        PersonalFragment.NEED_REFRESH = true;
         novate.uploadImage(ApiInterface.upload_avar, file, new Subscriber<ResponseBody>() {
             @Override
             public void onCompleted() {
