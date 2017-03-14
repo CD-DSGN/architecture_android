@@ -9,6 +9,7 @@ import android.text.TextWatcher;
 import android.util.TypedValue;
 import android.view.KeyEvent;
 import android.view.View;
+import android.view.ViewGroup;
 import android.view.inputmethod.EditorInfo;
 import android.widget.EditText;
 import android.widget.ImageView;
@@ -95,6 +96,9 @@ public class SearchActivity extends AppBaseActivity {
             mTextView.setText(s);
             mTextView.setTextColor(Color.parseColor("#e6ffff"));
             mTextView.setTextSize(TypedValue.COMPLEX_UNIT_PX,28);
+            LinearLayout.LayoutParams mParams = new LinearLayout.LayoutParams(ViewGroup.LayoutParams.WRAP_CONTENT, ViewGroup.LayoutParams.WRAP_CONTENT);
+            mParams.setMargins(20,20,20,20);
+            mTextView.setLayoutParams(mParams);
             AutoUtils.auto(mTextView);
             mTextView.setOnClickListener(new View.OnClickListener() {
                 @Override

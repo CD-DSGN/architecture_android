@@ -14,6 +14,7 @@ import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.grandmagic.readingmate.R;
 import com.grandmagic.readingmate.adapter.ChatItemViewDelegate;
@@ -165,9 +166,13 @@ public class ChatActivity extends AppBaseActivity implements EMMessageListener, 
     /**
      * 统一的发送消息
      *
-     * @param mMessage
+     * @param mMessage 有时候选择的图片有路径但是可能导致失效，创建一个null 的message
      */
     private void sendMessage(EMMessage mMessage) {
+        if (mMessage==null) {
+            Toast.makeText(this, "发送的消息无效", Toast.LENGTH_SHORT).show();
+            return;
+        }
         EMClient.getInstance().chatManager().sendMessage(mMessage);
         mMessageList.add(mMessage);
         mAdapter.setData(mMessageList);
@@ -250,6 +255,7 @@ public class ChatActivity extends AppBaseActivity implements EMMessageListener, 
                 .backResId(R.drawable.ic_back)
                 // 标题
                 .title("图片")
+                .rememberSelected(false)
                 // 标题文字颜色
                 .titleColor(Color.WHITE)
                 // TitleBar背景色
@@ -344,7 +350,6 @@ public class ChatActivity extends AppBaseActivity implements EMMessageListener, 
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
         if (requestCode == REQUEST_SELIMG && resultCode == RESULT_OK) {
-            Constant.imageList.clear();
             List<String> path = data.getStringArrayListExtra(ImgSelActivity.INTENT_RESULT);
             sendImgMessage(path.get(0));
         }

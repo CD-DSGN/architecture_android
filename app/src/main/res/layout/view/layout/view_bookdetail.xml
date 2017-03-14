@@ -1,19 +1,22 @@
-<?xml version="1.0" encoding="utf-8"?>
 <RelativeLayout
     xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     xmlns:tool="http://schemas.android.com/tools"
-    android:layout_marginTop="30px"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
 
     >
-
+<android.support.v7.widget.CardView
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    app:cardCornerRadius="5dp"
+    app:cardElevation="5dp"
+    >
 
     <RelativeLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginTop="20px"
-        android:background="@drawable/ic_white_lack_circle"
         android:paddingLeft="26px"
         android:paddingRight="26px">
 
@@ -155,97 +158,16 @@
             android:textSize="26px"
             />
 
-        <RelativeLayout
-            android:layout_width="match_parent"
-            android:layout_height="48px"
-            android:layout_below="@+id/about"
-
-            android:layout_marginTop="20px">
-
-            <LinearLayout
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content">
-
-                <ImageView
-                    android:layout_width="28px"
-                    android:layout_height="28px"
-                    android:src="@drawable/ic_star"
-                    />
-
-                <TextView
-                    android:layout_width="wrap_content"
-                    android:layout_height="match_parent"
-                    android:layout_marginLeft="10px"
-                    android:text="2346265"
-                    android:textColor="#66191921"
-                    android:textSize="20px"
-                    />
-
-                <ImageView
-                    android:layout_width="28px"
-                    android:layout_height="28px"
-                    android:layout_marginLeft="32px"
-                    android:src="@drawable/ic_comment"
-                    />
-
-                <TextView
-                    android:layout_width="wrap_content"
-                    android:layout_height="match_parent"
-                    android:layout_marginLeft="10px"
-                    android:text="2346265"
-                    android:textColor="#66191921"
-                    android:textSize="20px"
-                    />
-
-                <ImageView
-                    android:layout_width="28px"
-                    android:layout_height="28px"
-                    android:layout_marginLeft="32px"
-                    android:src="@drawable/ic_watch"
-                    />
-
-                <TextView
-                    android:layout_width="wrap_content"
-                    android:layout_height="match_parent"
-                    android:layout_marginLeft="10px"
-                    android:text="2346265"
-                    android:textColor="#66191921"
-                    android:textSize="20px"
-                    />
-            </LinearLayout>
-
-            <LinearLayout
-                android:id="@+id/linear_share"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_alignParentRight="true"
-                android:padding="10px">
-
-                <ImageView
-                    android:layout_width="24px"
-                    android:layout_height="24px"
-                    android:src="@drawable/ic_share"
-                    />
-
-                <TextView
-                    android:layout_width="wrap_content"
-                    android:layout_height="match_parent"
-                    android:layout_marginLeft="10px"
-                    android:text="分享"
-                    android:textColor="#1cc9a2"
-                    android:textSize="20px"
-                    />
-            </LinearLayout>
-
-        </RelativeLayout>
 
 
     </RelativeLayout>
+</android.support.v7.widget.CardView>
+
     <com.grandmagic.readingmate.view.IrregularImageView
         android:id="@+id/iv_conver"
         android:layout_width="224px"
         android:layout_height="298px"
         android:layout_marginLeft="62px"
         />
-</RelativeLayout>
 
+</RelativeLayout>

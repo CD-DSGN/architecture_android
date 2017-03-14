@@ -234,7 +234,7 @@ public class HomeFragment extends AppBaseFragment implements HomeBookAdapter.Cli
     @Override
     public void onItemClickListener(int position) {
 // TODO: 2017/2/16 跳转到详情
-        new HintDialog(mContext, "详情页依然还没写");
+        startActivity(new Intent(getActivity(), BookDetailActivity.class));
     }
 
     @Override
