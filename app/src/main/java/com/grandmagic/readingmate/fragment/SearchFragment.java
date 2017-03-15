@@ -6,29 +6,24 @@ import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
 import android.support.v4.app.Fragment;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.ImageView;
+import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import com.baidu.location.BDLocation;
+import com.airbnb.lottie.LottieAnimationView;
 import com.baidu.location.BDLocationListener;
 import com.baidu.location.LocationClient;
 import com.baidu.location.LocationClientOption;
-import com.baidu.location.Poi;
 import com.grandmagic.readingmate.R;
 import com.grandmagic.readingmate.base.AppBaseActivity;
 import com.grandmagic.readingmate.base.AppBaseFragment;
 import com.grandmagic.readingmate.listener.LocationListener;
-import com.grandmagic.readingmate.view.IrregularImageView;
 import com.tbruyelle.rxpermissions.RxPermissions;
-
-import java.util.List;
-import java.util.StringTokenizer;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
@@ -47,6 +42,16 @@ public class SearchFragment extends AppBaseFragment {
     Button mBtnLocation;
     @BindView(R.id.location)
     TextView mTVLocation;
+    @BindView(R.id.back)
+    ImageView mBack;
+    @BindView(R.id.title)
+    TextView mTitle;
+    @BindView(R.id.title_more)
+    ImageView mTitleMore;
+    @BindView(R.id.titlelayout)
+    RelativeLayout mTitlelayout;
+    @BindView(R.id.animaview)
+    LottieAnimationView mAnimaview;
 
 
     @Override
@@ -55,6 +60,7 @@ public class SearchFragment extends AppBaseFragment {
         // Inflate the layout for this fragment
         View view = inflater.inflate(R.layout.fragment_search, container, false);
         ButterKnife.bind(this, view);
+        mAnimaview.setImageAssetsFolder("images/");
         mLocationClient = new LocationClient(getActivity());
         initdata();
         initoption();
@@ -142,6 +148,7 @@ public class SearchFragment extends AppBaseFragment {
             @Override
             public void call(Boolean mBoolean) {
                 if (mBoolean) {
+                    mAnimaview.playAnimation();
                     mLocationClient.start();
                 }
             }
@@ -160,8 +167,8 @@ public class SearchFragment extends AppBaseFragment {
     }
 
     private void setSystemBarColor(boolean hidden) {
-        if (!hidden){
-            ((AppBaseActivity)getActivity()).setSystemBarColor(R.color.bg_search);
+        if (!hidden) {
+            ((AppBaseActivity) getActivity()).setSystemBarColor(R.color.bg_search);
         }
     }
 }
