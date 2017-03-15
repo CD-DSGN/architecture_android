@@ -88,4 +88,7 @@
     <string name="reselect_gender">请重新选择性别</string>
     <string name="sign_empty">签名不能为空</string>
     <string name="nikc_name_empty">昵称不能为空</string>
+    <string name="comment_detail">评论详情</string>
+    <string name="reply">回复</string>
+    <string name="good">赞</string>
 </resources>
