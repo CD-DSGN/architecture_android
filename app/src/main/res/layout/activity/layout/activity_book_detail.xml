@@ -10,11 +10,15 @@
 
     <include layout="@layout/title_layout"/>
 
+    <include layout="@layout/view_comment"/>
+
     <android.support.design.widget.CoordinatorLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
+        android:layout_below="@+id/titlelayout"
         android:layout_above="@+id/bottomlayout"
-        android:layout_below="@+id/titlelayout">
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentStart="true">
 
         <android.support.design.widget.AppBarLayout
             android:layout_width="match_parent"
@@ -88,6 +92,7 @@
 
             <LinearLayout
                 android:layout_width="match_parent"
+                android:gravity="bottom"
                 android:layout_height="50px">
 
                 <LinearLayout
@@ -96,38 +101,49 @@
                     android:orientation="vertical">
 
                     <TextView
+                        android:id="@+id/tv_last"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:text="最新评论"
+                        android:textColor="@color/gray_select"
+                        android:textSize="26px"
+                        android:layout_gravity="bottom"
                         />
 
                     <View
                         android:layout_width="match_parent"
                         android:layout_height="1dp"
+                        android:id="@+id/dashline_tvlast"
                         android:background="@color/text_green"
                         />
                 </LinearLayout>
 
                 <View
                     android:layout_width="1px"
-                    android:layout_height="wrap_content"
+                    android:layout_height="20px"
+                    android:layout_marginBottom="5px"
                     android:background="@color/text_green"
                     />
 
                 <LinearLayout
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
+                    android:layout_gravity="bottom"
                     android:orientation="vertical">
 
                     <TextView
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:text="热门评论"
+                        android:textSize="24px"
+                        android:id="@+id/tv_hot"
+                        android:textColor="@color/gray_noselect"
                         />
 
                     <View
                         android:layout_width="match_parent"
                         android:layout_height="1dp"
+                        android:id="@+id/dashline_tvhot"
                         android:background="@color/text_green"
                         />
                 </LinearLayout>
@@ -143,6 +159,4 @@
             </android.support.v4.view.ViewPager>
         </LinearLayout>
     </android.support.design.widget.CoordinatorLayout>
-
-    <include layout="@layout/view_comment"/>
 </RelativeLayout>

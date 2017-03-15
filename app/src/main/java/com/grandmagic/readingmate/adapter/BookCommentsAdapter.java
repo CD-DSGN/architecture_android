@@ -13,7 +13,7 @@ import java.util.List;
 
 public class BookCommentsAdapter extends CommonAdapter<String> {
     public BookCommentsAdapter(Context context,  List datas) {
-        super(context, R.layout.item_bookcomments, datas);
+        super(context, R.layout.item_replay, datas);
     }
 
     @Override

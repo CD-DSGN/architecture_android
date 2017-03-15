@@ -11,4 +11,6 @@
     <color name="text_lightgreen">#991cc9a2</color>
     <color name="bg_search">#1b8b71</color>
     <color name="text_sumbit">#99ffffff</color>
+    <color name="gray_select">#99191921</color>
+    <color name="gray_noselect">#99999999</color>
 </resources>

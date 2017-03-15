@@ -3,6 +3,7 @@ package com.grandmagic.readingmate.activity;
 import android.os.Bundle;
 import android.support.v4.view.ViewPager;
 import android.text.TextUtils;
+import android.util.TypedValue;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
@@ -37,6 +38,14 @@ public class BookDetailActivity extends AppBaseActivity implements View.OnLayout
     public static final String BOOK_ID = "book_id";
     @BindView(R.id.rela_score)
     RelativeLayout mRelaScore;
+    @BindView(R.id.tv_last)
+    TextView mTvLast;
+    @BindView(R.id.dashline_tvlast)
+    View mDashlineTvlast;
+    @BindView(R.id.tv_hot)
+    TextView mTvHot;
+    @BindView(R.id.dashline_tvhot)
+    View mDashlineTvhot;
     private String book_id;
     @BindView(R.id.back)
     ImageView mBack;
@@ -108,6 +117,35 @@ public class BookDetailActivity extends AppBaseActivity implements View.OnLayout
 
     private void initlistener() {
         mBottomlayout.addOnLayoutChangeListener(this);
+        mViewpager.addOnPageChangeListener(new ViewPager.SimpleOnPageChangeListener() {
+            @Override
+            public void onPageSelected(int position) {
+             if (position==0)lastSelected();else hotSelected();
+            }
+
+        });
+    }
+
+    private void hotSelected() {
+        mTvLast.setTextSize(TypedValue.COMPLEX_UNIT_PX,24);
+        mTvLast.setTextColor(getResources().getColor(R.color.gray_noselect));
+        mDashlineTvlast.setVisibility(View.GONE);
+        mTvHot.setTextSize(TypedValue.COMPLEX_UNIT_PX,26);
+        mTvHot.setTextColor(getResources().getColor(R.color.gray_select));
+        mDashlineTvhot.setVisibility(View.VISIBLE);
+        AutoUtils.autoTextSize(mTvLast);
+        AutoUtils.autoTextSize(mTvHot);
+    }
+
+    private void lastSelected() {
+        mTvLast.setTextSize(TypedValue.COMPLEX_UNIT_PX,26);
+        mTvLast.setTextColor(getResources().getColor(R.color.gray_select));
+        mDashlineTvlast.setVisibility(View.VISIBLE);
+        mTvHot.setTextSize(TypedValue.COMPLEX_UNIT_PX,24);
+        mTvHot.setTextColor(getResources().getColor(R.color.gray_noselect));
+        mDashlineTvhot.setVisibility(View.GONE);
+        AutoUtils.autoTextSize(mTvLast);
+        AutoUtils.autoTextSize(mTvHot);
     }
 
     private void initView() {
@@ -164,7 +202,7 @@ public class BookDetailActivity extends AppBaseActivity implements View.OnLayout
         ImageLoader.loadImage(this, "http://files.jb51.net/do/uploads/litimg/160809/1FR52JC7.jpg", mIvConver);
     }
 
-    @OnClick({R.id.back, R.id.submit})
+    @OnClick({R.id.back, R.id.submit,R.id.tv_last,R.id.tv_hot})
     public void onClick(View view) {
         switch (view.getId()) {
             case R.id.back:
@@ -172,6 +210,12 @@ public class BookDetailActivity extends AppBaseActivity implements View.OnLayout
                 break;
             case R.id.submit:
                 submitComment();
+                break;
+            case R.id.tv_last:
+               lastSelected();
+                break;
+            case R.id.tv_hot:
+                hotSelected();
                 break;
         }
     }

@@ -7,6 +7,7 @@
     android:layout_alignParentBottom="true"
     android:background="#f8f8f8"
     android:focusable="true"
+    android:focusableInTouchMode="true"
     android:orientation="vertical"
     android:paddingLeft="20px"
     android:paddingRight="20px">
