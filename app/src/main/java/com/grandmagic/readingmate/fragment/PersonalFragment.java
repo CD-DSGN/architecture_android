@@ -101,6 +101,7 @@ public class PersonalFragment extends AppBaseFragment {
                         mUserInfoResponseBean = (UserInfoResponseBean) response.getData();
                         //设置相应的数据
                         setPersonalView();
+                        NEED_REFRESH = false;
 
                     }
                 }
@@ -204,9 +205,5 @@ public class PersonalFragment extends AppBaseFragment {
             mIcFragPersonalMale.setVisibility(View.VISIBLE);
         }
     }
-
-
-
-
 
 }

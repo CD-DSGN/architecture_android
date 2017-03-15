@@ -179,7 +179,11 @@
             android:name=".activity.PersonalInfoEditActivity"
             android:theme="@style/notitle">
         </activity>
-        <activity android:name=".activity.CollectionActivity"
+        <activity
+            android:name=".activity.CollectionActivity"
+            android:theme="@style/notitle">
+        </activity>
+        <activity android:name=".activity.CommentsActivity"
             android:theme="@style/notitle">
         </activity>
     </application>
