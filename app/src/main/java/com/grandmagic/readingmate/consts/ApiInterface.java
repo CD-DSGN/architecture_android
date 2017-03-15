@@ -22,6 +22,8 @@ public class ApiInterface {
     public static final String REQUEST_AGREE = "requestinfo/requestagree"; //同意好友请求
     public static final String BOOK_SEARCH = "keyword/booksearch"; //根据关键字搜索图书
     public static final String BOOK_HOT = "keyword/gethotword"; //获取热门搜索
+    public static final String BOOK_DETAIL = "collect/getbookdetail"; //获取图书详情
+    public static final String SCORE_BOOK = "collect/scorebook"; //获取图书详情
     public static final String REMOVE_FRIEEND = "friendinfo/removefriend"; //解除好友关系
     public static final String REMARK_FRIEND = "friendinfo/remarkfriend"; //设置备注
 

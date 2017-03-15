@@ -53,13 +53,15 @@ public class IrregularImageView extends ImageView {
     @Override
     protected void onMeasure(int widthMeasureSpec, int heightMeasureSpec) {
         super.onMeasure(widthMeasureSpec, heightMeasureSpec);
+        mWidth = MeasureSpec.getSize(widthMeasureSpec);
+        mHeight = MeasureSpec.getSize(heightMeasureSpec
+        );
     }
 
     @Override
     protected void onDraw(Canvas canvas) {
         if (getDrawable() == null || dst == null) return;//如果没有设置图片就不往下绘制了
-        mWidth = getWidth();
-        mHeight = getHeight();
+
         int sc = canvas.saveLayer(0, 0, mWidth, mHeight, null, Canvas.MATRIX_SAVE_FLAG |
                 Canvas.CLIP_SAVE_FLAG |
                 Canvas.HAS_ALPHA_LAYER_SAVE_FLAG |
@@ -70,6 +72,7 @@ public class IrregularImageView extends ImageView {
         // 先画一个图片
         Bitmap mask = BitmapFactory.decodeResource(mContext.getResources(), R.drawable.irregular);
         mask = calculateMask(mask, mWidth, mHeight);
+//        dst=calculateMask(dst,mWidth,mHeight);
         canvas.drawBitmap(dst, 0, 0, mPaint);
         // 设置模式
         mPaint.setXfermode(new PorterDuffXfermode(PorterDuff.Mode.DST_OUT));

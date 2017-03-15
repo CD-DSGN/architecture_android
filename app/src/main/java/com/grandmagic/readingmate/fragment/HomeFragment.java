@@ -109,6 +109,7 @@ public class HomeFragment extends AppBaseFragment implements HomeBookAdapter.Cli
                 mBookAdapter.setData(mBookList);
                 showRecyclerView();
                 isEmpty = false;
+                Logger.e("首页加载成功");
             }
 
             @Override
@@ -234,7 +235,9 @@ public class HomeFragment extends AppBaseFragment implements HomeBookAdapter.Cli
     @Override
     public void onItemClickListener(int position) {
 // TODO: 2017/2/16 跳转到详情
-        startActivity(new Intent(getActivity(), BookDetailActivity.class));
+        Intent mIntent = new Intent(getActivity(), BookDetailActivity.class);
+        mIntent.putExtra(BookDetailActivity.BOOK_ID,mBookList.get(position).getBook_id());
+        startActivity(mIntent);
     }
 
     @Override

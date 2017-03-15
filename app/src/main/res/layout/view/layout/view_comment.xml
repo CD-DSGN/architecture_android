@@ -105,6 +105,7 @@ android:id="@+id/lin_share"
 
     <Button
         android:id="@+id/submit"
+        android:visibility="gone"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_gravity="right"

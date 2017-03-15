@@ -1,5 +1,8 @@
 package com.grandmagic.readingmate.bean.response;
 
+import com.google.gson.annotations.JsonAdapter;
+import com.google.gson.internal.bind.ObjectDeserializer;
+
 /**
  * Created by zhangmengqi on 2017/3/13.
  */
@@ -16,7 +19,7 @@ public class UserInfoResponseBean{
     public void setAvatar_url(ImageUrlResponseBean avatar_url) {
         this.avatar_url = avatar_url;
     }
-
+@JsonAdapter(ObjectDeserializer.class)
     private ImageUrlResponseBean avatar_url;
 
 

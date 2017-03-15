@@ -33,7 +33,7 @@ public class HomeBookAdapter extends AnimationAdapter<DisplayBook.InfoBean> {
     @Override
     protected void convert(ViewHolder holder, DisplayBook.InfoBean data, final int position) {
 
-        ImageLoader.loadImage(mContext, "https://ss1.baidu.com/6ONXsjip0QIZ8tyhnq/it/u=1937046046,1905495319&fm=58", (ImageView) holder.getView(R.id.iv_conver));
+        ImageLoader.loadImage(mContext, "http://files.jb51.net/do/uploads/litimg/160809/1FR52JC7.jpg", (ImageView) holder.getView(R.id.iv_conver));
 
         ImageLoader.loadCircleImage(mContext, "https://ss2.baidu.com/6ONYsjip0QIZ8tyhnq/it/u=1460995985,2991423940&fm=58", (ImageView) holder.getView(R.id.avatar));
         holder.setText(R.id.bookname, data.getBook_name());

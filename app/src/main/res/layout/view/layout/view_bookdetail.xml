@@ -1,173 +1,178 @@
-<RelativeLayout
+<FrameLayout
     xmlns:android="http://schemas.android.com/apk/res/android"
-    android:layout_width="match_parent"
-    android:layout_height="wrap_content"
-    xmlns:tool="http://schemas.android.com/tools"
     xmlns:app="http://schemas.android.com/apk/res-auto"
-
-    >
-<android.support.v7.widget.CardView
+    xmlns:tool="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    app:cardCornerRadius="5dp"
-    app:cardElevation="5dp"
+android:layout_marginTop="30px"
     >
 
-    <RelativeLayout
+    <android.support.v7.widget.CardView
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        app:cardCornerRadius="5dp"
+        app:cardElevation="5dp"
         android:layout_marginTop="20px"
-        android:paddingLeft="26px"
-        android:paddingRight="26px">
-
-        <TextView
-            android:id="@+id/bookname"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginLeft="287px"
-            tool:text="从你的全世界路过"
-            android:textColor="#181e1d"
-            android:textSize="32px"
-            />
-
-        <ImageView
-            android:id="@+id/avatar"
-            android:layout_width="82px"
-            android:layout_height="82px"
-            android:layout_alignLeft="@+id/bookname"
-            android:layout_below="@+id/bookname"
-            />
-
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_below="@+id/bookname"
-            android:layout_marginTop="40px"
-            android:layout_toRightOf="@+id/avatar"
-            android:text="张嘉jia"
-            android:textColor="#252a29"
-            android:textSize="26px"
-            android:id="@+id/author"
-            />
-
-        <com.grandmagic.readingmate.view.StarView
-            xmlns:app="http://schemas.android.com/apk/res-auto"
-            android:id="@+id/ratingbar"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_alignParentRight="true"
-            android:layout_marginRight="20px"
-            android:layout_marginTop="96px"
-            app:isIndicator="true"
-            app:starEmpty="@drawable/star_empty"
-            app:starFill="@drawable/star"
-            app:starHeight="20px"
-            app:starWidth="22px"
-            />
+        >
 
         <RelativeLayout
-            android:layout_width="wrap_content"
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_alignParentRight="true"
-            android:layout_below="@+id/ratingbar"
-            android:layout_marginRight="20px"
-            >
-
+            android:paddingLeft="26px"
+            android:paddingRight="26px">
 
             <TextView
-                android:id="@+id/score"
+                android:id="@+id/bookname"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="372px"
+                android:textColor="#181e1d"
+                android:textSize="32px"
+                tool:text="从你的全世界路过"
+                />
+
+            <ImageView
+                android:id="@+id/avatar"
+                android:layout_width="82px"
+                android:layout_height="82px"
+                android:layout_alignLeft="@+id/bookname"
+                android:layout_below="@+id/bookname"
+                />
+
+            <TextView
+                android:id="@+id/author"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_below="@+id/bookname"
+                android:layout_marginTop="40px"
+                android:layout_toRightOf="@+id/avatar"
+                android:text="张嘉jia"
+                android:textColor="#252a29"
+                android:textSize="26px"
+                />
+
+            <com.grandmagic.readingmate.view.StarView
+                android:layout_marginTop="15dp"
+                xmlns:app="http://schemas.android.com/apk/res-auto"
+                android:id="@+id/ratingbar"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
 
-                android:layout_marginTop="16px"
-                android:text="9"
-                android:textColor="#1c99a2"
+                android:layout_below="@+id/t_publishtime"
+android:layout_marginLeft="410px"
+                android:layout_marginRight="20px"
+                app:isIndicator="true"
+                app:starEmpty="@drawable/star_empty"
+                app:starFill="@drawable/ic_star_green"
+                app:starHeight="20px"
+                app:starWidth="22px"
+                />
+
+            <RelativeLayout
+                android:id="@+id/rela_score"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="410px"
+                android:layout_below="@+id/ratingbar"
+                android:layout_marginRight="20px"
+                >
+
+
+                <TextView
+                    android:id="@+id/score"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+
+                    android:layout_marginTop="16px"
+                    android:text="9"
+                    android:textColor="#1c99a2"
+                    android:textSize="22px"
+                    />
+
+                <TextView
+                    android:id="@+id/num_people"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="16px"
+                    android:layout_toRightOf="@+id/score"
+                    android:text="分（2.3万人评)"
+                    android:textColor="#999999"
+                    android:textSize="22px"
+                    />
+            </RelativeLayout>
+
+            <TextView
+                android:id="@+id/t_publisher"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignLeft="@+id/avatar"
+                android:layout_below="@+id/avatar"
+                android:layout_marginTop="30px"
+                android:text="出版商: "
+                android:textColor="#b3999999"
                 android:textSize="22px"
                 />
 
             <TextView
-                android:id="@+id/num_people"
+                android:id="@+id/tv_publisher"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="16px"
-                android:layout_toRightOf="@+id/score"
-                android:text="分（2.3万人评)"
-                android:textColor="#999999"
+                android:layout_below="@+id/avatar"
+                android:layout_marginTop="30px"
+                android:layout_toRightOf="@+id/t_publisher"
+                android:text="电子工业出版社"
+                android:textColor="#b3999999"
                 android:textSize="22px"
                 />
-        </RelativeLayout>
 
-        <TextView
-            android:id="@+id/t_publisher"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_alignLeft="@+id/avatar"
-            android:layout_below="@+id/avatar"
-            android:layout_marginTop="30px"
-            android:text="出版商: "
-            android:textColor="#b3999999"
-            android:textSize="22px"
-            />
+            <TextView
+                android:id="@+id/t_publishtime"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignLeft="@+id/avatar"
+                android:layout_below="@+id/t_publisher"
+                android:layout_marginTop="24px"
+                android:text="出版时间: "
+                android:textColor="#b3999999"
+                android:textSize="22px"
+                />
 
-        <TextView
-            android:id="@+id/tv_publisher"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_below="@+id/avatar"
-            android:layout_marginTop="30px"
-            android:layout_toRightOf="@+id/t_publisher"
-            android:text="电子工业出版社"
-            android:textColor="#b3999999"
-            android:textSize="22px"
-            />
+            <TextView
+                android:id="@+id/tv_publistime"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_below="@+id/t_publisher"
+                android:layout_marginTop="24px"
+                android:layout_toRightOf="@+id/t_publishtime"
+                android:text="2012-2-2"
+                android:textColor="#b3999999"
+                android:textSize="22px"
+                />
 
-        <TextView
-            android:id="@+id/t_publishtime"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_alignLeft="@+id/avatar"
-            android:layout_below="@+id/t_publisher"
-            android:layout_marginTop="24px"
-            android:text="出版时间: "
-            android:textColor="#b3999999"
-            android:textSize="22px"
-            />
-
-        <TextView
-            android:id="@+id/tv_publistime"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_below="@+id/t_publisher"
-            android:layout_marginTop="24px"
-            android:layout_toRightOf="@+id/t_publishtime"
-            android:text="2012-2-2"
-            android:textColor="#b3999999"
-            android:textSize="22px"
-            />
-
-        <TextView
-            android:id="@+id/about"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_below="@+id/t_publishtime"
-            android:layout_marginTop="20px"
-            android:text="      读过睡前故事的人都知道，这是一本纷杂凌乱的书，像朋友
+            <TextView
+                android:id="@+id/about"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_below="@+id/rela_score"
+                android:layout_marginTop="20px"
+                android:text="      读过睡前故事的人都知道，这是一本纷杂凌乱的书，像朋友
 在深夜跟你叙述，叙述他走过的千山万水。那么多篇章，有温暖的，有落单的
 有疯狂的。"
-            android:textColor="#333333"
-            android:textSize="26px"
-            />
+                android:textColor="#333333"
+                android:textSize="26px"
+                />
 
 
-
-    </RelativeLayout>
-</android.support.v7.widget.CardView>
+        </RelativeLayout>
+    </android.support.v7.widget.CardView>
 
     <com.grandmagic.readingmate.view.IrregularImageView
         android:id="@+id/iv_conver"
-        android:layout_width="224px"
-        android:layout_height="298px"
+        android:layout_width="310px"
+        android:layout_height="416px"
         android:layout_marginLeft="62px"
+        android:layout_marginTop="-10px"
+        android:scaleType="centerCrop"
         />
 
-</RelativeLayout>
+</FrameLayout>
