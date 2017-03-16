@@ -117,14 +117,15 @@ public class AddFriendActivity extends AppBaseActivity {
 
     /**
      * 搜索结果展示
+     *
      * @param mSearchUserResponse
      */
     private void setUserView(SearchUserResponse mSearchUserResponse) {
         mRelaFriend.setVisibility(View.VISIBLE);
-        ImageLoader.loadCircleImage(this, Environment.BASEULR_PRODUCTION + mSearchUserResponse.getPersonalinfo().getAvatar_native(), mAvatar);
-        mName.setText(mSearchUserResponse.getPersonalinfo().getUser_name());
-        mUser_id = mSearchUserResponse.getPersonalinfo().getUser_id();
-    mRelaAddfriend.setVisibility(mSearchUserResponse.getIs_friend()==NOFRIEND?View.GONE:View.VISIBLE);
+        ImageLoader.loadCircleImage(this, Environment.BASEULR_PRODUCTION + mSearchUserResponse.getAvatar_url().getLarge(), mAvatar);
+        mName.setText(mSearchUserResponse.getUser_name());
+        mUser_id = mSearchUserResponse.getUser_id();
+        mRelaAddfriend.setVisibility(mSearchUserResponse.getIs_friend() == NOFRIEND ? View.GONE : View.VISIBLE);
         setCollectionbook(mSearchUserResponse.getCollection());
     }
 

@@ -77,6 +77,8 @@ public class SearchFragment extends AppBaseFragment {
     @BindView(R.id.rootview)
     RelativeLayout mRootview;
     int currpage = 1;
+    @BindView(R.id.iv_search)
+    ImageView mIvSearch;
     private double mLongitude;
     private double mLatitude;
 
@@ -128,12 +130,16 @@ public class SearchFragment extends AppBaseFragment {
      * 开始定位并且播放动画
      */
     private void startLocationAndPlayAnimation() {
+        systembarColor=R.color.text_black;
         mAnimaview.playAnimation();
+        mAnimaview.setVisibility(View.VISIBLE);
+        mIvSearch.setVisibility(View.GONE);
         mLocationClient.start();
         mRootview.setBackgroundResource(R.color.text_black);
         isPlay = true;
         mBtnLocation.setVisibility(View.GONE);
         mTvStatus.setVisibility(View.VISIBLE);
+        setSystemBarColor(false);
     }
 
     /**
@@ -161,7 +167,8 @@ public class SearchFragment extends AppBaseFragment {
             @Override
             public void onSuccee(NovateResponse<SearchPersonResponse> response) {
                 mAnimaview.cancelAnimation();
-                isPlay=false;
+                isPlay = false;
+                systembarColor=R.color.white;
                 mRefreshLayout.setVisibility(View.VISIBLE);
                 mAnimaview.setVisibility(View.GONE);
                 mBtnLocation.setVisibility(View.GONE);
@@ -171,6 +178,7 @@ public class SearchFragment extends AppBaseFragment {
                 mRootview.setBackgroundColor(getResources().getColor(R.color.white));
                 mPersonList.addAll(response.getData().getInfo());
                 mAdapter.refreshData(mPersonList);
+                setSystemBarColor(false);
             }
         });
     }
@@ -179,13 +187,16 @@ public class SearchFragment extends AppBaseFragment {
     public void onClick(View view) {
         switch (view.getId()) {
             case R.id.title_more:
+                systembarColor=R.color.bg_search;
                 mRefreshLayout.setVisibility(View.GONE);
-                mAnimaview.setVisibility(View.VISIBLE);
+                mAnimaview.setVisibility(View.GONE);
                 mBtnLocation.setVisibility(View.VISIBLE);
                 mTvStatus.setVisibility(View.GONE);
                 mTitleMore.setVisibility(View.GONE);
+                mIvSearch.setVisibility(View.VISIBLE);
                 mRootview.setBackgroundColor(getResources().getColor(R.color.text_green));
                 mTitle.setTextColor(getResources().getColor(R.color.white));
+                setSystemBarColor(false);
                 break;
             case R.id.btn_location:
                 new RxPermissions(getActivity()).request(Manifest.permission.READ_PHONE_STATE,
@@ -223,9 +234,11 @@ public class SearchFragment extends AppBaseFragment {
         }
     }
 
+    int systembarColor = R.color.bg_search;
+
     private void setSystemBarColor(boolean hidden) {
         if (!hidden) {
-            ((AppBaseActivity) getActivity()).setSystemBarColor(R.color.bg_search);
+            ((AppBaseActivity) getActivity()).setSystemBarColor(systembarColor);
         }
     }
 

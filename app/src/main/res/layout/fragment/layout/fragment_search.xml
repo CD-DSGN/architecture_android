@@ -21,13 +21,22 @@
         android:layout_marginTop="72px"
         app:lottie_fileName="data.json"
         app:lottie_loop="true"
+        android:visibility="gone"
         />
-
+<ImageView
+    android:layout_width="710px"
+    android:layout_height="662px"
+    android:src="@drawable/iv_search"
+    android:layout_below="@+id/titlelayout"
+    android:layout_centerHorizontal="true"
+    android:layout_marginTop="72px"
+    android:id="@+id/iv_search"
+    />
     <Button
         android:id="@+id/btn_location"
         android:layout_width="342px"
         android:layout_height="74px"
-        android:layout_below="@+id/animaview"
+        android:layout_below="@+id/iv_search"
         android:layout_centerHorizontal="true"
         android:layout_marginTop="82px"
         android:background="@drawable/shape_round_white"

@@ -126,9 +126,9 @@ public class MainActivity extends AppBaseActivity {
                 if (responseData != null) {
 
                     Contacts mContacts = new Contacts();
-                    mContacts.setAvatar_native(responseData.getPersonalinfo().getAvatar_native());
-                    mContacts.setUser_id(Integer.valueOf(responseData.getPersonalinfo().getUser_id()));
-                    mContacts.setUser_name(responseData.getPersonalinfo().getUser_name());
+                    mContacts.setAvatar_native(responseData.getAvatar_url().getLarge());
+                    mContacts.setUser_id(Integer.valueOf(responseData.getUser_id()));
+                    mContacts.setUser_name(responseData.getUser_name());
                     DaoMaster.DevOpenHelper mDevOpenHelper = new DaoMaster.DevOpenHelper(MainActivity.this, "contacts.db", null);
                     SQLiteDatabase db = mDevOpenHelper.getWritableDatabase();
                     DaoMaster mDaoMaster = new DaoMaster(db);

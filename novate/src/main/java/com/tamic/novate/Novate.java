@@ -1366,7 +1366,7 @@ public class Novate {
                     } catch (Exception e) {
                         e.printStackTrace();
                         if (callBack != null) {
-                            callBack.onError(NovateException.handleException(new FormatException()));
+                            callBack.onError(NovateException.handleException(new FormatException("服务端返回数据格式异常 finalNeedType="+finalNeedType+e)));
                         }
                     }
                 }
