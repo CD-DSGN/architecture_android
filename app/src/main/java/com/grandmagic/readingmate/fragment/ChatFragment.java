@@ -51,6 +51,7 @@ import butterknife.ButterKnife;
 import butterknife.OnClick;
 import cn.bingoogolapple.refreshlayout.BGARefreshLayout;
 import cn.bingoogolapple.refreshlayout.BGAStickinessRefreshViewHolder;
+import cn.bingoogolapple.refreshlayout.util.SimpleRefreshListener;
 
 /**
  * A simple {@link Fragment} subclass.
@@ -146,16 +147,11 @@ public class ChatFragment extends AppBaseFragment implements RecentConversationD
         mRefreshViewHolder.setRotateImage(R.drawable.bga_refresh_stickiness);
 //        mRefreshLayout.offsetTopAndBottom(88);
         mRefreshLayout.setRefreshViewHolder(mRefreshViewHolder);
-        mRefreshLayout.setDelegate(new BGARefreshLayout.BGARefreshLayoutDelegate() {
+        mRefreshLayout.setDelegate(new SimpleRefreshListener() {
             @Override
             public void onBGARefreshLayoutBeginRefreshing(BGARefreshLayout refreshLayout) {
                 onrefreshConversation();
                 mRefreshLayout.endRefreshing();
-            }
-
-            @Override
-            public boolean onBGARefreshLayoutBeginLoadingMore(BGARefreshLayout refreshLayout) {
-                return false;
             }
         });
     }

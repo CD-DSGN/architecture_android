@@ -43,6 +43,7 @@ import butterknife.ButterKnife;
 import butterknife.OnClick;
 import cn.bingoogolapple.refreshlayout.BGARefreshLayout;
 import cn.bingoogolapple.refreshlayout.BGAStickinessRefreshViewHolder;
+import cn.bingoogolapple.refreshlayout.util.SimpleRefreshListener;
 import rx.functions.Action1;
 
 /**
@@ -75,7 +76,7 @@ public class SearchFragment extends AppBaseFragment {
     Context mContext;
     @BindView(R.id.rootview)
     RelativeLayout mRootview;
-int currpage=1;
+    int currpage = 1;
     private double mLongitude;
     private double mLatitude;
 
@@ -92,10 +93,10 @@ int currpage=1;
     }
 
     SearchPersonAdapter mAdapter;
-    List<String> mPersonList = new ArrayList<>();
+    List<SearchPersonResponse.InfoBean> mPersonList = new ArrayList<>();
 
     private void initview() {
-        mTitle.setTextSize(TypedValue.COMPLEX_UNIT_PX,36);
+        mTitle.setTextSize(TypedValue.COMPLEX_UNIT_PX, 36);
         mBack.setVisibility(View.GONE);
         AutoUtils.autoTextSize(mTitle);
         mTitleMore.setImageResource(R.drawable.ic_location);
@@ -104,42 +105,6 @@ int currpage=1;
         mAdapter = new SearchPersonAdapter(mContext, mPersonList);
         mRecyclerview.setAdapter(mAdapter);
         initRefresh();
-    }
-
-    /**
-     * 初始化上啦加载更多
-     */
-    private void initRefresh() {
-        BGAStickinessRefreshViewHolder mRefreshViewHolder = new BGAStickinessRefreshViewHolder(mContext, true);
-        mRefreshViewHolder.setStickinessColor(R.color.colorAccent);
-        mRefreshViewHolder.setRotateImage(R.drawable.bga_refresh_stickiness);
-//        mRefreshLayout.offsetTopAndBottom(88);
-        mRefreshLayout.setRefreshViewHolder(mRefreshViewHolder);
-        mRefreshLayout.setPullDownRefreshEnable(false);
-        mRefreshLayout.setDelegate(new BGARefreshLayout.BGARefreshLayoutDelegate() {
-            @Override
-            public void onBGARefreshLayoutBeginRefreshing(BGARefreshLayout refreshLayout) {
-
-                new Handler().postDelayed(new Runnable() {
-                    @Override
-                    public void run() {
-                        mRefreshLayout.endRefreshing();
-                    }
-                }, 2000);
-
-            }
-
-            @Override
-            public boolean onBGARefreshLayoutBeginLoadingMore(BGARefreshLayout refreshLayout) {
-                new Handler().postDelayed(new Runnable() {
-                    @Override
-                    public void run() {
-                        mRefreshLayout.endLoadingMore();
-                    }
-                }, 2000);
-                return true;
-            }
-        });
     }
 
     private void initdata() {
@@ -157,6 +122,20 @@ int currpage=1;
         mBDLocationListener = new LocationListener(mLocationHandler);
     }
 
+    boolean isPlay;
+
+    /**
+     * 开始定位并且播放动画
+     */
+    private void startLocationAndPlayAnimation() {
+        mAnimaview.playAnimation();
+        mLocationClient.start();
+        mRootview.setBackgroundResource(R.color.text_black);
+        isPlay = true;
+        mBtnLocation.setVisibility(View.GONE);
+        mTvStatus.setVisibility(View.VISIBLE);
+    }
+
     /**
      * 上传自己的位置信息以获取附近的人
      *
@@ -165,10 +144,117 @@ int currpage=1;
     private void updateLocation(BDLocation mLocation) {
         mLongitude = mLocation.getLongitude();
         mLatitude = mLocation.getLatitude();
+        mLocationClient.stop();
         mModel.stepLocation(mLatitude, mLongitude, new AppBaseResponseCallBack<NovateResponse>(mContext) {
             @Override
             public void onSuccee(NovateResponse response) {
                 getLocationPerson();
+            }
+        });
+    }
+
+    /**
+     * 获取附近的人
+     */
+    public void getLocationPerson() {
+        mModel.getLocationPerson(currpage, new AppBaseResponseCallBack<NovateResponse<SearchPersonResponse>>(mContext) {
+            @Override
+            public void onSuccee(NovateResponse<SearchPersonResponse> response) {
+                mAnimaview.cancelAnimation();
+                isPlay=false;
+                mRefreshLayout.setVisibility(View.VISIBLE);
+                mAnimaview.setVisibility(View.GONE);
+                mBtnLocation.setVisibility(View.GONE);
+                mTvStatus.setVisibility(View.GONE);
+                mTitleMore.setVisibility(View.VISIBLE);
+                mTitle.setTextColor(getResources().getColor(R.color.text_black));
+                mRootview.setBackgroundColor(getResources().getColor(R.color.white));
+                mPersonList.addAll(response.getData().getInfo());
+                mAdapter.refreshData(mPersonList);
+            }
+        });
+    }
+
+    @OnClick({R.id.title_more, R.id.btn_location})
+    public void onClick(View view) {
+        switch (view.getId()) {
+            case R.id.title_more:
+                mRefreshLayout.setVisibility(View.GONE);
+                mAnimaview.setVisibility(View.VISIBLE);
+                mBtnLocation.setVisibility(View.VISIBLE);
+                mTvStatus.setVisibility(View.GONE);
+                mTitleMore.setVisibility(View.GONE);
+                mRootview.setBackgroundColor(getResources().getColor(R.color.text_green));
+                mTitle.setTextColor(getResources().getColor(R.color.white));
+                break;
+            case R.id.btn_location:
+                new RxPermissions(getActivity()).request(Manifest.permission.READ_PHONE_STATE,
+                        Manifest.permission.ACCESS_COARSE_LOCATION,
+                        Manifest.permission.ACCESS_FINE_LOCATION,
+                        Manifest.permission.READ_EXTERNAL_STORAGE,
+                        Manifest.permission.WRITE_EXTERNAL_STORAGE
+                ).subscribe(new Action1<Boolean>() {
+                    @Override
+                    public void call(Boolean mBoolean) {
+                        if (mBoolean) {
+                            mPersonList.clear();
+                            startLocationAndPlayAnimation();
+                        }
+                    }
+                });
+                break;
+        }
+    }
+
+    @Override
+    public void onResume() {
+        super.onResume();
+        setSystemBarColor(false);
+    }
+
+    @Override
+    public void onHiddenChanged(boolean hidden) {
+        setSystemBarColor(hidden);
+        if (hidden) {//当用户切换界面的时候进行取消播放
+            mAnimaview.cancelAnimation();
+        } else {
+            if (isPlay)
+                mAnimaview.playAnimation();
+        }
+    }
+
+    private void setSystemBarColor(boolean hidden) {
+        if (!hidden) {
+            ((AppBaseActivity) getActivity()).setSystemBarColor(R.color.bg_search);
+        }
+    }
+
+    @Override
+    public void onDestroyView() {
+        super.onDestroyView();
+        mLocationClient.stop();
+    }
+
+    /**
+     * 初始化上啦加载更多
+     */
+    private void initRefresh() {
+        BGAStickinessRefreshViewHolder mRefreshViewHolder = new BGAStickinessRefreshViewHolder(mContext, true);
+        mRefreshViewHolder.setStickinessColor(R.color.colorAccent);
+        mRefreshViewHolder.setRotateImage(R.drawable.bga_refresh_stickiness);
+//        mRefreshLayout.offsetTopAndBottom(88);
+        mRefreshLayout.setRefreshViewHolder(mRefreshViewHolder);
+        mRefreshLayout.setPullDownRefreshEnable(false);
+        mRefreshLayout.setDelegate(new SimpleRefreshListener() {
+            @Override
+            public boolean onBGARefreshLayoutBeginLoadingMore(BGARefreshLayout refreshLayout) {
+                new Handler().postDelayed(new Runnable() {
+                    @Override
+                    public void run() {
+                        mRefreshLayout.endLoadingMore();
+                    }
+                }, 2000);
+                return true;
             }
         });
     }
@@ -203,100 +289,5 @@ int currpage=1;
         //可选，默认false，设置是否需要过滤GPS仿真结果，默认需要
         mLocationClient.setLocOption(option);
         mLocationClient.registerLocationListener(mBDLocationListener);
-    }
-
-    @Override
-    public void onDestroyView() {
-        super.onDestroyView();
-        mLocationClient.stop();
-    }
-
-
-    boolean isPlay;
-
-    /**
-     * 开始定位并且播放动画
-     */
-    private void startLocationAndPlayAnimation() {
-        mAnimaview.playAnimation();
-        mLocationClient.start();
-        isPlay = true;
-        mTvStatus.setVisibility(View.VISIBLE);
-    }
-
-    @Override
-    public void onHiddenChanged(boolean hidden) {
-        setSystemBarColor(hidden);
-        if (hidden) {//当用户切换界面的时候进行取消播放
-            mAnimaview.cancelAnimation();
-        } else {
-            if (isPlay)
-                mAnimaview.playAnimation();
-        }
-    }
-
-    @Override
-    public void onResume() {
-        super.onResume();
-        setSystemBarColor(false);
-    }
-
-    private void setSystemBarColor(boolean hidden) {
-        if (!hidden) {
-            ((AppBaseActivity) getActivity()).setSystemBarColor(R.color.bg_search);
-        }
-    }
-
-    /**
-     * 获取附近的人
-     */
-    public void getLocationPerson() {
-        mModel.getLocationPerson(currpage,new AppBaseResponseCallBack<NovateResponse<SearchPersonResponse>>(mContext) {
-            @Override
-            public void onSuccee(NovateResponse<SearchPersonResponse> response) {
-                mAnimaview.cancelAnimation();
-                mRefreshLayout.setVisibility(View.VISIBLE);
-                mAnimaview.setVisibility(View.GONE);
-                mBtnLocation.setVisibility(View.GONE);
-                mTvStatus.setVisibility(View.GONE);
-                mTitleMore.setVisibility(View.VISIBLE);
-                mTitle.setTextColor(getResources().getColor(R.color.text_black));
-                mRootview.setBackgroundColor(getResources().getColor(R.color.white));
-                for (int i = 0; i < response.getData().getNum(); i++) {
-                    mPersonList.add("");
-                }
-                mAdapter.refreshData(mPersonList);
-            }
-        });
-    }
-
-    @OnClick({R.id.title_more, R.id.btn_location})
-    public void onClick(View view) {
-        switch (view.getId()) {
-            case R.id.title_more:
-                mRefreshLayout.setVisibility(View.GONE);
-                mAnimaview.setVisibility(View.VISIBLE);
-                mBtnLocation.setVisibility(View.VISIBLE);
-                mTvStatus.setVisibility(View.GONE);
-                mTitleMore.setVisibility(View.GONE);
-                mRootview.setBackgroundColor(getResources().getColor(R.color.white));
-                mTitle.setTextColor(getResources().getColor(R.color.white));
-                break;
-            case R.id.btn_location:
-                new RxPermissions(getActivity()).request(Manifest.permission.READ_PHONE_STATE,
-                        Manifest.permission.ACCESS_COARSE_LOCATION,
-                        Manifest.permission.ACCESS_FINE_LOCATION,
-                        Manifest.permission.READ_EXTERNAL_STORAGE,
-                        Manifest.permission.WRITE_EXTERNAL_STORAGE
-                ).subscribe(new Action1<Boolean>() {
-                    @Override
-                    public void call(Boolean mBoolean) {
-                        if (mBoolean) {
-                            startLocationAndPlayAnimation();
-                        }
-                    }
-                });
-                break;
-        }
     }
 }

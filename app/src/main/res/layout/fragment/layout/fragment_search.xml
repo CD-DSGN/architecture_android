@@ -5,7 +5,7 @@
     android:layout_width="match_parent"
     android:id="@+id/rootview"
     android:layout_height="match_parent"
-    android:background="@color/white"
+    android:background="@color/search_green"
     android:gravity="center_horizontal"
     android:orientation="vertical"
     tools:context="com.grandmagic.readingmate.fragment.SearchFragment">
