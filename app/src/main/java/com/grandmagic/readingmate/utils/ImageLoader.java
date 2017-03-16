@@ -4,6 +4,7 @@ import android.content.Context;
 import android.widget.ImageView;
 
 import com.bumptech.glide.Glide;
+import com.grandmagic.readingmate.R;
 
 /**
  * Created by zhangmengqi on 2017/1/22.
@@ -18,11 +19,12 @@ public class ImageLoader {
      * @param target   展示的imageview
      */
     public static void loadImage(Context mContext, String url, ImageView target) {
-        Glide.with(mContext).load(url).into(target);
+        Glide.with(mContext).load(url).placeholder(R.drawable.logo)
+                .error(R.drawable.logo).into(target);
     }
 
     /**
-     *  加载圆角图片（默认圆角）
+     * 加载圆角图片（默认圆角）
      *
      * @param mContext context
      * @param url      路径
@@ -31,6 +33,8 @@ public class ImageLoader {
     public static void loadRoundImage(Context mContext, String url, ImageView target) {
         Glide.with(mContext).load(url)
                 .transform(new GlideRoundTransform(mContext))
+                .placeholder(R.drawable.logo)
+                .error(R.drawable.logo)
                 .into(target);
     }
 
@@ -45,6 +49,8 @@ public class ImageLoader {
     public static void loadRoundImage(Context mContext, String url, ImageView target, float round) {
         Glide.with(mContext).load(url)
                 .transform(new GlideRoundTransform(mContext, round))
+                .placeholder(R.drawable.logo)
+                .error(R.drawable.logo)
                 .into(target);
     }
 
@@ -58,6 +64,8 @@ public class ImageLoader {
     public static void loadCircleImage(Context mContext, String url, ImageView target) {
         Glide.with(mContext).load(url)
                 .transform(new GlideCircleTransform(mContext))
+                .placeholder(R.drawable.logo)
+                .error(R.drawable.logo)
                 .into(target);
     }
 }

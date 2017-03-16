@@ -8,6 +8,7 @@
     <color name="text_lightgray">#99999999</color>
     <color name="text_gray">#999999</color>
     <color name="text_green">#1cc9a2</color>
+    <color name="search_green">#1b8b71</color>
     <color name="text_lightgreen">#991cc9a2</color>
     <color name="bg_search">#1b8b71</color>
     <color name="text_sumbit">#99ffffff</color>

@@ -119,7 +119,7 @@ public class LocationListener implements BDLocationListener {
 
         Log.i("BaiduLocationApiDem", sb.toString());
         Message mMessage=new Message();
-        mMessage.obj=sb.toString();
+        mMessage.obj=location;
         mLocationHandler.sendMessage(mMessage);
     }
 

@@ -1,10 +1,11 @@
-<LinearLayout
+<RelativeLayout
     xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
+    android:id="@+id/rootview"
     android:layout_height="match_parent"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
-    android:background="@color/text_green"
+    android:background="@color/white"
     android:gravity="center_horizontal"
     android:orientation="vertical"
     tools:context="com.grandmagic.readingmate.fragment.SearchFragment">
@@ -14,27 +15,55 @@
     <com.airbnb.lottie.LottieAnimationView
         android:id="@+id/animaview"
         android:layout_width="710px"
-        android:layout_height="620px"
+        android:layout_height="662px"
+        android:layout_below="@+id/titlelayout"
+        android:layout_centerHorizontal="true"
+        android:layout_marginTop="72px"
         app:lottie_fileName="data.json"
         app:lottie_loop="true"
         />
 
     <Button
         android:id="@+id/btn_location"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
+        android:layout_width="342px"
+        android:layout_height="74px"
+        android:layout_below="@+id/animaview"
+        android:layout_centerHorizontal="true"
         android:layout_marginTop="82px"
         android:background="@drawable/shape_round_white"
         android:text="立即搜索"
-        android:textColor="@color/text_green"
+        android:textColor="#e61cc9a2"
+        android:textSize="36px"
         />
 
     <TextView
-        android:id="@+id/location"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
+        android:id="@+id/tv_status"
+        android:layout_width="match_parent"
+        android:layout_height="48px"
+        android:layout_alignParentBottom="true"
+        android:background="#1a8068"
+        android:gravity="center_vertical"
+        android:paddingLeft="20px"
+        android:text="正在为您搜索附近的读友"
+        android:textColor="@color/white"
+        android:textSize="24px"
         android:visibility="gone"
         />
 
+    <cn.bingoogolapple.refreshlayout.BGARefreshLayout
+        android:layout_below="@id/titlelayout"
+        android:id="@+id/refreshLayout"
+        android:visibility="gone"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
 
-</LinearLayout>
+        <android.support.v7.widget.RecyclerView
+            android:id="@+id/recyclerview"
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
+            android:layout_weight="1"
+            >
+        </android.support.v7.widget.RecyclerView>
+    </cn.bingoogolapple.refreshlayout.BGARefreshLayout>
+
+</RelativeLayout>

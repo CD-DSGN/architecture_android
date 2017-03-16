@@ -102,14 +102,18 @@ public class HomeFragment extends AppBaseFragment implements HomeBookAdapter.Cli
 
     private void initdata() {
         mModel = new BookModel(getActivity());
-        mModel.loadCollectBook(new AppBaseResponseCallBack<NovateResponse<DisplayBook>>(getActivity(), true) {
+        mModel.loadCollectBook(new AppBaseResponseCallBack<NovateResponse<DisplayBook>>(getActivity(), false) {
             @Override
             public void onSuccee(NovateResponse<DisplayBook> response) {
+                Logger.e("首页加载成功");
+                if (response.getData().getNum() == 0) {
+                    showEmptyView();
+                    return;
+                }
                 mBookList.addAll(response.getData().getInfo());
                 mBookAdapter.setData(mBookList);
                 showRecyclerView();
                 isEmpty = false;
-                Logger.e("首页加载成功");
             }
 
             @Override
@@ -236,7 +240,7 @@ public class HomeFragment extends AppBaseFragment implements HomeBookAdapter.Cli
     public void onItemClickListener(int position) {
 // TODO: 2017/2/16 跳转到详情
         Intent mIntent = new Intent(getActivity(), BookDetailActivity.class);
-        mIntent.putExtra(BookDetailActivity.BOOK_ID,mBookList.get(position).getBook_id());
+        mIntent.putExtra(BookDetailActivity.BOOK_ID, mBookList.get(position).getBook_id());
         startActivity(mIntent);
     }
 
