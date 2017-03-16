@@ -38,6 +38,7 @@
             android:layout_marginTop="15px"
             android:text="这个可以有"
             android:textColor="#181e1d"
+            android:textSize="28px"
             />
 
         <LinearLayout
@@ -88,6 +89,7 @@
             android:layout_height="wrap_content"
             android:layout_marginLeft="10px"
             android:text="@string/good"
+            android:textSize="24px"
             />
 
     </LinearLayout>

@@ -1,10 +1,11 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+              android:id="@+id/ll_item_my_comment"
               android:layout_width="match_parent"
               android:layout_height="wrap_content"
+              android:layout_marginTop="36px"
               android:gravity="center_horizontal"
-              android:orientation="vertical"
-              android:layout_marginTop="36px">
+              android:orientation="vertical">
 
     <RelativeLayout
         android:layout_width="618px"
@@ -14,6 +15,7 @@
             android:id="@+id/avatar"
             android:layout_width="72px"
             android:layout_height="72px"
+            android:layout_centerVertical="true"
             android:src="@drawable/logo"
             />
 
@@ -70,22 +72,23 @@
         android:id="@+id/content"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:layout_marginTop="10px"
         android:text="随便写吧。"
         android:textColor="@color/text_black"
         android:textSize="28px"
-        android:layout_marginTop="10px"
         />
 
     <RelativeLayout
         android:layout_width="618px"
         android:layout_height="98px"
-        android:background="@drawable/bg_white_irr"
-        android:layout_marginTop="25px">
+        android:layout_marginTop="25px"
+        android:background="@drawable/bg_white_irr">
 
         <ImageView
             android:id="@+id/cover"
             android:layout_width="72px"
             android:layout_height="72px"
+            android:layout_centerVertical="true"
             android:layout_marginLeft="24px"
             android:src="@drawable/logo"
             />
@@ -103,9 +106,9 @@
     <LinearLayout
         android:layout_width="618px"
         android:layout_height="wrap_content"
+        android:layout_marginTop="20px"
         android:gravity="right"
         android:orientation="horizontal"
-        android:layout_marginTop="20px"
         >
 
         <LinearLayout
@@ -125,8 +128,8 @@
                 android:layout_height="wrap_content"
                 android:layout_marginLeft="10px"
                 android:text="@string/comment"
-                android:textSize="24px"
                 android:textColor="#999999"
+                android:textSize="24px"
                 />
         </LinearLayout>
 
@@ -134,8 +137,8 @@
             android:id="@+id/ll_like"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:orientation="horizontal"
-            android:layout_marginLeft="80px">
+            android:layout_marginLeft="80px"
+            android:orientation="horizontal">
 
             <ImageView
                 android:layout_width="26px"
@@ -146,10 +149,10 @@
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="36"
-                android:textSize="24px"
-                android:textColor="#999999"
                 android:layout_marginLeft="10px"
+                android:text="36"
+                android:textColor="#999999"
+                android:textSize="24px"
                 />
         </LinearLayout>
 
@@ -157,8 +160,8 @@
             android:id="@+id/ll_share"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:orientation="horizontal"
-            android:layout_marginLeft="80px">
+            android:layout_marginLeft="80px"
+            android:orientation="horizontal">
 
             <ImageView
                 android:layout_width="26px"
@@ -170,8 +173,8 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="@string/share"
-                android:textSize="24px"
                 android:textColor="#e61cc9a2"
+                android:textSize="24px"
                 />
         </LinearLayout>
     </LinearLayout>
