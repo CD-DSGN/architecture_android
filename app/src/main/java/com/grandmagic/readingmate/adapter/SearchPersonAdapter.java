@@ -49,6 +49,7 @@ public class SearchPersonAdapter extends CommonAdapter<SearchPersonResponse.Info
     private boolean isHassamebook(ViewHolder holder, SearchPersonResponse.InfoBean data) {
         boolean hassamebook=false;
         LinearLayout mLayout = holder.getView(R.id.lin_collection);
+        mLayout.removeAllViews();
         for (SearchPersonResponse.InfoBean.CollectionBean coll:data.getCollection()) {
             TextView mTextView = new TextView(mContext);
             mTextView.setText("《" + coll.getBook_name() + "》");

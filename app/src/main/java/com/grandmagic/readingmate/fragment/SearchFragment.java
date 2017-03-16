@@ -194,7 +194,7 @@ public class SearchFragment extends AppBaseFragment {
                 mTvStatus.setVisibility(View.GONE);
                 mTitleMore.setVisibility(View.GONE);
                 mIvSearch.setVisibility(View.VISIBLE);
-                mRootview.setBackgroundColor(getResources().getColor(R.color.text_green));
+                mRootview.setBackgroundColor(getResources().getColor(R.color.search_green));
                 mTitle.setTextColor(getResources().getColor(R.color.white));
                 setSystemBarColor(false);
                 break;
