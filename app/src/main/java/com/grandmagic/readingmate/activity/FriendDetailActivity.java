@@ -43,7 +43,7 @@ import cn.bingoogolapple.refreshlayout.BGAStickinessRefreshViewHolder;
 
 public class FriendDetailActivity extends AppBaseActivity {
     ContactModel mModel;
-public static final String USER_ID="userid";
+    public static final String USER_ID = "userid";
     @BindView(R.id.back)
     ImageView mBack;
     @BindView(R.id.title)
@@ -77,7 +77,8 @@ public static final String USER_ID="userid";
     BGARefreshLayout mRefreshLayout;
     @BindView(R.id.rootview)
     LinearLayout mRootview;
-String userid;
+    String userid;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -90,8 +91,8 @@ String userid;
     }
 
     private void initdata() {
-        mModel=new ContactModel(this);
-        userid=getIntent().getStringExtra(USER_ID);
+        mModel = new ContactModel(this);
+        userid = getIntent().getStringExtra(USER_ID);
     }
 
     CommentsAdapter mAdapter;
@@ -225,7 +226,7 @@ String userid;
      * 删除好友
      */
     private void deleteFriend() {
-        mModel.deleteContact( userid,new AppBaseResponseCallBack<NovateResponse>(this){
+        mModel.deleteContact(userid, new AppBaseResponseCallBack<NovateResponse>(this) {
             @Override
             public void onSuccee(NovateResponse response) {
                 EventBus.getDefault().post(new ContactDeleteEvent(userid));

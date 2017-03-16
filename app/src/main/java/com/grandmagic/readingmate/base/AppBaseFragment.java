@@ -10,12 +10,10 @@ import com.tamic.novate.RxApiManager;
  */
 
 public class AppBaseFragment extends Fragment {
-    private static RxApiManager mRxApiManager = RxApiManager.get();
+     RxApiManager mRxApiManager = new RxApiManager();
     @Override
     public void onDestroy() {
         super.onDestroy();
-        if (mRxApiManager != null) {
-            mRxApiManager.cancelAll();
-        }
+      mRxApiManager.removeAll();
     }
 }

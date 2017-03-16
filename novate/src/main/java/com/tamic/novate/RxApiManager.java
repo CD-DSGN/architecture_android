@@ -17,106 +17,60 @@
  */
 package com.tamic.novate;
 
+import android.annotation.TargetApi;
+import android.os.Build;
+import android.support.annotation.RequiresApi;
+import android.support.v4.util.ArrayMap;
+import android.util.Log;
+
 import java.util.Iterator;
+import java.util.Set;
 import java.util.Vector;
 
+import rx.Subscriber;
 import rx.Subscription;
 
 /**
  * Created by Tamic on 2017-01-16.
  */
 
-public class RxApiManager implements RxActionManager<Object> {
+public class RxApiManager {
 
-    private static RxApiManager sInstance = null;
+    Vector<Subscriber> mSubscribers;
 
-    private Vector<Subscription> mSubscriptions;
-
-    public static RxApiManager get() {
-
-        if (sInstance == null) {
-            synchronized (RxApiManager.class) {
-                if (sInstance == null) {
-                    sInstance = new RxApiManager();
-                }
-            }
-        }
-        return sInstance;
+    public RxApiManager() {
+        this.mSubscribers = new Vector<>();
     }
 
+    private static final String TAG = "RxApiManager";
+    public void add(Subscriber mSubscriber) {
+        Log.d(TAG, "add() called with: mSubscriber = [" + mSubscriber + "]");
+        mSubscribers.add(mSubscriber);
 
-    private RxApiManager() {
-        mSubscriptions = new Vector<>();
     }
 
+    public void remove(Subscriber mSubscriber) {
+        Log.d(TAG, "remove() called with: mSubscriber = [" + mSubscriber + "]");
 
-    @Override
-    public void add(Subscription subscription) {
-        if (mSubscriptions == null) {
-            return;
-        }
-        mSubscriptions.add(subscription);
-    }
-
-
-    @Override
-    public void remove(Subscription subscription) {
-        if (mSubscriptions == null) {
-            return;
-        }
-        if (!mSubscriptions.isEmpty()) {
-            mSubscriptions.remove(subscription);
+        if (mSubscribers.contains(mSubscriber)) {
+            if (!mSubscriber.isUnsubscribed())
+                mSubscriber.unsubscribe();
+            mSubscribers.remove(mSubscriber);
         }
     }
 
     public void removeAll() {
-        if (mSubscriptions == null) {
-            return;
-        }
+        Log.d(TAG, "removeAll() called");
 
-        if (!mSubscriptions.isEmpty()) {
-            mSubscriptions.clear();
-        }
-    }
-
-
-    @Override
-    public void cancel(Subscription subscription) {
-        if (mSubscriptions == null) {
-            return;
-        }
-
-        if (mSubscriptions.isEmpty()) {
-            return;
-        }
-        if (!mSubscriptions.contains(subscription)) {
-            return;
-        }
-        if (!subscription.isUnsubscribed()) {
-            subscription.unsubscribe();
-            mSubscriptions.remove(subscription);
-        }
-    }
-
-
-    @Override
-    public void cancelAll() {
-        if (mSubscriptions == null) {
-            return;
-        }
-
-        if (mSubscriptions.isEmpty()) {
-            return;
-        }
-
-        //遍历删除,用iterator才不会有问题
-        Iterator<Subscription> iter = mSubscriptions.iterator();
-        while (iter.hasNext()) {
-            Subscription subscription = iter.next();
-            if (!subscription.isUnsubscribed()) {
-                subscription.unsubscribe();
+        if (mSubscribers != null && !mSubscribers.isEmpty()) {
+            for (Subscriber mSubscriber :
+                    mSubscribers) {
+                if (!mSubscriber.isUnsubscribed()) {
+                    mSubscriber.unsubscribe();
+                    mSubscribers.remove(mSubscriber);
+                    Log.d(TAG, "removeAll() called");
+                }
             }
-            iter.remove();
         }
     }
 

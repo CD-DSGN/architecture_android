@@ -52,7 +52,7 @@ public abstract class AppBaseResponseCallBack<T> implements Novate.ResponseCallB
     @Override
     public void onError(Throwable e) {
         //        作统一错误处理
-        Logger.e(e.getMessage());
+        Logger.e("Novate Error"+e.getMessage());
         dismissLoading();
         if (e != null) {
             if (e.getCode() != ApiErrorConsts.token_invalid) {

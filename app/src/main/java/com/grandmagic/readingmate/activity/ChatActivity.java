@@ -50,6 +50,7 @@ import butterknife.ButterKnife;
 import butterknife.OnClick;
 import cn.bingoogolapple.refreshlayout.BGARefreshLayout;
 import cn.bingoogolapple.refreshlayout.BGAStickinessRefreshViewHolder;
+import cn.bingoogolapple.refreshlayout.util.SimpleRefreshListener;
 
 /**
  * 聊天界面
@@ -120,16 +121,11 @@ public class ChatActivity extends AppBaseActivity implements EMMessageListener, 
         mRefreshViewHolder.setRotateImage(R.drawable.bga_refresh_stickiness);
 //        mRefreshLayout.offsetTopAndBottom(88);
         mRefreshLayout.setRefreshViewHolder(mRefreshViewHolder);
-        mRefreshLayout.setDelegate(new BGARefreshLayout.BGARefreshLayoutDelegate() {
+        mRefreshLayout.setDelegate(new SimpleRefreshListener() {
             @Override
             public void onBGARefreshLayoutBeginRefreshing(BGARefreshLayout refreshLayout) {
                 loadMoreMsg();
                 mRefreshLayout.endRefreshing();
-            }
-
-            @Override
-            public boolean onBGARefreshLayoutBeginLoadingMore(BGARefreshLayout refreshLayout) {
-                return false;
             }
         });
     }

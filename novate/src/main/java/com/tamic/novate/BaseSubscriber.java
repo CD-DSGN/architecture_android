@@ -14,16 +14,16 @@ import rx.Subscriber;
 public abstract class BaseSubscriber<T> extends Subscriber<T> {
 
     protected Context context;
-
+RxApiManager mRxApiManager=new RxApiManager();
 
     public BaseSubscriber(Context context) {
         this.context = context;
-        RxApiManager.get().add(this); //创建时加入容器
+      mRxApiManager.add(this); //创建时加入容器
     }
 
     @Override
     final public void onError(java.lang.Throwable e) {
-        RxApiManager.get().remove(this); //从容器中移除
+     mRxApiManager.remove(this); //从容器中移除
         Log.v("Novate", e.getMessage());
         if (e instanceof Throwable) {
             Log.e("Novate", "--> e instanceof Throwable");
@@ -46,7 +46,7 @@ public abstract class BaseSubscriber<T> extends Subscriber<T> {
     public void onCompleted() {
         Log.v("Novate", "-->http is Complete");
 
-        RxApiManager.get().remove(this);
+     mRxApiManager.remove(this);
 
         // todo some common as  dismiss loadding
     }
