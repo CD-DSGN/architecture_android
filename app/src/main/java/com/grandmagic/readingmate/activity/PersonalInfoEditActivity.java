@@ -9,6 +9,7 @@ import android.os.Bundle;
 import android.os.Environment;
 import android.provider.MediaStore;
 import android.text.TextUtils;
+import android.util.Base64;
 import android.view.View;
 import android.widget.ImageView;
 import android.widget.RelativeLayout;
@@ -17,6 +18,7 @@ import android.widget.TextView;
 import com.grandmagic.readingmate.R;
 import com.grandmagic.readingmate.base.AppBaseActivity;
 import com.grandmagic.readingmate.base.AppBaseResponseCallBack;
+import com.grandmagic.readingmate.bean.request.UploadImgBean;
 import com.grandmagic.readingmate.bean.response.ImageUrlResponseBean;
 import com.grandmagic.readingmate.bean.response.UserInfoResponseBean;
 import com.grandmagic.readingmate.consts.ApiInterface;
@@ -39,13 +41,12 @@ import com.yuyh.library.imgsel.ImgSelActivity;
 import com.yuyh.library.imgsel.ImgSelConfig;
 
 import java.io.File;
+import java.io.FileInputStream;
 import java.util.List;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
-import okhttp3.ResponseBody;
-import rx.Subscriber;
 
 public class PersonalInfoEditActivity extends AppBaseActivity {
 
@@ -297,26 +298,57 @@ public class PersonalInfoEditActivity extends AppBaseActivity {
         }
     }
 
+//    private void upload_img(File file) {
+//        Novate novate = new Novate.Builder(this).build();
+//        PersonalFragment.NEED_REFRESH = true;
+//        novate.uploadImage(ApiInterface.upload_avar, file, new Subscriber<ResponseBody>() {
+//            @Override
+//            public void onCompleted() {
+//
+//            }
+//
+//            @Override
+//            public void onError(java.lang.Throwable e) {
+//
+//            }
+//
+//
+//            @Override
+//            public void onNext(ResponseBody responseBody) {
+//
+//            }
+//        });
+//    }
+
+
+
+    //改用base64传
     private void upload_img(File file) {
         Novate novate = new Novate.Builder(this).build();
         PersonalFragment.NEED_REFRESH = true;
-        novate.uploadImage(ApiInterface.upload_avar, file, new Subscriber<ResponseBody>() {
-            @Override
-            public void onCompleted() {
+        try {
+            String str = encodeBase64File(file);
+            UploadImgBean uploadImgBean = new UploadImgBean();
+            uploadImgBean.setAvatar(str);
+            novate.executeJson(ApiInterface.upload_avar, uploadImgBean.toGson(), new AppBaseResponseCallBack<NovateResponse<Object>>(this) {
+                @Override
+                public void onSuccee(NovateResponse<Object> response) {
+                    ViewUtils.showToast("上传成功");
+                }
+            });
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
 
-            }
+    }
 
-            @Override
-            public void onError(java.lang.Throwable e) {
-
-            }
-
-
-            @Override
-            public void onNext(ResponseBody responseBody) {
-
-            }
-        });
+    //把file转成base64
+    public static String encodeBase64File(File file) throws Exception {
+        FileInputStream inputFile = new FileInputStream(file);
+        byte[] buffer = new byte[(int)file.length()];
+        inputFile.read(buffer);
+        inputFile.close();
+        return Base64.encodeToString(buffer,Base64.DEFAULT);
     }
 
 

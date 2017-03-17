@@ -1,17 +1,21 @@
 package com.grandmagic.readingmate.activity;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import com.grandmagic.readingmate.R;
 import com.grandmagic.readingmate.adapter.CommentDetailAdapter;
 import com.grandmagic.readingmate.base.AppBaseActivity;
 import com.grandmagic.readingmate.utils.AutoUtils;
+import com.grandmagic.readingmate.view.SharePopUpWindow;
+import com.umeng.socialize.UMShareAPI;
 import com.zhy.adapter.recyclerview.wrapper.HeaderAndFooterWrapper;
 
 import java.util.ArrayList;
@@ -28,10 +32,13 @@ public class CommentsActivity extends AppBaseActivity {
     TextView mTitle;
     @BindView(R.id.rv_comments_detail)
     RecyclerView mRvCommentsDetail;
+    @BindView(R.id.lin_share)
+    LinearLayout mLinShare;
 
     private View mView;
     private CommentDetailAdapter mMAdapter;
     private HeaderAndFooterWrapper mMHeaderAndFooterWrapper;
+    private SharePopUpWindow mPopupWindow;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -63,7 +70,7 @@ public class CommentsActivity extends AppBaseActivity {
     }
 
 
-    @OnClick({R.id.back, R.id.title})
+    @OnClick({R.id.back, R.id.title, R.id.lin_share})
     public void onClick(View view) {
         switch (view.getId()) {
             case R.id.back:
@@ -71,6 +78,30 @@ public class CommentsActivity extends AppBaseActivity {
                 break;
             case R.id.title:
                 break;
+
+            case R.id.lin_share:
+                //分享评论
+                showSharePopWindow();
+                break;
         }
     }
+
+    private void showSharePopWindow() {
+        if (mPopupWindow == null) {
+            mPopupWindow = new SharePopUpWindow(this);
+        }
+        mPopupWindow.show();
+
+    }
+
+
+
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+        UMShareAPI.get(this).onActivityResult(requestCode, resultCode, data);
+
+    }
+
+
 }
