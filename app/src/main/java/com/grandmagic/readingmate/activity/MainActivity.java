@@ -24,6 +24,8 @@ import com.grandmagic.readingmate.base.AppBaseActivity;
 import com.grandmagic.readingmate.base.AppBaseResponseCallBack;
 import com.grandmagic.readingmate.bean.response.Contacts;
 import com.grandmagic.readingmate.bean.response.SearchUserResponse;
+import com.grandmagic.readingmate.db.ContactsDao;
+import com.grandmagic.readingmate.db.DBHelper;
 import com.grandmagic.readingmate.db.DaoMaster;
 import com.grandmagic.readingmate.db.DaoSession;
 import com.grandmagic.readingmate.event.ConnectStateEvent;
@@ -129,11 +131,8 @@ public class MainActivity extends AppBaseActivity {
                     mContacts.setAvatar_native(responseData.getAvatar_url().getLarge());
                     mContacts.setUser_id(Integer.valueOf(responseData.getUser_id()));
                     mContacts.setUser_name(responseData.getUser_name());
-                    DaoMaster.DevOpenHelper mDevOpenHelper = new DaoMaster.DevOpenHelper(MainActivity.this, "contacts.db", null);
-                    SQLiteDatabase db = mDevOpenHelper.getWritableDatabase();
-                    DaoMaster mDaoMaster = new DaoMaster(db);
-                    DaoSession mDaoSession = mDaoMaster.newSession();
-                    mDaoSession.insertOrReplace(mContacts);
+                    ContactsDao mContactsDao = DBHelper.getContactsDao(MainActivity.this);
+                    mContactsDao.insertOrReplace(mContacts);
                 }
             }
         });

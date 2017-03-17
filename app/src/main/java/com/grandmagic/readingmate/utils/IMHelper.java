@@ -8,6 +8,7 @@ import android.util.Log;
 import com.grandmagic.readingmate.bean.response.Contacts;
 import com.grandmagic.readingmate.bean.response.InviteMessage;
 import com.grandmagic.readingmate.db.ContactsDao;
+import com.grandmagic.readingmate.db.DBHelper;
 import com.grandmagic.readingmate.db.DaoMaster;
 import com.grandmagic.readingmate.db.DaoSession;
 import com.grandmagic.readingmate.listener.DefaultSettingsProvider;
@@ -70,11 +71,8 @@ public class IMHelper {
      * @return
      */
     public Contacts getUserInfo(String mUsernam) {
-        DaoMaster.DevOpenHelper mDevOpenHelper = new DaoMaster.DevOpenHelper(mAppContext, "contacts.db", null);
-        SQLiteDatabase db = mDevOpenHelper.getWritableDatabase();
-        DaoMaster mDaoMaster = new DaoMaster(db);
-        DaoSession mDaoSession = mDaoMaster.newSession();
-        Contacts mContacts = mDaoSession.queryBuilder(Contacts.class).whereOr(ContactsDao.Properties.User_id.eq(mUsernam),ContactsDao.Properties.User_name.eq(mUsernam)).build().unique();
+        ContactsDao mContactsDao = DBHelper.getContactsDao(mAppContext);
+        Contacts mContacts = mContactsDao.queryBuilder().whereOr(ContactsDao.Properties.User_id.eq(mUsernam),ContactsDao.Properties.User_name.eq(mUsernam)).build().unique();
         Log.e(TAG, "getUserInfo: "+(mContacts==null?null:mContacts.toString()) );
         return mContacts;
     }

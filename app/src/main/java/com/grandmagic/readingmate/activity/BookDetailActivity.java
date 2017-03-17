@@ -249,6 +249,7 @@ public class BookDetailActivity extends AppBaseActivity implements View.OnLayout
             @Override
             public void onSuccee(NovateResponse response) {
                 InputMethodUtils.hide(BookDetailActivity.this);
+                mEtComment.setText("");
             }
         });
     }

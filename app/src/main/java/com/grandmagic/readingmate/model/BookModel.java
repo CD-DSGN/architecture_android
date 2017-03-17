@@ -46,9 +46,11 @@ public class BookModel {
     /**
      * 加载用户收藏的图书
      */
-    public void loadCollectBook(AppBaseResponseCallBack mBack) {
+    public void loadCollectBook(int mCurrpage, AppBaseResponseCallBack mBack) {
         Novate mNovate = new Novate.Builder(mContext).build();
-        mNovate.executeGet(ApiInterface.COLLECT_BOOKDISPLAY, mBack);
+        Map<String,Object> mStringObjectMap=new HashMap<>();
+        mStringObjectMap.put("cpage",mCurrpage);
+        mNovate.executeGet(ApiInterface.COLLECT_BOOKDISPLAY,mStringObjectMap, mBack,SPUtils.getInstance().getToken(mContext));
     }
 
     /**
@@ -121,5 +123,38 @@ JSONObject mJSONObject=new JSONObject();
         }
         mNovate.executeJson(ApiInterface.BOOK_COMMENTSCORESTATUS,mJSONObject.toString(),mBack);
 
+        mNovate.executeJson(ApiInterface.BOOK_COMMENTSCORESTATUS,mJSONObject.toString(),mBack);
     }
+
+    /**
+     * 删除对图书的评论
+     * @param bookid bookid
+     * @param mBack
+     */
+    public void deleteBookComment(String bookid,AppBaseResponseCallBack mBack){
+        Novate mNovate=new Novate.Builder(mContext).build();
+        JSONObject mJSONObject=new JSONObject();
+        try {
+            mJSONObject.put("book_id",bookid);
+        } catch (JSONException mE) {
+            mE.printStackTrace();
+        }
+        mNovate.executeJson(ApiInterface.DELETE_BOOKCOMMENT,mJSONObject.toString(),mBack);
+    }
+    /**
+     * 对评论点赞
+     * @param bookid bookid
+     * @param mBack
+     */
+    public void thumbBookComment(String bookid,AppBaseResponseCallBack mBack){
+        Novate mNovate=new Novate.Builder(mContext).build();
+        JSONObject mJSONObject=new JSONObject();
+        try {
+            mJSONObject.put("book_id",bookid);
+        } catch (JSONException mE) {
+            mE.printStackTrace();
+        }
+        mNovate.executeJson(ApiInterface.THUMB_BOOKCOMMENT,mJSONObject.toString(),mBack);
+    }
+
 }

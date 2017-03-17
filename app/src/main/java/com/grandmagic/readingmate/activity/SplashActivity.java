@@ -9,6 +9,8 @@ import com.grandmagic.readingmate.R;
 import com.grandmagic.readingmate.base.AppBaseActivity;
 import com.grandmagic.readingmate.base.AppBaseResponseCallBack;
 import com.grandmagic.readingmate.bean.response.Contacts;
+import com.grandmagic.readingmate.db.ContactsDao;
+import com.grandmagic.readingmate.db.DBHelper;
 import com.grandmagic.readingmate.db.DaoMaster;
 import com.grandmagic.readingmate.db.DaoSession;
 import com.grandmagic.readingmate.model.ContactModel;
@@ -60,12 +62,9 @@ public class SplashActivity extends AppBaseActivity {
                 @Override
                 public void onSuccee(NovateResponse<List<Contacts>> response) {
                     List<Contacts> mData = response.getData();
-                    DaoMaster.DevOpenHelper mDevOpenHelper = new DaoMaster.DevOpenHelper(SplashActivity.this,"contacts.db",null);
-                    SQLiteDatabase db = mDevOpenHelper.getWritableDatabase();
-                    DaoMaster mDaoMaster = new DaoMaster(db);
-                    DaoSession mDaoSession = mDaoMaster.newSession();
+                    ContactsDao mContactsDao = DBHelper.getContactsDao(SplashActivity.this);
                     for (Contacts mContacts : mData) {
-                        mDaoSession.insertOrReplace(mContacts);
+                        mContactsDao.insertOrReplace(mContacts);
                         Logger.e(mContacts.toString());
                     }
                     EMClient.getInstance().chatManager().loadAllConversations();

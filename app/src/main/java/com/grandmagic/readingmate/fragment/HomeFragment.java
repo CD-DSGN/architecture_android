@@ -7,7 +7,6 @@ import android.content.Context;
 import android.content.Intent;
 import android.graphics.drawable.BitmapDrawable;
 import android.os.Bundle;
-import android.os.Handler;
 import android.support.design.widget.CoordinatorLayout;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
@@ -31,7 +30,6 @@ import com.grandmagic.readingmate.adapter.HomeBookAdapter;
 import com.grandmagic.readingmate.base.AppBaseFragment;
 import com.grandmagic.readingmate.base.AppBaseResponseCallBack;
 import com.grandmagic.readingmate.bean.response.DisplayBook;
-import com.grandmagic.readingmate.dialog.HintDialog;
 import com.grandmagic.readingmate.model.BookModel;
 import com.grandmagic.readingmate.utils.AutoUtils;
 import com.orhanobut.logger.Logger;
@@ -75,6 +73,7 @@ public class HomeFragment extends AppBaseFragment implements HomeBookAdapter.Cli
     CoordinatorLayout mHomeviewBook;
     private View rootview;
     boolean isEmpty = false;
+    BGAStickinessRefreshViewHolder mRefreshViewHolder;
     List<DisplayBook.InfoBean> mBookList = new ArrayList<>();
 
     @Override
@@ -99,10 +98,11 @@ public class HomeFragment extends AppBaseFragment implements HomeBookAdapter.Cli
     }
 
     BookModel mModel;
+    int pagecount = 1, currpage = 1;
 
     private void initdata() {
         mModel = new BookModel(getActivity());
-        mModel.loadCollectBook(new AppBaseResponseCallBack<NovateResponse<DisplayBook>>(getActivity(), false) {
+        mModel.loadCollectBook(currpage, new AppBaseResponseCallBack<NovateResponse<DisplayBook>>(getActivity(), false) {
             @Override
             public void onSuccee(NovateResponse<DisplayBook> response) {
                 Logger.e("首页加载成功");
@@ -111,6 +111,7 @@ public class HomeFragment extends AppBaseFragment implements HomeBookAdapter.Cli
                     return;
                 }
                 mBookList.addAll(response.getData().getInfo());
+                pagecount = response.getData().getpage();
                 mBookAdapter.setData(mBookList);
                 showRecyclerView();
                 isEmpty = false;
@@ -145,7 +146,7 @@ public class HomeFragment extends AppBaseFragment implements HomeBookAdapter.Cli
     }
 
     private void initRefresh() {
-        BGAStickinessRefreshViewHolder mRefreshViewHolder = new BGAStickinessRefreshViewHolder(mContext, true);
+        mRefreshViewHolder = new BGAStickinessRefreshViewHolder(mContext, true);
         mRefreshViewHolder.setStickinessColor(R.color.colorAccent);
         mRefreshViewHolder.setRotateImage(R.drawable.bga_refresh_stickiness);
 //        mRefreshLayout.offsetTopAndBottom(88);
@@ -153,26 +154,42 @@ public class HomeFragment extends AppBaseFragment implements HomeBookAdapter.Cli
         mRefreshLayout.setDelegate(new BGARefreshLayout.BGARefreshLayoutDelegate() {
             @Override
             public void onBGARefreshLayoutBeginRefreshing(BGARefreshLayout refreshLayout) {
-
-                new Handler().postDelayed(new Runnable() {
-                    @Override
-                    public void run() {
-                        mRefreshLayout.endRefreshing();
-                    }
-                }, 2000);
-
+                currpage = 1;
+                mBookList.clear();
+                loadBook(currpage);
             }
 
             @Override
             public boolean onBGARefreshLayoutBeginLoadingMore(BGARefreshLayout refreshLayout) {
+                if (currpage < pagecount) {
+                    currpage++;
+                    loadBook(currpage);
+                    return true;
+                } else {
 
-                new Handler().postDelayed(new Runnable() {
-                    @Override
-                    public void run() {
-                        mRefreshLayout.endLoadingMore();
-                    }
-                }, 2000);
-                return true;
+                    Toast.makeText(mContext, "NOMORE", Toast.LENGTH_SHORT).show();
+                }
+                return false;
+            }
+        });
+    }
+
+    private void loadBook(int mCurrpage) {
+        mModel.loadCollectBook(mCurrpage,new AppBaseResponseCallBack<NovateResponse<DisplayBook>>(getActivity(), false) {
+
+            @Override
+            public void onSuccee(NovateResponse<DisplayBook> response) {
+                mRefreshLayout.endLoadingMore();
+                mRefreshLayout.endRefreshing();
+                mBookList.addAll(response.getData().getInfo());
+                mBookAdapter.setData(mBookList);
+            }
+
+            @Override
+            public void onError(Throwable e) {
+                super.onError(e);
+                mRefreshLayout.endLoadingMore();
+                mRefreshLayout.endRefreshing();
             }
         });
     }
