@@ -120,6 +120,14 @@ public class SharePopUpWindow extends PopupWindow {
                         .share();
             }
         });
+
+        View cancel = mpopview.findViewById(R.id.tv_pop_cancel);
+        cancel.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                SharePopUpWindow.this.dismiss();
+            }
+        });
     }
 
 

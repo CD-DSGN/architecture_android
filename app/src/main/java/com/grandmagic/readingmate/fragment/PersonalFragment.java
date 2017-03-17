@@ -29,7 +29,6 @@ import com.grandmagic.readingmate.model.UserInfoModel;
 import com.grandmagic.readingmate.utils.AutoUtils;
 import com.grandmagic.readingmate.utils.ImageLoader;
 import com.grandmagic.readingmate.utils.KitUtils;
-import com.grandmagic.readingmate.view.CircleImageView;
 import com.tamic.novate.NovateResponse;
 import com.zhy.adapter.recyclerview.wrapper.HeaderAndFooterWrapper;
 
@@ -55,7 +54,7 @@ public class PersonalFragment extends AppBaseFragment {
 
 
     @BindView(R.id.iv_frag_personal_header)
-    CircleImageView mIvFragPersonalHeader;
+    ImageView mIvFragPersonalHeader;
     @BindView(R.id.tv_frag_personal_nickname)
     TextView mTvFragPersonalNickname;
     @BindView(R.id.tv_frag_personal_signature)
