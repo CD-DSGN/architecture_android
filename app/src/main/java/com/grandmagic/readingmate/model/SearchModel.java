@@ -31,14 +31,22 @@ public class SearchModel {
      * 上传用户定位
      * @param mLatitude 维度
      * @param mLongitude 经度
+     * @param mProvince 省
+     * @param mCity 市
+     * @param mDistrict 区
+     * @param mStreet 街道
      * @param mBack
      */
-    public void stepLocation(double mLatitude, double mLongitude, AppBaseResponseCallBack mBack) {
+    public void stepLocation(double mLatitude, double mLongitude, String mProvince, String mCity, String mDistrict, String mStreet, AppBaseResponseCallBack mBack) {
         Novate mNovate=new Novate.Builder(mContext).build();
         JSONObject mJSONObject=new JSONObject();
         try {
             mJSONObject.put("latitude",mLatitude);
             mJSONObject.put("longitude",mLongitude);
+            mJSONObject.put("province",mProvince);
+            mJSONObject.put("city",mCity);
+            mJSONObject.put("area",mDistrict);
+            mJSONObject.put("street",mStreet);
         } catch (JSONException mE) {
             mE.printStackTrace();
         }

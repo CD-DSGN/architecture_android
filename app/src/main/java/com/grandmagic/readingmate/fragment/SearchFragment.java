@@ -19,6 +19,7 @@ import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import com.airbnb.lottie.LottieAnimationView;
+import com.baidu.location.Address;
 import com.baidu.location.BDLocation;
 import com.baidu.location.BDLocationListener;
 import com.baidu.location.LocationClient;
@@ -33,6 +34,7 @@ import com.grandmagic.readingmate.listener.LocationListener;
 import com.grandmagic.readingmate.model.SearchModel;
 import com.grandmagic.readingmate.utils.AutoUtils;
 import com.tamic.novate.NovateResponse;
+import com.tamic.novate.Throwable;
 import com.tbruyelle.rxpermissions.RxPermissions;
 
 import java.util.ArrayList;
@@ -150,11 +152,23 @@ public class SearchFragment extends AppBaseFragment {
     private void updateLocation(BDLocation mLocation) {
         mLongitude = mLocation.getLongitude();
         mLatitude = mLocation.getLatitude();
+        Address mAddress = mLocation.getAddress();
+        if (mAddress==null)return;
+        String mProvince = mAddress.province;
+        String mCity = mAddress.city;
+        String mDistrict = mAddress.district;
+        String mStreet = mAddress.street;
         mLocationClient.stop();
-        mModel.stepLocation(mLatitude, mLongitude, new AppBaseResponseCallBack<NovateResponse>(mContext) {
+        mModel.stepLocation(mLatitude, mLongitude,mProvince,mCity,mDistrict,mStreet, new AppBaseResponseCallBack<NovateResponse>(mContext) {
             @Override
             public void onSuccee(NovateResponse response) {
                 getLocationPerson();
+            }
+
+            @Override
+            public void onError(Throwable e) {
+                super.onError(e);
+                reset();//失败重置。不然一直在转圈圈
             }
         });
     }
@@ -187,16 +201,7 @@ public class SearchFragment extends AppBaseFragment {
     public void onClick(View view) {
         switch (view.getId()) {
             case R.id.title_more:
-                systembarColor=R.color.bg_search;
-                mRefreshLayout.setVisibility(View.GONE);
-                mAnimaview.setVisibility(View.GONE);
-                mBtnLocation.setVisibility(View.VISIBLE);
-                mTvStatus.setVisibility(View.GONE);
-                mTitleMore.setVisibility(View.GONE);
-                mIvSearch.setVisibility(View.VISIBLE);
-                mRootview.setBackgroundColor(getResources().getColor(R.color.search_green));
-                mTitle.setTextColor(getResources().getColor(R.color.white));
-                setSystemBarColor(false);
+                reset();
                 break;
             case R.id.btn_location:
                 new RxPermissions(getActivity()).request(Manifest.permission.READ_PHONE_STATE,
@@ -215,6 +220,22 @@ public class SearchFragment extends AppBaseFragment {
                 });
                 break;
         }
+    }
+
+    /**
+     * 恢复默认状态
+     */
+    private void reset() {
+        systembarColor= R.color.bg_search;
+        mRefreshLayout.setVisibility(View.GONE);
+        mAnimaview.setVisibility(View.GONE);
+        mBtnLocation.setVisibility(View.VISIBLE);
+        mTvStatus.setVisibility(View.GONE);
+        mTitleMore.setVisibility(View.GONE);
+        mIvSearch.setVisibility(View.VISIBLE);
+        mRootview.setBackgroundColor(getResources().getColor(R.color.search_green));
+        mTitle.setTextColor(getResources().getColor(R.color.white));
+        setSystemBarColor(false);
     }
 
     @Override
