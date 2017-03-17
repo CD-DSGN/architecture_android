@@ -279,8 +279,9 @@ public class BGARefreshLayout extends LinearLayout {
             mRecyclerView.addOnScrollListener(new RecyclerView.OnScrollListener() {
                 @Override
                 public void onScrollStateChanged(RecyclerView recyclerView, int newState) {
+                    // FIXME: 2017/3/17 这里判定有问题。所以先注掉了
                     if ((newState == RecyclerView.SCROLL_STATE_IDLE || newState == RecyclerView.SCROLL_STATE_SETTLING) && shouldHandleRecyclerViewLoadingMore(mRecyclerView)) {
-                        beginLoadingMore();
+//                        beginLoadingMore();
                     }
                 }
             });
