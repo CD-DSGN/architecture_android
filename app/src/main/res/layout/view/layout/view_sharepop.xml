@@ -11,6 +11,7 @@
         android:layout_height="268px"
         android:orientation="vertical"
         android:layout_marginLeft="64px"
+        android:id="@+id/ll_wx"
         >
 
         <ImageView
@@ -35,6 +36,7 @@
     android:layout_height="268px"
     android:orientation="vertical"
     android:layout_marginLeft="62px"
+    android:id="@+id/ll_friends_circle"
     >
 
     <ImageView
@@ -59,6 +61,7 @@
         android:layout_height="268px"
         android:orientation="vertical"
         android:layout_marginLeft="62px"
+        android:id="@+id/ll_share_sina"
         >
 
         <ImageView

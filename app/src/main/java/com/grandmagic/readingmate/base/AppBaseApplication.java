@@ -13,6 +13,9 @@ import com.hyphenate.chat.EMClient;
 import com.hyphenate.chat.EMOptions;
 import com.squareup.leakcanary.LeakCanary;
 import com.umeng.analytics.MobclickAgent;
+import com.umeng.socialize.Config;
+import com.umeng.socialize.PlatformConfig;
+import com.umeng.socialize.UMShareAPI;
 
 import java.util.Iterator;
 import java.util.List;
@@ -36,6 +39,15 @@ public class AppBaseApplication extends Application {
         MobclickAgent.setScenarioType(getApplicationContext(), MobclickAgent.EScenarioType.E_UM_NORMAL);
         initOther();
         initIM();
+        //友盟分享配置
+        Config.DEBUG = true;
+        UMShareAPI.get(this);
+    }
+
+    {
+        //微信和新浪分享配置
+        PlatformConfig.setWeixin("wxdc1e388c3822c80b", "3baf1193c85774b3fd9d18447d76cab0");
+        PlatformConfig.setSinaWeibo("3921700954", "04b48b094faeb16683c32669824ebdad","http://sns.whalecloud.com");
     }
 
     /**
