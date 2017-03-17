@@ -52,7 +52,7 @@ public class StarView extends View {
         this.stareEmptyDrawable = mTypedArray.getDrawable(R.styleable.StarView_starEmpty);
         this.starFillBitmap = drawableToBitmap(mTypedArray.getDrawable(R.styleable.StarView_starFill));
         this.isIndicator = mTypedArray.getBoolean(R.styleable.StarView_isIndicator, false);
-        this.score = mTypedArray.getInt(R.styleable.StarView_score, 5);
+        this.score = mTypedArray.getInt(R.styleable.StarView_score, 0);
         this.total = mTypedArray.getInt(R.styleable.StarView_totalscore, 10);
         mTypedArray.recycle();
         mPaint = new Paint();

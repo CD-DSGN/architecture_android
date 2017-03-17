@@ -23,7 +23,8 @@ public class ApiInterface {
     public static final String BOOK_SEARCH = "keyword/booksearch"; //根据关键字搜索图书
     public static final String BOOK_HOT = "keyword/gethotword"; //获取热门搜索
     public static final String BOOK_DETAIL = "collect/getbookdetail"; //获取图书详情
-    public static final String SCORE_BOOK = "collect/scorebook"; //获取图书详情
+    public static final String BOOK_COMMENTSCORESTATUS = "collect/getcommentscorestatus"; //我过往对该书的评价
+    public static final String SCORE_BOOK = "collect/commentorscorebook"; //对图书评论
     public static final String REMOVE_FRIEEND = "friendinfo/removefriend"; //解除好友关系
     public static final String REMARK_FRIEND = "friendinfo/remarkfriend"; //设置备注
     public static final String STEP_LOCATION = "location/setposition"; //上传用户定位

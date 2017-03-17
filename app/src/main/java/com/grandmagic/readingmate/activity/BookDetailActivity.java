@@ -2,7 +2,6 @@ package com.grandmagic.readingmate.activity;
 
 import android.os.Bundle;
 import android.support.v4.view.ViewPager;
-import android.text.TextUtils;
 import android.util.TypedValue;
 import android.view.View;
 import android.widget.Button;
@@ -18,10 +17,12 @@ import com.grandmagic.readingmate.adapter.CommonPagerAdapter;
 import com.grandmagic.readingmate.base.AppBaseActivity;
 import com.grandmagic.readingmate.base.AppBaseResponseCallBack;
 import com.grandmagic.readingmate.bean.response.BookdetailResponse;
+import com.grandmagic.readingmate.bean.response.HistoryComment;
 import com.grandmagic.readingmate.model.BookModel;
 import com.grandmagic.readingmate.utils.AutoUtils;
 import com.grandmagic.readingmate.utils.DensityUtil;
 import com.grandmagic.readingmate.utils.ImageLoader;
+import com.grandmagic.readingmate.utils.InputMethodUtils;
 import com.grandmagic.readingmate.view.HotcommentView;
 import com.grandmagic.readingmate.view.StarView;
 import com.tamic.novate.NovateResponse;
@@ -46,6 +47,8 @@ public class BookDetailActivity extends AppBaseActivity implements View.OnLayout
     TextView mTvHot;
     @BindView(R.id.dashline_tvhot)
     View mDashlineTvhot;
+    @BindView(R.id.his_score)
+    TextView mHisScore;
     private String book_id;
     @BindView(R.id.back)
     ImageView mBack;
@@ -120,17 +123,24 @@ public class BookDetailActivity extends AppBaseActivity implements View.OnLayout
         mViewpager.addOnPageChangeListener(new ViewPager.SimpleOnPageChangeListener() {
             @Override
             public void onPageSelected(int position) {
-             if (position==0)lastSelected();else hotSelected();
+                if (position == 0) lastSelected();
+                else hotSelected();
             }
 
+        });
+        mRatingbar.setStarChangeListener(new StarView.OnStarChangeListener() {
+            @Override
+            public void onChange(int score) {
+                mHisScore.setText(score + "分");
+            }
         });
     }
 
     private void hotSelected() {
-        mTvLast.setTextSize(TypedValue.COMPLEX_UNIT_PX,24);
+        mTvLast.setTextSize(TypedValue.COMPLEX_UNIT_PX, 24);
         mTvLast.setTextColor(getResources().getColor(R.color.gray_noselect));
         mDashlineTvlast.setVisibility(View.GONE);
-        mTvHot.setTextSize(TypedValue.COMPLEX_UNIT_PX,26);
+        mTvHot.setTextSize(TypedValue.COMPLEX_UNIT_PX, 26);
         mTvHot.setTextColor(getResources().getColor(R.color.gray_select));
         mDashlineTvhot.setVisibility(View.VISIBLE);
         AutoUtils.autoTextSize(mTvLast);
@@ -138,10 +148,10 @@ public class BookDetailActivity extends AppBaseActivity implements View.OnLayout
     }
 
     private void lastSelected() {
-        mTvLast.setTextSize(TypedValue.COMPLEX_UNIT_PX,26);
+        mTvLast.setTextSize(TypedValue.COMPLEX_UNIT_PX, 26);
         mTvLast.setTextColor(getResources().getColor(R.color.gray_select));
         mDashlineTvlast.setVisibility(View.VISIBLE);
-        mTvHot.setTextSize(TypedValue.COMPLEX_UNIT_PX,24);
+        mTvHot.setTextSize(TypedValue.COMPLEX_UNIT_PX, 24);
         mTvHot.setTextColor(getResources().getColor(R.color.gray_noselect));
         mDashlineTvhot.setVisibility(View.GONE);
         AutoUtils.autoTextSize(mTvLast);
@@ -158,6 +168,7 @@ public class BookDetailActivity extends AppBaseActivity implements View.OnLayout
     }
 
     BookModel mModel;
+    int hisScore;
 
     private void initdata() {
         mModel = new BookModel(this);
@@ -168,7 +179,14 @@ public class BookDetailActivity extends AppBaseActivity implements View.OnLayout
                 setbookView(response.getData());
             }
         });
-
+        mModel.getMyComment(book_id, new AppBaseResponseCallBack<NovateResponse<HistoryComment>>(this) {
+            @Override
+            public void onSuccee(NovateResponse<HistoryComment> response) {
+                hisScore = response.getData().getScore_num();
+                mRatingbar.setScore(hisScore);
+                mHisScore.setText(hisScore + "分");
+            }
+        });
     }
 
 
@@ -202,7 +220,7 @@ public class BookDetailActivity extends AppBaseActivity implements View.OnLayout
         ImageLoader.loadImage(this, "http://files.jb51.net/do/uploads/litimg/160809/1FR52JC7.jpg", mIvConver);
     }
 
-    @OnClick({R.id.back, R.id.submit,R.id.tv_last,R.id.tv_hot})
+    @OnClick({R.id.back, R.id.submit, R.id.tv_last, R.id.tv_hot})
     public void onClick(View view) {
         switch (view.getId()) {
             case R.id.back:
@@ -212,7 +230,7 @@ public class BookDetailActivity extends AppBaseActivity implements View.OnLayout
                 submitComment();
                 break;
             case R.id.tv_last:
-               lastSelected();
+                lastSelected();
                 break;
             case R.id.tv_hot:
                 hotSelected();
@@ -223,14 +241,14 @@ public class BookDetailActivity extends AppBaseActivity implements View.OnLayout
     private void submitComment() {
         int mScore = mRatingbar.getScore();
         String content = mEtComment.getText().toString();
-        if (TextUtils.isEmpty(content)) {
-            Toast.makeText(this, "请输入评论内容再提交", Toast.LENGTH_SHORT).show();
+        if (mScore == 0) {
+            Toast.makeText(this, "还是评个分再提交吧", Toast.LENGTH_SHORT).show();
             return;
         }
         mModel.ScoreBook(book_id, mScore, content, new AppBaseResponseCallBack<NovateResponse>(this) {
             @Override
             public void onSuccee(NovateResponse response) {
-
+                InputMethodUtils.hide(BookDetailActivity.this);
             }
         });
     }

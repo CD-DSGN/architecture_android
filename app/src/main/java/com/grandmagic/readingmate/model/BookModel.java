@@ -1,6 +1,7 @@
 package com.grandmagic.readingmate.model;
 
 import android.content.Context;
+import android.text.TextUtils;
 
 import com.grandmagic.readingmate.base.AppBaseResponseCallBack;
 import com.grandmagic.readingmate.consts.ApiInterface;
@@ -97,9 +98,28 @@ JSONObject mJSONObject=new JSONObject();
         try {
             mJSONObject.put("book_id",mBook_id);
             mJSONObject.put("score_num",mScore);
+            if (!TextUtils.isEmpty(mContent))
+            mJSONObject.put("comment_content",mContent);
         } catch (JSONException mE) {
             mE.printStackTrace();
         }
         mNovate.executeJson(ApiInterface.SCORE_BOOK,mJSONObject.toString(),callback);
+    }
+
+    /**
+     * 获取我过往对这本书的评价
+     * @param mBook_id
+     * @param mBack
+     */
+    public void getMyComment(String mBook_id, AppBaseResponseCallBack mBack) {
+    Novate mNovate=new Novate.Builder(mContext).build();
+        JSONObject mJSONObject=new JSONObject();
+        try {
+            mJSONObject.put("book_id",mBook_id);
+        } catch (JSONException mE) {
+            mE.printStackTrace();
+        }
+        mNovate.executeJson(ApiInterface.BOOK_COMMENTSCORESTATUS,mJSONObject.toString(),mBack);
+
     }
 }
