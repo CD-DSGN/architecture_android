@@ -31,6 +31,7 @@ public class ApiInterface {
     public static final String REMARK_FRIEND = "friendinfo/remarkfriend"; //设置备注
     public static final String STEP_LOCATION = "location/setposition"; //上传用户定位
     public static final String GET_LOCATION_PERSON = "location/getposition"; //获取定位附近的好友
+    public static final String BOOK_COMMENT_DETAIL = "collect/getbookcommentsdetail"; //获取图书的评论
 
     public static final String GET_USR_INFO = "userinfo/getuserinfo"; //获取用户基本信息
     public static final String SET_USR_INFO = "userinfo/setpersonal"; //设置用户信息

@@ -53,7 +53,7 @@
             />
 
         <TextView
-            android:id="@+id/likenum"
+            android:id="@+id/like_num"
             android:layout_width="wrap_content"
 
             android:layout_height="wrap_content"
@@ -67,7 +67,7 @@
             android:layout_width="26px"
             android:layout_height="26px"
             android:layout_centerVertical="true"
-            android:layout_toLeftOf="@+id/likenum"
+            android:layout_toLeftOf="@+id/like_num"
             android:src="@drawable/iv_like"
             />
     </RelativeLayout>
