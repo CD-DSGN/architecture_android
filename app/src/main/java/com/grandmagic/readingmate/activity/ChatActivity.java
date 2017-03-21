@@ -8,8 +8,10 @@ import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.util.Log;
 import android.view.KeyEvent;
+import android.view.MotionEvent;
 import android.view.View;
 import android.view.inputmethod.EditorInfo;
+import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.RelativeLayout;
@@ -27,16 +29,17 @@ import com.grandmagic.readingmate.base.AppBaseActivity;
 import com.grandmagic.readingmate.event.ContactDeleteEvent;
 import com.grandmagic.readingmate.utils.AutoUtils;
 import com.grandmagic.readingmate.utils.IMHelper;
-import com.hyphenate.EMCallBack;
+import com.grandmagic.readingmate.utils.InputMethodUtils;
+import com.grandmagic.readingmate.view.VoiceRecordView;
 import com.hyphenate.EMMessageListener;
 import com.hyphenate.chat.EMClient;
 import com.hyphenate.chat.EMConversation;
 import com.hyphenate.chat.EMMessage;
 import com.orhanobut.logger.Logger;
+import com.tbruyelle.rxpermissions.RxPermissions;
 import com.yuyh.library.imgsel.ImageLoader;
 import com.yuyh.library.imgsel.ImgSelActivity;
 import com.yuyh.library.imgsel.ImgSelConfig;
-import com.yuyh.library.imgsel.common.Constant;
 
 import org.greenrobot.eventbus.EventBus;
 import org.greenrobot.eventbus.Subscribe;
@@ -64,6 +67,16 @@ public class ChatActivity extends AppBaseActivity implements EMMessageListener, 
     private static final int REQUEST_SELIMG = 102;
     @BindView(R.id.refreshLayout)
     BGARefreshLayout mRefreshLayout;
+    @BindView(R.id.title_more)
+    ImageView mTitleMore;
+    @BindView(R.id.voicerecordview)
+    VoiceRecordView mVoiceRecordView;
+    @BindView(R.id.speak)
+    Button mSpeak;
+    @BindView(R.id.rela_input)
+    RelativeLayout mRelaInput;
+    @BindView(R.id.activity_chat)
+    RelativeLayout mActivityChat;
     //聊天的在环信的name,为我们的userid
     private String toChatUserName;
     private int chat_type;
@@ -134,7 +147,7 @@ public class ChatActivity extends AppBaseActivity implements EMMessageListener, 
      * 下拉加载更多的消息
      */
     private void loadMoreMsg() {
-        if (mConversation==null) return;
+        if (mConversation == null) return;
         int mMsgCount = mConversation.getAllMsgCount();
         if (mMsgCount > DEFAULT_PAGESIZE) {
             List<EMMessage> mEMMessages = mConversation.loadMoreMsgFromDB(mMessageList.get(0).getMsgId(), DEFAULT_PAGESIZE);
@@ -165,7 +178,7 @@ public class ChatActivity extends AppBaseActivity implements EMMessageListener, 
      * @param mMessage 有时候选择的图片有路径但是可能导致失效，创建一个null 的message
      */
     private void sendMessage(EMMessage mMessage) {
-        if (mMessage==null) {
+        if (mMessage == null) {
             Toast.makeText(this, "发送的消息无效", Toast.LENGTH_SHORT).show();
             return;
         }
@@ -193,12 +206,32 @@ public class ChatActivity extends AppBaseActivity implements EMMessageListener, 
         mMessagerecyclerview.setAdapter(mAdapter);
         conversationInit();
         initrefreshlayout();
+        mSpeak.setOnTouchListener(new View.OnTouchListener() {
+            @Override
+            public boolean onTouch(View v, MotionEvent event) {
+                return mVoiceRecordView.onPressToSpeakBtnTouch(v, event, new VoiceRecordView.VoiceRecordCallBack() {
+                    @Override
+                    public void onVoiceRecordComplete(String voiceFilePath, int voiceTimeLength) {
+                        senVoiceMessage(voiceFilePath, voiceTimeLength);
+                    }
+                });
+
+            }
+        });
+    }
+
+    private void senVoiceMessage(String mVoiceFilePath, int mVoiceTimeLength) {
+        //filePath为语音文件路径，length为录音时间(秒)
+        EMMessage message = EMMessage.createVoiceSendMessage(mVoiceFilePath, mVoiceTimeLength, toChatUserName);
+//如果是群聊，设置chattype，默认是单聊
+        EMClient.getInstance().chatManager().sendMessage(message);
+        sendMessage(message);
     }
 
 
     private void conversationInit() {
         //这里需要传三个参数的。一个参数的方法有时候会返回null
-        mConversation = EMClient.getInstance().chatManager().getConversation(toChatUserName, EMConversation.EMConversationType.Chat,true);
+        mConversation = EMClient.getInstance().chatManager().getConversation(toChatUserName, EMConversation.EMConversationType.Chat, true);
         if (mConversation == null) return;
         mConversation.markAllMessagesAsRead();
         final List<EMMessage> msgs = mConversation.getAllMessages();
@@ -228,11 +261,16 @@ public class ChatActivity extends AppBaseActivity implements EMMessageListener, 
                 chooseImg();
                 break;
             case R.id.voice:
-                // TODO: 2017/2/22 录音
+                mSpeak.setVisibility(View.VISIBLE);
+                InputMethodUtils.hide(this);
+                mEtInput.setVisibility(View.GONE);
                 break;
         }
     }
 
+    /**
+     * 发送图片时候选择图片
+     */
     private void chooseImg() {
         ImageLoader mLoader = new ImageLoader() {
             @Override
@@ -353,6 +391,7 @@ public class ChatActivity extends AppBaseActivity implements EMMessageListener, 
 
     /**
      * 创建图片类型消息发送
+     *
      * @param path
      */
     private void sendImgMessage(String path) {

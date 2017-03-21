@@ -9,6 +9,7 @@ import android.os.Message;
 import android.support.v4.app.Fragment;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.text.TextUtils;
 import android.util.TypedValue;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -153,12 +154,12 @@ public class SearchFragment extends AppBaseFragment {
         mLongitude = mLocation.getLongitude();
         mLatitude = mLocation.getLatitude();
         Address mAddress = mLocation.getAddress();
-        if (mAddress==null)return;
         String mProvince = mAddress.province;
         String mCity = mAddress.city;
         String mDistrict = mAddress.district;
         String mStreet = mAddress.street;
         mLocationClient.stop();
+        if (TextUtils.isEmpty(mCity)){reset();return;}
         mModel.stepLocation(mLatitude, mLongitude,mProvince,mCity,mDistrict,mStreet, new AppBaseResponseCallBack<NovateResponse>(mContext) {
             @Override
             public void onSuccee(NovateResponse response) {
@@ -307,7 +308,7 @@ public class SearchFragment extends AppBaseFragment {
         //可选，默认0，即仅定位一次，设置发起定位请求的间隔需要大于等于1000ms才是有效的
         option.setIsNeedAddress(true);
         //可选，设置是否需要地址信息，默认不需要
-        option.setOpenGps(true);
+        option.setOpenGps(false);
         //可选，默认false,设置是否使用gps
         option.setLocationNotify(true);
         //可选，默认false，设置是否当GPS有效时按照1S/1次频率输出GPS结果

@@ -18,15 +18,15 @@ android {
     }
     signingConfigs {
         debug {
-//            storeFile file('../test.jks')//签名文件路径
-//            storePassword "123456"
-//            keyAlias "test"
-//            keyPassword "123456"  //签名密码
+            storeFile file('../test.jks')//签名文件路径
+            storePassword "123456"
+            keyAlias "test"
+            keyPassword "123456"  //签名密码
 
-            storeFile file('debug.keystore')
-            storePassword "android"
-            keyAlias "androiddebugkey"
-            keyPassword "android"
+//            storeFile file('debug.keystore')
+//            storePassword "android"
+//            keyAlias "androiddebugkey"
+//            keyPassword "android"
         }
     }
     buildTypes {

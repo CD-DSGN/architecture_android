@@ -5,44 +5,60 @@
     android:id="@+id/activity_chat"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:orientation="vertical"
     android:fitsSystemWindows="true"
+    android:orientation="vertical"
     tools:context="com.grandmagic.readingmate.activity.ChatActivity">
 
     <include layout="@layout/title_layout"/>
-<cn.bingoogolapple.refreshlayout.BGARefreshLayout
-    android:layout_width="match_parent"
-    android:id="@+id/refreshLayout"
-    android:layout_below="@+id/titlelayout"
-    android:layout_above="@+id/rela_input"
-    android:layout_height="match_parent">
-    <android.support.v7.widget.RecyclerView
 
-        android:id="@+id/messagerecyclerview"
+    <cn.bingoogolapple.refreshlayout.BGARefreshLayout
+        android:id="@+id/refreshLayout"
         android:layout_width="match_parent"
-        android:layout_height="0dp"
-        android:layout_weight="1"
-        android:background="@color/white"
-        >
+        android:layout_height="match_parent"
+        android:layout_above="@+id/rela_input"
+        android:layout_below="@+id/titlelayout"
 
-    </android.support.v7.widget.RecyclerView>
-</cn.bingoogolapple.refreshlayout.BGARefreshLayout>
+        tools:visibility="gone">
+
+        <android.support.v7.widget.RecyclerView
+
+            android:id="@+id/messagerecyclerview"
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
+            android:layout_weight="1"
+            android:background="@color/white"
+            >
+
+        </android.support.v7.widget.RecyclerView>
+    </cn.bingoogolapple.refreshlayout.BGARefreshLayout>
+
+    <com.grandmagic.readingmate.view.VoiceRecordView
+        android:id="@+id/voicerecordview"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_above="@+id/rela_input"
+        android:layout_below="@+id/titlelayout"
+        android:visibility="gone"
+        android:layout_centerInParent="true"
+        >
+    </com.grandmagic.readingmate.view.VoiceRecordView>
+
     <RelativeLayout
-        android:layout_marginBottom="10px"
         android:id="@+id/rela_input"
-        android:layout_alignParentBottom="true"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_gravity="bottom">
+        android:layout_alignParentBottom="true"
+        android:layout_gravity="bottom"
+        android:layout_marginBottom="10px">
 
         <ImageView
             android:id="@+id/iv_select_img"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginLeft="20px"
             android:layout_centerVertical="true"
-            android:src="@drawable/chat_carmera"
+            android:layout_marginLeft="20px"
             android:layout_marginRight="10px"
+            android:src="@drawable/chat_carmera"
             />
 
         <EditText
@@ -50,10 +66,22 @@
             android:layout_width="match_parent"
             android:layout_height="50px"
             android:layout_toLeftOf="@+id/voice"
+            android:layout_toRightOf="@id/iv_select_img"
+            android:background="@drawable/chat_edit"
             android:imeOptions="actionSend"
             android:inputType="text"
+          />
+
+        <Button
+            android:id="@+id/speak"
+            android:layout_width="match_parent"
+            android:layout_height="50px"
+            android:layout_toLeftOf="@+id/voice"
+            android:layout_toRightOf="@id/iv_select_img"
             android:background="@drawable/chat_edit"
-            android:layout_toRightOf="@id/iv_select_img"/>
+            android:text="按住开始讲话"
+            android:visibility="gone"
+       />
 
         <ImageView
             android:id="@+id/voice"
@@ -61,8 +89,8 @@
             android:layout_height="40px"
             android:layout_alignParentRight="true"
             android:layout_centerVertical="true"
-            android:layout_marginRight="20px"
             android:layout_marginLeft="10px"
+            android:layout_marginRight="20px"
             android:src="@drawable/chat_voice"
             />
     </RelativeLayout>
