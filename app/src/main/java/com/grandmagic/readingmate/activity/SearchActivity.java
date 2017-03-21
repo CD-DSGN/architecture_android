@@ -1,5 +1,6 @@
 package com.grandmagic.readingmate.activity;
 
+import android.content.Intent;
 import android.graphics.Color;
 import android.os.Bundle;
 import android.support.v7.widget.LinearLayoutManager;
@@ -8,6 +9,7 @@ import android.text.Editable;
 import android.text.TextWatcher;
 import android.util.TypedValue;
 import android.view.KeyEvent;
+import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.inputmethod.EditorInfo;
@@ -15,6 +17,7 @@ import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.grandmagic.readingmate.R;
 import com.grandmagic.readingmate.adapter.SearchBookAdapter;
@@ -32,6 +35,9 @@ import java.util.List;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
+import cn.bingoogolapple.refreshlayout.BGARefreshLayout;
+import cn.bingoogolapple.refreshlayout.BGAStickinessRefreshViewHolder;
+import cn.bingoogolapple.refreshlayout.util.SimpleRefreshListener;
 
 //搜索页面
 public class SearchActivity extends AppBaseActivity {
@@ -46,12 +52,6 @@ public class SearchActivity extends AppBaseActivity {
     FlowLayout mHotSearchFlow;
     @BindView(R.id.iv_scanlist)
     ImageView mIvScanlist;
-    @BindView(R.id.iv_searchlist)
-    ImageView mIvSearchlist;
-    @BindView(R.id.bookname)
-    TextView mBookname;
-    @BindView(R.id.timeOrauthor)
-    TextView mTimeOrauthor;
     BookModel mModel;
     @BindView(R.id.recyclerview_book)
     RecyclerView mRecyclerviewBook;
@@ -59,7 +59,12 @@ public class SearchActivity extends AppBaseActivity {
     LinearLayout mViewSearch;
     @BindView(R.id.view_hotSearch)
     LinearLayout mViewHotSearch;
+    @BindView(R.id.lin_scanhis)
+    LinearLayout mLinScanhis;
+    @BindView(R.id.refreshLayout)
+    BGARefreshLayout mRefreshLayout;
     private List<BookSearchResponse.SearchResultBean> bookListData = new ArrayList<>();
+    private String keyword;//输入的搜索关键词
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -88,6 +93,7 @@ public class SearchActivity extends AppBaseActivity {
 
     /**
      * 加载热门搜索的UI
+     *
      * @param mHotword
      */
     private void setHotView(List<String> mHotword) {
@@ -95,16 +101,17 @@ public class SearchActivity extends AppBaseActivity {
             TextView mTextView = new TextView(this);
             mTextView.setText(s);
             mTextView.setTextColor(Color.parseColor("#e6ffff"));
-            mTextView.setTextSize(TypedValue.COMPLEX_UNIT_PX,28);
+            mTextView.setTextSize(TypedValue.COMPLEX_UNIT_PX, 28);
             LinearLayout.LayoutParams mParams = new LinearLayout.LayoutParams(ViewGroup.LayoutParams.WRAP_CONTENT, ViewGroup.LayoutParams.WRAP_CONTENT);
-            mParams.setMargins(20,20,20,20);
+            mParams.setMargins(20, 20, 20, 20);
             mTextView.setLayoutParams(mParams);
             AutoUtils.auto(mTextView);
             mTextView.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
                     mEtSearch.setText(s);
-                    search(s);
+                    keyword=s;
+                    search(currpage);
                 }
             });
             mHotSearchFlow.addView(mTextView);
@@ -117,6 +124,28 @@ public class SearchActivity extends AppBaseActivity {
         mAdapter = new SearchBookAdapter(this, bookListData);
         mRecyclerviewBook.setLayoutManager(new LinearLayoutManager(this));
         mRecyclerviewBook.setAdapter(mAdapter);
+        initRefresh();
+    }
+    private void initRefresh() {
+        BGAStickinessRefreshViewHolder mRefreshViewHolder = new BGAStickinessRefreshViewHolder(this, true);
+        mRefreshViewHolder.setStickinessColor(R.color.colorAccent);
+        mRefreshViewHolder.setRotateImage(R.drawable.bga_refresh_stickiness);
+//        mRefreshLayout.offsetTopAndBottom(88);
+        mRefreshLayout.setRefreshViewHolder(mRefreshViewHolder);
+        mRefreshLayout.setPullDownRefreshEnable(false);
+        mRefreshLayout.setDelegate(new SimpleRefreshListener() {
+            @Override
+            public boolean onBGARefreshLayoutBeginLoadingMore(BGARefreshLayout refreshLayout) {
+                if (currpage < pagecount) {
+                    currpage++;
+                    search(currpage);
+                    return true;
+                } else {
+                    Toast.makeText(SearchActivity.this, "NOMORE", Toast.LENGTH_SHORT).show();
+                }
+                return false;
+            }
+        });
     }
 
     private void initListener() {
@@ -138,11 +167,12 @@ public class SearchActivity extends AppBaseActivity {
         mEtSearch.setOnEditorActionListener(new TextView.OnEditorActionListener() {
             @Override
             public boolean onEditorAction(TextView v, int actionId, KeyEvent event) {
-                String mString = v.getText().toString();
+                keyword = v.getText().toString();
                 if (actionId == EditorInfo.IME_ACTION_SEARCH ||
                         (event != null && event.getKeyCode() == KeyEvent.KEYCODE_ENTER)) {
                     bookListData.clear();
-                    search(mString);
+
+                    search(currpage);
                     return true;
                 }
                 return false;
@@ -150,14 +180,47 @@ public class SearchActivity extends AppBaseActivity {
         });
     }
 
-    // TODO: 2017/3/13 扫码记录（限制5条）暂时没有 ，还没处理，
-    private void search(String mString) {
-        mModel.searchBook(mString, new AppBaseResponseCallBack<NovateResponse<BookSearchResponse>>(this) {
+    /**
+     * 通过关键字从服务端搜索
+     *
+     * @param
+     */
+    int pagecount=1,currpage=1;
+    private void search(int mCurrpage) {
+        mModel.searchBook(keyword,mCurrpage, new AppBaseResponseCallBack<NovateResponse<BookSearchResponse>>(this) {
             @Override
             public void onSuccee(NovateResponse<BookSearchResponse> response) {
+                pagecount=response.getData().getPageCount();
                 bookListData.addAll(response.getData().getSearch_result());
                 mAdapter.refreshData(bookListData);
+                List<BookSearchResponse.ScanRecordBean> mScanList = response.getData().getScan_record();
+                setScanList(mScanList);
             }
         });
+    }
+
+    /**
+     * 处理扫描记录的view
+     *
+     * @param mScanList
+     */
+    public void setScanList(List<BookSearchResponse.ScanRecordBean> mScanList) {
+        for (final BookSearchResponse.ScanRecordBean scan : mScanList) {
+            View mView = LayoutInflater.from(this).inflate(R.layout.view_searchhis, null);
+            TextView nameview = (TextView) mView.findViewById(R.id.bookname);
+            TextView timeview = (TextView) mView.findViewById(R.id.timeOrauthor);
+            nameview.setText("《"+scan.getBook_name()+"》");
+            timeview.setText(scan.getScan_time());
+            mView.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    Intent mIntent = new Intent(SearchActivity.this, BookDetailActivity.class);
+                    mIntent.putExtra(BookDetailActivity.BOOK_ID, scan.getBook_id());
+                    startActivity(mIntent);
+                }
+            });
+            AutoUtils.auto(mView);
+            mLinScanhis.addView(mView);
+        }
     }
 }

@@ -45,7 +45,7 @@ public abstract class ChatItemViewDelegate implements ItemViewDelegate<EMMessage
 
     @Override
     public void convert(ViewHolder holder, EMMessage mChatMessage, int position) {
-        holder.setText(R.id.time, DateUtil.getMillon(mChatMessage.getMsgTime()));
+        holder.setText(R.id.time, DateUtil.timeTodate(mChatMessage.getMsgTime()+""));
         Contacts mUserInfo = IMHelper.getInstance()
                 .getUserInfo(mChatMessage.getFrom());
         if (mUserInfo != null) {

@@ -10,41 +10,6 @@
 
     <include layout="@layout/title_layout"/>
 
-    <RelativeLayout
-        android:layout_width="720px"
-        android:layout_height="90px"
-        android:layout_gravity="center_horizontal"
-        android:layout_marginBottom="50px"
-        android:layout_marginTop="50px"
-        android:focusable="true"
-        android:focusableInTouchMode="true"
-        android:background="@drawable/shape_dash_frame">
-
-        <ImageView
-            android:id="@+id/iv_search"
-            android:layout_width="35px"
-            android:layout_height="35px"
-            android:layout_centerVertical="true"
-            android:layout_marginLeft="52px"
-            android:src="@drawable/ic_search"
-            />
-
-        <EditText
-            android:id="@+id/et_search"
-            android:layout_width="698px"
-            android:layout_height="68px"
-            android:layout_centerVertical="true"
-            android:layout_toRightOf="@+id/iv_search"
-            android:background="@null"
-
-            android:hint="关键字搜索"
-            android:imeOptions="actionSearch"
-            android:paddingLeft="24px"
-            android:textColor="#999999"
-            android:textColorHint="#999999"
-            android:textSize="22px"
-            />
-    </RelativeLayout>
 
     <RelativeLayout
         android:layout_width="match_parent"

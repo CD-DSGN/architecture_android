@@ -58,6 +58,7 @@ public abstract class AppBaseResponseCallBack<T> implements Novate.ResponseCallB
         if (e != null) {
             if (e.getCode() != ApiErrorConsts.token_invalid && e.getCode() != NovateException.UNAUTHORIZED) {
                 Toast.makeText(mContext, e.getMessage() + "", Toast.LENGTH_SHORT).show();
+                Logger.e(e.getMessage());
             } else {
                 Intent intent = new Intent(mContext, LoginActivity.class);
                 mContext.startActivity(intent);

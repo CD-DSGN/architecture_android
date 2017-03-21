@@ -25,10 +25,13 @@ public class ApiInterface {
     public static final String BOOK_DETAIL = "collect/getbookdetail"; //获取图书详情
     public static final String BOOK_COMMENTSCORESTATUS = "collect/getcommentscorestatus"; //我过往对该书的评价
     public static final String SCORE_BOOK = "collect/commentorscorebook"; //对图书评论
+    public static final String DELETE_BOOKCOMMENT = "collect/deletebookcomment"; //删除图书的评论
+    public static final String THUMB_BOOKCOMMENT = "collect/thumbupbookcomment"; //对评论点赞
     public static final String REMOVE_FRIEEND = "friendinfo/removefriend"; //解除好友关系
     public static final String REMARK_FRIEND = "friendinfo/remarkfriend"; //设置备注
     public static final String STEP_LOCATION = "location/setposition"; //上传用户定位
     public static final String GET_LOCATION_PERSON = "location/getposition"; //获取定位附近的好友
+    public static final String BOOK_COMMENT_DETAIL = "collect/getbookcommentsdetail"; //获取图书的评论
 
     public static final String GET_USR_INFO = "userinfo/getuserinfo"; //获取用户基本信息
     public static final String SET_USR_INFO = "userinfo/setpersonal"; //设置用户信息

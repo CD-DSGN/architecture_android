@@ -1,8 +1,10 @@
 package com.grandmagic.readingmate.activity;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.v4.view.ViewPager;
 import android.util.TypedValue;
+import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
@@ -26,6 +28,7 @@ import com.grandmagic.readingmate.utils.InputMethodUtils;
 import com.grandmagic.readingmate.view.HotcommentView;
 import com.grandmagic.readingmate.view.StarView;
 import com.tamic.novate.NovateResponse;
+import com.tamic.novate.util.Environment;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -82,6 +85,8 @@ public class BookDetailActivity extends AppBaseActivity implements View.OnLayout
     TextView mAbout;
     @BindView(R.id.iv_conver)
     ImageView mIvConver;
+    @BindView(R.id.coll_more)
+    ImageView mCollMore;
     @BindView(R.id.lin_collection)
     LinearLayout mLinCollection;
     @BindView(R.id.collectionNum)
@@ -160,8 +165,8 @@ public class BookDetailActivity extends AppBaseActivity implements View.OnLayout
 
     private void initView() {
         List<View> mViews = new ArrayList<>();
-        View mRecentView = new HotcommentView(this);
-        View mHotView = new HotcommentView(this);
+        View mRecentView = new HotcommentView(this,HotcommentView.COMMENT_TIME,mModel,book_id);
+        View mHotView = new HotcommentView(this,HotcommentView.COMMENT_LIKE,mModel,book_id);
         mViews.add(mRecentView);
         mViews.add(mHotView);
         mViewpager.setAdapter(new CommonPagerAdapter(mViews));
@@ -211,16 +216,23 @@ public class BookDetailActivity extends AppBaseActivity implements View.OnLayout
         mEtComment.setLayoutParams(mParams);
     }
 
+    /**
+     * 设置书的详情
+     *
+     * @param s
+     */
     public void setbookView(BookdetailResponse s) {
         mBookname.setText(s.getBook_name());
         mAuthor.setText(s.getAuthor());
         mTvPublisher.setText(s.getPublisher());
         mTvPublistime.setText(s.getPub_date());
-//        mAbout.setText(s.getSynopsis());
-        ImageLoader.loadImage(this, "http://files.jb51.net/do/uploads/litimg/160809/1FR52JC7.jpg", mIvConver);
+        mAbout.setText(s.getSynopsis());
+        mCollectionNum.setText(s.getCollect_count());
+        ImageLoader.loadImage(this, s.getPhoto(), mIvConver);
+        setCollectView(s.getCollect_user());
     }
 
-    @OnClick({R.id.back, R.id.submit, R.id.tv_last, R.id.tv_hot})
+    @OnClick({R.id.back, R.id.submit, R.id.tv_last, R.id.tv_hot,R.id.coll_more})
     public void onClick(View view) {
         switch (view.getId()) {
             case R.id.back:
@@ -234,6 +246,9 @@ public class BookDetailActivity extends AppBaseActivity implements View.OnLayout
                 break;
             case R.id.tv_hot:
                 hotSelected();
+                break;
+            case R.id.coll_more:
+                startActivity(new Intent(BookDetailActivity.this,CollectedPersonActivity.class));
                 break;
         }
     }
@@ -249,7 +264,20 @@ public class BookDetailActivity extends AppBaseActivity implements View.OnLayout
             @Override
             public void onSuccee(NovateResponse response) {
                 InputMethodUtils.hide(BookDetailActivity.this);
+                mEtComment.setText("");
             }
         });
+    }
+
+    public void setCollectView(List<BookdetailResponse.CollectUserBean> mCollectView) {
+        for (BookdetailResponse.CollectUserBean user : mCollectView) {
+            ImageView mView =new ImageView(this);
+            LinearLayout.LayoutParams mParams=new LinearLayout.LayoutParams(70,70);
+           mView.setLayoutParams(mParams);
+            AutoUtils.auto(mView);
+            ImageLoader.loadRoundImage(this, Environment.BASEULR_PRODUCTION+ user.getAvatar_url().getMid(), mView);
+            mLinCollection.addView(mView);
+        }
+
     }
 }

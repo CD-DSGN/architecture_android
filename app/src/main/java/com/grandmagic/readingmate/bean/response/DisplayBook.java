@@ -97,4 +97,12 @@ public class DisplayBook {
             this.synopsis = synopsis;
         }
     }
+    public int  getpage(){
+        try {
+            return (int) Math.ceil(total_num*1.0f/num);
+        } catch (Exception mE) {
+            mE.printStackTrace();
+         return 0;
+        }
+    }
 }

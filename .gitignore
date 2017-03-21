@@ -9,3 +9,6 @@
 .externalNativeBuild
 /.idea
 .idea
+/build.gradle
+/gradle/wrapper/gradle-wrapper.properties
+/*.gitignore
