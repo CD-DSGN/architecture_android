@@ -32,5 +32,10 @@ public class ApiInterface {
 
     public static final String GET_USR_INFO = "userinfo/getuserinfo"; //获取用户基本信息
     public static final String SET_USR_INFO = "userinfo/setpersonal"; //设置用户信息
-    public static final String upload_avar = "userinfo/uploadavatar"; //上传用户头像
+    public static final String UPLOAD_AVAR = "userinfo/uploadavatar"; //上传用户头像
+
+    public static final String MY_COMMENTS_LIST = "comment/commentrecord"; //个人评论列表
+    
+
+
 }
