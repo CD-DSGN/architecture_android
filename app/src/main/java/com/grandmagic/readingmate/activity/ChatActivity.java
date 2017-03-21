@@ -24,6 +24,8 @@ import com.grandmagic.readingmate.adapter.MessageIMGRecDelagate;
 import com.grandmagic.readingmate.adapter.MessageIMGSendDelagate;
 import com.grandmagic.readingmate.adapter.MessageTextRecDelagate;
 import com.grandmagic.readingmate.adapter.MessageTextSendDelagate;
+import com.grandmagic.readingmate.adapter.MessageVoiceRecDelagate;
+import com.grandmagic.readingmate.adapter.MessageVoiceSendDelagate;
 import com.grandmagic.readingmate.adapter.MultiItemTypeAdapter;
 import com.grandmagic.readingmate.base.AppBaseActivity;
 import com.grandmagic.readingmate.event.ContactDeleteEvent;
@@ -203,6 +205,8 @@ public class ChatActivity extends AppBaseActivity implements EMMessageListener, 
         mAdapter.addItemViewDelegate(new MessageTextRecDelagate(this).setChatClickListener(this));
         mAdapter.addItemViewDelegate(new MessageIMGSendDelagate(this).setChatClickListener(this));
         mAdapter.addItemViewDelegate(new MessageIMGRecDelagate(this).setChatClickListener(this));
+        mAdapter.addItemViewDelegate(new MessageVoiceRecDelagate(this).setChatClickListener(this));
+        mAdapter.addItemViewDelegate(new MessageVoiceSendDelagate(this).setChatClickListener(this));
         mMessagerecyclerview.setAdapter(mAdapter);
         conversationInit();
         initrefreshlayout();
