@@ -69,6 +69,8 @@
     </LinearLayout>
 
     <LinearLayout
+        android:id="@+id/lin_like"
+        android:padding="5dp"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_alignParentRight="true"
@@ -81,7 +83,7 @@
             android:id="@+id/ib_good"
             android:layout_width="26px"
             android:layout_height="26px"
-            android:background="@drawable/iv_like"
+            android:background="@drawable/selector_like"
             />
 
         <TextView

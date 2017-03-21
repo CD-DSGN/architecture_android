@@ -149,14 +149,14 @@ public class BookModel {
     /**
      * 对评论点赞
      *
-     * @param bookid bookid
+     * @param comment_id comment_id
      * @param mBack
      */
-    public void thumbBookComment(String bookid, AppBaseResponseCallBack mBack) {
+    public void thumbBookComment(String comment_id, AppBaseResponseCallBack mBack) {
         Novate mNovate = new Novate.Builder(mContext).build();
         JSONObject mJSONObject = new JSONObject();
         try {
-            mJSONObject.put("book_id", bookid);
+            mJSONObject.put("comment_id", comment_id);
         } catch (JSONException mE) {
             mE.printStackTrace();
         }

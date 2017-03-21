@@ -27,9 +27,10 @@ import cn.bingoogolapple.refreshlayout.util.SimpleRefreshListener;
 
 /**
  * Created by lps on 2017/3/14.
+ * 处理详情页的评论相关。Activity里面逻辑太多
  */
 
-public class HotcommentView extends FrameLayout {
+public class HotcommentView extends FrameLayout implements BookCommentsAdapter.AdapterListener {
     private String order_way;
     private BookModel mModel;
     private String mBook_id;
@@ -58,7 +59,7 @@ public class HotcommentView extends FrameLayout {
         mModel.loadBookComment(mBook_id, currpage, order_way, new AppBaseResponseCallBack<NovateResponse<BookCommentResponse>>(mContext) {
             @Override
             public void onSuccee(NovateResponse<BookCommentResponse> response) {
-                pagecount=response.getData().getPageCount();
+                pagecount = response.getData().getPageCount();
                 mList.addAll(response.getData().getComments());
                 mAdapter.refreshData(mList);
             }
@@ -82,6 +83,7 @@ public class HotcommentView extends FrameLayout {
         mRecyclerview.setLayoutManager(new LinearLayoutManager(mContext));
         mList = new ArrayList<>();
         mAdapter = new BookCommentsAdapter(mContext, mList);
+        mAdapter.setListener(this);
         mRecyclerview.setAdapter(mAdapter);
     }
 
@@ -109,4 +111,21 @@ public class HotcommentView extends FrameLayout {
         });
     }
 
+    /**
+     * 对评论点赞
+     *
+     * @param commentid
+     */
+    @Override
+    public void thumb(String commentid, final int position) {
+        mModel.thumbBookComment(commentid, new AppBaseResponseCallBack<NovateResponse>(mContext) {
+            @Override
+            public void onSuccee(NovateResponse response) {
+                mList.get(position).setThumb_up("1");
+                int mLike_times = mList.get(position).getLike_times();
+                mList.get(position).setLike_times(mLike_times+1);
+                mAdapter.refreshData(mList);
+            }
+        });
+    }
 }

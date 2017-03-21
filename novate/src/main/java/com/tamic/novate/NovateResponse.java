@@ -3,6 +3,8 @@ package com.tamic.novate;
 
 import android.content.Context;
 
+import com.google.gson.annotations.JsonAdapter;
+import com.google.gson.internal.bind.ObjectDeserializer;
 import com.tamic.novate.config.ConfigLoader;
 
 /**
@@ -15,6 +17,7 @@ public class NovateResponse<T> {
     /*错误信息:msg, error, message*/
     private String message;
     /*真实数据 data或者result*/
+    @JsonAdapter(ObjectDeserializer.class)
     private T data;
 
 

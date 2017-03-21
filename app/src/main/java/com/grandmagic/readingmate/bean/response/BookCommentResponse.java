@@ -24,10 +24,11 @@ public class BookCommentResponse {
     private int num;
     @JsonAdapter(ListTypeAdapterFactory.class)
     private List<CommentsBean> comments;
-public int getPageCount(){
-    if (total_num==0)return 0;
-    return (int) ceil(total_num*1.0f/num);
-}
+
+    public int getPageCount() {
+        if (total_num == 0) return 0;
+        return (int) ceil(total_num * 1.0f / num);
+    }
 
     public int getTotal_num() {
         return total_num;
@@ -68,10 +69,28 @@ public int getPageCount(){
         @JsonAdapter(ObjectDeserializer.class)
         private ImageUrlResponseBean avatar;
         private String pub_time;
-        private String like_times;
+        private int like_times;
         private String contents;
         private String user_score;
         private String reply_count;
+        private String comment_id;
+        private String thumb_up;
+
+        public String getComment_id() {
+            return comment_id;
+        }
+
+        public void setComment_id(String mComment_id) {
+            comment_id = mComment_id;
+        }
+
+        public String getThumb_up() {
+            return thumb_up;
+        }
+
+        public void setThumb_up(String mThumb_up) {
+            thumb_up = mThumb_up;
+        }
 
         public String getUser_name() {
             return user_name;
@@ -97,11 +116,11 @@ public int getPageCount(){
             pub_time = mPub_time;
         }
 
-        public String getLike_times() {
+        public int getLike_times() {
             return like_times;
         }
 
-        public void setLike_times(String mLike_times) {
+        public void setLike_times(int mLike_times) {
             like_times = mLike_times;
         }
 
