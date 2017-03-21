@@ -55,15 +55,17 @@ public class BookModel {
 
     /**
      * 通过关键字搜索图书
-     *
-     * @param keyword
+     *  @param keyword
+     * @param mCurrpage 页码
      * @param mAppBaseResponseCallBack
      */
-    public void searchBook(String keyword, AppBaseResponseCallBack mAppBaseResponseCallBack) {
+    public void searchBook(String keyword, int mCurrpage, AppBaseResponseCallBack mAppBaseResponseCallBack) {
         Novate mNovate = new Novate.Builder(mContext).build();
         JSONObject mJSONObject = new JSONObject();
         try {
             mJSONObject.put("keyword", keyword);
+            mJSONObject.put("cpage", mCurrpage);
+            mJSONObject.put("pagesize", 10);
         } catch (JSONException mE) {
             mE.printStackTrace();
         }

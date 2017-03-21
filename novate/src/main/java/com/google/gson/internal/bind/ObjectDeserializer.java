@@ -18,9 +18,11 @@ public class ObjectDeserializer implements JsonDeserializer {
 
     @Override
     public Object deserialize(JsonElement json, Type typeOfT, JsonDeserializationContext context) throws JsonParseException {
-      if (json.isJsonObject()){
-          Gson mGson=new Gson();
+        Gson mGson=new Gson();
+        if (json.isJsonObject()){
           return mGson.fromJson(json,typeOfT);
+      }else if (json.isJsonArray()){
+         return mGson.fromJson(json,typeOfT);
       }else {
           String className = typeOfT.toString();
           if (className.startsWith(TYPE_NAME_PREFIX)) {

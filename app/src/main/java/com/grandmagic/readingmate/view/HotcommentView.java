@@ -116,6 +116,7 @@ public class HotcommentView extends FrameLayout implements BookCommentsAdapter.A
      *
      * @param commentid
      */
+    // FIXME: 2017/3/21 在最新或者最热点赞之后不好更新另一个view的点赞情况
     @Override
     public void thumb(String commentid, final int position) {
         mModel.thumbBookComment(commentid, new AppBaseResponseCallBack<NovateResponse>(mContext) {

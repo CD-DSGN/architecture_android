@@ -49,8 +49,6 @@
         android:layout_height="wrap_content"
         android:orientation="vertical"
         >
-
-        <include layout="@layout/view_searchhis"/>
     </LinearLayout>
 
     <RelativeLayout
@@ -88,12 +86,16 @@
 
             />
     </RelativeLayout>
-
+<cn.bingoogolapple.refreshlayout.BGARefreshLayout
+    android:layout_width="match_parent"
+    android:id="@+id/refreshLayout"
+    android:layout_height="match_parent">
     <android.support.v7.widget.RecyclerView
         android:id="@+id/recyclerview_book"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:orientation="vertical"
+        android:layout_height="0dp"
+        android:layout_weight="1"
         >
     </android.support.v7.widget.RecyclerView>
+    </cn.bingoogolapple.refreshlayout.BGARefreshLayout>
 </LinearLayout>
