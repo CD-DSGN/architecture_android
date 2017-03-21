@@ -29,6 +29,7 @@ import com.grandmagic.readingmate.adapter.MessageVoiceSendDelagate;
 import com.grandmagic.readingmate.adapter.MultiItemTypeAdapter;
 import com.grandmagic.readingmate.base.AppBaseActivity;
 import com.grandmagic.readingmate.event.ContactDeleteEvent;
+import com.grandmagic.readingmate.listener.VoicePlayClickListener;
 import com.grandmagic.readingmate.utils.AutoUtils;
 import com.grandmagic.readingmate.utils.IMHelper;
 import com.grandmagic.readingmate.utils.InputMethodUtils;
@@ -414,5 +415,8 @@ public class ChatActivity extends AppBaseActivity implements EMMessageListener, 
     protected void onDestroy() {
         super.onDestroy();
         EventBus.getDefault().unregister(this);
+        if (VoicePlayClickListener.isPlaying) {
+            VoicePlayClickListener.currentPlayListener.stopPlayVoice();
+        }
     }
 }

@@ -133,7 +133,7 @@ public class VoiceRecoder {
     }
 
     public String getVoiceFilePath() {
-        return voiceFilePath;
+        return mFile.getAbsolutePath();
     }
 
     public String getVoiceFileName() {

@@ -16,6 +16,7 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.grandmagic.readingmate.R;
+import com.grandmagic.readingmate.listener.VoicePlayClickListener;
 import com.hyphenate.EMError;
 
 /**
@@ -92,8 +93,8 @@ public class VoiceRecordView extends RelativeLayout {
         switch (event.getAction()) {
             case MotionEvent.ACTION_DOWN:
                 try {
-//                    if (EaseChatRowVoicePlayClickListener.isPlaying)
-//                        EaseChatRowVoicePlayClickListener.currentPlayListener.stopPlayVoice();
+                    if (VoicePlayClickListener.isPlaying)
+                        VoicePlayClickListener.currentPlayListener.stopPlayVoice();
                     v.setPressed(true);
                     startRecording();
                 } catch (Exception e) {
