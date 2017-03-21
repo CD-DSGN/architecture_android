@@ -1,25 +1,29 @@
 package com.grandmagic.readingmate.activity;
 
+import android.Manifest;
 import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
+import android.graphics.Bitmap;
 import android.graphics.Color;
 import android.net.Uri;
 import android.os.Bundle;
 import android.os.Environment;
 import android.provider.MediaStore;
 import android.text.TextUtils;
-import android.util.Base64;
+import android.util.Log;
 import android.view.View;
 import android.widget.ImageView;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.grandmagic.readingmate.R;
 import com.grandmagic.readingmate.base.AppBaseActivity;
 import com.grandmagic.readingmate.base.AppBaseResponseCallBack;
 import com.grandmagic.readingmate.bean.request.UploadImgBean;
 import com.grandmagic.readingmate.bean.response.ImageUrlResponseBean;
+import com.grandmagic.readingmate.bean.response.UploadAvarResponseBean;
 import com.grandmagic.readingmate.bean.response.UserInfoResponseBean;
 import com.grandmagic.readingmate.consts.ApiInterface;
 import com.grandmagic.readingmate.fragment.PersonalFragment;
@@ -31,22 +35,25 @@ import com.grandmagic.readingmate.ui.UploadAvarDlg;
 import com.grandmagic.readingmate.utils.AutoUtils;
 import com.grandmagic.readingmate.utils.KitUtils;
 import com.grandmagic.readingmate.utils.ViewUtils;
-import com.grandmagic.readingmate.view.CircleImageView;
 import com.tamic.novate.Novate;
 import com.tamic.novate.NovateResponse;
 import com.tamic.novate.Throwable;
 import com.tamic.novate.download.DownLoadCallBack;
+import com.tbruyelle.rxpermissions.RxPermissions;
 import com.yuyh.library.imgsel.ImageLoader;
 import com.yuyh.library.imgsel.ImgSelActivity;
 import com.yuyh.library.imgsel.ImgSelConfig;
 
 import java.io.File;
-import java.io.FileInputStream;
+import java.io.FileNotFoundException;
+import java.io.FileOutputStream;
+import java.io.IOException;
 import java.util.List;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
+import rx.functions.Action1;
 
 public class PersonalInfoEditActivity extends AppBaseActivity {
 
@@ -55,7 +62,7 @@ public class PersonalInfoEditActivity extends AppBaseActivity {
     @BindView(R.id.title)
     TextView mTitle;
     @BindView(R.id.iv_avar)
-    CircleImageView mIvAvar;
+    ImageView mIvAvar;
     @BindView(R.id.tv_nickname)
     TextView mTvNickname;
     @BindView(R.id.tv_signature)
@@ -70,10 +77,14 @@ public class PersonalInfoEditActivity extends AppBaseActivity {
     private UserInfoModel mUserInfoModel;
     private UploadAvarDlg mUploadAvarDlg;
 
-    private static int SEL_IMG = 1;
-    private static int TAKE_PHOTO = 2;
+    private static final int SEL_IMG = 1;
+    private static final int TAKE_PHOTO = 2;
+    private static final int CROP_SMALL_PICTURE = 3; //压缩拍照图片
 
     private String mPhotoName;
+    private String PHOTO_TMP = "DSGN:tmp.jpg";
+
+    private String path;
 
     private UserInfoResponseBean mUserInfoResponseBean;
 
@@ -184,12 +195,12 @@ public class PersonalInfoEditActivity extends AppBaseActivity {
                 novate.download(KitUtils.getAbsoluteUrl(url), new DownLoadCallBack() {
                     @Override
                     public void onError(Throwable e) {
-                        ViewUtils.showToast("下载失败");
+                        ViewUtils.showToast(getString(R.string.download_fail));
                     }
 
                     @Override
                     public void onSucess(String key, String path, String name, long fileSize) {
-                        ViewUtils.showToast("下载成功");
+                        ViewUtils.showToast(getString(R.string.downlaod_success));
                     }
                 });
             }
@@ -281,74 +292,81 @@ public class PersonalInfoEditActivity extends AppBaseActivity {
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         if (resultCode == Activity.RESULT_OK) {
-            if (requestCode == SEL_IMG) {  //选择照片
-                List<String> paths = data.getStringArrayListExtra(ImgSelActivity.INTENT_RESULT);
-                String path = paths.get(0);
-                File file = new File(path);
+            switch (requestCode) {
+                case SEL_IMG:
+                    List<String> paths = data.getStringArrayListExtra(ImgSelActivity.INTENT_RESULT);
+                    path = paths.get(0);
+                    File file = new File(path);
+                    upload_img(file);
+                    break;
 
-                upload_img(file);
-                return;
-            }
+                case TAKE_PHOTO:
+                    File file1 = new File(Environment.getExternalStorageDirectory(), mPhotoName);  //拍照上传还需要压缩
+                    startPhotoZoom(Uri.fromFile(file1));
+                    break;
 
-            if (requestCode == TAKE_PHOTO) {  //拍照
-                File file = new File(Environment.getExternalStorageDirectory(), mPhotoName);
-                upload_img(file);
-                return;
+                case CROP_SMALL_PICTURE:  //拍照的压缩
+                    compressAndUpload(data);
+                    break;
+
             }
         }
     }
 
-//    private void upload_img(File file) {
-//        Novate novate = new Novate.Builder(this).build();
-//        PersonalFragment.NEED_REFRESH = true;
-//        novate.uploadImage(ApiInterface.upload_avar, file, new Subscriber<ResponseBody>() {
-//            @Override
-//            public void onCompleted() {
-//
-//            }
-//
-//            @Override
-//            public void onError(java.lang.Throwable e) {
-//
-//            }
-//
-//
-//            @Override
-//            public void onNext(ResponseBody responseBody) {
-//
-//            }
-//        });
-//    }
+    private void compressAndUpload(Intent data) {
+        Bundle extras = data.getExtras();
+        if (extras != null) {
+            Bitmap bitmap = extras.getParcelable("data");
+            FileOutputStream b = null;
+            File tmp = new File(Environment.getExternalStorageDirectory(), PHOTO_TMP);
+            try {
+                b = new FileOutputStream(tmp);
+                bitmap.compress(Bitmap.CompressFormat.JPEG, 100, b);// 把数据写入文件
+            } catch (FileNotFoundException e) {
+                e.printStackTrace();
+            } finally {
+                try {
+                    b.flush();
+                    b.close();
+                } catch (IOException e) {
+                    e.printStackTrace();
+                }
+            }
 
-
+            if (tmp.exists()) {
+                upload_img(tmp);
+            }
+        }
+    }
 
     //改用base64传
     private void upload_img(File file) {
         Novate novate = new Novate.Builder(this).build();
-        PersonalFragment.NEED_REFRESH = true;
+
         try {
-            String str = encodeBase64File(file);
+            String str = KitUtils.encodeBase64File(file);
             UploadImgBean uploadImgBean = new UploadImgBean();
             uploadImgBean.setAvatar(str);
-            novate.executeJson(ApiInterface.upload_avar, uploadImgBean.toGson(), new AppBaseResponseCallBack<NovateResponse<Object>>(this) {
+            novate.executeJson(ApiInterface.upload_avar, uploadImgBean.toGson(), new AppBaseResponseCallBack<NovateResponse<UploadAvarResponseBean>>(this) {
+
                 @Override
-                public void onSuccee(NovateResponse<Object> response) {
-                    ViewUtils.showToast("上传成功");
+                public void onSuccee(NovateResponse<UploadAvarResponseBean> response) {
+                    UploadAvarResponseBean uploadAvarResponseBean = response.getData();
+                    PersonalFragment.NEED_REFRESH = true; //上传成功
+                    ImageUrlResponseBean imageUrlResponseBean = uploadAvarResponseBean.getAvatar_url();
+                    if (imageUrlResponseBean != null) {
+                        String url_large = imageUrlResponseBean.getLarge();
+                        if (!TextUtils.isEmpty(url_large))
+                            com.grandmagic.readingmate.utils.ImageLoader.loadCircleImage(PersonalInfoEditActivity.this,
+                                    KitUtils.getAbsoluteUrl(url_large), mIvAvar);
+                    }
+
                 }
             });
         } catch (Exception e) {
             e.printStackTrace();
         }
 
-    }
-
-    //把file转成base64
-    public static String encodeBase64File(File file) throws Exception {
-        FileInputStream inputFile = new FileInputStream(file);
-        byte[] buffer = new byte[(int)file.length()];
-        inputFile.read(buffer);
-        inputFile.close();
-        return Base64.encodeToString(buffer,Base64.DEFAULT);
     }
 
 
@@ -387,12 +405,47 @@ public class PersonalInfoEditActivity extends AppBaseActivity {
     }
 
     private void takePhoto() {
-        //需要权限
-        Intent intent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
+        //获取权限
+        final Intent intent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
         mPhotoName = "DSGN:" + System.currentTimeMillis() + ".jpg";
         intent.putExtra(MediaStore.EXTRA_OUTPUT, Uri.fromFile(new File(Environment
                 .getExternalStorageDirectory(), mPhotoName
         )));
-        startActivityForResult(intent, TAKE_PHOTO);
+
+        new RxPermissions(this).request(Manifest.permission.CAMERA).subscribe(new Action1<Boolean>() {
+            @Override
+            public void call(Boolean b) {
+                if (b) {
+                    startActivityForResult(intent, TAKE_PHOTO);
+                } else {
+                    Toast.makeText(PersonalInfoEditActivity.this, "你没有给予权限。无法打开相机", Toast.LENGTH_SHORT).show();
+                }
+            }
+        });
+
+    }
+
+
+    /**
+     * 裁剪图片方法实现
+     *
+     * @param uri
+     */
+    protected void startPhotoZoom(Uri uri) {
+        if (uri == null) {
+            Log.i("tag", "The uri is not exist.");
+        }
+        Intent intent = new Intent("com.android.camera.action.CROP");
+        intent.setDataAndType(uri, "image/*");
+        // 设置裁剪
+        intent.putExtra("crop", "true");
+        // aspectX aspectY 是宽高的比例
+        intent.putExtra("aspectX", 1);
+        intent.putExtra("aspectY", 1);
+        // outputX outputY 是裁剪图片宽高
+        intent.putExtra("outputX", 200);
+        intent.putExtra("outputY", 200);
+        intent.putExtra("return-data", true);
+        startActivityForResult(intent, CROP_SMALL_PICTURE);
     }
 }

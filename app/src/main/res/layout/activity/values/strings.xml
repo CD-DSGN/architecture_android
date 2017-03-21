@@ -92,4 +92,6 @@
     <string name="reply">回复</string>
     <string name="good">赞</string>
     <string name="reply_all">全部回复</string>
+    <string name="download_fail">下载失败</string>
+    <string name="downlaod_success">下载成功</string>
 </resources>

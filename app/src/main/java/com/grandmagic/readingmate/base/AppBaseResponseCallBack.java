@@ -11,6 +11,7 @@ import com.grandmagic.readingmate.consts.ApiErrorConsts;
 import com.orhanobut.logger.Logger;
 import com.tamic.novate.Novate;
 import com.tamic.novate.Throwable;
+import com.tamic.novate.exception.NovateException;
 
 /**
  * Created by zhangmengqi on 2017/2/9.
@@ -55,7 +56,7 @@ public abstract class AppBaseResponseCallBack<T> implements Novate.ResponseCallB
         Logger.e("Novate Error"+e.getMessage());
         dismissLoading();
         if (e != null) {
-            if (e.getCode() != ApiErrorConsts.token_invalid) {
+            if (e.getCode() != ApiErrorConsts.token_invalid && e.getCode() != NovateException.UNAUTHORIZED) {
                 Toast.makeText(mContext, e.getMessage() + "", Toast.LENGTH_SHORT).show();
                 Logger.e(e.getMessage());
             } else {

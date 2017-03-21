@@ -4,8 +4,12 @@ import android.content.Context;
 import android.content.pm.PackageInfo;
 import android.content.pm.PackageManager;
 import android.text.TextUtils;
+import android.util.Base64;
 
 import com.tamic.novate.util.Environment;
+
+import java.io.File;
+import java.io.FileInputStream;
 
 /**
  * Created by zhangmengqi on 2017/2/9.
@@ -56,6 +60,15 @@ public class KitUtils {
 
     public static String getAbsoluteUrl(String url) {
         return Environment.getUrl() + url;
+    }
+
+    //把file转成base64
+    public static String encodeBase64File(File file) throws Exception {
+        FileInputStream inputFile = new FileInputStream(file);
+        byte[] buffer = new byte[(int) file.length()];
+        inputFile.read(buffer);
+        inputFile.close();
+        return Base64.encodeToString(buffer, Base64.DEFAULT);
     }
 
 }

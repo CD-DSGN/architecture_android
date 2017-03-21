@@ -31,7 +31,7 @@
             android:textSize="32px"
             />
 
-        <com.grandmagic.readingmate.view.CircleImageView
+        <ImageView
             android:id="@+id/iv_avar"
             android:layout_width="90px"
             android:layout_height="90px"

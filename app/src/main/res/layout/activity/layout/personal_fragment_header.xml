@@ -5,13 +5,13 @@
               android:layout_height="wrap_content"
               android:orientation="vertical">
 
-    <com.grandmagic.readingmate.view.CircleImageView
+    <ImageView
         android:id="@+id/iv_frag_personal_header"
         android:layout_width="266px"
         android:layout_height="266px"
         android:layout_gravity="center_horizontal"
         android:layout_marginTop="90px"
-        android:background="@drawable/logo"
+        android:src="@drawable/logo"
         />
 
     <TextView
