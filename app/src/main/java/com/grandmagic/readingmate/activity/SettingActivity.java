@@ -5,12 +5,14 @@ import android.os.Bundle;
 import android.view.View;
 import android.widget.ImageButton;
 import android.widget.ImageView;
+import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import com.grandmagic.readingmate.R;
 import com.grandmagic.readingmate.base.AppBaseActivity;
 import com.grandmagic.readingmate.base.AppBaseResponseCallBack;
 import com.grandmagic.readingmate.model.LoginModel;
+import com.grandmagic.readingmate.ui.CleanCacheDlg;
 import com.grandmagic.readingmate.utils.AutoUtils;
 import com.grandmagic.readingmate.utils.KitUtils;
 import com.grandmagic.readingmate.utils.ViewUtils;
@@ -40,6 +42,8 @@ public class SettingActivity extends AppBaseActivity {
     TextView mTitle;
     @BindView(R.id.switch_setting_push)
     ImageButton mSwitchSettingPush;
+    @BindView(R.id.rl_clean_cache)
+    RelativeLayout mRlCleanCache;
 
 
     @Override
@@ -75,7 +79,7 @@ public class SettingActivity extends AppBaseActivity {
     private void changeSwitch(boolean checked) {
         if (checked) {
             mSwitchSettingPush.setBackgroundResource(R.drawable.ic_off);
-        }else{
+        } else {
             mSwitchSettingPush.setBackgroundResource(R.drawable.ic_on);
         }
     }
@@ -108,7 +112,7 @@ public class SettingActivity extends AppBaseActivity {
         startActivity(intent);
     }
 
-    @OnClick({R.id.logout, R.id.back, R.id.switch_setting_push})
+    @OnClick({R.id.logout, R.id.back, R.id.switch_setting_push,R.id.rl_clean_cache})
     public void onClick(View view) {
         switch (view.getId()) {
             case R.id.logout:
@@ -121,9 +125,13 @@ public class SettingActivity extends AppBaseActivity {
                 changeSwitch(!checked);
                 //保存状态
                 SPUtils.getInstance().setPushSetting(this, !checked);
+            case R.id.rl_clean_cache:
+                CleanCacheDlg cleanCacheDlg = new CleanCacheDlg(this);
+                cleanCacheDlg.show();
             default:
                 break;
         }
     }
+
 
 }

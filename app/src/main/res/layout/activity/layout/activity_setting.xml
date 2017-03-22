@@ -185,11 +185,13 @@
         android:layout_marginRight="69px"
         android:paddingBottom="26px"
         android:paddingTop="26px"
+        android:id="@+id/rl_clean_cache"
         >
 
         <TextView
             style="@style/setting_item_header"
-            android:text="@string/clear_cache"/>
+            android:text="@string/clear_cache"
+            android:id="@+id/tv_clear_cache"/>
     </RelativeLayout>
 
     <ImageView
