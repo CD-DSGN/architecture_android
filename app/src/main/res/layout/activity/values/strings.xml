@@ -94,4 +94,8 @@
     <string name="reply_all">全部回复</string>
     <string name="download_fail">下载失败</string>
     <string name="downlaod_success">下载成功</string>
+    <string name="clean_cache">清理缓存</string>
+    <string name="clean_cache_hint">确定要清理所有缓存吗?</string>
+    <string name="clean_cache_finish">清理完毕</string>
+    <string name="clean_cache_fail">清理缓存失败</string>
 </resources>

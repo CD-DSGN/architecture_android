@@ -48,7 +48,7 @@ public class MyCommentAdapter extends CommonAdapter<PersonnalCommentResponseBean
             String time = personnalCommentResponseBean.getPub_time();
             String time_str = "";
             try {
-                time_str = DateUtil.getMillon(Long.parseLong(time));
+                time_str = DateUtil.timeTodate1(time);
             } catch (Exception e) {
                 e.printStackTrace();
             }
@@ -65,6 +65,12 @@ public class MyCommentAdapter extends CommonAdapter<PersonnalCommentResponseBean
                     mSharePopUpWindow.show();
                 }
             });
+
+            holder.setText(R.id.tv_book_name, personnalCommentResponseBean.getBook_name());
+            String book_cover = personnalCommentResponseBean.getPhoto();
+            if (!TextUtils.isEmpty(book_cover)) {
+                ImageLoader.loadCircleImage(mContext, KitUtils.getAbsoluteUrl(book_cover), (ImageView) holder.getView(R.id.cover));
+            }
         }
     }
 
