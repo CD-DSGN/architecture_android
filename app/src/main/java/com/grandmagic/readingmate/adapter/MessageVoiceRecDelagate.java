@@ -47,7 +47,7 @@ public class MessageVoiceRecDelagate extends ChatItemViewDelegate {
         mvoiceImageview.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                new VoicePlayClickListener(mChatMessage,mvoiceImageview,mContext);
+                new VoicePlayClickListener(mChatMessage,mvoiceImageview,mContext).onClick(v);
             }
         });
     }

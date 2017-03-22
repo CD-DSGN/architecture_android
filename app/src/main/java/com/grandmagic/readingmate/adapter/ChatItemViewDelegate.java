@@ -1,6 +1,8 @@
 package com.grandmagic.readingmate.adapter;
 
 import android.content.Context;
+import android.os.Handler;
+import android.os.Message;
 import android.util.Log;
 import android.view.View;
 import android.view.ViewGroup;
@@ -14,6 +16,7 @@ import com.grandmagic.readingmate.utils.IMHelper;
 import com.grandmagic.readingmate.utils.ImageLoader;
 import com.hyphenate.EMCallBack;
 import com.hyphenate.chat.EMMessage;
+import com.orhanobut.logger.Logger;
 import com.tamic.novate.util.Environment;
 import com.zhy.adapter.recyclerview.base.ItemViewDelegate;
 import com.zhy.adapter.recyclerview.base.ViewHolder;
@@ -25,6 +28,7 @@ import com.zhy.adapter.recyclerview.base.ViewHolder;
  */
 
 public abstract class ChatItemViewDelegate implements ItemViewDelegate<EMMessage> {
+    private static final String TAG = "ChatItemViewDelegate";
     EMMessage.Direct mDirect;
     Context mContext;
 
@@ -45,7 +49,8 @@ public abstract class ChatItemViewDelegate implements ItemViewDelegate<EMMessage
 
     @Override
     public void convert(ViewHolder holder, EMMessage mChatMessage, int position) {
-        holder.setText(R.id.time, DateUtil.timeTodate(mChatMessage.getMsgTime()+""));
+        long mMsgTime = mChatMessage.getMsgTime();
+        holder.setText(R.id.time, DateUtil.timeTodate(mChatMessage.getMsgTime() + ""));
         Contacts mUserInfo = IMHelper.getInstance()
                 .getUserInfo(mChatMessage.getFrom());
         if (mUserInfo != null) {
@@ -66,24 +71,38 @@ public abstract class ChatItemViewDelegate implements ItemViewDelegate<EMMessage
         ViewHolder mHolder = ViewHolder.createViewHolder(mContext, childView);
         RelativeLayout holderView = holder.getView(R.id.contentView);
         childConvert(mHolder, mChatMessage, position);
+        final Handler mHandler = new Handler() {
+            @Override
+            public void handleMessage(Message msg) {
+                switch (msg.what) {
+                    case 0:
+                        statesView.setVisibility(View.GONE);
+                        progress.setVisibility(View.GONE);
+                        break;
+                    case 1:
+                        statesView.setVisibility(View.VISIBLE);
+                        progress.setVisibility(View.GONE);
+                        break;
+                    case 2:
+                        progress.setVisibility(View.VISIBLE);
+                        break;
+
+                }
+            }
+        };
         mChatMessage.setMessageStatusCallback(new EMCallBack() {
             @Override
             public void onSuccess() {
-                statesView.setVisibility(View.GONE);
-                progress.setVisibility(View.GONE);
+                mHandler.hasMessages(0);
             }
-
             @Override
             public void onError(int mI, String mS) {
-                statesView.setVisibility(View.VISIBLE);
-                progress.setVisibility(View.GONE);
-
+                mHandler.hasMessages(1);
             }
 
             @Override
             public void onProgress(int mI, String mS) {
-                progress.setVisibility(View.VISIBLE);
-
+                mHandler.hasMessages(2);
             }
 
         });

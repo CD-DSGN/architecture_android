@@ -12,7 +12,7 @@ import java.util.Locale;
 
 public class DateUtil {
     public static String timeTodate(String time){
-        long time1 = 0;
+        long time1 = Long.parseLong(time);
         if (time!=null&&time.length()==10){
             try {
                 time1 = Long.parseLong(time) * 1000;

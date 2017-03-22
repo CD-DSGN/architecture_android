@@ -1,12 +1,12 @@
 package com.grandmagic.readingmate.activity;
 
+import android.Manifest;
 import android.content.Context;
 import android.content.Intent;
 import android.graphics.Color;
 import android.os.Bundle;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
-import android.util.Log;
 import android.view.KeyEvent;
 import android.view.MotionEvent;
 import android.view.View;
@@ -57,6 +57,7 @@ import butterknife.OnClick;
 import cn.bingoogolapple.refreshlayout.BGARefreshLayout;
 import cn.bingoogolapple.refreshlayout.BGAStickinessRefreshViewHolder;
 import cn.bingoogolapple.refreshlayout.util.SimpleRefreshListener;
+import rx.functions.Action1;
 
 /**
  * 聊天界面
@@ -102,6 +103,8 @@ public class ChatActivity extends AppBaseActivity implements EMMessageListener, 
     private EMConversation mConversation;
     private int DEFAULT_PAGESIZE = 10;//默认显示消息数量和加载更多时候显示的消息数量
 
+    RxPermissions mRxPermissions;
+    boolean hasRecordVoicePermissions;//是否已经得到授权
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -112,7 +115,15 @@ public class ChatActivity extends AppBaseActivity implements EMMessageListener, 
         setTranslucentStatus(true);
         EventBus.getDefault().register(this);
         initview();
+        initData();
         initlistener();
+    }
+
+    private void initData() {
+        mRxPermissions = new RxPermissions(this);
+        chat_name = getIntent().getStringExtra(CHAT_NAME);
+        toChatUserName = getIntent().getStringExtra(CHAT_IM_NAME);
+        conversationInit();
     }
 
     private void initlistener() {
@@ -190,6 +201,9 @@ public class ChatActivity extends AppBaseActivity implements EMMessageListener, 
         mAdapter.setData(mMessageList);
         mEtInput.setText("");
         mMessagerecyclerview.smoothScrollToPosition(mMessageList.size() - 1);
+        //发送语音之后切换会输入框
+        mEtInput.setVisibility(View.VISIBLE);
+        mSpeak.setVisibility(View.GONE);
     }
 
     MultiItemTypeAdapter mAdapter;
@@ -197,9 +211,7 @@ public class ChatActivity extends AppBaseActivity implements EMMessageListener, 
 
     private void initview() {
         mTitlelayout.setBackgroundResource(R.color.white);
-        chat_name = getIntent().getStringExtra(CHAT_NAME);
         mTitle.setText(chat_name);
-        toChatUserName = getIntent().getStringExtra(CHAT_IM_NAME);
         mMessagerecyclerview.setLayoutManager(new LinearLayoutManager(this));
         mAdapter = new MultiItemTypeAdapter(this, mMessageList);
         mAdapter.addItemViewDelegate(new MessageTextSendDelagate(this).setChatClickListener(this));
@@ -209,31 +221,47 @@ public class ChatActivity extends AppBaseActivity implements EMMessageListener, 
         mAdapter.addItemViewDelegate(new MessageVoiceRecDelagate(this).setChatClickListener(this));
         mAdapter.addItemViewDelegate(new MessageVoiceSendDelagate(this).setChatClickListener(this));
         mMessagerecyclerview.setAdapter(mAdapter);
-        conversationInit();
         initrefreshlayout();
         mSpeak.setOnTouchListener(new View.OnTouchListener() {
             @Override
             public boolean onTouch(View v, MotionEvent event) {
-                return mVoiceRecordView.onPressToSpeakBtnTouch(v, event, new VoiceRecordView.VoiceRecordCallBack() {
-                    @Override
-                    public void onVoiceRecordComplete(String voiceFilePath, int voiceTimeLength) {
-                        senVoiceMessage(voiceFilePath, voiceTimeLength);
-                    }
-                });
-
+                checkPermission();
+                if (hasRecordVoicePermissions) {
+                    return mVoiceRecordView.onPressToSpeakBtnTouch(v, event, new VoiceRecordView.VoiceRecordCallBack() {
+                        @Override
+                        public void onVoiceRecordComplete(String voiceFilePath, int voiceTimeLength) {
+                            sendVoiceMessage(voiceFilePath, voiceTimeLength);
+                        }
+                    });
+                } else {
+                    return false;
+                }
             }
         });
     }
 
-    private void senVoiceMessage(String mVoiceFilePath, int mVoiceTimeLength) {
+    /**
+     * 检查系统是否给予录音相关权限
+     */
+    private void checkPermission() {
+        mRxPermissions.request(Manifest.permission.RECORD_AUDIO,Manifest.permission.WRITE_EXTERNAL_STORAGE).subscribe(new Action1<Boolean>() {
+            @Override
+            public void call(Boolean mBoolean) {
+                hasRecordVoicePermissions = mBoolean;
+            }
+        });
+    }
+
+    private void sendVoiceMessage(String mVoiceFilePath, int mVoiceTimeLength) {
         //filePath为语音文件路径，length为录音时间(秒)
         EMMessage message = EMMessage.createVoiceSendMessage(mVoiceFilePath, mVoiceTimeLength, toChatUserName);
 //如果是群聊，设置chattype，默认是单聊
-        EMClient.getInstance().chatManager().sendMessage(message);
         sendMessage(message);
     }
 
-
+    /**
+     * 加载聊天记录
+     */
     private void conversationInit() {
         //这里需要传三个参数的。一个参数的方法有时候会返回null
         mConversation = EMClient.getInstance().chatManager().getConversation(toChatUserName, EMConversation.EMConversationType.Chat, true);
@@ -388,7 +416,7 @@ public class ChatActivity extends AppBaseActivity implements EMMessageListener, 
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
-        if (requestCode == REQUEST_SELIMG && resultCode == RESULT_OK) {
+        if (requestCode == REQUEST_SELIMG && resultCode == RESULT_OK) {//选择图片的返回
             List<String> path = data.getStringArrayListExtra(ImgSelActivity.INTENT_RESULT);
             sendImgMessage(path.get(0));
         }
@@ -406,6 +434,10 @@ public class ChatActivity extends AppBaseActivity implements EMMessageListener, 
         sendMessage(mMessage);
     }
 
+    /**
+     * 被对方删除的Event
+     * @param mEvent
+     */
     @Subscribe(threadMode = ThreadMode.MAIN)
     public void contactDelete(ContactDeleteEvent mEvent) {
         finish();
@@ -415,7 +447,7 @@ public class ChatActivity extends AppBaseActivity implements EMMessageListener, 
     protected void onDestroy() {
         super.onDestroy();
         EventBus.getDefault().unregister(this);
-        if (VoicePlayClickListener.isPlaying) {
+        if (VoicePlayClickListener.isPlaying) {//activity destroy的时候如果还在播放音频，停止播放
             VoicePlayClickListener.currentPlayListener.stopPlayVoice();
         }
     }

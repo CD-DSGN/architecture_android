@@ -47,7 +47,7 @@
     <RelativeLayout
         android:id="@+id/rela_input"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
+        android:layout_height="80px"
         android:layout_alignParentBottom="true"
         android:layout_gravity="bottom"
         android:layout_marginBottom="10px">
@@ -65,18 +65,20 @@
         <EditText
             android:id="@+id/et_input"
             android:layout_width="match_parent"
-            android:layout_height="50px"
+            android:layout_height="match_parent"
             android:layout_toLeftOf="@+id/voice"
             android:layout_toRightOf="@id/iv_select_img"
             android:background="@drawable/chat_edit"
             android:imeOptions="actionSend"
             android:inputType="text"
+            android:layout_marginTop="10px"
+            android:layout_marginBottom="10px"
           />
 
         <Button
             android:id="@+id/speak"
             android:layout_width="match_parent"
-            android:layout_height="50px"
+            android:layout_height="match_parent"
             android:layout_toLeftOf="@+id/voice"
             android:layout_toRightOf="@id/iv_select_img"
             android:background="@drawable/chat_edit"
