@@ -14,6 +14,7 @@ import com.grandmagic.readingmate.model.LoginModel;
 import com.grandmagic.readingmate.utils.AutoUtils;
 import com.grandmagic.readingmate.utils.KitUtils;
 import com.grandmagic.readingmate.utils.ViewUtils;
+import com.hyphenate.chat.EMClient;
 import com.tamic.novate.NovateResponse;
 import com.tamic.novate.Throwable;
 import com.tamic.novate.util.SPUtils;
@@ -82,6 +83,7 @@ public class SettingActivity extends AppBaseActivity {
     private void logout() {
         //先弹对话框，要求用户确认是否退出，如果真的要退出，才执行以下操作
         //无论成功失败,直接跳转登录页,也不需要提示用户额外的错误信息
+        EMClient.getInstance().logout(true);//环信的退出
         new LoginModel(SettingActivity.this, null,
                 new AppBaseResponseCallBack<NovateResponse<Object>>(SettingActivity.this, true) {
                     @Override
@@ -89,6 +91,7 @@ public class SettingActivity extends AppBaseActivity {
                         ViewUtils.showToast(
                                 getString(R.string.logout_success));
                         jumpToLoginActivity();
+                        finish();
                     }
 
                     @Override

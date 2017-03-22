@@ -29,6 +29,7 @@ import com.grandmagic.readingmate.model.RegisterModel;
 import com.grandmagic.readingmate.model.VerifyModel;
 import com.grandmagic.readingmate.utils.AutoUtils;
 import com.grandmagic.readingmate.utils.DensityUtil;
+import com.grandmagic.readingmate.utils.InputMethodUtils;
 import com.grandmagic.readingmate.utils.KitUtils;
 import com.tamic.novate.util.SPUtils;
 import com.grandmagic.readingmate.utils.ViewUtils;
@@ -218,6 +219,7 @@ public class LoginActivity extends AppBaseActivity implements View.OnClickListen
                 SPUtils.getInstance().saveToken(LoginActivity.this, token);
                 //跳转到首页
                 Intent intent = new Intent(LoginActivity.this, MainActivity.class);
+                InputMethodUtils.hide(LoginActivity.this);
                 startActivity(intent);
                 finish();
             }
