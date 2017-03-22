@@ -11,6 +11,13 @@
    android:layout_centerHorizontal="true"
     android:id="@+id/time"
     />
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:id="@+id/name"
+        android:layout_below="@+id/time"
+        android:layout_alignRight="@+id/avatar"
+        />
     <RelativeLayout
         android:id="@+id/contentView"
         android:layout_width="wrap_content"
@@ -18,12 +25,13 @@
         android:layout_toLeftOf="@+id/avatar"
         android:background="@drawable/bg_chat_send"
         android:layout_below="@+id/time"
+        android:layout_alignTop="@id/avatar"
         android:padding="5dp">
 
     </RelativeLayout>
 
     <ImageView
-        android:layout_below="@+id/time"
+        android:layout_below="@+id/name"
         android:id="@+id/avatar"
         android:layout_width="100px"
         android:layout_height="100px"

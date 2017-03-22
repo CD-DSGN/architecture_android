@@ -31,7 +31,8 @@ public class ContactsDao extends AbstractDao<Contacts, Long> {
         public final static Property Needline = new Property(4, boolean.class, "needline", false, "NEEDLINE");
         public final static Property Letter = new Property(5, String.class, "letter", false, "LETTER");
         public final static Property PyName = new Property(6, String.class, "pyName", false, "PY_NAME");
-        public final static Property Remark = new Property(7, String.class, "remark", false, "REMARK");
+        public final static Property Clientid = new Property(7, String.class, "clientid", false, "CLIENTID");
+        public final static Property Remark = new Property(8, String.class, "remark", false, "REMARK");
     }
 
 
@@ -54,7 +55,8 @@ public class ContactsDao extends AbstractDao<Contacts, Long> {
                 "\"NEEDLINE\" INTEGER NOT NULL ," + // 4: needline
                 "\"LETTER\" TEXT," + // 5: letter
                 "\"PY_NAME\" TEXT," + // 6: pyName
-                "\"REMARK\" TEXT);"); // 7: remark
+                "\"CLIENTID\" TEXT," + // 7: clientid
+                "\"REMARK\" TEXT);"); // 8: remark
     }
 
     /** Drops the underlying database table. */
@@ -94,9 +96,14 @@ public class ContactsDao extends AbstractDao<Contacts, Long> {
             stmt.bindString(7, pyName);
         }
  
+        String clientid = entity.getClientid();
+        if (clientid != null) {
+            stmt.bindString(8, clientid);
+        }
+ 
         String remark = entity.getRemark();
         if (remark != null) {
-            stmt.bindString(8, remark);
+            stmt.bindString(9, remark);
         }
     }
 
@@ -131,9 +138,14 @@ public class ContactsDao extends AbstractDao<Contacts, Long> {
             stmt.bindString(7, pyName);
         }
  
+        String clientid = entity.getClientid();
+        if (clientid != null) {
+            stmt.bindString(8, clientid);
+        }
+ 
         String remark = entity.getRemark();
         if (remark != null) {
-            stmt.bindString(8, remark);
+            stmt.bindString(9, remark);
         }
     }
 
@@ -152,7 +164,8 @@ public class ContactsDao extends AbstractDao<Contacts, Long> {
             cursor.getShort(offset + 4) != 0, // needline
             cursor.isNull(offset + 5) ? null : cursor.getString(offset + 5), // letter
             cursor.isNull(offset + 6) ? null : cursor.getString(offset + 6), // pyName
-            cursor.isNull(offset + 7) ? null : cursor.getString(offset + 7) // remark
+            cursor.isNull(offset + 7) ? null : cursor.getString(offset + 7), // clientid
+            cursor.isNull(offset + 8) ? null : cursor.getString(offset + 8) // remark
         );
         return entity;
     }
@@ -166,7 +179,8 @@ public class ContactsDao extends AbstractDao<Contacts, Long> {
         entity.setNeedline(cursor.getShort(offset + 4) != 0);
         entity.setLetter(cursor.isNull(offset + 5) ? null : cursor.getString(offset + 5));
         entity.setPyName(cursor.isNull(offset + 6) ? null : cursor.getString(offset + 6));
-        entity.setRemark(cursor.isNull(offset + 7) ? null : cursor.getString(offset + 7));
+        entity.setClientid(cursor.isNull(offset + 7) ? null : cursor.getString(offset + 7));
+        entity.setRemark(cursor.isNull(offset + 8) ? null : cursor.getString(offset + 8));
      }
     
     @Override

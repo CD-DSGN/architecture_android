@@ -59,6 +59,7 @@ public class SearchPersonResponse {
         private double distance;
         @JsonAdapter(ListTypeAdapterFactory.class)
         private List<CollectionBean> collection;
+        private String clientid;
 
         public int getUser_id() {
             return user_id;
@@ -122,6 +123,14 @@ public class SearchPersonResponse {
 
         public void setCollection(List<CollectionBean> collection) {
             this.collection = collection;
+        }
+
+        public void setClientid(String mClientid) {
+            clientid = mClientid;
+        }
+
+        public String getClientid() {
+            return clientid;
         }
 
         public static class AvatarUrlBean {

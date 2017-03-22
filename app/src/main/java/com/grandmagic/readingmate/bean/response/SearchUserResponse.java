@@ -26,6 +26,7 @@ public class SearchUserResponse {
     private String user_name;
     private int gender;
     private String signature;
+    private String clientid;
     @JsonAdapter(ObjectDeserializer.class)
     private AvatarUrlBean avatar_url;
     private int is_friend;
@@ -51,6 +52,14 @@ public class SearchUserResponse {
 
     public int getGender() {
         return gender;
+    }
+
+    public String getClientid() {
+        return clientid;
+    }
+
+    public void setClientid(String mClientid) {
+        clientid = mClientid;
     }
 
     public void setGender(int gender) {

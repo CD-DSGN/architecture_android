@@ -23,12 +23,13 @@ import com.grandmagic.readingmate.R;
 import com.grandmagic.readingmate.adapter.CommentsAdapter;
 import com.grandmagic.readingmate.base.AppBaseActivity;
 import com.grandmagic.readingmate.base.AppBaseResponseCallBack;
+import com.grandmagic.readingmate.bean.response.PersonInfo;
 import com.grandmagic.readingmate.event.ContactDeleteEvent;
 import com.grandmagic.readingmate.model.ContactModel;
 import com.grandmagic.readingmate.utils.AutoUtils;
 import com.grandmagic.readingmate.utils.ImageLoader;
-import com.hyphenate.chat.EMClient;
 import com.tamic.novate.NovateResponse;
+import com.tamic.novate.util.Environment;
 
 import org.greenrobot.eventbus.EventBus;
 
@@ -43,7 +44,7 @@ import cn.bingoogolapple.refreshlayout.BGAStickinessRefreshViewHolder;
 
 public class FriendDetailActivity extends AppBaseActivity {
     ContactModel mModel;
-    public static final String USER_ID = "userid";
+    public static final String PERSON_INFO = "person_info";
     @BindView(R.id.back)
     ImageView mBack;
     @BindView(R.id.title)
@@ -78,6 +79,12 @@ public class FriendDetailActivity extends AppBaseActivity {
     @BindView(R.id.rootview)
     LinearLayout mRootview;
     String userid;
+    @BindView(R.id.clientid)
+    TextView mClientid;
+    @BindView(R.id.lin_coll)
+    LinearLayout mLinColl;
+    @BindView(R.id.iv_sendmsg)
+    ImageView mIvSendmsg;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -92,7 +99,9 @@ public class FriendDetailActivity extends AppBaseActivity {
 
     private void initdata() {
         mModel = new ContactModel(this);
-        userid = getIntent().getStringExtra(USER_ID);
+        PersonInfo mPersonInfo = getIntent().getParcelableExtra(PERSON_INFO);
+        userid = mPersonInfo.getUser_id();
+        initSimplePersonInfo(mPersonInfo);
     }
 
     CommentsAdapter mAdapter;
@@ -101,10 +110,6 @@ public class FriendDetailActivity extends AppBaseActivity {
     private void initview() {
         mTitleMore.setVisibility(View.VISIBLE);
         mTitle.setText("详细信息");
-        ImageLoader.loadCircleImage(this, "http://pic.ytqmx.com:82/2014/0831/01/11.jpg!960.jpg"
-                , mAvatar);
-        ImageLoader.loadImage(this, "http://pic.ytqmx.com:82/2014/0831/01/11.jpg!960.jpg"
-                , mIvColl1);
         mRecyclerview.setLayoutManager(new LinearLayoutManager(this));
         for (int i = 0; i < 50; i++) {
             mStrings.add("af");
@@ -129,6 +134,23 @@ public class FriendDetailActivity extends AppBaseActivity {
             }
         });
         initrefreshLayout();
+    }
+
+    private void initSimplePersonInfo(PersonInfo mPersonInfo) {
+        ImageLoader.loadCircleImage(this, Environment.BASEULR_PRODUCTION+mPersonInfo.getAvatar(), mAvatar);
+        mName.setText(mPersonInfo.getNickname());
+        mClientid.setText(mPersonInfo.getClientid());
+        if (mPersonInfo.isFriend()) {//是否已经是好友关系
+            mFab.hide();
+            mRecommend.setVisibility(View.VISIBLE);
+            mIvSendmsg.setVisibility(View.VISIBLE);
+            mTitleMore.setVisibility(View.VISIBLE);
+        } else {
+            mFab.show();
+            mRecommend.setVisibility(View.GONE);
+            mIvSendmsg.setVisibility(View.GONE);
+            mTitleMore.setVisibility(View.GONE);
+        }
     }
 
     /**

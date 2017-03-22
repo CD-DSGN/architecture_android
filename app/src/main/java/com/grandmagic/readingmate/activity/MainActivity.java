@@ -33,6 +33,7 @@ import com.grandmagic.readingmate.fragment.ChatFragment;
 import com.grandmagic.readingmate.fragment.HomeFragment;
 import com.grandmagic.readingmate.fragment.PersonalFragment;
 import com.grandmagic.readingmate.fragment.SearchFragment;
+import com.grandmagic.readingmate.listener.IMMessageListenerApp;
 import com.grandmagic.readingmate.listener.IMMessageListenerMain;
 import com.grandmagic.readingmate.model.SearchUserModel;
 import com.grandmagic.readingmate.ui.CustomDialog;
@@ -264,6 +265,20 @@ public class MainActivity extends AppBaseActivity {
     }
 
     /**
+     * app级别的新消息处理
+     * @param intent
+     */
+    @Override
+    protected void onNewIntent(Intent intent) {
+        super.onNewIntent(intent);
+        String mStringExtra = intent.getStringExtra(IMMessageListenerApp.FLAG_NEWMESSAGE);
+        if (IMMessageListenerApp.FLAG_NEWMESSAGE.equals(mStringExtra)){
+            newMsg();
+            mLayoutChat.performClick();
+        }
+    }
+
+    /**
      * 选中项图标放大
      */
     private void scalelarge() {
@@ -303,7 +318,6 @@ public class MainActivity extends AppBaseActivity {
         return mInstance;
     }
 
-    // FIXME: 2017/3/3 当还没创建chatFragment的时候无法刷新
 
     public void newMsg() {
         // TODO: 2017/3/2 更新新消息UI

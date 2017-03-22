@@ -89,12 +89,18 @@ public class ContactModel {
 
     }
 
-    public void remarkName(String mUser_id, String mMessage, AppBaseResponseCallBack callback) {
+    /**
+     * 给好友设置备注
+     * @param mUser_id id
+     * @param remarkName 备注的昵称
+     * @param callback
+     */
+    public void remarkName(String mUser_id, String remarkName, AppBaseResponseCallBack callback) {
         Novate mNovate=new Novate.Builder(mContext).build();
         JSONObject mJSONObject=new JSONObject();
         try {
             mJSONObject.put("user_id2",mUser_id);
-            mJSONObject.put("remark",mMessage);
+            mJSONObject.put("remark",remarkName);
         } catch (JSONException mE) {
             mE.printStackTrace();
         }

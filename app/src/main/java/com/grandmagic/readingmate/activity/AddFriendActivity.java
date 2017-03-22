@@ -15,16 +15,15 @@ import android.widget.Toast;
 import com.grandmagic.readingmate.R;
 import com.grandmagic.readingmate.base.AppBaseActivity;
 import com.grandmagic.readingmate.base.AppBaseResponseCallBack;
+import com.grandmagic.readingmate.bean.response.PersonInfo;
 import com.grandmagic.readingmate.bean.response.SearchUserResponse;
 import com.grandmagic.readingmate.model.SearchUserModel;
 import com.grandmagic.readingmate.ui.CustomDialog;
 import com.grandmagic.readingmate.utils.AutoUtils;
-import com.grandmagic.readingmate.utils.IMHelper;
 import com.grandmagic.readingmate.utils.ImageLoader;
 import com.grandmagic.readingmate.utils.InputMethodUtils;
 import com.tamic.novate.NovateResponse;
 import com.tamic.novate.util.Environment;
-import com.tamic.novate.util.SPUtils;
 
 import java.util.List;
 
@@ -65,6 +64,7 @@ public class AddFriendActivity extends AppBaseActivity {
     TextView mText1;
     @BindView(R.id.rela_addfriend)
     RelativeLayout mRelaAddfriend;
+    SearchUserResponse responseData;
 
 
     @Override
@@ -106,7 +106,7 @@ public class AddFriendActivity extends AppBaseActivity {
         mModel.searchUser(mString, new AppBaseResponseCallBack<NovateResponse<SearchUserResponse>>(this) {
             @Override
             public void onSuccee(NovateResponse<SearchUserResponse> response) {
-                SearchUserResponse responseData = response.getData();
+                responseData = response.getData();
                 setUserView(responseData);
             }
         });
@@ -141,12 +141,26 @@ public class AddFriendActivity extends AppBaseActivity {
                 finish();
                 break;
             case R.id.rela_friend:
-                startActivity(new Intent(AddFriendActivity.this, FriendDetailActivity.class));
+                intoDetailActivity();
                 break;
             case R.id.rela_addfriend:
                 showAddFriendDialog();
                 break;
         }
+    }
+
+    private void intoDetailActivity() {
+        Intent mIntent = new Intent(AddFriendActivity.this, FriendDetailActivity.class);
+        Bundle mBundle=new Bundle();
+        PersonInfo mInfo=new PersonInfo();
+        mInfo.setAvatar(responseData.getAvatar_url().getLarge());
+        mInfo.setClientid(responseData.getClientid());
+        mInfo.setUser_id(responseData.getUser_id());
+        mInfo.setFriend(responseData.getIs_friend()==1);
+        mInfo.setNickname(responseData.getUser_name());
+        mBundle.putParcelable(FriendDetailActivity.PERSON_INFO,mInfo);
+        mIntent.putExtras(mBundle);
+        startActivity(mIntent);
     }
 
     private void showAddFriendDialog() {

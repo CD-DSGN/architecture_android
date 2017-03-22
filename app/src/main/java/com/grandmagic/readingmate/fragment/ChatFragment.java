@@ -14,6 +14,7 @@ import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.grandmagic.readingmate.R;
 import com.grandmagic.readingmate.activity.AddFriendActivity;
@@ -246,16 +247,20 @@ public class ChatFragment extends AppBaseFragment implements RecentConversationD
     @Override
     public void delete(String username) {
         //删除和某个user会话，如果需要保留聊天记录，传false
-        EMClient.getInstance().chatManager().deleteConversation(username, true);
-        onrefreshConversation();
+        boolean mB = EMClient.getInstance().chatManager().deleteConversation(username, true);
+        if (mB){
+            onrefreshConversation();
+        }else {
+            Toast.makeText(mContext, "移除会话失败", Toast.LENGTH_SHORT).show();
+        }
     }
 
     @Override
     public void onitemclick(EMMessage mLastMessage, String mFinalUsername, int position) {
 
         Intent mIntent = new Intent(mContext, ChatActivity.class);
-        mIntent.putExtra(ChatActivity.CHAT_IM_NAME, mLastMessage.direct() == EMMessage.Direct.RECEIVE ?
-                mLastMessage.getFrom() : mLastMessage.getTo());
+        mIntent.putExtra(ChatActivity.CHAT_IM_NAME, mLastMessage.direct() == EMMessage.Direct.SEND ?
+                mLastMessage.getTo() : mLastMessage.getFrom());
         mIntent.putExtra(ChatActivity.CHAT_NAME, mFinalUsername);
         mConversations.get(position).markAllMessagesAsRead();
         onrefreshConversation();

@@ -17,6 +17,7 @@ import android.os.Vibrator;
 import android.support.v4.app.NotificationCompat;
 import android.util.Log;
 
+import com.grandmagic.readingmate.activity.MainActivity;
 import com.grandmagic.readingmate.bean.response.InviteMessage;
 import com.grandmagic.readingmate.db.DBHelper;
 import com.grandmagic.readingmate.db.InviteMessageDao;
@@ -97,7 +98,9 @@ public class IMNotifier {
                     .setSmallIcon(mAppContext.getApplicationInfo().icon)
                     .setWhen(System.currentTimeMillis())
                     .setAutoCancel(true);
-            Intent msgIntent = mAppContext.getPackageManager().getLaunchIntentForPackage(packName);
+//            Intent msgIntent = mAppContext.getPackageManager().getLaunchIntentForPackage(packName);
+            Intent msgIntent = new Intent(mAppContext, MainActivity.class);
+            msgIntent.putExtra(IMMessageListenerApp.FLAG_NEWMESSAGE,IMMessageListenerApp.FLAG_NEWMESSAGE);
             PendingIntent mPendingIntent = PendingIntent.getActivity(mAppContext, notifyID, msgIntent, PendingIntent.FLAG_UPDATE_CURRENT);
             mBuilder.setContentTitle(contenttitle);
             mBuilder.setTicker(notifytxt);

@@ -2,14 +2,15 @@ package com.grandmagic.readingmate.adapter;
 
 import android.content.Context;
 import android.content.Intent;
+import android.os.Bundle;
 import android.view.View;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
-import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import com.grandmagic.readingmate.R;
 import com.grandmagic.readingmate.activity.FriendDetailActivity;
+import com.grandmagic.readingmate.bean.response.PersonInfo;
 import com.grandmagic.readingmate.bean.response.SearchPersonResponse;
 import com.grandmagic.readingmate.utils.ImageLoader;
 import com.tamic.novate.util.Environment;
@@ -40,7 +41,15 @@ public class SearchPersonAdapter extends CommonAdapter<SearchPersonResponse.Info
             @Override
             public void onClick(View v) {
                 Intent mIntent = new Intent(mContext, FriendDetailActivity.class);
-                mIntent.putExtra(FriendDetailActivity.USER_ID, data.getUser_id());
+                Bundle mBundle=new Bundle();
+                PersonInfo mInfo=new PersonInfo();
+                mInfo.setAvatar(data.getAvatar_url().getLarge());
+                mInfo.setClientid(data.getClientid());
+                mInfo.setUser_id(data.getUser_id()+"");
+                mInfo.setFriend(data.getIs_friend()==1);
+                mInfo.setNickname(data.getUser_name());
+                mBundle.putParcelable(FriendDetailActivity.PERSON_INFO,mInfo);
+                mIntent.putExtras(mBundle);
                 mContext.startActivity(mIntent);
             }
         });

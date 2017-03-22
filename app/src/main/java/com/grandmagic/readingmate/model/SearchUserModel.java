@@ -28,6 +28,11 @@ public class SearchUserModel {
         this.mContext = mContext;
     }
 
+    /**
+     * 通过手机号搜索好友
+     * @param phone
+     * @param mBack
+     */
     public void searchUser(String phone, AppBaseResponseCallBack mBack){
         Novate mNovate=new Novate.Builder(mContext).baseUrl(Environment.BASEULR_PRODUCTION).build();
         UserInfoRequest mUserInfoRequest=new UserInfoRequest();
@@ -35,7 +40,14 @@ public class SearchUserModel {
         String mS = new Gson().toJson(mUserInfoRequest);
         mNovate.executeJson(ApiInterface.SEARCH_USER,mS,mBack);
     }
-public void requestAddFriend(String user_id2,String message,AppBaseResponseCallBack mBack){
+
+    /**
+     * 请求添加对方为好友
+     * @param user_id2
+     * @param message
+     * @param mBack
+     */
+    public void requestAddFriend(String user_id2,String message,AppBaseResponseCallBack mBack){
     Novate mNovate=new Novate.Builder(mContext).baseUrl(Environment.BASEULR_PRODUCTION).build();
   JSONObject mJSONObject=new JSONObject();
     try {

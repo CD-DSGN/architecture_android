@@ -150,6 +150,7 @@ public class BookDetailActivity extends AppBaseActivity implements View.OnLayout
         mDashlineTvhot.setVisibility(View.VISIBLE);
         AutoUtils.autoTextSize(mTvLast);
         AutoUtils.autoTextSize(mTvHot);
+        mViewpager.setCurrentItem(1);
     }
 
     private void lastSelected() {
@@ -161,6 +162,7 @@ public class BookDetailActivity extends AppBaseActivity implements View.OnLayout
         mDashlineTvhot.setVisibility(View.GONE);
         AutoUtils.autoTextSize(mTvLast);
         AutoUtils.autoTextSize(mTvHot);
+        mViewpager.setCurrentItem(0);
     }
 
     private void initView() {

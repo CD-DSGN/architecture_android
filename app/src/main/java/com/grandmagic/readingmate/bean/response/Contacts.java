@@ -35,6 +35,7 @@ public class Contacts {
     private boolean needline = true;//是否需要下划线
     private String letter;//首字母
     private String pyName;
+    private String clientid;
 private String remark;
     public Contacts() {
     }
@@ -59,6 +60,14 @@ private String remark;
 
     public String getPyName() {
         return pyName;
+    }
+
+    public String getClientid() {
+        return clientid;
+    }
+
+    public void setClientid(String mClientid) {
+        clientid = mClientid;
     }
 
     public void setPyName(String mPyName) {
@@ -123,9 +132,9 @@ private String remark;
         type = mType;
     }
 
-    @Generated(hash = 1372778907)
+    @Generated(hash = 1811722507)
     public Contacts(Long id, int user_id, String avatar_native, String user_name, boolean needline,
-            String letter, String pyName, String remark) {
+            String letter, String pyName, String clientid, String remark) {
         this.id = id;
         this.user_id = user_id;
         this.avatar_native = avatar_native;
@@ -133,6 +142,7 @@ private String remark;
         this.needline = needline;
         this.letter = letter;
         this.pyName = pyName;
+        this.clientid = clientid;
         this.remark = remark;
     }
 

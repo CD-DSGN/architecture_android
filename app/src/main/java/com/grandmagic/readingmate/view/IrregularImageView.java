@@ -73,6 +73,7 @@ public class IrregularImageView extends ImageView {
         Bitmap mask = BitmapFactory.decodeResource(mContext.getResources(), R.drawable.irregular);
         mask = calculateMask(mask, mWidth, mHeight);
 //        dst=calculateMask(dst,mWidth,mHeight);
+        dst=calculateDst(dst,mWidth,mHeight);
         canvas.drawBitmap(dst, 0, 0, mPaint);
         // 设置模式
         mPaint.setXfermode(new PorterDuffXfermode(PorterDuff.Mode.DST_OUT));
@@ -83,6 +84,31 @@ public class IrregularImageView extends ImageView {
         canvas.restoreToCount(sc);
     }
 
+    /**
+     * 使宽和高都不小于控件宽度。类似于Center_Crop模式
+     * @param mDst
+     * @param mWidth
+     * @param mHeight
+     * @return
+     */
+    private Bitmap calculateDst(Bitmap mDst, int mWidth, int mHeight) {
+        float scaleX = mWidth * 1.0f / mDst.getWidth();
+        float scaleY = mHeight * 1.0f / mDst.getHeight();
+        float scale =  Math.max(scaleX, scaleY);
+        Matrix mMatrix=new Matrix();
+        mMatrix.postScale(scale,scale);
+
+        Bitmap mBitmap = Bitmap.createBitmap(mDst, 0, 0, mDst.getWidth(), mDst.getHeight(), mMatrix, true);
+        return mBitmap;
+    }
+
+    /**
+     * 完全拉伸的缩放
+     * @param mMask
+     * @param mWidth
+     * @param mHeight
+     * @return
+     */
     private Bitmap calculateMask(Bitmap mMask, int mWidth, int mHeight) {
         Matrix mMatrix = new Matrix();
         float scaleX = mWidth * 1.0f / (mMask.getWidth() * 1.0f);

@@ -28,6 +28,8 @@ import com.grandmagic.readingmate.adapter.MessageVoiceRecDelagate;
 import com.grandmagic.readingmate.adapter.MessageVoiceSendDelagate;
 import com.grandmagic.readingmate.adapter.MultiItemTypeAdapter;
 import com.grandmagic.readingmate.base.AppBaseActivity;
+import com.grandmagic.readingmate.bean.response.Contacts;
+import com.grandmagic.readingmate.bean.response.PersonInfo;
 import com.grandmagic.readingmate.event.ContactDeleteEvent;
 import com.grandmagic.readingmate.listener.VoicePlayClickListener;
 import com.grandmagic.readingmate.utils.AutoUtils;
@@ -244,7 +246,7 @@ public class ChatActivity extends AppBaseActivity implements EMMessageListener, 
      * 检查系统是否给予录音相关权限
      */
     private void checkPermission() {
-        mRxPermissions.request(Manifest.permission.RECORD_AUDIO,Manifest.permission.WRITE_EXTERNAL_STORAGE).subscribe(new Action1<Boolean>() {
+        mRxPermissions.request(Manifest.permission.RECORD_AUDIO, Manifest.permission.WRITE_EXTERNAL_STORAGE).subscribe(new Action1<Boolean>() {
             @Override
             public void call(Boolean mBoolean) {
                 hasRecordVoicePermissions = mBoolean;
@@ -405,11 +407,22 @@ public class ChatActivity extends AppBaseActivity implements EMMessageListener, 
 
     /**
      * 点击头像事件
+     *
+     * @param mFrom
      */
     @Override
-    public void clickAvatar() {
+    public void clickAvatar(String mFrom) {
         Intent mIntent = new Intent(ChatActivity.this, FriendDetailActivity.class);
-        mIntent.putExtra(FriendDetailActivity.USER_ID, toChatUserName);
+        Bundle mBundle = new Bundle();
+        Contacts mContacts = IMHelper.getInstance().getUserInfo(mFrom);
+        PersonInfo mInf = new PersonInfo();
+        mInf.setUser_id(toChatUserName);
+        mInf.setAvatar(mContacts.getAvatar_native());
+        mInf.setFriend(true);
+        mInf.setNickname(mContacts.getUser_name());
+        mInf.setClientid(mContacts.getClientid());
+        mBundle.putParcelable(FriendDetailActivity.PERSON_INFO, mInf);
+        mIntent.putExtras(mBundle);
         startActivityForResult(mIntent, REQUEST_DETAIL);
     }
 
@@ -436,6 +449,7 @@ public class ChatActivity extends AppBaseActivity implements EMMessageListener, 
 
     /**
      * 被对方删除的Event
+     *
      * @param mEvent
      */
     @Subscribe(threadMode = ThreadMode.MAIN)

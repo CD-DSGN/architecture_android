@@ -18,6 +18,7 @@ import com.hyphenate.EMCallBack;
 import com.hyphenate.chat.EMMessage;
 import com.orhanobut.logger.Logger;
 import com.tamic.novate.util.Environment;
+import com.tamic.novate.util.SPUtils;
 import com.zhy.adapter.recyclerview.base.ItemViewDelegate;
 import com.zhy.adapter.recyclerview.base.ViewHolder;
 
@@ -48,12 +49,20 @@ public abstract class ChatItemViewDelegate implements ItemViewDelegate<EMMessage
     }
 
     @Override
-    public void convert(ViewHolder holder, EMMessage mChatMessage, int position) {
+    public void convert(ViewHolder holder, final EMMessage mChatMessage, int position) {
         long mMsgTime = mChatMessage.getMsgTime();
         holder.setText(R.id.time, DateUtil.timeTodate(mChatMessage.getMsgTime() + ""));
-        Contacts mUserInfo = IMHelper.getInstance()
-                .getUserInfo(mChatMessage.getFrom());
+        Contacts mUserInfo;
+        if (mDirect == EMMessage.Direct.SEND) {
+mUserInfo=IMHelper.getInstance().getUserInfo(SPUtils.getInstance().getString(mContext,SPUtils.IM_NAME));
+        } else {
+            mUserInfo = IMHelper.getInstance()
+                    .getUserInfo(mChatMessage.getFrom());
+        }
+
+
         if (mUserInfo != null) {
+            holder.setText(R.id.name, mUserInfo.getUser_name());
             ImageLoader.loadRoundImage(mContext,
                     Environment.BASEULR_PRODUCTION + mUserInfo.getAvatar_native(),
                     (ImageView) holder.getView(R.id.avatar)
@@ -62,7 +71,8 @@ public abstract class ChatItemViewDelegate implements ItemViewDelegate<EMMessage
         holder.setOnClickListener(R.id.avatar, new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                if (mChatClickListener != null) mChatClickListener.clickAvatar();
+                if (mChatClickListener != null)
+                    mChatClickListener.clickAvatar(mChatMessage.getFrom());
             }
         });
         final View statesView = holder.getView(R.id.send_status);
@@ -95,6 +105,7 @@ public abstract class ChatItemViewDelegate implements ItemViewDelegate<EMMessage
             public void onSuccess() {
                 mHandler.hasMessages(0);
             }
+
             @Override
             public void onError(int mI, String mS) {
                 mHandler.hasMessages(1);
@@ -127,6 +138,6 @@ public abstract class ChatItemViewDelegate implements ItemViewDelegate<EMMessage
 
     public interface chatClickListener {//一些点击事件的接口
 
-        void clickAvatar();
+        void clickAvatar(String mFrom);
     }
 }

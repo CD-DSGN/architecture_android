@@ -17,7 +17,7 @@
         android:id="@+id/avatar"
         android:layout_width="100px"
         android:layout_height="100px"
-        android:layout_below="@+id/time"
+        android:layout_below="@+id/name"
         android:layout_marginLeft="20px"
         android:layout_marginRight="10px"
         />
@@ -25,14 +25,22 @@
     <RelativeLayout
         android:id="@+id/contentView"
         android:layout_width="wrap_content"
-
         android:layout_height="wrap_content"
+        android:layout_alignTop="@id/avatar"
         android:layout_below="@+id/time"
         android:layout_toRightOf="@id/avatar"
         android:background="@drawable/bg_chat_reciver"
         android:padding="5dp">
 
     </RelativeLayout>
+
+    <TextView
+        android:id="@+id/name"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignLeft="@+id/avatar"
+        android:layout_below="@+id/time"
+        />
 
     <ImageView
         android:id="@+id/send_status"

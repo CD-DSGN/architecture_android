@@ -1,9 +1,11 @@
 package com.grandmagic.readingmate.listener;
 
 import android.content.Context;
+import android.content.Intent;
 import android.util.Log;
 import android.widget.Toast;
 
+import com.grandmagic.readingmate.activity.MainActivity;
 import com.grandmagic.readingmate.utils.IMHelper;
 import com.hyphenate.EMMessageListener;
 import com.hyphenate.chat.EMClient;
@@ -17,6 +19,7 @@ import java.util.List;
  */
 
 public class IMMessageListenerApp implements EMMessageListener{
+    public static final String FLAG_NEWMESSAGE="flag_newmessage";
     private static final String TAG = "IMMessageListenerApp";
     private Context mContext;
 
@@ -27,8 +30,7 @@ public class IMMessageListenerApp implements EMMessageListener{
 
     @Override
     public void onMessageReceived(List<EMMessage> mList) {
-        for (EMMessage msg:
-             mList) {
+        for (EMMessage msg: mList) {
             if (!IMHelper.getInstance().hasForegroundActivies()){//如果在主页或聊天页，不做处理
                 Log.e(TAG, "onMessageReceived: "+msg );
                 IMHelper.getInstance().onNewMsg(msg);
