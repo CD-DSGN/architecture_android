@@ -347,7 +347,7 @@ public class PersonalInfoEditActivity extends AppBaseActivity {
             String str = KitUtils.encodeBase64File(file);
             UploadImgBean uploadImgBean = new UploadImgBean();
             uploadImgBean.setAvatar(str);
-            novate.executeJson(ApiInterface.upload_avar, uploadImgBean.toGson(), new AppBaseResponseCallBack<NovateResponse<UploadAvarResponseBean>>(this) {
+            novate.executeJson(ApiInterface.UPLOAD_AVAR, uploadImgBean.toGson(), new AppBaseResponseCallBack<NovateResponse<UploadAvarResponseBean>>(this) {
 
                 @Override
                 public void onSuccee(NovateResponse<UploadAvarResponseBean> response) {

@@ -24,7 +24,10 @@ import com.grandmagic.readingmate.base.AppBaseActivity;
 import com.grandmagic.readingmate.base.AppBaseFragment;
 import com.grandmagic.readingmate.base.AppBaseResponseCallBack;
 import com.grandmagic.readingmate.bean.response.ImageUrlResponseBean;
+import com.grandmagic.readingmate.bean.response.PersonalCommentListResponseBean;
+import com.grandmagic.readingmate.bean.response.PersonnalCommentResponseBean;
 import com.grandmagic.readingmate.bean.response.UserInfoResponseBean;
+import com.grandmagic.readingmate.model.MyCommentsModel;
 import com.grandmagic.readingmate.model.UserInfoModel;
 import com.grandmagic.readingmate.utils.AutoUtils;
 import com.grandmagic.readingmate.utils.ImageLoader;
@@ -33,6 +36,7 @@ import com.tamic.novate.NovateResponse;
 import com.zhy.adapter.recyclerview.wrapper.HeaderAndFooterWrapper;
 
 import java.util.ArrayList;
+import java.util.List;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
@@ -66,10 +70,13 @@ public class PersonalFragment extends AppBaseFragment {
 
     UserInfoModel mUserInfoModel;
     UserInfoResponseBean mUserInfoResponseBean = new UserInfoResponseBean();
+    @BindView(R.id.subscriped_book_num)
+    TextView mSubscripedBookNum;
     private MyCommentAdapter mMAdapter;
     private HeaderAndFooterWrapper mMHeaderAndFooterWrapper;
     private View mView;
 
+    MyCommentsModel mMyCommentsModel;
     public static boolean NEED_REFRESH = false;
 
     public PersonalFragment() {
@@ -107,12 +114,35 @@ public class PersonalFragment extends AppBaseFragment {
             });
         }
         mUserInfoModel.getUserInfo();
+        if (mMyCommentsModel == null) {
+            mMyCommentsModel = new MyCommentsModel(mContext,
+                    new AppBaseResponseCallBack<NovateResponse<PersonalCommentListResponseBean>>(mContext) {
 
+                        @Override
+                        public void onSuccee(NovateResponse<PersonalCommentListResponseBean> response) {
+                            PersonalCommentListResponseBean personalCommentListResponseBean = response.getData();
+                            ImageUrlResponseBean imageUrlResponseBean = personalCommentListResponseBean.getAvatar_url();
+                            String url = "";
+                            if (imageUrlResponseBean != null) {
+                                url = imageUrlResponseBean.getLarge();
+                            }
+                            if (personalCommentListResponseBean != null) {
+                                List<PersonnalCommentResponseBean> list = personalCommentListResponseBean.getComment_info();
+
+                                mMAdapter.setUrl(url);
+                                mMAdapter.setUsername(personalCommentListResponseBean.getUsername());
+                                mMAdapter.getList().addAll(list);
+                                mMHeaderAndFooterWrapper.notifyDataSetChanged();
+                            }
+                        }
+                    });
+        }
+        mMyCommentsModel.getMyCommentsList();
     }
 
     private void setPersonalView() {
         ImageUrlResponseBean imageUrlResponseBean = mUserInfoResponseBean.getAvatar_url();
-        if ( imageUrlResponseBean != null) {
+        if (imageUrlResponseBean != null) {
             String url = imageUrlResponseBean.getLarge();
             if (!TextUtils.isEmpty(url)) {
                 ImageLoader.loadCircleImage(mContext, KitUtils.getAbsoluteUrl(url),
@@ -129,19 +159,18 @@ public class PersonalFragment extends AppBaseFragment {
         }
 
         setGenderView(mUserInfoResponseBean.getGender());
+
+        //设置关注图书本数
+        setScanCountView(mUserInfoResponseBean.getScan_count());
+
     }
 
     private void initView() {
 
-        ArrayList<String> data = new ArrayList<>();
-        for (int i = 0; i < 50; i++) {
-            data.add("电影不错");
-            data.add("结局缺乏新意，其他没什么");
-        }
         mRvMyComments.setLayoutManager(new LinearLayoutManager(mContext));
         mView = LayoutInflater.from(mContext).inflate(R.layout.personal_fragment_header, mRvMyComments, false);
-        ButterKnife.bind(this,mView);
-        mMAdapter = new MyCommentAdapter(mContext, data);
+        ButterKnife.bind(this, mView);
+        mMAdapter = new MyCommentAdapter(mContext, new ArrayList<PersonnalCommentResponseBean>(), "", "");
         mMHeaderAndFooterWrapper = new HeaderAndFooterWrapper(mMAdapter);
 
         AutoUtils.auto(mView);
@@ -158,7 +187,7 @@ public class PersonalFragment extends AppBaseFragment {
             case R.id.tv_edit_personal_info:
                 //跳转到个人设置页面
                 Intent intent_edit = new Intent(mContext, PersonalInfoEditActivity.class);
-//                intent_edit.putExtra("personal_data", mUserInfoResponseBean);
+                //                intent_edit.putExtra("personal_data", mUserInfoResponseBean);
                 startActivity(intent_edit);
                 break;
             case R.id.ll_collect:
@@ -196,13 +225,18 @@ public class PersonalFragment extends AppBaseFragment {
         if (genderView == 1) {   //女
             mIcFragPersonalMale.setVisibility(View.GONE);
             mIcFragPersonalFemale.setVisibility(View.VISIBLE);
-        }else if(genderView == 2){                  //男
+        } else if (genderView == 2) {                  //男
             mIcFragPersonalMale.setVisibility(View.VISIBLE);
             mIcFragPersonalFemale.setVisibility(View.GONE);
-        }else{  //未设置
+        } else {  //未设置
             mIcFragPersonalFemale.setVisibility(View.VISIBLE);
             mIcFragPersonalMale.setVisibility(View.VISIBLE);
         }
     }
 
+    public void setScanCountView(String scanCountView) {
+        if (!TextUtils.isEmpty(scanCountView)) {
+            mSubscripedBookNum.setText(scanCountView);
+        }
+    }
 }

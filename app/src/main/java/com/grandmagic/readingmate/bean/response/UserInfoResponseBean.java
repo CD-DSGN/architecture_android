@@ -12,15 +12,15 @@ public class UserInfoResponseBean{
     private int  gender;
     private String signature;
 
-    public int getScan_count() {
+    public String getScan_count() {
         return scan_count;
     }
 
-    public void setScan_count(int scan_count) {
+    public void setScan_count(String scan_count) {
         this.scan_count = scan_count;
     }
 
-    private int scan_count;
+    private String scan_count;
 
     public ImageUrlResponseBean getAvatar_url() {
         return avatar_url;
