@@ -50,6 +50,7 @@ public class SharePopUpWindow extends PopupWindow {
                 mActivity.getWindow().setAttributes(params);
             }
         });
+        this.setFocusable(true);
 
         umShareListener = new UMShareListener() {
             @Override

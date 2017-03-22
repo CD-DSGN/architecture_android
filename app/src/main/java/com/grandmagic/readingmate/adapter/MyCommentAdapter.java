@@ -1,12 +1,14 @@
 package com.grandmagic.readingmate.adapter;
 
 import android.content.Context;
+import android.content.Intent;
 import android.text.TextUtils;
 import android.view.View;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 
 import com.grandmagic.readingmate.R;
+import com.grandmagic.readingmate.activity.CommentsActivity;
 import com.grandmagic.readingmate.bean.response.PersonnalCommentResponseBean;
 import com.grandmagic.readingmate.utils.DateUtil;
 import com.grandmagic.readingmate.utils.ImageLoader;
@@ -28,7 +30,7 @@ public class MyCommentAdapter extends CommonAdapter<PersonnalCommentResponseBean
 
     LinearLayout mLlShare;
 
-    private SharePopUpWindow mSharePopUpWindow;
+    public SharePopUpWindow mSharePopUpWindow;
 
     public MyCommentAdapter(Context context, List datas, String username, String url) {
         super(context, R.layout.item_my_comments, datas);
@@ -71,7 +73,19 @@ public class MyCommentAdapter extends CommonAdapter<PersonnalCommentResponseBean
             if (!TextUtils.isEmpty(book_cover)) {
                 ImageLoader.loadCircleImage(mContext, KitUtils.getAbsoluteUrl(book_cover), (ImageView) holder.getView(R.id.cover));
             }
+
+            holder.setText(R.id.content, personnalCommentResponseBean.getContent());
         }
+
+        final String book_id = personnalCommentResponseBean.getBook_id();
+        holder.setOnClickListener(R.id.ll_item_my_comment, new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent(mContext, CommentsActivity.class);
+                intent.putExtra("book_id", book_id);
+                mContext.startActivity(intent);
+            }
+        });
     }
 
 

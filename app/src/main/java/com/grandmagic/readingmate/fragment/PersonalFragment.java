@@ -239,4 +239,12 @@ public class PersonalFragment extends AppBaseFragment {
             mSubscripedBookNum.setText(scanCountView);
         }
     }
+
+    @Override
+    public void onDestroy() {
+        super.onDestroy();
+        mMAdapter.mSharePopUpWindow.dismiss(); //否则会报错，泄漏了窗口
+    }
+
+
 }
