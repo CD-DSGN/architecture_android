@@ -36,6 +36,12 @@ public class DateUtil {
             }catch (Exception e){
                 e.printStackTrace();
             }
+        }else {
+            try {
+                time1 = Long.parseLong(time);
+            } catch (NumberFormatException mE) {
+                mE.printStackTrace();
+            }
         }
         SimpleDateFormat simpleDateFormat=new SimpleDateFormat("yyyy/MM/dd HH:mm", Locale.getDefault());
         String d=simpleDateFormat.format(time1);
