@@ -48,7 +48,7 @@ public class MyCommentAdapter extends CommonAdapter<PersonnalCommentResponseBean
             String time = personnalCommentResponseBean.getPub_time();
             String time_str = "";
             try {
-                time_str = DateUtil.timeTodate1(time);
+                time_str = DateUtil.timeTodate(DateUtil.SLANT_PATTERN,time);
             } catch (Exception e) {
                 e.printStackTrace();
             }
