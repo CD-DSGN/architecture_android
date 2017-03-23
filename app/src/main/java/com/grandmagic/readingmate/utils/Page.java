@@ -20,8 +20,8 @@ public class Page {
 
     public void refresh(List al) {
         list.clear();
-        cur_page = 1;
         list.addAll(al);
+        cur_page = list.size() / page_size + 1;
     }
 
     public void more(List al) {
@@ -32,8 +32,8 @@ public class Page {
         if (list.size()/total_num == 0) {
             list.addAll(al);
         }else{
-            int last_num = list.size()%total_num;
-            List sub = (ArrayList) al.subList(last_num + 1, al.size());
+            int last_num = list.size()%page_size;
+            List sub = (ArrayList) al.subList(last_num, al.size());
             list.addAll(sub);
         }
         cur_page = list.size() / page_size + 1;
