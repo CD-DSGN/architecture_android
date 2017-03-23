@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content"
+    android:layout_marginTop="28px"
+    android:layout_marginRight="54px"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:gravity="center_horizontal"
+    android:orientation="vertical">
+<com.grandmagic.readingmate.view.IrregularImageView
+    android:layout_width="170px"
+    android:layout_height="226px"
+    android:id="@+id/conver"
+    />
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:textColor="@color/text_black"
+        android:layout_marginTop="30px"
+        android:textSize="24px"
+        android:gravity="center_horizontal"
+        android:id="@+id/bookname"
+        tools:text="bookname"
+        android:maxWidth="170px"
+        />
+</LinearLayout>

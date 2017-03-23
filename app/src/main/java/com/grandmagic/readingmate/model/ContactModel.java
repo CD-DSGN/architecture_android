@@ -106,4 +106,20 @@ public class ContactModel {
         }
         mNovate.executeJson(ApiInterface.REMARK_FRIEND,mJSONObject.toString(),callback);
     }
+
+    /**
+     * 详情页读取用户关注的图书
+     * @param mUserid
+     * @param mBack
+     */
+    public void getPersonCollect(String mUserid, AppBaseResponseCallBack mBack) {
+        Novate mNovate=new Novate.Builder(mContext).build();
+        JSONObject mJSONObject=new JSONObject();
+        try {
+            mJSONObject.put("user_id",mUserid);
+        } catch (JSONException mE) {
+            mE.printStackTrace();
+        }
+        mNovate.executeJson(ApiInterface.BOOK_PERSON_COLLECT,mJSONObject.toString(),mBack);
+    }
 }

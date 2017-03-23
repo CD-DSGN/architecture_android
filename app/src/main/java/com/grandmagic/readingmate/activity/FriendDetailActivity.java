@@ -21,8 +21,10 @@ import android.widget.TextView;
 
 import com.grandmagic.readingmate.R;
 import com.grandmagic.readingmate.adapter.CommentsAdapter;
+import com.grandmagic.readingmate.adapter.PersonCollectAdapter;
 import com.grandmagic.readingmate.base.AppBaseActivity;
 import com.grandmagic.readingmate.base.AppBaseResponseCallBack;
+import com.grandmagic.readingmate.bean.response.PersonCollectBookResponse;
 import com.grandmagic.readingmate.bean.response.PersonInfo;
 import com.grandmagic.readingmate.event.ContactDeleteEvent;
 import com.grandmagic.readingmate.model.ContactModel;
@@ -59,8 +61,6 @@ public class FriendDetailActivity extends AppBaseActivity {
     ImageView mGender;
     @BindView(R.id.name)
     TextView mName;
-    @BindView(R.id.iv_coll_1)
-    ImageView mIvColl1;
     @BindView(R.id.title_more)
     ImageView mTitleMore;
     @BindView(R.id.recyclerview)
@@ -85,6 +85,9 @@ public class FriendDetailActivity extends AppBaseActivity {
     LinearLayout mLinColl;
     @BindView(R.id.iv_sendmsg)
     ImageView mIvSendmsg;
+    @BindView(R.id.Collectrecyclerview)
+    RecyclerView mCollectrecyclerview;
+    boolean isFriend;//与自己是否是好友关系
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -101,10 +104,28 @@ public class FriendDetailActivity extends AppBaseActivity {
         mModel = new ContactModel(this);
         PersonInfo mPersonInfo = getIntent().getParcelableExtra(PERSON_INFO);
         userid = mPersonInfo.getUser_id();
+        loadPersonCollect();
         initSimplePersonInfo(mPersonInfo);
     }
 
+
+    List<PersonCollectBookResponse.InfoBean> mCollectList = new ArrayList<>();
+
+    /**
+     * 加载用户的收藏的书籍
+     */
+    private void loadPersonCollect() {
+        mModel.getPersonCollect(userid, new AppBaseResponseCallBack<NovateResponse<PersonCollectBookResponse>>(this) {
+            @Override
+            public void onSuccee(NovateResponse<PersonCollectBookResponse> response) {
+                mCollectList.addAll(response.getData().getInfo());
+                mCollAdapter.refreshData(mCollectList);
+            }
+        });
+    }
+
     CommentsAdapter mAdapter;
+    PersonCollectAdapter mCollAdapter;
     List<String> mStrings = new ArrayList<>();
 
     private void initview() {
@@ -125,22 +146,29 @@ public class FriendDetailActivity extends AppBaseActivity {
                 }
                 if (appBarLayout.getMeasuredHeight() == Math.abs(verticalOffset)) {
                     //完全关闭
+                    if (!isFriend)
                     mFab.hide();
                 }
                 if (appBarLayout.getMeasuredHeight() > Math.abs(verticalOffset)) {
                     //完全关闭
+                    if (!isFriend)
                     mFab.show();
                 }
             }
         });
+        //初始化用户收藏的图书的recyclerView
+        mCollectrecyclerview.setLayoutManager(new LinearLayoutManager(this, LinearLayoutManager.HORIZONTAL, false));
+        mCollAdapter = new PersonCollectAdapter(this, mCollectList);
+        mCollectrecyclerview.setAdapter(mCollAdapter);
         initrefreshLayout();
     }
 
     private void initSimplePersonInfo(PersonInfo mPersonInfo) {
-        ImageLoader.loadCircleImage(this, Environment.BASEULR_PRODUCTION+mPersonInfo.getAvatar(), mAvatar);
+        ImageLoader.loadCircleImage(this, Environment.BASEULR_PRODUCTION + mPersonInfo.getAvatar(), mAvatar);
         mName.setText(mPersonInfo.getNickname());
         mClientid.setText(mPersonInfo.getClientid());
-        if (mPersonInfo.isFriend()) {//是否已经是好友关系
+        isFriend = mPersonInfo.isFriend();
+        if (isFriend) {//是否已经是好友关系
             mFab.hide();
             mRecommend.setVisibility(View.VISIBLE);
             mIvSendmsg.setVisibility(View.VISIBLE);

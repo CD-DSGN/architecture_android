@@ -195,6 +195,12 @@ public class SearchFragment extends AppBaseFragment {
                 mAdapter.refreshData(mPersonList);
                 setSystemBarColor(false);
             }
+
+            @Override
+            public void onError(Throwable e) {
+                super.onError(e);
+                reset();
+            }
         });
     }
 

@@ -416,7 +416,7 @@ public class ChatActivity extends AppBaseActivity implements EMMessageListener, 
         Bundle mBundle = new Bundle();
         Contacts mContacts = IMHelper.getInstance().getUserInfo(mFrom);
         PersonInfo mInf = new PersonInfo();
-        mInf.setUser_id(toChatUserName);
+        mInf.setUser_id(mContacts.getUser_id()+"");
         mInf.setAvatar(mContacts.getAvatar_native());
         mInf.setFriend(true);
         mInf.setNickname(mContacts.getUser_name());
