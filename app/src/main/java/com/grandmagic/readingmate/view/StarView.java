@@ -27,7 +27,7 @@ public class StarView extends View {
     private Drawable stareEmptyDrawable;//暗星星
     private Bitmap starFillBitmap;//填充星星
     private float starMask;//星星的个数（可以为小数）
-    private int score;
+    private float score;
     private int total;//默认10分（步进为0.5）
     private int starwidth, starheight;
     private boolean isIndicator;//是否只作为指示，不可滑动
@@ -123,7 +123,7 @@ public class StarView extends View {
     }
 
     private void setStarMask(float mStarMask) {
-        score = (int) (mStarMask * total / starCount);
+        score =  mStarMask * total / starCount;
         if (mStarChangeListener != null) {
             mStarChangeListener.onChange(score);
         }
@@ -151,7 +151,7 @@ public class StarView extends View {
      *
      * @return
      */
-    public int getScore() {
+    public float getScore() {
         return score;
     }
 
@@ -160,7 +160,7 @@ public class StarView extends View {
      *
      * @param mScore
      */
-    public void setScore(int mScore) {
+    public void setScore(Float mScore) {
         score = mScore;
         invalidate();
     }
@@ -197,7 +197,7 @@ public class StarView extends View {
      * 监听评分变化
      */
     public interface OnStarChangeListener {
-        void onChange(int score);
+        void onChange(float score);
     }
 
     OnStarChangeListener mStarChangeListener;

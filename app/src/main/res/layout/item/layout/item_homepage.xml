@@ -5,7 +5,7 @@
     android:layout_height="wrap_content"
     xmlns:tool="http://schemas.android.com/tools"
     android:layout_marginTop="30px"
-
+    xmlns:tools="http://schemas.android.com/tools"
     >
 
 
@@ -148,7 +148,7 @@
             android:layout_height="wrap_content"
             android:layout_below="@+id/t_publishtime"
             android:layout_marginTop="20px"
-            android:text="      读过睡前故事的人都知道，这是一本纷杂凌乱的书，像朋友
+            tools:text="      读过睡前故事的人都知道，这是一本纷杂凌乱的书，像朋友
 在深夜跟你叙述，叙述他走过的千山万水。那么多篇章，有温暖的，有落单的
 有疯狂的。"
             android:textColor="#333333"
@@ -176,7 +176,8 @@
                     android:layout_width="wrap_content"
                     android:layout_height="match_parent"
                     android:layout_marginLeft="10px"
-                    android:text="2346265"
+                    tools:text="2346265"
+                    android:id="@+id/collectionNum"
                     android:textColor="#66191921"
                     android:textSize="20px"
                     />
@@ -193,25 +194,12 @@
                     android:layout_height="match_parent"
                     android:layout_marginLeft="10px"
                     android:text="2346265"
+                    android:id="@+id/commenttimes"
                     android:textColor="#66191921"
                     android:textSize="20px"
                     />
 
-                <ImageView
-                    android:layout_width="28px"
-                    android:layout_height="28px"
-                    android:layout_marginLeft="32px"
-                    android:src="@drawable/ic_watch"
-                    />
 
-                <TextView
-                    android:layout_width="wrap_content"
-                    android:layout_height="match_parent"
-                    android:layout_marginLeft="10px"
-                    android:text="2346265"
-                    android:textColor="#66191921"
-                    android:textSize="20px"
-                    />
             </LinearLayout>
 
             <LinearLayout

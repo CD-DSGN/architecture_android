@@ -14,6 +14,8 @@ import com.grandmagic.readingmate.bean.response.DisplayBook;
 import com.grandmagic.readingmate.rvanimation.AnimationAdapter;
 
 import com.grandmagic.readingmate.utils.ImageLoader;
+import com.grandmagic.readingmate.view.StarView;
+import com.tamic.novate.util.Environment;
 import com.zhy.adapter.recyclerview.base.ViewHolder;
 
 import java.util.List;
@@ -33,12 +35,25 @@ public class HomeBookAdapter extends AnimationAdapter<DisplayBook.InfoBean> {
     @Override
     protected void convert(ViewHolder holder, DisplayBook.InfoBean data, final int position) {
 
-        ImageLoader.loadImage(mContext, "http://files.jb51.net/do/uploads/litimg/160809/1FR52JC7.jpg", (ImageView) holder.getView(R.id.iv_conver));
+        ImageLoader.loadImage(mContext,  Environment.BASEULR_PRODUCTION+data.getPhoto(), (ImageView) holder.getView(R.id.iv_conver));
 
-        ImageLoader.loadCircleImage(mContext, "https://ss2.baidu.com/6ONYsjip0QIZ8tyhnq/it/u=1460995985,2991423940&fm=58", (ImageView) holder.getView(R.id.avatar));
+        ImageLoader.loadCircleImage(mContext, Environment.BASEULR_PRODUCTION+data.getAuthor_photo(), (ImageView) holder.getView(R.id.avatar));
         holder.setText(R.id.bookname, data.getBook_name());
         holder.setText(R.id.author, data.getAuthor());
+        holder.setText(R.id.score,data.getTotal_score());
+        holder.setText(R.id.about,data.getSynopsis());
+        holder.setText(R.id.tv_publistime,data.getPub_date());
+        holder.setText(R.id.tv_publisher,data.getPublisher());
+        holder.setText(R.id.collectionNum,data.getCollect_count());
+        holder.setText(R.id.commenttimes,data.getScore_times());
+        holder.setText(R.id.num_people,"分（"+data.getScore_times()+"人评）");
 
+        StarView mStarView = holder.getView(R.id.ratingbar);
+        try {
+            mStarView.setScore(Float.valueOf(data.getTotal_score()));
+        } catch (NumberFormatException mE) {
+            mE.printStackTrace();
+        }
         holder.setOnClickListener(R.id.linear_share, new View.OnClickListener() {
             @Override
             public void onClick(View v) {

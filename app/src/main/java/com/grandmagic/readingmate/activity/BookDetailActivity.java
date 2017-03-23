@@ -135,7 +135,7 @@ public class BookDetailActivity extends AppBaseActivity implements View.OnLayout
         });
         mRatingbar.setStarChangeListener(new StarView.OnStarChangeListener() {
             @Override
-            public void onChange(int score) {
+            public void onChange(float score) {
                 mHisScore.setText(score + "分");
             }
         });
@@ -190,7 +190,7 @@ public class BookDetailActivity extends AppBaseActivity implements View.OnLayout
             @Override
             public void onSuccee(NovateResponse<HistoryComment> response) {
                 hisScore = response.getData().getScore_num();
-                mRatingbar.setScore(hisScore);
+                mRatingbar.setScore(hisScore*1.0f);
                 mHisScore.setText(hisScore + "分");
             }
         });
@@ -256,7 +256,7 @@ public class BookDetailActivity extends AppBaseActivity implements View.OnLayout
     }
 
     private void submitComment() {
-        int mScore = mRatingbar.getScore();
+        int mScore = (int) mRatingbar.getScore();
         String content = mEtComment.getText().toString();
         if (mScore == 0) {
             Toast.makeText(this, "还是评个分再提交吧", Toast.LENGTH_SHORT).show();
