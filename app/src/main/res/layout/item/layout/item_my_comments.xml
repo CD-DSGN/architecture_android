@@ -3,9 +3,11 @@
               android:id="@+id/ll_item_my_comment"
               android:layout_width="match_parent"
               android:layout_height="wrap_content"
-              android:layout_marginTop="36px"
+
+              android:background="@drawable/selector_item_comment"
               android:gravity="center_horizontal"
-              android:orientation="vertical">
+              android:orientation="vertical"
+    android:paddingTop="36px">
 
     <RelativeLayout
         android:layout_width="618px"
@@ -94,13 +96,13 @@
             />
 
         <TextView
+            android:id="@+id/tv_book_name"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_centerInParent="true"
             android:text="《从你的全世界路过》"
             android:textColor="@color/text_black"
             android:textSize="32px"
-            android:id="@+id/tv_book_name"
             />
     </RelativeLayout>
 
@@ -148,13 +150,13 @@
                 />
 
             <TextView
+                android:id="@+id/tv_likenum"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginLeft="10px"
                 android:text="36"
                 android:textColor="#999999"
                 android:textSize="24px"
-                android:id="@+id/tv_likenum"
                 />
         </LinearLayout>
 
@@ -180,4 +182,12 @@
                 />
         </LinearLayout>
     </LinearLayout>
+
+    <ImageView
+        android:layout_width="match_parent"
+        android:layout_height="1px"
+        android:layout_marginTop="20px"
+        android:background="@drawable/dashline"
+        android:scaleType="fitXY"
+        />
 </LinearLayout>

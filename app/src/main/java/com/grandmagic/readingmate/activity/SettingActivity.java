@@ -120,14 +120,17 @@ public class SettingActivity extends AppBaseActivity {
                 break;
             case R.id.back:
                 finish();
+                break;
             case R.id.switch_setting_push:
                 boolean checked = SPUtils.getInstance().getPushSetting(SettingActivity.this);
                 changeSwitch(!checked);
                 //保存状态
                 SPUtils.getInstance().setPushSetting(this, !checked);
+                break;
             case R.id.rl_clean_cache:
                 CleanCacheDlg cleanCacheDlg = new CleanCacheDlg(this);
                 cleanCacheDlg.show();
+                break;
             default:
                 break;
         }

@@ -22,6 +22,8 @@ public abstract class AppBaseResponseCallBack<T> implements Novate.ResponseCallB
     private boolean mNeedLoading = false;  //需不需要loading
     private Object mLoadingView = null;
 
+    public boolean isRefresh = false;
+
     public AppBaseResponseCallBack(Context context) {
         mContext = context;
     }

@@ -32,7 +32,10 @@ import com.grandmagic.readingmate.model.UserInfoModel;
 import com.grandmagic.readingmate.utils.AutoUtils;
 import com.grandmagic.readingmate.utils.ImageLoader;
 import com.grandmagic.readingmate.utils.KitUtils;
+import com.grandmagic.readingmate.utils.Page;
+import com.grandmagic.readingmate.utils.ViewUtils;
 import com.tamic.novate.NovateResponse;
+import com.tamic.novate.Throwable;
 import com.zhy.adapter.recyclerview.wrapper.HeaderAndFooterWrapper;
 
 import java.util.ArrayList;
@@ -41,6 +44,8 @@ import java.util.List;
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
+import cn.bingoogolapple.refreshlayout.BGARefreshLayout;
+import cn.bingoogolapple.refreshlayout.BGAStickinessRefreshViewHolder;
 
 /**
  * A simple {@link Fragment} subclass.
@@ -72,12 +77,20 @@ public class PersonalFragment extends AppBaseFragment {
     UserInfoResponseBean mUserInfoResponseBean = new UserInfoResponseBean();
     @BindView(R.id.subscriped_book_num)
     TextView mSubscripedBookNum;
+
     private MyCommentAdapter mMAdapter;
     private HeaderAndFooterWrapper mMHeaderAndFooterWrapper;
     private View mView;
 
     MyCommentsModel mMyCommentsModel;
     public static boolean NEED_REFRESH = false;
+
+    BGAStickinessRefreshViewHolder mRefreshViewHolder;
+    BGARefreshLayout mRefreshLayout;
+
+    Page mPage;
+
+    private ArrayList<PersonnalCommentResponseBean> mComments = new ArrayList<>();
 
     public PersonalFragment() {
 
@@ -88,57 +101,23 @@ public class PersonalFragment extends AppBaseFragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_personal, container, false);
+        mRefreshLayout = (BGARefreshLayout) view.findViewById(R.id.BGARefreshLayout);
         AutoUtils.auto(view);
         mRvMyComments = (RecyclerView) view.findViewById(R.id.rv_my_comments);
         mContext = getActivity();
-
+        ButterKnife.bind(view);
+        mPage = new Page(mComments, MyCommentsModel.PAGE_SIZE);
         initView();
         loadData();
+
         return view;
     }
 
     private void loadData() {
-        //获取个人信息
-        if (mUserInfoModel == null) {
-            mUserInfoModel = new UserInfoModel(mContext, new AppBaseResponseCallBack<NovateResponse<UserInfoResponseBean>>(mContext, true) {
-                @Override
-                public void onSuccee(NovateResponse<UserInfoResponseBean> response) {
-                    if (response != null && response.getData() != null) {
-                        mUserInfoResponseBean = (UserInfoResponseBean) response.getData();
-                        //设置相应的数据
-                        setPersonalView();
-                        NEED_REFRESH = false;
-
-                    }
-                }
-            });
-        }
         mUserInfoModel.getUserInfo();
-        if (mMyCommentsModel == null) {
-            mMyCommentsModel = new MyCommentsModel(mContext,
-                    new AppBaseResponseCallBack<NovateResponse<PersonalCommentListResponseBean>>(mContext) {
-
-                        @Override
-                        public void onSuccee(NovateResponse<PersonalCommentListResponseBean> response) {
-                            PersonalCommentListResponseBean personalCommentListResponseBean = response.getData();
-                            ImageUrlResponseBean imageUrlResponseBean = personalCommentListResponseBean.getAvatar_url();
-                            String url = "";
-                            if (imageUrlResponseBean != null) {
-                                url = imageUrlResponseBean.getLarge();
-                            }
-                            if (personalCommentListResponseBean != null) {
-                                List<PersonnalCommentResponseBean> list = personalCommentListResponseBean.getComment_info();
-
-                                mMAdapter.setUrl(url);
-                                mMAdapter.setUsername(personalCommentListResponseBean.getUsername());
-                                mMAdapter.getList().addAll(list);
-                                mMHeaderAndFooterWrapper.notifyDataSetChanged();
-                            }
-                        }
-                    });
-        }
-        mMyCommentsModel.getMyCommentsList();
+        mMyCommentsModel.getMyComment(mcallback, 1);
     }
+
 
     private void setPersonalView() {
         ImageUrlResponseBean imageUrlResponseBean = mUserInfoResponseBean.getAvatar_url();
@@ -170,7 +149,7 @@ public class PersonalFragment extends AppBaseFragment {
         mRvMyComments.setLayoutManager(new LinearLayoutManager(mContext));
         mView = LayoutInflater.from(mContext).inflate(R.layout.personal_fragment_header, mRvMyComments, false);
         ButterKnife.bind(this, mView);
-        mMAdapter = new MyCommentAdapter(mContext, new ArrayList<PersonnalCommentResponseBean>(), "", "");
+        mMAdapter = new MyCommentAdapter(mContext, mComments, "", "");
         mMHeaderAndFooterWrapper = new HeaderAndFooterWrapper(mMAdapter);
 
         AutoUtils.auto(mView);
@@ -178,6 +157,27 @@ public class PersonalFragment extends AppBaseFragment {
         mMHeaderAndFooterWrapper.addHeaderView(mView);
         mRvMyComments.setAdapter(mMHeaderAndFooterWrapper);
         mMHeaderAndFooterWrapper.notifyDataSetChanged();
+
+        //获取个人信息
+        if (mUserInfoModel == null) {
+            mUserInfoModel = new UserInfoModel(mContext, new AppBaseResponseCallBack<NovateResponse<UserInfoResponseBean>>(mContext, true) {
+                @Override
+                public void onSuccee(NovateResponse<UserInfoResponseBean> response) {
+                    if (response != null && response.getData() != null) {
+                        mUserInfoResponseBean = (UserInfoResponseBean) response.getData();
+                        //设置相应的数据
+                        setPersonalView();
+                        NEED_REFRESH = false;
+
+                    }
+                }
+            });
+        }
+
+        if (mMyCommentsModel == null) {
+            mMyCommentsModel = new MyCommentsModel(mContext);
+        }
+        initRefresh();
     }
 
 
@@ -239,4 +239,79 @@ public class PersonalFragment extends AppBaseFragment {
             mSubscripedBookNum.setText(scanCountView);
         }
     }
+
+    @Override
+    public void onDestroy() {
+        super.onDestroy();
+        mMAdapter.mSharePopUpWindow.dismiss(); //否则会报错，泄漏了窗口
+    }
+
+    private void initRefresh() {
+        mRefreshViewHolder = new BGAStickinessRefreshViewHolder(mContext, true);
+        mRefreshViewHolder.setStickinessColor(R.color.colorAccent);
+        mRefreshViewHolder.setRotateImage(R.drawable.bga_refresh_stickiness);
+
+        mRefreshLayout.setRefreshViewHolder(mRefreshViewHolder);
+        mRefreshLayout.setDelegate(new BGARefreshLayout.BGARefreshLayoutDelegate() {
+            @Override
+            public void onBGARefreshLayoutBeginRefreshing(BGARefreshLayout refreshLayout) {
+                mMyCommentsModel.getMyComment(mcallback, 1);
+                mcallback.isRefresh = true;
+            }
+
+            @Override
+            public boolean onBGARefreshLayoutBeginLoadingMore(BGARefreshLayout refreshLayout) {
+                if (mPage.hasMore()) {
+                    mMyCommentsModel.getMyComment(mcallback, mPage.cur_page);
+                    mcallback.isRefresh = false;
+                }else{
+                    ViewUtils.showToast("暂无更多数据");
+                    return false;
+                }
+                return true;
+            }
+        });
+    }
+
+
+    AppBaseResponseCallBack<NovateResponse<PersonalCommentListResponseBean>> mcallback = new AppBaseResponseCallBack<NovateResponse<PersonalCommentListResponseBean>>(mContext) {
+
+        @Override
+        public void onSuccee(NovateResponse<PersonalCommentListResponseBean> response) {
+            mRefreshLayout.endLoadingMore();
+            mRefreshLayout.endRefreshing();
+            PersonalCommentListResponseBean personalCommentListResponseBean = response.getData();
+            ImageUrlResponseBean imageUrlResponseBean = personalCommentListResponseBean.getAvatar_url();
+            String url = "";
+            if (imageUrlResponseBean != null) {
+                url = imageUrlResponseBean.getLarge();
+            }
+            if (personalCommentListResponseBean != null) {
+                List<PersonnalCommentResponseBean> list = personalCommentListResponseBean.getComment_info();
+
+                mMAdapter.setUrl(url);
+                mMAdapter.setUsername(personalCommentListResponseBean.getUsername());
+                if (mcallback.isRefresh) {
+                    mPage.refresh(list);  //刷新
+                }else{
+                    mPage.more(list);  //加载更多
+                }
+                try {
+                    mPage.total_num = Integer.parseInt(personalCommentListResponseBean.getTotal_num());
+                } catch (NumberFormatException e) {
+                    e.printStackTrace();
+                }
+                mMHeaderAndFooterWrapper.notifyDataSetChanged();
+            }
+        }
+
+        @Override
+        public void onError(Throwable e) {
+            super.onError(e);
+            mRefreshLayout.endLoadingMore();
+            mRefreshLayout.endRefreshing();
+            //展示出错界面
+        }
+    };
+
 }
