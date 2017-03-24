@@ -17,6 +17,8 @@ import java.util.Map;
 
 /**
  * Created by lps on 2017/3/7.
+ * @version 1
+ * @since 2017年3月24日16:08:31
  */
 
 public class BookModel {
@@ -179,5 +181,19 @@ public class BookModel {
         mHashMap.put("cpage", mCurrpage);
         mHashMap.put("order_way", mOrder_way);
         mNovate.executeGet(ApiInterface.BOOK_COMMENT_DETAIL, mHashMap, mBack, SPUtils.getInstance().getToken(mContext));
+    }
+
+    public void loadAllFollower(String bookid,int cpage,AppBaseResponseCallBack mBack){
+        Novate mNovate=new Novate.Builder(mContext).build();
+        JSONObject mJSONObject=new JSONObject();
+        try {
+            mJSONObject.put("book_id",bookid);
+            mJSONObject.put("cpage",cpage);
+            mJSONObject.put("pagesize",30);
+        } catch (JSONException mE) {
+            mE.printStackTrace();
+        }
+        mNovate.executeJson(ApiInterface.BOOK_ALL_FOLLOWERS,mJSONObject.toString(),mBack);
+
     }
 }

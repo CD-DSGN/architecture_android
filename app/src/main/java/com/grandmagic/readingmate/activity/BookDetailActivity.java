@@ -251,7 +251,9 @@ public class BookDetailActivity extends AppBaseActivity implements View.OnLayout
                 hotSelected();
                 break;
             case R.id.coll_more:
-                startActivity(new Intent(BookDetailActivity.this,CollectedPersonActivity.class));
+                Intent mIntent = new Intent(BookDetailActivity.this, CollectedPersonActivity.class);
+                mIntent.putExtra(BOOK_ID,book_id);
+                startActivity(mIntent);
                 break;
         }
     }
