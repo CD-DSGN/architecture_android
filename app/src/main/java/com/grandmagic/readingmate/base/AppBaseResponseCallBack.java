@@ -4,10 +4,10 @@ import android.app.Activity;
 import android.app.ProgressDialog;
 import android.content.Context;
 import android.content.Intent;
-import android.widget.Toast;
 
 import com.grandmagic.readingmate.activity.LoginActivity;
 import com.grandmagic.readingmate.consts.ApiErrorConsts;
+import com.grandmagic.readingmate.utils.ViewUtils;
 import com.orhanobut.logger.Logger;
 import com.tamic.novate.Novate;
 import com.tamic.novate.Throwable;
@@ -59,7 +59,7 @@ public abstract class AppBaseResponseCallBack<T> implements Novate.ResponseCallB
         dismissLoading();
         if (e != null) {
             if (e.getCode() != ApiErrorConsts.token_invalid && e.getCode() != NovateException.UNAUTHORIZED) {
-                Toast.makeText(mContext, e.getMessage() + "", Toast.LENGTH_SHORT).show();
+                ViewUtils.showToast(e.getMessage() + "");
                 Logger.e(e.getMessage());
             } else {
                 Intent intent = new Intent(mContext, LoginActivity.class);
