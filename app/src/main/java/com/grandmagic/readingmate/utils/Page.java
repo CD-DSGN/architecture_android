@@ -43,4 +43,9 @@ public class Page {
         return !(list.size() == total_num);
     }
 
+    public void delete(int index) {
+        list.remove(index);
+        cur_page = list.size() / page_size + 1;
+    }
+
 }
