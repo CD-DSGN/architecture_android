@@ -25,12 +25,12 @@ public class DisplayBook {
     @JsonAdapter(ListTypeAdapterFactory.class)
     private List<InfoBean> info;
 
-    public int  getpage(){
+    public int getpage() {
         try {
-            return (int) Math.ceil(total_num*1.0f/num);
+            return (int) Math.ceil(total_num * 1.0f / num);
         } catch (Exception mE) {
             mE.printStackTrace();
-         return 0;
+            return 0;
         }
     }
 
@@ -84,6 +84,15 @@ public class DisplayBook {
         private String score_times;
         private String total_score;
         private String collect_count;
+        private String scan_time;
+
+        public String getScan_time() {
+            return scan_time;
+        }
+
+        public void setScan_time(String mScan_time) {
+            scan_time = mScan_time;
+        }
 
         public String getBook_id() {
             return book_id;
@@ -150,7 +159,7 @@ public class DisplayBook {
         }
 
         public String getScore_times() {
-           if (TextUtils.isEmpty(score_times))return "0";
+            if (TextUtils.isEmpty(score_times)) return "0";
             return score_times;
         }
 
@@ -159,7 +168,7 @@ public class DisplayBook {
         }
 
         public String getTotal_score() {
-            if (TextUtils.isEmpty(total_score))return "0";
+            if (TextUtils.isEmpty(total_score)) return "0";
             return total_score;
         }
 

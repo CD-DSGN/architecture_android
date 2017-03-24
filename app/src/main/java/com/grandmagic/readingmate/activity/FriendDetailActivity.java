@@ -21,6 +21,7 @@ import android.widget.TextView;
 
 import com.grandmagic.readingmate.R;
 import com.grandmagic.readingmate.adapter.CommentsAdapter;
+import com.grandmagic.readingmate.adapter.DefaultEmptyAdapter;
 import com.grandmagic.readingmate.adapter.PersonCollectAdapter;
 import com.grandmagic.readingmate.base.AppBaseActivity;
 import com.grandmagic.readingmate.base.AppBaseResponseCallBack;
@@ -31,6 +32,7 @@ import com.grandmagic.readingmate.model.ContactModel;
 import com.grandmagic.readingmate.utils.AutoUtils;
 import com.grandmagic.readingmate.utils.ImageLoader;
 import com.tamic.novate.NovateResponse;
+import com.tamic.novate.Throwable;
 import com.tamic.novate.util.Environment;
 
 import org.greenrobot.eventbus.EventBus;
@@ -100,43 +102,30 @@ public class FriendDetailActivity extends AppBaseActivity {
         initdata();
     }
 
+    int comentpagecount = 1, commentcurrpage = 1;
+
     private void initdata() {
         mModel = new ContactModel(this);
         PersonInfo mPersonInfo = getIntent().getParcelableExtra(PERSON_INFO);
         userid = mPersonInfo.getUser_id();
         loadPersonCollect();
+        loadComment(commentcurrpage);
         initSimplePersonInfo(mPersonInfo);
     }
 
 
-    List<PersonCollectBookResponse.InfoBean> mCollectList = new ArrayList<>();
-
-    /**
-     * 加载用户的收藏的书籍
-     */
-    private void loadPersonCollect() {
-        mModel.getPersonCollect(userid, new AppBaseResponseCallBack<NovateResponse<PersonCollectBookResponse>>(this) {
-            @Override
-            public void onSuccee(NovateResponse<PersonCollectBookResponse> response) {
-                mCollectList.addAll(response.getData().getInfo());
-                mCollAdapter.refreshData(mCollectList);
-            }
-        });
-    }
-
-    CommentsAdapter mAdapter;
-    PersonCollectAdapter mCollAdapter;
+    List<PersonCollectBookResponse.InfoBean> mCollectList = new ArrayList<>();//用户收藏list
+    DefaultEmptyAdapter mCollDefaultAdapter;
+    DefaultEmptyAdapter mCommentDefaultAdapter;
     List<String> mStrings = new ArrayList<>();
 
     private void initview() {
         mTitleMore.setVisibility(View.VISIBLE);
         mTitle.setText("详细信息");
         mRecyclerview.setLayoutManager(new LinearLayoutManager(this));
-        for (int i = 0; i < 50; i++) {
-            mStrings.add("af");
-        }
-        mAdapter = new CommentsAdapter(this, mStrings);
-        mRecyclerview.setAdapter(mAdapter);
+        CommentsAdapter mCommentsAdapter = new CommentsAdapter(this, mStrings);
+        mCommentDefaultAdapter = new DefaultEmptyAdapter(mCommentsAdapter,this);
+        mRecyclerview.setAdapter(mCommentDefaultAdapter);
 
         mAppbarlayout.addOnOffsetChangedListener(new AppBarLayout.OnOffsetChangedListener() {
             @Override
@@ -147,19 +136,20 @@ public class FriendDetailActivity extends AppBaseActivity {
                 if (appBarLayout.getMeasuredHeight() == Math.abs(verticalOffset)) {
                     //完全关闭
                     if (!isFriend)
-                    mFab.hide();
+                        mFab.hide();
                 }
                 if (appBarLayout.getMeasuredHeight() > Math.abs(verticalOffset)) {
                     //完全关闭
                     if (!isFriend)
-                    mFab.show();
+                        mFab.show();
                 }
             }
         });
         //初始化用户收藏的图书的recyclerView
         mCollectrecyclerview.setLayoutManager(new LinearLayoutManager(this, LinearLayoutManager.HORIZONTAL, false));
-        mCollAdapter = new PersonCollectAdapter(this, mCollectList);
-        mCollectrecyclerview.setAdapter(mCollAdapter);
+        PersonCollectAdapter mCollAdapter = new PersonCollectAdapter(this, mCollectList);
+        mCollDefaultAdapter = new DefaultEmptyAdapter(mCollAdapter, this);
+        mCollectrecyclerview.setAdapter(mCollDefaultAdapter);
         initrefreshLayout();
     }
 
@@ -214,6 +204,48 @@ public class FriendDetailActivity extends AppBaseActivity {
                     }
                 }, 2000);
                 return true;
+            }
+        });
+    }
+
+    /**
+     * 加载用户的收藏的书籍
+     */
+    private void loadPersonCollect() {
+        mModel.getPersonCollect(userid, new AppBaseResponseCallBack<NovateResponse<PersonCollectBookResponse>>(this) {
+            @Override
+            public void onSuccee(NovateResponse<PersonCollectBookResponse> response) {
+                mCollectList.addAll(response.getData().getInfo());
+                mCollDefaultAdapter.refresh();
+            }
+
+            @Override
+            public void onError(Throwable e) {
+                super.onError(e);
+                mCollDefaultAdapter.refresh();
+            }
+        });
+    }
+
+    /**
+     * 加载用户的评论
+     *
+     * @param mCommentcurrpage 页码
+     */
+    private void loadComment(int mCommentcurrpage) {
+        mModel.loadUserComment(userid, mCommentcurrpage, new AppBaseResponseCallBack<NovateResponse>(this) {
+            @Override
+            public void onSuccee(NovateResponse response) {
+                for (int i = 0; i < 50; i++) {
+                    mStrings.add("af");
+                }
+                mCommentDefaultAdapter.refresh();
+            }
+
+            @Override
+            public void onError(Throwable e) {
+                super.onError(e);
+                mCommentDefaultAdapter.refresh();
             }
         });
     }

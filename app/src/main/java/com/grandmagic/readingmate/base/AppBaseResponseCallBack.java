@@ -63,6 +63,7 @@ public abstract class AppBaseResponseCallBack<T> implements Novate.ResponseCallB
                 Logger.e(e.getMessage());
             } else {
                 Intent intent = new Intent(mContext, LoginActivity.class);
+                Logger.e(e.getMessage()+mContext);
                 mContext.startActivity(intent);
             }
 

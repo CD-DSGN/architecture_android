@@ -22,6 +22,7 @@ import com.grandmagic.readingmate.activity.ChatActivity;
 import com.grandmagic.readingmate.activity.FriendActivity;
 import com.grandmagic.readingmate.activity.FriendDetailActivity;
 import com.grandmagic.readingmate.activity.MainActivity;
+import com.grandmagic.readingmate.adapter.DefaultEmptyAdapter;
 import com.grandmagic.readingmate.adapter.MultiItemTypeAdapter;
 import com.grandmagic.readingmate.adapter.RecentConversationDelagate;
 import com.grandmagic.readingmate.base.AppBaseActivity;
@@ -100,22 +101,28 @@ public class ChatFragment extends AppBaseFragment implements RecentConversationD
     }
 
 
-    MultiItemTypeAdapter mAdapter;
-    List<EMConversation> mConversations;
+    DefaultEmptyAdapter mAdapter;
+    List<EMConversation> mConversations=new ArrayList<>();
 
     private void initview() {
         setstate();
         mContext = getActivity();
         mRecyclerview.setLayoutManager(new LinearLayoutManager(mContext));
-        mConversations = loadAllConversation();
-        mAdapter = new MultiItemTypeAdapter(mContext, mConversations);//为了以后也许会加入群组会话等，使用MultiItemTypeAdapter，便于扩展
+        //为了以后也许会加入群组会话等，使用MultiItemTypeAdapter，便于扩展
+        MultiItemTypeAdapter   minnerAdapter = new MultiItemTypeAdapter(mContext, mConversations);
         RecentConversationDelagate mRecentConversationDelagate = new RecentConversationDelagate(mContext);
         mRecentConversationDelagate.setRecentConversationListener(this);
-        mAdapter.addItemViewDelegate(mRecentConversationDelagate);
+        minnerAdapter.addItemViewDelegate(mRecentConversationDelagate);
+        mAdapter=new DefaultEmptyAdapter(minnerAdapter,mContext);
         mRecyclerview.setAdapter(mAdapter);
         initrefreshlayout();
+        onrefreshConversation();
     }
 
+    /**
+     * 连接状态改变的状态处理
+     * @param event
+     */
     @Subscribe(threadMode = ThreadMode.MAIN)
     public void onMessageEvent(ConnectStateEvent event) {
         setstate();
@@ -227,8 +234,9 @@ public class ChatFragment extends AppBaseFragment implements RecentConversationD
      * 收到新消息时候刷新
      */
     public void onrefreshConversation() {
-        mConversations = loadAllConversation();
-        mAdapter.setData(mConversations);
+        mConversations.clear();
+        mConversations .addAll(loadAllConversation());
+        mAdapter.refresh();
     }
 
     @Override

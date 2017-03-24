@@ -11,6 +11,7 @@ import android.widget.Toast;
 
 import com.grandmagic.readingmate.R;
 import com.grandmagic.readingmate.adapter.BookCommentsAdapter;
+import com.grandmagic.readingmate.adapter.DefaultEmptyAdapter;
 import com.grandmagic.readingmate.base.AppBaseResponseCallBack;
 import com.grandmagic.readingmate.bean.response.BookCommentResponse;
 import com.grandmagic.readingmate.model.BookModel;
@@ -60,8 +61,10 @@ public class HotcommentView extends FrameLayout implements BookCommentsAdapter.A
             @Override
             public void onSuccee(NovateResponse<BookCommentResponse> response) {
                 pagecount = response.getData().getPageCount();
-                mList.addAll(response.getData().getComments());
-                mAdapter.refreshData(mList);
+                List<BookCommentResponse.CommentsBean> mComments = response.getData().getComments();
+                if (mComments!=null&&!mComments.isEmpty())
+                mList.addAll(mComments);
+                mAdapter.refresh();
             }
         });
     }
@@ -73,8 +76,9 @@ public class HotcommentView extends FrameLayout implements BookCommentsAdapter.A
     }
 
 
-    BookCommentsAdapter mAdapter;
+
     List<BookCommentResponse.CommentsBean> mList;
+    DefaultEmptyAdapter mAdapter;
 
     private void initPagerview() {
         View mInflate = LayoutInflater.from(mContext).inflate(R.layout.view_hotcomment, this);
@@ -82,9 +86,10 @@ public class HotcommentView extends FrameLayout implements BookCommentsAdapter.A
         initRefresh();
         mRecyclerview.setLayoutManager(new LinearLayoutManager(mContext));
         mList = new ArrayList<>();
-        mAdapter = new BookCommentsAdapter(mContext, mList);
-        mAdapter.setListener(this);
-        mRecyclerview.setAdapter(mAdapter);
+        BookCommentsAdapter mInnerAdapter = new BookCommentsAdapter(mContext, mList);
+        mInnerAdapter.setListener(this);
+        this.mAdapter = new DefaultEmptyAdapter(mInnerAdapter,mContext);
+        mRecyclerview.setAdapter(this.mAdapter);
     }
 
 
@@ -125,7 +130,7 @@ public class HotcommentView extends FrameLayout implements BookCommentsAdapter.A
                 mList.get(position).setThumb_up("1");
                 int mLike_times = mList.get(position).getLike_times();
                 mList.get(position).setLike_times(mLike_times+1);
-                mAdapter.refreshData(mList);
+                mAdapter.refresh();
             }
         });
     }

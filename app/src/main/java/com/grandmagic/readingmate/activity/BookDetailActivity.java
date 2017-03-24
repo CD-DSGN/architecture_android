@@ -167,6 +167,7 @@ public class BookDetailActivity extends AppBaseActivity implements View.OnLayout
 
     private void initView() {
         List<View> mViews = new ArrayList<>();
+//        为了减少Activity的代码，将评论的相关功能抽离到HotcommentView了
         View mRecentView = new HotcommentView(this,HotcommentView.COMMENT_TIME,mModel,book_id);
         View mHotView = new HotcommentView(this,HotcommentView.COMMENT_LIKE,mModel,book_id);
         mViews.add(mRecentView);
@@ -175,7 +176,7 @@ public class BookDetailActivity extends AppBaseActivity implements View.OnLayout
     }
 
     BookModel mModel;
-    int hisScore;
+    int hisScore;//我之前对这本书的评分，
 
     private void initdata() {
         mModel = new BookModel(this);
@@ -255,6 +256,9 @@ public class BookDetailActivity extends AppBaseActivity implements View.OnLayout
         }
     }
 
+    /**
+     * 提交评论到后台
+     */
     private void submitComment() {
         int mScore = (int) mRatingbar.getScore();
         String content = mEtComment.getText().toString();
@@ -271,6 +275,10 @@ public class BookDetailActivity extends AppBaseActivity implements View.OnLayout
         });
     }
 
+    /**
+     * 设置收藏的UI
+     * @param mCollectView
+     */
     public void setCollectView(List<BookdetailResponse.CollectUserBean> mCollectView) {
         for (BookdetailResponse.CollectUserBean user : mCollectView) {
             ImageView mView =new ImageView(this);

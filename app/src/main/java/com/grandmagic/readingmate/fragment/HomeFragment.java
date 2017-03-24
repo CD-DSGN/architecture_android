@@ -155,7 +155,6 @@ public class HomeFragment extends AppBaseFragment implements HomeBookAdapter.Cli
             @Override
             public void onBGARefreshLayoutBeginRefreshing(BGARefreshLayout refreshLayout) {
                 currpage = 1;
-                mBookList.clear();
                 loadBook(currpage);
             }
 
@@ -166,7 +165,6 @@ public class HomeFragment extends AppBaseFragment implements HomeBookAdapter.Cli
                     loadBook(currpage);
                     return true;
                 } else {
-
                     Toast.makeText(mContext, "NOMORE", Toast.LENGTH_SHORT).show();
                 }
                 return false;
@@ -174,11 +172,12 @@ public class HomeFragment extends AppBaseFragment implements HomeBookAdapter.Cli
         });
     }
 
-    private void loadBook(int mCurrpage) {
+    private void loadBook(final int mCurrpage) {
         mModel.loadCollectBook(mCurrpage,new AppBaseResponseCallBack<NovateResponse<DisplayBook>>(getActivity(), false) {
 
             @Override
             public void onSuccee(NovateResponse<DisplayBook> response) {
+                if (mCurrpage==1)mBookList.clear();
                 mRefreshLayout.endLoadingMore();
                 mRefreshLayout.endRefreshing();
                 mBookList.addAll(response.getData().getInfo());
@@ -188,6 +187,7 @@ public class HomeFragment extends AppBaseFragment implements HomeBookAdapter.Cli
             @Override
             public void onError(Throwable e) {
                 super.onError(e);
+                currpage--;//如果加载失败将页码还原
                 mRefreshLayout.endLoadingMore();
                 mRefreshLayout.endRefreshing();
             }

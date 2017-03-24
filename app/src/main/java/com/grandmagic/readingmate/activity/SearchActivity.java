@@ -41,7 +41,6 @@ import cn.bingoogolapple.refreshlayout.util.SimpleRefreshListener;
 
 //搜索页面
 public class SearchActivity extends AppBaseActivity {
-
     @BindView(R.id.iv_search)
     ImageView mIvSearch;
     @BindView(R.id.et_search)
@@ -170,8 +169,6 @@ public class SearchActivity extends AppBaseActivity {
                 keyword = v.getText().toString();
                 if (actionId == EditorInfo.IME_ACTION_SEARCH ||
                         (event != null && event.getKeyCode() == KeyEvent.KEYCODE_ENTER)) {
-                    bookListData.clear();
-
                     search(currpage);
                     return true;
                 }
@@ -183,13 +180,14 @@ public class SearchActivity extends AppBaseActivity {
     /**
      * 通过关键字从服务端搜索
      *
-     * @param
+     * @param mCurrpage 页码
      */
     int pagecount=1,currpage=1;
-    private void search(int mCurrpage) {
+    private void search(final int mCurrpage) {
         mModel.searchBook(keyword,mCurrpage, new AppBaseResponseCallBack<NovateResponse<BookSearchResponse>>(this) {
             @Override
             public void onSuccee(NovateResponse<BookSearchResponse> response) {
+               if (mCurrpage==1)bookListData.clear();
                 pagecount=response.getData().getPageCount();
                 bookListData.addAll(response.getData().getSearch_result());
                 mAdapter.refreshData(bookListData);
