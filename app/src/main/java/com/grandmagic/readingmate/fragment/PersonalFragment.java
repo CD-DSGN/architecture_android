@@ -117,7 +117,7 @@ public class PersonalFragment extends AppBaseFragment {
 
     private void loadData() {
         mUserInfoModel.getUserInfo();
-        mMyCommentsModel.getMyComment(mcallback, 1);
+        mMyCommentsModel.getMyComment(1);
     }
 
 
@@ -177,7 +177,46 @@ public class PersonalFragment extends AppBaseFragment {
         }
 
         if (mMyCommentsModel == null) {
-            mMyCommentsModel = new MyCommentsModel(mContext);
+            mcallback = new AppBaseResponseCallBack<NovateResponse<PersonalCommentListResponseBean>>(mContext) {
+
+                @Override
+                public void onSuccee(NovateResponse<PersonalCommentListResponseBean> response) {
+                    mRefreshLayout.endLoadingMore();
+                    mRefreshLayout.endRefreshing();
+                    PersonalCommentListResponseBean personalCommentListResponseBean = response.getData();
+                    ImageUrlResponseBean imageUrlResponseBean = personalCommentListResponseBean.getAvatar_url();
+                    String url = "";
+                    if (imageUrlResponseBean != null) {
+                        url = imageUrlResponseBean.getLarge();
+                    }
+                    if (personalCommentListResponseBean != null) {
+                        List<PersonnalCommentResponseBean> list = personalCommentListResponseBean.getComment_info();
+
+                        mMAdapter.setUrl(url);
+                        mMAdapter.setUsername(personalCommentListResponseBean.getUsername());
+                        if (mcallback.isRefresh) {
+                            mPage.refresh(list);  //刷新
+                        }else{
+                            mPage.more(list);  //加载更多
+                        }
+                        try {
+                            mPage.total_num = Integer.parseInt(personalCommentListResponseBean.getTotal_num());
+                        } catch (NumberFormatException e) {
+                            e.printStackTrace();
+                        }
+                        mMHeaderAndFooterWrapper.notifyDataSetChanged();
+                    }
+                }
+
+                @Override
+                public void onError(Throwable e) {
+                    super.onError(e);
+                    mRefreshLayout.endLoadingMore();
+                    mRefreshLayout.endRefreshing();
+                    //展示出错界面
+                }
+            };
+            mMyCommentsModel = new MyCommentsModel(mContext, mcallback);
         }
         initRefresh();
     }
@@ -257,14 +296,14 @@ public class PersonalFragment extends AppBaseFragment {
         mRefreshLayout.setDelegate(new BGARefreshLayout.BGARefreshLayoutDelegate() {
             @Override
             public void onBGARefreshLayoutBeginRefreshing(BGARefreshLayout refreshLayout) {
-                mMyCommentsModel.getMyComment(mcallback, 1);
+                mMyCommentsModel.getMyComment(1);
                 mcallback.isRefresh = true;
             }
 
             @Override
             public boolean onBGARefreshLayoutBeginLoadingMore(BGARefreshLayout refreshLayout) {
                 if (mPage.hasMore()) {
-                    mMyCommentsModel.getMyComment(mcallback, mPage.cur_page);
+                    mMyCommentsModel.getMyComment(mPage.cur_page);
                     mcallback.isRefresh = false;
                 }else{
                     ViewUtils.showToast("暂无更多数据");
@@ -276,44 +315,6 @@ public class PersonalFragment extends AppBaseFragment {
     }
 
 
-    AppBaseResponseCallBack<NovateResponse<PersonalCommentListResponseBean>> mcallback = new AppBaseResponseCallBack<NovateResponse<PersonalCommentListResponseBean>>(mContext) {
-
-        @Override
-        public void onSuccee(NovateResponse<PersonalCommentListResponseBean> response) {
-            mRefreshLayout.endLoadingMore();
-            mRefreshLayout.endRefreshing();
-            PersonalCommentListResponseBean personalCommentListResponseBean = response.getData();
-            ImageUrlResponseBean imageUrlResponseBean = personalCommentListResponseBean.getAvatar_url();
-            String url = "";
-            if (imageUrlResponseBean != null) {
-                url = imageUrlResponseBean.getLarge();
-            }
-            if (personalCommentListResponseBean != null) {
-                List<PersonnalCommentResponseBean> list = personalCommentListResponseBean.getComment_info();
-
-                mMAdapter.setUrl(url);
-                mMAdapter.setUsername(personalCommentListResponseBean.getUsername());
-                if (mcallback.isRefresh) {
-                    mPage.refresh(list);  //刷新
-                }else{
-                    mPage.more(list);  //加载更多
-                }
-                try {
-                    mPage.total_num = Integer.parseInt(personalCommentListResponseBean.getTotal_num());
-                } catch (NumberFormatException e) {
-                    e.printStackTrace();
-                }
-                mMHeaderAndFooterWrapper.notifyDataSetChanged();
-            }
-        }
-
-        @Override
-        public void onError(Throwable e) {
-            super.onError(e);
-            mRefreshLayout.endLoadingMore();
-            mRefreshLayout.endRefreshing();
-            //展示出错界面
-        }
-    };
+    AppBaseResponseCallBack<NovateResponse<PersonalCommentListResponseBean>> mcallback;
 
 }
