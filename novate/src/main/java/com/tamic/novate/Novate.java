@@ -3,7 +3,6 @@ package com.tamic.novate;
 import android.content.Context;
 import android.support.annotation.NonNull;
 import android.util.Log;
-import android.webkit.URLUtil;
 
 import com.facebook.stetho.okhttp3.StethoInterceptor;
 import com.google.gson.Gson;
@@ -173,7 +172,7 @@ public class Novate {
         if (finalNeedType == null) {
             return null;
         }
-
+        maps.put("access-token", SPUtils.getInstance().getToken(mContext));
         return (T) apiManager.executeGet(url, maps)
                 .compose(schedulersTransformer)
                 .compose(handleErrTransformer())
@@ -1182,7 +1181,7 @@ public class Novate {
 
             if (isLog) {
                 okhttpBuilder.addNetworkInterceptor(
-                        new HttpLoggingInterceptor().setLevel(HttpLoggingInterceptor.Level.HEADERS));
+                        new HttpLoggingInterceptor().setLevel(HttpLoggingInterceptor.Level.BODY));
             }
 
             if (sslSocketFactory != null) {
