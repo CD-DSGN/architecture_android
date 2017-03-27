@@ -122,8 +122,8 @@ public class CollectionActivity extends AppBaseActivity {
     }
 
     private void smoothScrollToPosition(int position) {
-        position++; //显示从1开始，程序从0开始
         mRvCollectBooks.smoothScrollToPosition(position);
+        position++; //显示从1开始，程序从0开始
         mTvPageInfo.setText(position + "/" + mPage.total_num);
     }
 
