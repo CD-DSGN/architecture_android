@@ -1,6 +1,5 @@
 package com.grandmagic.readingmate.utils;
 
-import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -33,7 +32,7 @@ public class Page {
             list.addAll(al);
         }else{
             int last_num = list.size()%page_size;
-            List sub = (ArrayList) al.subList(last_num, al.size());
+            List sub = al.subList(last_num, al.size());
             list.addAll(sub);
         }
         cur_page = list.size() / page_size + 1;

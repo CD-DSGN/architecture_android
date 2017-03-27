@@ -6,7 +6,6 @@ import android.text.TextUtils;
 import com.grandmagic.readingmate.base.AppBaseResponseCallBack;
 import com.grandmagic.readingmate.consts.ApiInterface;
 import com.tamic.novate.Novate;
-import com.tamic.novate.NovateResponse;
 import com.tamic.novate.util.SPUtils;
 
 import org.json.JSONException;
@@ -52,6 +51,15 @@ public class BookModel {
         mStringObjectMap.put("cpage", mCurrpage);
         mNovate.executeGet(ApiInterface.COLLECT_BOOKDISPLAY, mStringObjectMap, mBack, SPUtils.getInstance().getToken(mContext));
     }
+
+    public void loadCollectBook(int mCurrpage, AppBaseResponseCallBack mBack, int page_size) {
+        Novate mNovate = new Novate.Builder(mContext).build();
+        Map<String, Object> mStringObjectMap = new HashMap<>();
+        mStringObjectMap.put("cpage", mCurrpage);
+        mStringObjectMap.put("pagesize", page_size);
+        mNovate.executeGet(ApiInterface.COLLECT_BOOKDISPLAY, mStringObjectMap, mBack, SPUtils.getInstance().getToken(mContext));
+    }
+
 
     /**
      * 通过关键字搜索图书

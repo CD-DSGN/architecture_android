@@ -1,195 +1,214 @@
 <?xml version="1.0" encoding="utf-8"?>
 <FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+             xmlns:app="http://schemas.android.com/apk/res-auto"
              android:layout_width="match_parent"
-             android:layout_height="672px">
+             android:layout_height="wrap_content"
+    >
 
-    <RelativeLayout
+    <FrameLayout
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:layout_marginLeft="66px"
-        android:layout_marginRight="22px"
-        android:layout_marginTop="22px"
-        >
+        android:layout_height="match_parent">
 
-        <RelativeLayout
-            android:id="@+id/rl_top_right"
+        <android.support.v7.widget.CardView
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginLeft="270px">
+            android:layout_marginLeft="66px"
+            android:layout_marginRight="22px"
+            android:layout_marginTop="22px"
+            app:cardCornerRadius="5dp"
+            app:cardElevation="0dp"
+            >
 
-            <TextView
-                android:id="@+id/tv_book_name"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginLeft="46px"
-                android:gravity="center_horizontal"
-                android:text="从你的全世界路过"
-                android:textColor="#181e1d"
-                android:textSize="32px"
-                />
-
-            <TextView
-                android:id="@+id/tv_book_author"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_below="@id/tv_book_name"
-                android:layout_marginLeft="164px"
-                android:layout_marginTop="28px"
-                android:gravity="center_horizontal"
-                android:text="张嘉佳"
-                android:textColor="#181e1d"
-                android:textSize="24px"
-                />
-
-            <com.grandmagic.readingmate.view.StarView
-                xmlns:app="http://schemas.android.com/apk/res-auto"
-                android:id="@+id/ratingbar"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_below="@id/tv_book_author"
-                android:layout_marginLeft="121px"
-                android:layout_marginTop="20px"
-                app:isIndicator="true"
-                app:starEmpty="@drawable/star_empty"
-                app:starFill="@drawable/star"
-                app:starHeight="22px"
-                app:starWidth="24px"
-                />
-
-            <LinearLayout
-                android:id="@+id/ll_rate"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_below="@id/ratingbar"
-                android:layout_marginTop="14px"
-                android:gravity="center_horizontal"
-                android:orientation="horizontal"
-                >
-
-                <TextView
-                    android:id="@+id/tv_book_score"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:text="8"
-                    android:textColor="#1cc9a2"
-                    android:textSize="22px"
-                    />
-
-                <TextView
-                    android:id="@+id/tv_score"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:text="分"
-                    android:textColor="#99999999"
-                    android:textSize="22px"
-                    />
-
-                <TextView
-                    android:id="@+id/tv_comment_person_num"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_marginLeft="20px"
-                    android:text="(2.3万人评)"
-                    android:textColor="#99999999"
-                    android:textSize="22px"
-                    />
-
-            </LinearLayout>
-
-            <TextView
-                android:id="@+id/tv_publisher"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_below="@+id/ll_rate"
-                android:layout_marginLeft="46px"
-                android:layout_marginTop="24px"
-                android:text="@string/publisher"
-                android:textColor="#99999999"
-                android:textSize="24px"
-                />
-
-            <TextView
-                android:id="@+id/tv_publistime"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_below="@+id/tv_publisher"
-                android:layout_marginLeft="46px"
-                android:layout_marginTop="24px"
-                android:text="@string/publish_time"
-                android:textColor="#99999999"
-                android:textSize="24px"
-                />
 
             <RelativeLayout
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_below="@id/tv_publistime"
-                android:layout_marginLeft="46px"
-                android:layout_marginRight="46px"
-                android:layout_marginTop="40px">
+                android:layout_height="650px"
+                >
 
-                <ImageButton
-                    android:id="@+id/ib_share"
-                    android:layout_width="24px"
-                    android:layout_height="23px"
-                    android:layout_alignParentLeft="true"
-                    android:background="@drawable/ic_share"
+                <RelativeLayout
+                    android:id="@+id/rl_top_right"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginLeft="270px"
+                    android:gravity="center_horizontal">
+
+                    <TextView
+                        android:id="@+id/tv_book_name"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginLeft="46px"
+                        android:layout_marginTop="40px"
+                        android:gravity="center_horizontal"
+                        android:text="从你的全世界路过"
+                        android:textColor="#181e1d"
+                        android:textSize="32px"
+                        />
+
+                    <TextView
+                        android:id="@+id/tv_book_author"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_below="@id/tv_book_name"
+                        android:layout_marginLeft="164px"
+                        android:layout_marginTop="28px"
+                        android:gravity="center_horizontal"
+                        android:text="张嘉佳"
+                        android:textColor="#181e1d"
+                        android:textSize="24px"
+                        />
+
+                    <com.grandmagic.readingmate.view.StarView
+                        xmlns:app="http://schemas.android.com/apk/res-auto"
+                        android:id="@+id/ratingbar"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_below="@id/tv_book_author"
+                        android:layout_marginLeft="121px"
+                        android:layout_marginTop="20px"
+                        app:isIndicator="true"
+                        app:starEmpty="@drawable/star_empty"
+                        app:starFill="@drawable/star"
+                        app:starHeight="22px"
+                        app:starWidth="24px"
+                        />
+
+                    <LinearLayout
+                        android:id="@+id/ll_rate"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_below="@id/ratingbar"
+                        android:layout_marginTop="14px"
+                        android:gravity="center_horizontal"
+                        android:orientation="horizontal"
+                        >
+
+                        <TextView
+                            android:id="@+id/tv_book_score"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="8"
+                            android:textColor="#1cc9a2"
+                            android:textSize="22px"
+                            />
+
+                        <TextView
+                            android:id="@+id/tv_score"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="分"
+                            android:textColor="#99999999"
+                            android:textSize="22px"
+                            />
+
+                        <TextView
+                            android:id="@+id/tv_comment_person_num"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_marginLeft="20px"
+                            android:text="(2.3万人评)"
+                            android:textColor="#99999999"
+                            android:textSize="22px"
+                            />
+
+                    </LinearLayout>
+
+                    <TextView
+                        android:id="@+id/tv_publisher"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_below="@+id/ll_rate"
+                        android:layout_marginLeft="46px"
+                        android:layout_marginTop="24px"
+                        android:text="@string/publisher"
+                        android:textColor="#99999999"
+                        android:textSize="24px"
+                        />
+
+                    <TextView
+                        android:id="@+id/tv_publistime"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_below="@+id/tv_publisher"
+                        android:layout_marginLeft="46px"
+                        android:layout_marginTop="24px"
+                        android:text="@string/publish_time"
+                        android:textColor="#99999999"
+                        android:textSize="24px"
+                        />
+
+                    <RelativeLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_below="@id/tv_publistime"
+                        android:layout_marginLeft="46px"
+                        android:layout_marginRight="46px"
+                        android:layout_marginTop="40px">
+
+                        <ImageButton
+                            android:id="@+id/ib_share"
+                            android:layout_width="24px"
+                            android:layout_height="23px"
+                            android:layout_alignParentLeft="true"
+                            android:background="@drawable/ic_share"
+                            />
+
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_marginLeft="10px"
+                            android:layout_toRightOf="@id/ib_share"
+                            android:text="@string/share"
+                            android:textColor="#e61cc9a2"
+                            android:textSize="22px"
+                            />
+
+                        <TextView
+                            android:id="@+id/delete_book"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_alignParentRight="true"
+                            android:text="@string/delete"
+                            android:textColor="#ccf83f3f"
+                            android:textSize="22px"/>
+                    </RelativeLayout>
+                </RelativeLayout>
+
+                <TextView
+                    android:id="@+id/tv_book_content"
+                    android:layout_width="match_parent"
+                    android:layout_height="200px"
+                    android:layout_below="@+id/rl_top_right"
+                    android:layout_marginLeft="46px"
+                    android:layout_marginRight="46px"
+                    android:layout_marginTop="40px"
+                    android:lineSpacingExtra="20px"
+                    android:maxLines="5"
+                    android:text="        读过睡前故事的人都会知道,这是一本纷杂凌乱的书。像朋友在深夜跟你叙述，叙述他走过的千山万水。那么多篇章，有温暖的，有明亮的。"
+                    android:textColor="#181e1d"
+                    android:textSize="24px"
                     />
 
                 <TextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_marginLeft="10px"
-                    android:layout_toRightOf="@id/ib_share"
-                    android:text="@string/share"
-                    android:textColor="#e61cc9a2"
+                    android:layout_alignParentBottom="true"
+                    android:layout_marginBottom="22px"
+                    android:layout_marginLeft="46px"
+                    android:text="2017/01/03  13:58"
+                    android:textColor="#999999"
                     android:textSize="22px"
+
                     />
 
-                <TextView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_alignParentRight="true"
-                    android:text="@string/delete"
-                    android:textColor="#ccf83f3f"
-                    android:textSize="22px"/>
             </RelativeLayout>
-        </RelativeLayout>
+        </android.support.v7.widget.CardView>
 
-        <TextView
-            android:layout_width="match_parent"
-            android:layout_height="200px"
-            android:layout_below="@+id/rl_top_right"
-            android:layout_marginLeft="46px"
-            android:layout_marginRight="46px"
-            android:layout_marginTop="40px"
-            android:minLines="5"
-            android:text="        读过睡前故事的人都会知道,这是一本纷杂凌乱的书。像朋友在深夜跟你叙述，叙述他走过的千山万水。那么多篇章，有温暖的，有明亮的。"
-            android:textColor="#181e1d"
-            android:textSize="24px"
-            android:lineSpacingExtra="24px"
-            />
-
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_alignParentBottom="true"
-            android:layout_marginBottom="22px"
-            android:text="2017/01/03  13:58"
-            android:textColor="#999999"
-            android:textSize="22px"
-            android:layout_marginLeft="46px"
+        <com.grandmagic.readingmate.view.IrregularImageView
+            android:id="@+id/iv_book"
+            android:layout_width="310px"
+            android:layout_height="435px"
+            android:layout_marginLeft="26px"
 
             />
-
-    </RelativeLayout>
-
-    <com.grandmagic.readingmate.view.IrregularImageView
-        android:id="@+id/iv_book"
-        android:layout_width="310px"
-        android:layout_height="415px"
-        android:layout_marginLeft="26px"
-        android:scaleType="fitXY"
-        android:src="@drawable/iv_no_book"
-        />
+    </FrameLayout>
 </FrameLayout>
