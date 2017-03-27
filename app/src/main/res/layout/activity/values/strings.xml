@@ -98,4 +98,6 @@
     <string name="clean_cache_hint">确定要清理所有缓存吗?</string>
     <string name="clean_cache_finish">清理完毕</string>
     <string name="clean_cache_fail">清理缓存失败</string>
+    <string name="no_more">没有更多数据了</string>
+    <string name="no_pre_page">当前已为第一页</string>
 </resources>

@@ -6,7 +6,6 @@ import android.text.TextUtils;
 import com.grandmagic.readingmate.base.AppBaseResponseCallBack;
 import com.grandmagic.readingmate.consts.ApiInterface;
 import com.tamic.novate.Novate;
-import com.tamic.novate.NovateResponse;
 import com.tamic.novate.util.SPUtils;
 
 import org.json.JSONException;
@@ -54,6 +53,15 @@ public class BookModel {
         mStringObjectMap.put("cpage", mCurrpage);
         mNovate.executeGet(ApiInterface.COLLECT_BOOKDISPLAY, mStringObjectMap, mBack, SPUtils.getInstance().getToken(mContext));
     }
+
+    public void loadCollectBook(int mCurrpage, AppBaseResponseCallBack mBack, int page_size) {
+        Novate mNovate = new Novate.Builder(mContext).build();
+        Map<String, Object> mStringObjectMap = new HashMap<>();
+        mStringObjectMap.put("cpage", mCurrpage);
+        mStringObjectMap.put("pagesize", page_size);
+        mNovate.executeGet(ApiInterface.COLLECT_BOOKDISPLAY, mStringObjectMap, mBack, SPUtils.getInstance().getToken(mContext));
+    }
+
 
     /**
      * 通过关键字搜索图书
@@ -183,6 +191,7 @@ public class BookModel {
         mNovate.executeGet(ApiInterface.BOOK_COMMENT_DETAIL, mHashMap, mBack, SPUtils.getInstance().getToken(mContext));
     }
 
+
     public void loadAllFollower(String bookid,int cpage,AppBaseResponseCallBack mBack){
         Novate mNovate=new Novate.Builder(mContext).build();
         JSONObject mJSONObject=new JSONObject();
@@ -196,4 +205,18 @@ public class BookModel {
         mNovate.executeJson(ApiInterface.BOOK_ALL_FOLLOWERS,mJSONObject.toString(),mBack);
 
     }
+
+    //个人收藏的搜索
+    public void searchCollectBook(String keyword,AppBaseResponseCallBack mAppBaseResponseCallBack) {
+        Novate mNovate = new Novate.Builder(mContext).build();
+        JSONObject mJSONObject = new JSONObject();
+        try {
+            mJSONObject.put("keyword", keyword);
+        } catch (JSONException mE) {
+            mE.printStackTrace();
+        }
+        mNovate.executeJson(ApiInterface.COLLECT_BOOK_SEARCH, mJSONObject.toString(), mAppBaseResponseCallBack);
+    }
+
+
 }

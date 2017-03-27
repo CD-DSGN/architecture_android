@@ -1,19 +1,30 @@
 package com.grandmagic.readingmate.activity;
 
+import android.content.Intent;
 import android.os.Bundle;
-import android.support.v4.view.PagerAdapter;
-import android.support.v4.view.ViewPager;
-import android.view.LayoutInflater;
+import android.support.v7.widget.LinearLayoutManager;
+import android.support.v7.widget.RecyclerView;
 import android.view.View;
-import android.view.ViewGroup;
+import android.widget.FrameLayout;
 import android.widget.ImageButton;
 import android.widget.ImageView;
+import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import com.grandmagic.readingmate.R;
+import com.grandmagic.readingmate.adapter.MyCollectBookAdapter;
 import com.grandmagic.readingmate.base.AppBaseActivity;
+import com.grandmagic.readingmate.base.AppBaseResponseCallBack;
+import com.grandmagic.readingmate.bean.response.DisplayBook;
+import com.grandmagic.readingmate.model.BookModel;
 import com.grandmagic.readingmate.utils.AutoUtils;
+import com.grandmagic.readingmate.utils.Page;
 import com.grandmagic.readingmate.utils.ViewUtils;
+import com.tamic.novate.NovateResponse;
+import com.tamic.novate.Throwable;
+
+import java.util.ArrayList;
+import java.util.List;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
@@ -29,8 +40,27 @@ public class CollectionActivity extends AppBaseActivity {
     ImageButton mPrePage;
     @BindView(R.id.next_page)
     ImageButton mNextPage;
-    @BindView(R.id.vp_collect_books)
-    ViewPager mVpCollectBooks;
+
+    BookModel mModel;
+    Page mPage;
+    List<DisplayBook.InfoBean> mBookList = new ArrayList<>();
+    @BindView(R.id.rv_collect_books)
+    RecyclerView mRvCollectBooks;
+    @BindView(R.id.tv_page_info)
+    TextView mTvPageInfo;
+    @BindView(R.id.fl_search)
+    FrameLayout mFlSearch;
+    @BindView(R.id.activity_collection)
+    RelativeLayout mActivityCollection;
+    private AppBaseResponseCallBack<NovateResponse<DisplayBook>> mCallBack;
+    private int mTotalNum = 0;
+
+    private MyCollectBookAdapter mMyCollectBookAdapter;
+
+    public static final int PAGE_SIZE = 6;
+    private int cur_position = 0;
+
+    boolean mGoToNextPage = false;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -40,39 +70,94 @@ public class CollectionActivity extends AppBaseActivity {
         ButterKnife.bind(this);
         AutoUtils.auto(this);
         initView();
+        loadData();
+    }
+
+    private void loadData() {
+        mCallBack = new AppBaseResponseCallBack<NovateResponse<DisplayBook>>(this, true) {
+            @Override
+            public void onSuccee(NovateResponse<DisplayBook> response) {
+                DisplayBook displayBook = response.getData();
+                if (displayBook != null) {
+                    mTotalNum = displayBook.getTotal_num();
+                    mPage.total_num = mTotalNum;
+                    mPage.more(displayBook.getInfo());
+                    mMyCollectBookAdapter.notifyDataSetChanged();
+                    if (mGoToNextPage) {
+                        mGoToNextPage = false;
+                        goToNextPage();
+                    }
+                    mTvPageInfo.setText((cur_position + 1) + "/" + mPage.total_num);
+                }
+            }
+
+            @Override
+            public void onError(Throwable e) {
+                super.onError(e);
+                mGoToNextPage = false;
+            }
+        };
+
+        mModel.loadCollectBook(mPage.cur_page, mCallBack, PAGE_SIZE);
     }
 
     private void initView() {
+        mRvCollectBooks.setLayoutManager(new LinearLayoutManager(this, LinearLayoutManager.HORIZONTAL, false));
+        mPage = new Page(mBookList, PAGE_SIZE);
         mTitle.setText(R.string.collect);
-        mVpCollectBooks.setAdapter(new PagerAdapter() {
-            @Override
-            public int getCount() {
-                return 3;
-            }
+        mModel = new BookModel(this);
+        if (mMyCollectBookAdapter == null) {
+            mMyCollectBookAdapter = new MyCollectBookAdapter(this, mBookList);
+        }
 
-            @Override
-            public boolean isViewFromObject(View view, Object object) {
-                return view == object;
-            }
+        mRvCollectBooks.setAdapter(mMyCollectBookAdapter);
 
+        mRvCollectBooks.setOnFlingListener(new RecyclerView.OnFlingListener() {
             @Override
-            public Object instantiateItem(ViewGroup container, int position) {
-                LayoutInflater inflater = LayoutInflater.from(CollectionActivity.this);
-                View v = inflater.inflate(R.layout.item_vp_book_details, mVpCollectBooks, false);
-                AutoUtils.auto(v);
-                container.addView(v);
-                return v;
-            }
-
-            @Override
-            public void destroyItem(ViewGroup container, int position, Object object) {
-                container.removeView((View)object);
+            public boolean onFling(int velocityX, int velocityY) {
+                if (Math.abs(velocityX) > Math.abs(velocityY)) {
+                    if (velocityX > 0) {
+                        goToNextPage();
+                    } else {
+                        goToPrePage();
+                    }
+                }
+                return false;
             }
         });
 
+
     }
 
-    @OnClick({R.id.back, R.id.title, R.id.pre_page, R.id.next_page, R.id.vp_collect_books})
+    private void smoothScrollToPosition(int position) {
+        mRvCollectBooks.smoothScrollToPosition(position);
+        position++; //显示从1开始，程序从0开始
+        mTvPageInfo.setText(position + "/" + mPage.total_num);
+    }
+
+
+    private void goToPrePage() {
+        if (cur_position > 0) {
+            smoothScrollToPosition(--cur_position);
+        } else {
+            ViewUtils.showToast(getString(R.string.no_pre_page));
+        }
+    }
+
+    private void goToNextPage() {
+        if (cur_position == mBookList.size() - 1) {  //现有的最后一页向右滑
+            if (mPage.hasMore()) {
+                mModel.loadCollectBook(mPage.cur_page, mCallBack, PAGE_SIZE);
+                mGoToNextPage = true;
+            } else {
+                ViewUtils.showToast(getString(R.string.no_more));
+            }
+        } else {
+            smoothScrollToPosition(++cur_position);
+        }
+    }
+
+    @OnClick({R.id.back, R.id.title, R.id.pre_page, R.id.next_page, R.id.fl_search})
     public void onClick(View view) {
         switch (view.getId()) {
             case R.id.back:
@@ -81,15 +166,18 @@ public class CollectionActivity extends AppBaseActivity {
             case R.id.title:
                 break;
             case R.id.pre_page:
-                ViewUtils.showToast("上一页");
+                goToPrePage();
                 break;
-            case R.id.new_friend:
-                ViewUtils.showToast("下一页");
+            case R.id.next_page:
+                goToNextPage();
                 break;
-            case R.id.vp_collect_books:
-                break;
+            case R.id.fl_search:
+                //跳转个人收藏搜索页
+                Intent intent = new Intent(this, CollectBookSearchActivity.class);
+                startActivity(intent);
             default:
                 break;
         }
     }
+
 }
