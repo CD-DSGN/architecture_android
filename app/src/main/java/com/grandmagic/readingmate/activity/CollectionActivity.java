@@ -19,7 +19,6 @@ import com.grandmagic.readingmate.utils.Page;
 import com.grandmagic.readingmate.utils.ViewUtils;
 import com.tamic.novate.NovateResponse;
 import com.tamic.novate.Throwable;
-import com.zhy.adapter.recyclerview.wrapper.LoadMoreWrapper;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -44,16 +43,17 @@ public class CollectionActivity extends AppBaseActivity {
     List<DisplayBook.InfoBean> mBookList = new ArrayList<>();
     @BindView(R.id.rv_collect_books)
     RecyclerView mRvCollectBooks;
+    @BindView(R.id.tv_page_info)
+    TextView mTvPageInfo;
     private AppBaseResponseCallBack<NovateResponse<DisplayBook>> mCallBack;
     private int mTotalNum = 0;
 
     private MyCollectBookAdapter mMyCollectBookAdapter;
-    private LoadMoreWrapper mLoadMoreWrapper;
 
     public static final int PAGE_SIZE = 6;
     private int cur_position = 0;
 
-    boolean goToNextPage = false;
+    boolean mGoToNextPage = false;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -76,10 +76,9 @@ public class CollectionActivity extends AppBaseActivity {
                     mPage.total_num = mTotalNum;
                     mPage.more(displayBook.getInfo());
                     mMyCollectBookAdapter.notifyDataSetChanged();
-                    //mLoadMoreWrapper.notifyDataSetChanged();
-                    if (goToNextPage) {
-                        goToNextPage = false;
-                        mRvCollectBooks.smoothScrollToPosition(++cur_position);
+                    if (mGoToNextPage) {
+                        mGoToNextPage = false;
+                        goToNextPage();
                     }
                 }
             }
@@ -87,7 +86,7 @@ public class CollectionActivity extends AppBaseActivity {
             @Override
             public void onError(Throwable e) {
                 super.onError(e);
-                goToNextPage = false;
+                mGoToNextPage = false;
             }
         };
 
@@ -102,46 +101,53 @@ public class CollectionActivity extends AppBaseActivity {
         if (mMyCollectBookAdapter == null) {
             mMyCollectBookAdapter = new MyCollectBookAdapter(this, mBookList);
         }
-        //mLoadMoreWrapper = new LoadMoreWrapper(mMyCollectBookAdapter);
+
         mRvCollectBooks.setAdapter(mMyCollectBookAdapter);
-//        mLoadMoreWrapper.setLoadMoreView(R.layout.view_bookdetail);
-//        mLoadMoreWrapper.setOnLoadMoreListener(new LoadMoreWrapper.OnLoadMoreListener() {
-//            @Override
-//            public void onLoadMoreRequested() {
-//                mModel.loadCollectBook(mPage.cur_page, mCallBack, PAGE_SIZE);
-//            }
-//        });
 
         mRvCollectBooks.setOnFlingListener(new RecyclerView.OnFlingListener() {
             @Override
             public boolean onFling(int velocityX, int velocityY) {
                 if (Math.abs(velocityX) > Math.abs(velocityY)) {
                     if (velocityX > 0) {
-
-                        if (cur_position == mBookList.size() - 1) {  //现有的最后一页向右滑
-                            if (mPage.hasMore()) {
-                                mModel.loadCollectBook(mPage.cur_page, mCallBack, PAGE_SIZE);
-                                goToNextPage = true;
-                            }else{
-                                ViewUtils.showToast(getString(R.string.no_more));
-                            }
-                        }else{
-                            mRvCollectBooks.smoothScrollToPosition(++cur_position);
-                        }
-                    }else{
-                        if (cur_position > 0) {
-                            mRvCollectBooks.smoothScrollToPosition(--cur_position);
-                        }
+                        goToNextPage();
+                    } else {
+                        goToPrePage();
                     }
-
-
                 }
-
                 return false;
             }
         });
 
 
+    }
+
+    private void smoothScrollToPosition(int position) {
+        position++; //显示从1开始，程序从0开始
+        mRvCollectBooks.smoothScrollToPosition(position);
+        mTvPageInfo.setText(position + "/" + mPage.total_num);
+    }
+
+
+
+    private void goToPrePage() {
+        if (cur_position > 0) {
+            smoothScrollToPosition(--cur_position);
+        } else {
+            ViewUtils.showToast(getString(R.string.no_pre_page));
+        }
+    }
+
+    private void goToNextPage() {
+        if (cur_position == mBookList.size() - 1) {  //现有的最后一页向右滑
+            if (mPage.hasMore()) {
+                mModel.loadCollectBook(mPage.cur_page, mCallBack, PAGE_SIZE);
+                mGoToNextPage = true;
+            } else {
+                ViewUtils.showToast(getString(R.string.no_more));
+            }
+        } else {
+            smoothScrollToPosition(++cur_position);
+        }
     }
 
     @OnClick({R.id.back, R.id.title, R.id.pre_page, R.id.next_page})
@@ -153,20 +159,10 @@ public class CollectionActivity extends AppBaseActivity {
             case R.id.title:
                 break;
             case R.id.pre_page:
-                //                int pre = mVpCollectBooks.getCurrentItem() - 1;
-                //                if (pre >= 0) {
-                //                    mVpCollectBooks.setCurrentItem(pre);
-                //                } else {
-                //                    ViewUtils.showToast("当前为第一页");
-                //                }
+                goToPrePage();
                 break;
             case R.id.next_page:
-                //                int next = mVpCollectBooks.getCurrentItem() + 1;
-                //                if (next >= 0) {
-                //                    mVpCollectBooks.setCurrentItem(next);
-                //                } else {
-                //                    ViewUtils.showToast("当前为最后一页");
-                //                }
+                goToNextPage();
                 break;
             default:
                 break;
