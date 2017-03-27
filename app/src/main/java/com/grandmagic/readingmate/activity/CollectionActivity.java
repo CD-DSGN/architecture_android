@@ -1,11 +1,14 @@
 package com.grandmagic.readingmate.activity;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.view.View;
+import android.widget.FrameLayout;
 import android.widget.ImageButton;
 import android.widget.ImageView;
+import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import com.grandmagic.readingmate.R;
@@ -45,6 +48,10 @@ public class CollectionActivity extends AppBaseActivity {
     RecyclerView mRvCollectBooks;
     @BindView(R.id.tv_page_info)
     TextView mTvPageInfo;
+    @BindView(R.id.fl_search)
+    FrameLayout mFlSearch;
+    @BindView(R.id.activity_collection)
+    RelativeLayout mActivityCollection;
     private AppBaseResponseCallBack<NovateResponse<DisplayBook>> mCallBack;
     private int mTotalNum = 0;
 
@@ -80,6 +87,7 @@ public class CollectionActivity extends AppBaseActivity {
                         mGoToNextPage = false;
                         goToNextPage();
                     }
+                    mTvPageInfo.setText((cur_position + 1) + "/" + mPage.total_num);
                 }
             }
 
@@ -128,7 +136,6 @@ public class CollectionActivity extends AppBaseActivity {
     }
 
 
-
     private void goToPrePage() {
         if (cur_position > 0) {
             smoothScrollToPosition(--cur_position);
@@ -150,7 +157,7 @@ public class CollectionActivity extends AppBaseActivity {
         }
     }
 
-    @OnClick({R.id.back, R.id.title, R.id.pre_page, R.id.next_page})
+    @OnClick({R.id.back, R.id.title, R.id.pre_page, R.id.next_page, R.id.fl_search})
     public void onClick(View view) {
         switch (view.getId()) {
             case R.id.back:
@@ -164,10 +171,13 @@ public class CollectionActivity extends AppBaseActivity {
             case R.id.next_page:
                 goToNextPage();
                 break;
+            case R.id.fl_search:
+                //跳转个人收藏搜索页
+                Intent intent = new Intent(this, CollectBookSearchActivity.class);
+                startActivity(intent);
             default:
                 break;
         }
     }
-
 
 }

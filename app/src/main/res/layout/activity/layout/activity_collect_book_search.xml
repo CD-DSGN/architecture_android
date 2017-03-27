@@ -1,0 +1,51 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context="com.grandmagic.readingmate.activity.CollectBookSearchActivity"
+    android:gravity="center_horizontal"
+    android:orientation="vertical"
+    android:background="@color/text_green">
+    <RelativeLayout
+        android:layout_width="720px"
+        android:layout_height="90px"
+        android:layout_gravity="center_horizontal"
+        android:layout_marginTop="90px"
+        android:background="@drawable/bg_white_green_board">
+
+        <ImageView
+            android:id="@+id/iv_search"
+            android:layout_width="35px"
+            android:layout_height="35px"
+            android:layout_centerVertical="true"
+            android:layout_marginLeft="52px"
+            android:src="@drawable/ic_search"
+            />
+
+        <EditText
+            android:id="@+id/et_search"
+            android:layout_width="698px"
+            android:layout_height="68px"
+            android:layout_centerVertical="true"
+            android:layout_toRightOf="@+id/iv_search"
+            android:background="@null"
+            android:hint="关键字搜索"
+            android:maxLines="1"
+            android:imeOptions="actionSearch"
+            android:paddingLeft="24px"
+            android:textColor="#999999"
+            android:textColorHint="#999999"
+            android:textSize="22px"
+            />
+    </RelativeLayout>
+    <android.support.v7.widget.RecyclerView
+        android:layout_marginTop="50px"
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_weight="1"
+        android:id="@+id/rv_search_result_of_collect_book"
+        >
+    </android.support.v7.widget.RecyclerView>
+</LinearLayout>

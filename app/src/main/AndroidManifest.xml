@@ -213,9 +213,12 @@
             android:exported="true"
             android:screenOrientation="portrait"
             android:theme="@android:style/Theme.Translucent.NoTitleBar"/>
-        <activity android:name=".activity.CollectedPersonActivity"
-            android:theme="@style/notitle"
-            >
+        <activity
+            android:name=".activity.CollectedPersonActivity"
+            android:theme="@style/notitle">
+        </activity>
+        <activity android:name=".activity.CollectBookSearchActivity"
+            android:theme="@style/notitle">
         </activity>
     </application>
 

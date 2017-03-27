@@ -188,4 +188,17 @@ public class BookModel {
         mHashMap.put("order_way", mOrder_way);
         mNovate.executeGet(ApiInterface.BOOK_COMMENT_DETAIL, mHashMap, mBack, SPUtils.getInstance().getToken(mContext));
     }
+
+    //个人收藏的搜索
+    public void searchCollectBook(String keyword,AppBaseResponseCallBack mAppBaseResponseCallBack) {
+        Novate mNovate = new Novate.Builder(mContext).build();
+        JSONObject mJSONObject = new JSONObject();
+        try {
+            mJSONObject.put("keyword", keyword);
+        } catch (JSONException mE) {
+            mE.printStackTrace();
+        }
+        mNovate.executeJson(ApiInterface.COLLECT_BOOK_SEARCH, mJSONObject.toString(), mAppBaseResponseCallBack);
+    }
+
 }
