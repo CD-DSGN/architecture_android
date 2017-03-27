@@ -38,6 +38,7 @@ public class VoiceRecordView extends RelativeLayout {
         @Override
         public void handleMessage(android.os.Message msg) {
             // change image
+            if (-1<msg.what&&msg.what<7)//保证数组不越界
             micImage.setImageDrawable(micImages[msg.what]);
         }
     };
@@ -63,18 +64,18 @@ public class VoiceRecordView extends RelativeLayout {
         recordingHint = (TextView) findViewById(R.id.recording_hint);
         // animation resources, used for recording
         micImages = new Drawable[]{getResources().getDrawable(R.drawable.ease_record_animate_01),
-                getResources().getDrawable(R.drawable.ease_record_animate_02),
+//                getResources().getDrawable(R.drawable.ease_record_animate_02),
                 getResources().getDrawable(R.drawable.ease_record_animate_03),
-                getResources().getDrawable(R.drawable.ease_record_animate_04),
+//                getResources().getDrawable(R.drawable.ease_record_animate_04),
                 getResources().getDrawable(R.drawable.ease_record_animate_05),
-                getResources().getDrawable(R.drawable.ease_record_animate_06),
+//                getResources().getDrawable(R.drawable.ease_record_animate_06),
                 getResources().getDrawable(R.drawable.ease_record_animate_07),
-                getResources().getDrawable(R.drawable.ease_record_animate_08),
+//                getResources().getDrawable(R.drawable.ease_record_animate_08),
                 getResources().getDrawable(R.drawable.ease_record_animate_09),
-                getResources().getDrawable(R.drawable.ease_record_animate_10),
-                getResources().getDrawable(R.drawable.ease_record_animate_11),
+//                getResources().getDrawable(R.drawable.ease_record_animate_10),
+//                getResources().getDrawable(R.drawable.ease_record_animate_11),
                 getResources().getDrawable(R.drawable.ease_record_animate_12),
-                getResources().getDrawable(R.drawable.ease_record_animate_13),
+//                getResources().getDrawable(R.drawable.ease_record_animate_13),
                 getResources().getDrawable(R.drawable.ease_record_animate_14),};
 
         mWakeLock = ((PowerManager) mContext.getSystemService(Context.POWER_SERVICE)).newWakeLock(
@@ -113,6 +114,7 @@ public class VoiceRecordView extends RelativeLayout {
                 if (event.getY() < 0) {
                     // discard the recorded audio.
                     discardRecording();
+                    if (recorderCallback!=null)recorderCallback.onVoiceCancle();
                 } else {
                     // stop recording and send voice file
                     try {
@@ -123,8 +125,10 @@ public class VoiceRecordView extends RelativeLayout {
                             }
                         } else if (length == EMError.FILE_INVALID) {
                             Toast.makeText(mContext, "无录音权限", Toast.LENGTH_SHORT).show();
+                            recorderCallback.onVoiceCancle();
                         } else {
                             Toast.makeText(mContext, "录音时间太短", Toast.LENGTH_SHORT).show();
+                            recorderCallback.onVoiceCancle();
                         }
                     } catch (Exception e) {
                         e.printStackTrace();
@@ -134,6 +138,7 @@ public class VoiceRecordView extends RelativeLayout {
                 return true;
             default:
                 discardRecording();
+                if (recorderCallback!=null)recorderCallback.onVoiceCancle();
                 return false;
         }
     }
@@ -196,5 +201,6 @@ public class VoiceRecordView extends RelativeLayout {
 
     public interface VoiceRecordCallBack {
         void onVoiceRecordComplete(String voiceFilePath, int voiceTimeLength);
+        void onVoiceCancle();
     }
 }

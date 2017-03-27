@@ -32,14 +32,30 @@ public class BookdetailResponse {
     private String publisher;
     private String pub_date;
     private String collect_count;
-    @JsonAdapter(ObjectDeserializer.class)
-    private CommentBean comment;
     private int is_follow;
+    private String score_times;
+    private String total_score;
     @JsonAdapter(ListTypeAdapterFactory.class)
     private List<CollectUserBean> collect_user;
 
     public String getBook_name() {
         return book_name;
+    }
+
+    public String getScore_times() {
+        return score_times;
+    }
+
+    public void setScore_times(String mScore_times) {
+        score_times = mScore_times;
+    }
+
+    public String getTotal_score() {
+        return total_score;
+    }
+
+    public void setTotal_score(String mTotal_score) {
+        total_score = mTotal_score;
     }
 
     public void setBook_name(String book_name) {
@@ -94,14 +110,6 @@ public class BookdetailResponse {
         this.collect_count = collect_count;
     }
 
-    public CommentBean getComment() {
-        return comment;
-    }
-
-    public void setComment(CommentBean comment) {
-        this.comment = comment;
-    }
-
     public int getIs_follow() {
         return is_follow;
     }
@@ -116,9 +124,6 @@ public class BookdetailResponse {
 
     public void setCollect_user(List<CollectUserBean> collect_user) {
         this.collect_user = collect_user;
-    }
-
-    public static class CommentBean {
     }
 
     public static class CollectUserBean {

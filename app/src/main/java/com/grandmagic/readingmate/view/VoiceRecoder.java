@@ -3,6 +3,7 @@ package com.grandmagic.readingmate.view;
 import android.content.Context;
 import android.media.MediaRecorder;
 import android.os.Handler;
+import android.os.Looper;
 import android.os.SystemClock;
 import android.util.Log;
 
@@ -32,6 +33,7 @@ public class VoiceRecoder {
     public VoiceRecoder(Handler mHandler) {
         this.mHandler = mHandler;
     }
+
     boolean mMkdirs;
 
     public String startRecord(Context mContext) {
@@ -49,12 +51,12 @@ public class VoiceRecoder {
             mRecorder.setAudioSamplingRate(8000);
             mRecorder.setAudioEncodingBitRate(64);
             voiceFileName = PREFIX + System.currentTimeMillis() + EXTENSION;
-            voiceFilePath =   mContext.getExternalCacheDir() + "/voice1/" ;
-            mFile = new File(voiceFilePath+voiceFileName);
-            if (!mFile.getParentFile().exists()){
-                mMkdirs=mFile.getParentFile().mkdirs();
+            voiceFilePath = mContext.getExternalCacheDir() + "/voice1/";
+            mFile = new File(voiceFilePath + voiceFileName);
+            if (!mFile.getParentFile().exists()) {
+                mMkdirs = mFile.getParentFile().mkdirs();
             }
-            if (!mFile.exists()){
+            if (!mFile.exists()) {
                 mFile.createNewFile();
             }
             mRecorder.setOutputFile(mFile.getAbsolutePath());
@@ -66,19 +68,29 @@ public class VoiceRecoder {
             mE.printStackTrace();
             Log.e(TAG, "startRecord() called with: mContext = [" + mContext + "]" + mE.getMessage());
         }
-        new Thread(new Runnable() {
-            @Override
-            public void run() {
-                while (isRecording) {
-                    int msgwhat = mRecorder.getMaxAmplitude() * 13 / 0x7FFF;
-                    mHandler.hasMessages(msgwhat);
-                    SystemClock.sleep(100);
-                }
-            }
-        }).start();
+
+
+
+
         startTime = new Date().getTime();
+        updateMicStatus();
         Log.e(TAG, "startRecord() called with: mfile = [" + mFile.getAbsolutePath() + "]");
         return mFile == null ? null : mFile.getAbsolutePath();
+    }
+
+    int msgwhat;
+
+    private void updateMicStatus() {
+        if (mRecorder != null&&isRecording) {
+            msgwhat = mRecorder.getMaxAmplitude() * 7 / 0x7FFF;
+            new Handler().postDelayed(new Runnable() {
+                @Override
+                public void run() {
+                    updateMicStatus();
+                    mHandler.sendEmptyMessage(msgwhat);
+                }
+            }, 100);
+        }
     }
 
     /**
@@ -94,7 +106,7 @@ public class VoiceRecoder {
                     mFile.delete();
                 }
             } catch (IllegalStateException mE) {
-                Log.e(TAG, "discardRecording() called"+mE);
+                Log.e(TAG, "discardRecording() called" + mE);
                 mE.printStackTrace();
             }
             isRecording = false;
@@ -102,13 +114,13 @@ public class VoiceRecoder {
     }
 
     public int stopRecoding() {
-        if(mRecorder != null){
+        if (mRecorder != null) {
             isRecording = false;
             mRecorder.stop();
             mRecorder.release();
             mRecorder = null;
 
-            if(mFile == null || !mFile.exists() || !mFile.isFile()){
+            if (mFile == null || !mFile.exists() || !mFile.isFile()) {
                 return EMError.FILE_INVALID;
             }
             if (mFile.length() == 0) {
@@ -125,7 +137,7 @@ public class VoiceRecoder {
     @Override
     protected void finalize() throws Throwable {
         super.finalize();
-        if (mRecorder!=null)mRecorder.release();
+        if (mRecorder != null) mRecorder.release();
     }
 
     public boolean isRecording() {

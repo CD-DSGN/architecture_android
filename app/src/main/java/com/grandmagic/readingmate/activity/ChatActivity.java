@@ -128,6 +128,13 @@ public class ChatActivity extends AppBaseActivity implements EMMessageListener, 
         conversationInit();
     }
 
+    @Override
+    protected void onNewIntent(Intent intent) {
+        super.onNewIntent(intent);
+        chat_name = getIntent().getStringExtra(CHAT_NAME);
+        toChatUserName = getIntent().getStringExtra(CHAT_IM_NAME);
+    }
+
     private void initlistener() {
 
         mEtInput.setOnEditorActionListener(new TextView.OnEditorActionListener() {
@@ -142,6 +149,36 @@ public class ChatActivity extends AppBaseActivity implements EMMessageListener, 
                 return false;
             }
         });
+        mVoice.setOnTouchListener(new View.OnTouchListener() {
+            @Override
+            public boolean onTouch(View v, MotionEvent event) {
+                InputMethodUtils.hide(ChatActivity.this);
+                mSpeak.setVisibility(View.VISIBLE);
+                mEtInput.setVisibility(View.GONE);
+                checkPermission();
+                if (hasRecordVoicePermissions) {
+                    return mVoiceRecordView.onPressToSpeakBtnTouch(v, event, new VoiceRecordView.VoiceRecordCallBack() {
+                        @Override
+                        public void onVoiceRecordComplete(String voiceFilePath, int voiceTimeLength) {
+                            sendVoiceMessage(voiceFilePath, voiceTimeLength);
+                            resetUI();
+                        }
+
+                        @Override
+                        public void onVoiceCancle() {
+                            resetUI();
+                        }
+                    });
+                } else {
+                    return false;
+                }
+            }
+        });
+    }
+
+    private void resetUI() {
+        mEtInput.setVisibility(View.VISIBLE);
+        mSpeak.setVisibility(View.GONE);
     }
 
     private void initrefreshlayout() {
@@ -224,22 +261,7 @@ public class ChatActivity extends AppBaseActivity implements EMMessageListener, 
         mAdapter.addItemViewDelegate(new MessageVoiceSendDelagate(this).setChatClickListener(this));
         mMessagerecyclerview.setAdapter(mAdapter);
         initrefreshlayout();
-        mSpeak.setOnTouchListener(new View.OnTouchListener() {
-            @Override
-            public boolean onTouch(View v, MotionEvent event) {
-                checkPermission();
-                if (hasRecordVoicePermissions) {
-                    return mVoiceRecordView.onPressToSpeakBtnTouch(v, event, new VoiceRecordView.VoiceRecordCallBack() {
-                        @Override
-                        public void onVoiceRecordComplete(String voiceFilePath, int voiceTimeLength) {
-                            sendVoiceMessage(voiceFilePath, voiceTimeLength);
-                        }
-                    });
-                } else {
-                    return false;
-                }
-            }
-        });
+
     }
 
     /**
@@ -294,11 +316,6 @@ public class ChatActivity extends AppBaseActivity implements EMMessageListener, 
                 break;
             case R.id.iv_select_img:
                 chooseImg();
-                break;
-            case R.id.voice:
-                mSpeak.setVisibility(View.VISIBLE);
-                InputMethodUtils.hide(this);
-                mEtInput.setVisibility(View.GONE);
                 break;
         }
     }
@@ -416,7 +433,7 @@ public class ChatActivity extends AppBaseActivity implements EMMessageListener, 
         Bundle mBundle = new Bundle();
         Contacts mContacts = IMHelper.getInstance().getUserInfo(mFrom);
         PersonInfo mInf = new PersonInfo();
-        mInf.setUser_id(mContacts.getUser_id()+"");
+        mInf.setUser_id(mContacts.getUser_id() + "");
         mInf.setAvatar(mContacts.getAvatar_native());
         mInf.setFriend(true);
         mInf.setNickname(mContacts.getUser_name());

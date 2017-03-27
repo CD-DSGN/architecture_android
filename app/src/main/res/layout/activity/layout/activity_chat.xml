@@ -54,7 +54,7 @@
 
         <ImageView
             android:id="@+id/iv_select_img"
-            android:layout_width="wrap_content"
+            android:layout_width="52px"
             android:layout_height="wrap_content"
             android:layout_centerVertical="true"
             android:layout_marginLeft="20px"
@@ -83,20 +83,21 @@
             android:layout_toLeftOf="@+id/voice"
             android:layout_toRightOf="@id/iv_select_img"
             android:background="@drawable/chat_edit"
-            android:text="按住开始讲话"
-            android:textSize="26px"
+            android:text="正在语音..."
+            android:textSize="24px"
+            android:textColor="@color/text_green"
             android:visibility="gone"
        />
 
         <ImageView
             android:id="@+id/voice"
-            android:layout_width="40px"
-            android:layout_height="40px"
+            android:layout_width="52px"
+            android:layout_height="52px"
             android:layout_alignParentRight="true"
             android:layout_centerVertical="true"
             android:layout_marginLeft="10px"
             android:layout_marginRight="20px"
-            android:src="@drawable/chat_voice"
+            android:src="@drawable/seletor_chat_voice"
             />
     </RelativeLayout>
 </RelativeLayout>

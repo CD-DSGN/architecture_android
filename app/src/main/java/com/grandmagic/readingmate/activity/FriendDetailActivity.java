@@ -1,5 +1,6 @@
 package com.grandmagic.readingmate.activity;
 
+import android.content.Intent;
 import android.graphics.drawable.BitmapDrawable;
 import android.os.Bundle;
 import android.os.Handler;
@@ -103,11 +104,13 @@ public class FriendDetailActivity extends AppBaseActivity {
     }
 
     int comentpagecount = 1, commentcurrpage = 1;
+    String mNickname;
 
     private void initdata() {
         mModel = new ContactModel(this);
         PersonInfo mPersonInfo = getIntent().getParcelableExtra(PERSON_INFO);
         userid = mPersonInfo.getUser_id();
+        mNickname = mPersonInfo.getNickname();
         loadPersonCollect();
         loadComment(commentcurrpage);
         initSimplePersonInfo(mPersonInfo);
@@ -124,7 +127,7 @@ public class FriendDetailActivity extends AppBaseActivity {
         mTitle.setText("详细信息");
         mRecyclerview.setLayoutManager(new LinearLayoutManager(this));
         CommentsAdapter mCommentsAdapter = new CommentsAdapter(this, mStrings);
-        mCommentDefaultAdapter = new DefaultEmptyAdapter(mCommentsAdapter,this);
+        mCommentDefaultAdapter = new DefaultEmptyAdapter(mCommentsAdapter, this);
         mRecyclerview.setAdapter(mCommentDefaultAdapter);
 
         mAppbarlayout.addOnOffsetChangedListener(new AppBarLayout.OnOffsetChangedListener() {
@@ -250,7 +253,7 @@ public class FriendDetailActivity extends AppBaseActivity {
         });
     }
 
-    @OnClick({R.id.back, R.id.recommend, R.id.fab, R.id.title_more})
+    @OnClick({R.id.back, R.id.recommend, R.id.fab, R.id.title_more, R.id.iv_sendmsg})
     public void onClick(View view) {
         switch (view.getId()) {
             case R.id.back:
@@ -263,7 +266,20 @@ public class FriendDetailActivity extends AppBaseActivity {
             case R.id.title_more:
                 showDeletePop();
                 break;
+            case R.id.iv_sendmsg:
+                toChat();
+                break;
         }
+    }
+
+    /**
+     * 去聊天界面
+     */
+    private void toChat() {
+        Intent mIntent = new Intent(this, ChatActivity.class);
+        mIntent.putExtra(ChatActivity.CHAT_NAME, userid);
+        mIntent.putExtra(ChatActivity.CHAT_IM_NAME, mNickname);
+        startActivity(mIntent);
     }
 
     PopupWindow mPopupWindow;

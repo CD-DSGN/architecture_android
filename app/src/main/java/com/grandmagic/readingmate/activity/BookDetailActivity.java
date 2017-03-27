@@ -233,6 +233,9 @@ public class BookDetailActivity extends AppBaseActivity implements View.OnLayout
         mCollectionNum.setText(s.getCollect_count());
         ImageLoader.loadImage(this, s.getPhoto(), mIvConver);
         setCollectView(s.getCollect_user());
+        mRatingbar.setScore(Float.valueOf(s.getTotal_score()));
+        mScore.setText(s.getTotal_score());
+        mNumPeople.setText("分("+s.getScore_times()+"人评)");
     }
 
     @OnClick({R.id.back, R.id.submit, R.id.tv_last, R.id.tv_hot,R.id.coll_more})
