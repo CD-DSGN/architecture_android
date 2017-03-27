@@ -6,13 +6,9 @@ import android.view.View;
 import android.widget.ImageView;
 
 import com.grandmagic.readingmate.R;
-import com.grandmagic.readingmate.bean.response.ChatMessage;
-import com.grandmagic.readingmate.bean.response.Contacts;
-import com.grandmagic.readingmate.utils.IMHelper;
 import com.grandmagic.readingmate.utils.ImageLoader;
 import com.hyphenate.chat.EMImageMessageBody;
 import com.hyphenate.chat.EMMessage;
-import com.zhy.adapter.recyclerview.base.ItemViewDelegate;
 import com.zhy.adapter.recyclerview.base.ViewHolder;
 
 /**
@@ -37,7 +33,7 @@ public class MessageIMGRecDelagate extends ChatItemViewDelegate {
     }
 
     @Override
-    protected View setContentView() {
+    protected View setContentView(EMMessage mChatMessage) {
         return LayoutInflater.from(mContext).inflate(R.layout.item_reciveimgmsg,null);
     }
 

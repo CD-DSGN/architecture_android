@@ -105,10 +105,11 @@ public class FriendDetailActivity extends AppBaseActivity {
 
     int comentpagecount = 1, commentcurrpage = 1;
     String mNickname;
+    PersonInfo mPersonInfo;
 
     private void initdata() {
         mModel = new ContactModel(this);
-        PersonInfo mPersonInfo = getIntent().getParcelableExtra(PERSON_INFO);
+        mPersonInfo = getIntent().getParcelableExtra(PERSON_INFO);
         userid = mPersonInfo.getUser_id();
         mNickname = mPersonInfo.getNickname();
         loadPersonCollect();
@@ -260,6 +261,7 @@ public class FriendDetailActivity extends AppBaseActivity {
                 finish();
                 break;
             case R.id.recommend:
+                toRecommend();
                 break;
             case R.id.fab:
                 break;
@@ -270,6 +272,14 @@ public class FriendDetailActivity extends AppBaseActivity {
                 toChat();
                 break;
         }
+    }
+
+    private void toRecommend() {
+        Intent mIntent = new Intent(FriendDetailActivity.this, RecommendActivity.class);
+        Bundle mBundle=new Bundle();
+        mBundle.putParcelable(PERSON_INFO,mPersonInfo);
+        mIntent.putExtras(mBundle);
+        startActivity(mIntent);
     }
 
     /**

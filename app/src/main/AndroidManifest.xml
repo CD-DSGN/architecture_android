@@ -216,7 +216,9 @@
             android:name=".activity.CollectedPersonActivity"
             android:theme="@style/notitle">
         </activity>
-        <activity android:name=".activity.RecommendActivity">
+        <activity android:name=".activity.RecommendActivity"
+            android:theme="@style/notitle"
+            >
         </activity>
     </application>
 

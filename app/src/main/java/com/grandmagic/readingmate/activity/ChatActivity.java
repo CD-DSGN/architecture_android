@@ -249,6 +249,7 @@ public class ChatActivity extends AppBaseActivity implements EMMessageListener, 
     List<EMMessage> mMessageList = new ArrayList<>();
 
     private void initview() {
+        mTitleMore.setVisibility(View.VISIBLE);
         mTitlelayout.setBackgroundResource(R.color.white);
         mTitle.setText(chat_name);
         mMessagerecyclerview.setLayoutManager(new LinearLayoutManager(this));
@@ -308,7 +309,7 @@ public class ChatActivity extends AppBaseActivity implements EMMessageListener, 
     }
 
 
-    @OnClick({R.id.back, R.id.iv_select_img, R.id.voice})
+    @OnClick({R.id.back, R.id.iv_select_img, R.id.voice,R.id.title_more})
     public void onClick(View view) {
         switch (view.getId()) {
             case R.id.back:
@@ -316,6 +317,9 @@ public class ChatActivity extends AppBaseActivity implements EMMessageListener, 
                 break;
             case R.id.iv_select_img:
                 chooseImg();
+                break;
+            case R.id.title_more:
+               clickAvatar(toChatUserName);
                 break;
         }
     }

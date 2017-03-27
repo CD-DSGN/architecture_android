@@ -77,7 +77,7 @@ mUserInfo=IMHelper.getInstance().getUserInfo(SPUtils.getInstance().getString(mCo
         });
         final View statesView = holder.getView(R.id.send_status);
         final View progress = holder.getView(R.id.status_prgress);
-        View childView = setContentView();
+        View childView = setContentView(mChatMessage);
         ViewHolder mHolder = ViewHolder.createViewHolder(mContext, childView);
         RelativeLayout holderView = holder.getView(R.id.contentView);
         childConvert(mHolder, mChatMessage, position);
@@ -125,7 +125,7 @@ mUserInfo=IMHelper.getInstance().getUserInfo(SPUtils.getInstance().getString(mCo
 
     protected abstract void childConvert(ViewHolder mHolder, EMMessage mChatMessage, int mPosition);
 
-    protected abstract View setContentView();
+    protected abstract View setContentView(EMMessage mChatMessage);
 
     protected abstract boolean isForViewType(EMMessage mItem);
 

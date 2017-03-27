@@ -33,7 +33,7 @@ public class MessageIMGSendDelagate extends ChatItemViewDelegate {
     }
 
     @Override
-    protected View setContentView() {
+    protected View setContentView(EMMessage mChatMessage) {
         return LayoutInflater.from(mContext).inflate(R.layout.item_sendimgmsg,null);
     }
 
