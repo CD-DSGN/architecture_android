@@ -28,7 +28,7 @@ public class Page {
             return;
         }
 
-        if (list.size()/total_num == 0) {
+        if (list.size()%total_num == 0) {
             list.addAll(al);
         }else{
             int last_num = list.size()%page_size;
@@ -45,6 +45,7 @@ public class Page {
     public void delete(int index) {
         list.remove(index);
         cur_page = list.size() / page_size + 1;
+        total_num--;
     }
 
 }

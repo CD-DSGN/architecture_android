@@ -169,7 +169,8 @@
                             android:layout_alignParentRight="true"
                             android:text="@string/delete"
                             android:textColor="#ccf83f3f"
-                            android:textSize="22px"/>
+                            android:textSize="22px"
+                            android:clickable="true"/>
                     </RelativeLayout>
                 </RelativeLayout>
 

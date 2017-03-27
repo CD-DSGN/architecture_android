@@ -218,5 +218,11 @@ public class BookModel {
         mNovate.executeJson(ApiInterface.COLLECT_BOOK_SEARCH, mJSONObject.toString(), mAppBaseResponseCallBack);
     }
 
-
+    //删除已关注的图书
+    public void deleteCollectBook(String book_id,AppBaseResponseCallBack mAppBaseResponseCallBack) {
+        Novate mNovate = new Novate.Builder(mContext).build();
+        HashMap<String, Object> map = new HashMap<>();
+        map.put("book_id", book_id);
+        mNovate.executeGet(ApiInterface.COLLECT_BOOK_DELETE, map, mAppBaseResponseCallBack);
+    }
 }

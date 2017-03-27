@@ -26,6 +26,7 @@ import com.tamic.novate.Throwable;
 import java.util.ArrayList;
 import java.util.List;
 
+
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
@@ -55,12 +56,15 @@ public class CollectionActivity extends AppBaseActivity {
     private AppBaseResponseCallBack<NovateResponse<DisplayBook>> mCallBack;
     private int mTotalNum = 0;
 
+
     private MyCollectBookAdapter mMyCollectBookAdapter;
 
     public static final int PAGE_SIZE = 6;
     private int cur_position = 0;
 
     boolean mGoToNextPage = false;
+    private MyCollectBookAdapter.OnitemDeleteListener mOnitemDeleteListener;
+    private String mDeleteBookID = "-1";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -102,12 +106,44 @@ public class CollectionActivity extends AppBaseActivity {
     }
 
     private void initView() {
+        if (mOnitemDeleteListener == null) {
+            mOnitemDeleteListener= new MyCollectBookAdapter.OnitemDeleteListener() {
+                @Override
+                public void deleteItem(String id) {
+                    mDeleteBookID = id;
+                    mModel.deleteCollectBook(id, new AppBaseResponseCallBack<NovateResponse<Object>>(CollectionActivity.this, true) {
+                        @Override
+                        public void onSuccee(NovateResponse<Object> response) {
+                            //删除图书成功，更改本地数据,更新分页信息
+                            DisplayBook.InfoBean infoBean;
+                            for (int i = 0 ; i < mBookList.size(); i++) {
+                                infoBean = mBookList.get(i);
+                                if (infoBean != null) {
+                                    if (infoBean.getBook_id().equals(mDeleteBookID)) {
+                                        if (i == mBookList.size() - 1 && cur_position!=0) {  //如果删的是现有数据的最后一页
+                                            cur_position --;
+                                        }
+                                        mPage.delete(i);
+                                        mMyCollectBookAdapter.notifyDataSetChanged();
+                                        CollectionActivity.this.smoothScrollToPosition(cur_position);
+                                        break;
+                                    }
+
+                                }
+                            }
+                        }
+                    });
+
+
+                }
+            };
+        }
         mRvCollectBooks.setLayoutManager(new LinearLayoutManager(this, LinearLayoutManager.HORIZONTAL, false));
         mPage = new Page(mBookList, PAGE_SIZE);
         mTitle.setText(R.string.collect);
         mModel = new BookModel(this);
         if (mMyCollectBookAdapter == null) {
-            mMyCollectBookAdapter = new MyCollectBookAdapter(this, mBookList);
+            mMyCollectBookAdapter = new MyCollectBookAdapter(this, mBookList, mOnitemDeleteListener);
         }
 
         mRvCollectBooks.setAdapter(mMyCollectBookAdapter);

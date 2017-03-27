@@ -2,7 +2,9 @@ package com.grandmagic.readingmate.adapter;
 
 import android.content.Context;
 import android.text.TextUtils;
+import android.view.View;
 import android.widget.ImageView;
+import android.widget.TextView;
 
 import com.grandmagic.readingmate.R;
 import com.grandmagic.readingmate.bean.response.DisplayBook;
@@ -19,8 +21,10 @@ import java.util.List;
  */
 
 public class MyCollectBookAdapter extends CommonAdapter<DisplayBook.InfoBean> {
-    public MyCollectBookAdapter(Context context, List datas) {
+    OnitemDeleteListener mOnitemDeleteListener;
+    public MyCollectBookAdapter(Context context, List datas, OnitemDeleteListener onitemDeleteListener) {
         super(context, R.layout.item_vp_book_details, datas);
+        mOnitemDeleteListener = onitemDeleteListener;
     }
 
 
@@ -53,6 +57,14 @@ public class MyCollectBookAdapter extends CommonAdapter<DisplayBook.InfoBean> {
 
             holder.setText(R.id.tv_book_content, book_info.getSynopsis());
 
+            TextView tv_delete_book = holder.getView(R.id.delete_book);
+            final String book_id = book_info.getBook_id();
+            tv_delete_book.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    mOnitemDeleteListener.deleteItem(book_id);
+                }
+            });
         }
 
     }
@@ -60,4 +72,9 @@ public class MyCollectBookAdapter extends CommonAdapter<DisplayBook.InfoBean> {
     public List getList() {
         return mDatas;
     }
+
+    public interface OnitemDeleteListener {
+        void deleteItem(String id);
+    }
+
 }
