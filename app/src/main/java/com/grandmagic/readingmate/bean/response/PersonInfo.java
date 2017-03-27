@@ -19,6 +19,7 @@ public class PersonInfo implements Parcelable {
     private String nickname;
     private String clientid;//读家账号字段
     private boolean isFriend;//是否已经是好友关系
+    private int gender = 3;
 
     public String getAvatar() {
         return avatar;
@@ -60,6 +61,14 @@ public class PersonInfo implements Parcelable {
         isFriend = mFriend;
     }
 
+    public int getGender() {
+        return gender;
+    }
+
+    public void setGender(int mGender) {
+        gender = mGender;
+    }
+
     @Override
     public int describeContents() {
         return 0;
@@ -72,6 +81,7 @@ public class PersonInfo implements Parcelable {
         dest.writeString(this.nickname);
         dest.writeString(this.clientid);
         dest.writeByte(this.isFriend ? (byte) 1 : (byte) 0);
+        dest.writeInt(this.gender);
     }
 
     public PersonInfo() {
@@ -83,9 +93,10 @@ public class PersonInfo implements Parcelable {
         this.nickname = in.readString();
         this.clientid = in.readString();
         this.isFriend = in.readByte() != 0;
+        this.gender = in.readInt();
     }
 
-    public static final Parcelable.Creator<PersonInfo> CREATOR = new Parcelable.Creator<PersonInfo>() {
+    public static final Creator<PersonInfo> CREATOR = new Creator<PersonInfo>() {
         @Override
         public PersonInfo createFromParcel(Parcel source) {
             return new PersonInfo(source);

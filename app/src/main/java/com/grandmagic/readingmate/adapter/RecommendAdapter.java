@@ -12,7 +12,12 @@ import com.grandmagic.readingmate.utils.ImageLoader;
 import com.tamic.novate.util.Environment;
 import com.zhy.adapter.recyclerview.base.ViewHolder;
 
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.Iterator;
 import java.util.List;
+import java.util.Map;
+import java.util.Set;
 
 import butterknife.BindView;
 
@@ -26,21 +31,48 @@ import butterknife.BindView;
 
 
 public class RecommendAdapter extends CommonAdapter<Contacts> {
+    boolean isSignle = true;
+
     public RecommendAdapter(Context context, List datas) {
         super(context, R.layout.item_recommend_friend, datas);
     }
 
+    HashMap<Integer, Boolean> mHashMap = new HashMap<>();
+
     @Override
-    protected void convert(ViewHolder holder, Contacts data, final int position) {
+    protected void convert(final ViewHolder holder, Contacts data, final int position) {
         holder.setText(R.id.name, data.getUser_name());
-        ImageLoader.loadRoundImage(mContext, Environment.BASEULR_PRODUCTION + data.getAvatar_native(),
+        ImageLoader.loadRoundImage(mContext, data.getAvatar_native(),
                 (ImageView) holder.getView(R.id.avatar));
+        final View check = holder.getView(R.id.checkbtn);
+        holder.setOnClickListener(R.id.checkbtn, new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                changeCheckState(position, check);
+            }
+        });
         holder.getConvertView().setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                if (mClickListener != null) mClickListener.ItemCLick(position);
+                if (mClickListener != null)
+                    if (isSignle) {
+                        mClickListener.ItemCLick(position);
+                    } else {
+                        changeCheckState(position, check);
+                    }
             }
         });
+        holder.setVisible(R.id.checkbtn, !isSignle);
+    }
+
+    private void changeCheckState(int position, View mCheck) {
+        if (mHashMap.get(position) == null || !mHashMap.get(position)) {
+            mCheck.setSelected(true);
+            mHashMap.put(position, true);
+        } else {
+            mCheck.setSelected(false);
+            mHashMap.put(position, false);
+        }
     }
 
     ClickListener mClickListener;
@@ -51,5 +83,31 @@ public class RecommendAdapter extends CommonAdapter<Contacts> {
 
     public interface ClickListener {
         void ItemCLick(int position);
+    }
+
+    public boolean isSignle() {
+        return isSignle;
+    }
+
+    public void setSignle(boolean mSignle) {
+        isSignle = mSignle;
+        notifyDataSetChanged();
+    }
+
+    /**
+     * 获取所有已选中的好友
+     *
+     * @return
+     */
+    public List<Integer> getSelected() {
+        List<Integer> mList = new ArrayList<>();
+        Iterator<Map.Entry<Integer, Boolean>> mIterator = mHashMap.entrySet().iterator();
+        while (mIterator.hasNext()) {//对hashmap遍历
+            Map.Entry<Integer, Boolean> mNext = mIterator.next();
+            if (mNext.getValue()) {
+                mList.add(mNext.getKey());
+            }
+        }
+        return mList;
     }
 }

@@ -5,11 +5,50 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:orientation="vertical"
+    android:background="@color/white"
     android:fitsSystemWindows="true"
+    android:orientation="vertical"
     tools:context="com.grandmagic.readingmate.activity.RecommendActivity">
 
-    <include layout="@layout/title_layout"/>
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="88px"
+        android:layout_marginBottom="28px"
+        android:background="#e8e8e7"
+        android:gravity="center_vertical"
+        android:paddingLeft="20px"
+        android:paddingRight="20px">
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerVertical="true"
+            android:text="@string/cancel"
+            android:textColor="@color/text_black"
+            android:textSize="28px"
+            android:id="@+id/cancle"
+            />
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerInParent="true"
+            android:text="读友录"
+            android:textColor="@color/text_black"
+            android:textSize="48px"
+            />
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentRight="true"
+            android:layout_centerVertical="true"
+            android:text="多选"
+            android:textColor="@color/text_green"
+            android:textSize="28px"
+            android:id="@+id/check"
+            />
+    </RelativeLayout>
 
     <android.support.v7.widget.RecyclerView
         android:id="@+id/recyclerview"

@@ -1,0 +1,100 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="566px"
+    android:layout_height="444px"
+    android:background="@drawable/shape_gray_3dip"
+    android:orientation="vertical">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="47px"
+        android:layout_marginLeft="23px"
+        android:layout_marginTop="47px">
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="推荐给:"
+            android:textColor="@color/text_black"
+            android:textSize="36px"
+            />
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:ellipsize="middle"
+            android:maxLines="1"
+            android:text="阿林,积分...(3人)"
+            android:textColor="@color/text_green"
+            android:textSize="30px"
+            />
+    </LinearLayout>
+
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="2px"
+        android:layout_marginBottom="40px"
+        android:background="@drawable/dashline"/>
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="[个人书签] lps"
+        android:textColor="@color/text_gray"
+        android:textSize="28px"
+        />
+
+    <EditText
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="23px"
+        android:layout_marginRight="23px"
+        android:background="@drawable/shape_round_white"
+        android:hint="给朋友留言"
+        android:padding="20px"
+        />
+
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="2px"
+        android:layout_marginTop="40px"
+        android:background="@drawable/dashline"/>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="100px"
+
+        android:orientation="horizontal">
+
+        <Button
+            android:id="@+id/no"
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:layout_marginLeft="10dp"
+            android:layout_weight="1"
+            android:background="@null"
+            android:gravity="center"
+            android:text="@string/cancel"
+            android:textColor="#999999"
+            android:textSize="16sp"/>
+
+        <View
+            android:layout_width="2px"
+            android:layout_height="match_parent"
+            android:background="@drawable/ic_main_bar_two"/>
+
+        <Button
+            android:id="@+id/yes"
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:layout_marginRight="10dp"
+            android:layout_weight="1"
+            android:background="@null"
+            android:gravity="center"
+            android:text="发送"
+            android:textColor="#1cc9a2"
+            android:textSize="16sp"/>
+    </LinearLayout>
+</LinearLayout>
