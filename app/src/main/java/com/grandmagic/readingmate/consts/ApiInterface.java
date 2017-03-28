@@ -42,6 +42,7 @@ public class ApiInterface {
 
     public static final String MY_COMMENTS_LIST = "comment/commentrecord"; //个人评论列表
     public static final String COLLECT_BOOK_SEARCH = "keyword/scansearch"; //个人收藏图书搜索
+    public static final String COLLECT_BOOK_DELETE = "collect/deletecollection"; //删除已关注的个人图书
 
     
 

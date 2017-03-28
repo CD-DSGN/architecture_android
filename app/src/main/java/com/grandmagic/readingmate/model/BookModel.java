@@ -144,14 +144,14 @@ public class BookModel {
     /**
      * 删除对图书的评论
      *
-     * @param bookid bookid
+     * @param comment_id comment_id
      * @param mBack
      */
-    public void deleteBookComment(String bookid, AppBaseResponseCallBack mBack) {
+    public void deleteBookComment(String comment_id, AppBaseResponseCallBack mBack) {
         Novate mNovate = new Novate.Builder(mContext).build();
         JSONObject mJSONObject = new JSONObject();
         try {
-            mJSONObject.put("book_id", bookid);
+            mJSONObject.put("comment_id", comment_id);
         } catch (JSONException mE) {
             mE.printStackTrace();
         }
