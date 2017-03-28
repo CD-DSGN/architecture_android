@@ -161,7 +161,7 @@ public class FriendDetailActivity extends AppBaseActivity {
         ImageLoader.loadCircleImage(this, Environment.BASEULR_PRODUCTION + mPersonInfo.getAvatar(), mAvatar);
         mName.setText(mPersonInfo.getNickname());
         mClientid.setText(mPersonInfo.getClientid());
-        isFriend = mPersonInfo.isFriend();
+        isFriend=ContactModel.isFriend(this,mPersonInfo.getUser_id());
         if (isFriend) {//是否已经是好友关系
             mFab.hide();
             mRecommend.setVisibility(View.VISIBLE);

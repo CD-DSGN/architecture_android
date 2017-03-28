@@ -6,6 +6,7 @@ import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.view.View;
 import android.widget.Button;
+import android.widget.EditText;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
@@ -19,6 +20,7 @@ import com.grandmagic.readingmate.db.DBHelper;
 import com.grandmagic.readingmate.utils.AutoUtils;
 import com.hyphenate.chat.EMClient;
 import com.hyphenate.chat.EMMessage;
+import com.hyphenate.chat.EMTextMessageBody;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -34,7 +36,6 @@ import butterknife.OnClick;
  */
 public class RecommendActivity extends AppBaseActivity {
 
-    public static final String USERID = "user_id";
     @BindView(R.id.recyclerview)
     RecyclerView mRecyclerview;
     @BindView(R.id.cancle)
@@ -67,7 +68,7 @@ public class RecommendActivity extends AppBaseActivity {
             public void ItemCLick(int position) {
                 if (isSingleSel) {
                     ArrayList<Integer> mObjects = new ArrayList<>();
-                    mObjects.add(mContactses.get(position).getUser_id());
+                    mObjects.add(position);
                     showDialog(mObjects);
                 }
             }
@@ -76,12 +77,26 @@ public class RecommendActivity extends AppBaseActivity {
 
     /**
      * 弹出确认发送的窗口窗口
-     * @param mSelected
+     *
+     * @param mSelected position
      */
     private void showDialog(final List<Integer> mSelected) {
         View mView = View.inflate(this, R.layout.dialog_recommend, null);
         Button cancle = (Button) mView.findViewById(R.id.no);
         Button send = (Button) mView.findViewById(R.id.yes);
+        TextView recommendUser = (TextView) mView.findViewById(R.id.user);
+        TextView recommendname = (TextView) mView.findViewById(R.id.name);
+        final EditText levmsg = (EditText) mView.findViewById(R.id.et_leavemsg);
+        recommendname.setText("[个人书签]" + mPersonInfo.getNickname());
+        StringBuilder mBuilder = new StringBuilder();
+        for (int i = 0; i < mSelected.size(); i++) {
+            mBuilder.append(mContactses.get(mSelected.get(i)).getUser_name());
+            if (i != mSelected.size() - 1) {
+                mBuilder.append("、");
+            }
+        }
+        mBuilder.append("(" + mSelected.size() + "人)");
+        recommendUser.setText(mBuilder);
         mView.setLayoutParams(new LinearLayout.LayoutParams(566, 444));
         AutoUtils.auto(mView);
         mAlertDialog = new AlertDialog.Builder(this).create();
@@ -95,7 +110,11 @@ public class RecommendActivity extends AppBaseActivity {
         send.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                sendRecommentMsg(mSelected);
+                List<Integer> str = new ArrayList<>();
+                for (int i : mSelected) {//获取到对应用户的环信id
+                    str.add(mContactses.get(i).getUser_id());
+                }
+                sendRecommentMsg(str, levmsg.getText().toString());
             }
         });
         mAlertDialog.show();
@@ -103,22 +122,31 @@ public class RecommendActivity extends AppBaseActivity {
 
     /**
      * 遍历所有需要发消息的人然后发送名片
+     *
      * @param mSelected
+     * @param leavemsg  留言内容
      */
-    private void sendRecommentMsg(List<Integer> mSelected) {
+    private void sendRecommentMsg(List<Integer> mSelected, String leavemsg) {
         for (int mUser_id : mSelected) {
-            EMMessage mCardMsg = EMMessage.createTxtSendMessage("111", mUser_id + "");
+            /*因为直接 createTxtSendMessage必须要求填入body里面的文本。不然会返回null，所以改为现在这种
+             */
+            EMMessage mCardMsg = EMMessage.createSendMessage(EMMessage.Type.TXT);
             if (mCardMsg == null) return;
+            EMTextMessageBody mBody = new EMTextMessageBody(leavemsg);
+            mCardMsg.addBody(mBody);
+            mCardMsg.setTo(mUser_id + "");
             createCommendmsg(mCardMsg);
             EMClient.getInstance().chatManager().sendMessage(mCardMsg);
         }
+        // TODO: 2017/3/28 这里可以做一个推荐成功的提示
         finish();
     }
 
-    AlertDialog mAlertDialog;
+    AlertDialog mAlertDialog;// 推荐的弹窗
 
     /**
      * 构建名片消息的内容
+     *
      * @param mCardMsg
      */
     private void createCommendmsg(EMMessage mCardMsg) {
@@ -130,7 +158,7 @@ public class RecommendActivity extends AppBaseActivity {
         mCardMsg.setAttribute("gender", mPersonInfo.getGender());
     }
 
-    PersonInfo mPersonInfo;
+    PersonInfo mPersonInfo;// 从个人详情页面传递过来的用户信息
 
     private void initdata() {
         mPersonInfo = getIntent().getParcelableExtra(FriendDetailActivity.PERSON_INFO);
@@ -158,11 +186,7 @@ public class RecommendActivity extends AppBaseActivity {
                     mAdapter.setSignle(isSingleSel);
                 } else {
                     List<Integer> mSelected = mAdapter.getSelected();//这里面存的是被选择用户所在的position
-                    List<Integer> str = new ArrayList<>();
-                    for (int i : mSelected) {//获取到对应用户的环信id
-                        str.add(mContactses.get(i).getUser_id());
-                    }
-                    showDialog(str);
+                    showDialog(mSelected);
                 }
                 break;
         }

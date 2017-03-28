@@ -26,6 +26,7 @@
             android:layout_height="wrap_content"
             android:ellipsize="middle"
             android:maxLines="1"
+            android:id="@+id/user"
             android:text="阿林,积分...(3人)"
             android:textColor="@color/text_green"
             android:textSize="30px"
@@ -42,11 +43,13 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="[个人书签] lps"
+        android:id="@+id/name"
         android:textColor="@color/text_gray"
         android:textSize="28px"
         />
 
     <EditText
+        android:id="@+id/et_leavemsg"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginLeft="23px"

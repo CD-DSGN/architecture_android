@@ -3,7 +3,10 @@ package com.grandmagic.readingmate.model;
 import android.content.Context;
 
 import com.grandmagic.readingmate.base.AppBaseResponseCallBack;
+import com.grandmagic.readingmate.bean.response.Contacts;
 import com.grandmagic.readingmate.consts.ApiInterface;
+import com.grandmagic.readingmate.db.ContactsDao;
+import com.grandmagic.readingmate.db.DBHelper;
 import com.tamic.novate.NovateResponse;
 import com.tamic.novate.util.SPUtils;
 import com.tamic.novate.Novate;
@@ -148,5 +151,17 @@ public class ContactModel {
             mE.printStackTrace();
         }
         mNovate.executeJson(ApiInterface.PERSON_COMMENT_DETAIL, mJSONObject.toString(), mBack);
+    }
+
+    /**
+     * 是否是好友关系
+     * @param mContext
+     * @param userid
+     * @return
+     */
+    public static boolean isFriend(Context mContext, String userid) {
+        ContactsDao mContactsDao = DBHelper.getContactsDao(mContext);
+        Contacts mUnique = mContactsDao.queryBuilder().where(ContactsDao.Properties.User_id.eq(userid)).build().unique();
+        return mUnique != null;
     }
 }
