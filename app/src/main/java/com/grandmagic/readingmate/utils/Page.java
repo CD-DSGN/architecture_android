@@ -19,11 +19,17 @@ public class Page {
 
     public void refresh(List al) {
         list.clear();
+        if (total_num == 0) {
+            return;
+        }
         list.addAll(al);
         cur_page = list.size() / page_size + 1;
     }
 
     public void more(List al) {
+        if (total_num == 0) {
+            return;
+        }
         if (al == null) {
             return;
         }

@@ -39,6 +39,7 @@ public class CommentsActivity extends AppBaseActivity {
     private CommentDetailAdapter mMAdapter;
     private HeaderAndFooterWrapper mMHeaderAndFooterWrapper;
     private SharePopUpWindow mPopupWindow;
+    private LinearLayout ll_likers_info;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -59,6 +60,7 @@ public class CommentsActivity extends AppBaseActivity {
         mTitle.setText(R.string.comment_detail);
         mRvCommentsDetail.setLayoutManager(new LinearLayoutManager(this));
         mView = LayoutInflater.from(this).inflate(R.layout.item_comments_detail, mRvCommentsDetail, false);
+        initHeaderView();
         AutoUtils.auto(mView);
         mMAdapter = new CommentDetailAdapter(this, data);
         mMHeaderAndFooterWrapper = new HeaderAndFooterWrapper(mMAdapter);
@@ -66,6 +68,25 @@ public class CommentsActivity extends AppBaseActivity {
         mMHeaderAndFooterWrapper.addHeaderView(mView);
         mRvCommentsDetail.setAdapter(mMHeaderAndFooterWrapper);
         mMHeaderAndFooterWrapper.notifyDataSetChanged();
+
+    }
+
+    private void initHeaderView() {
+        ll_likers_info = (LinearLayout) mView.findViewById(R.id.ll_goods_avar_list);
+        ll_likers_info.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                //跳转到点赞详情页
+
+                Intent intent = new Intent(CommentsActivity.this, LikersInfoActivity.class);
+                //把评论ID带过去
+                intent.putExtra("comment_id", "71"); //暂时写死，测试
+                startActivity(intent);
+            }
+        });
+
+
+
 
     }
 

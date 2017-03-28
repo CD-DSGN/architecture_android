@@ -144,6 +144,7 @@
             android:layout_height="56px"
             android:layout_alignParentLeft="true"
             android:orientation="horizontal"
+            android:clickable="true"
             >
         </LinearLayout>
 

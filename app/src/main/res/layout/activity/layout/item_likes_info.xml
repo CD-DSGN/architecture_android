@@ -1,0 +1,69 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout
+    android:layout_width="710px"
+    android:layout_height="152px"
+    android:background="@color/white"
+    android:paddingLeft="20px"
+    android:paddingRight="20px"
+    xmlns:tools="http://schemas.android.com/tools"
+    xmlns:android="http://schemas.android.com/apk/res/android">
+
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="1px"
+        android:background="@drawable/dashline"
+        />
+
+    <ImageView
+        android:id="@+id/avatar"
+        android:layout_width="100px"
+        android:layout_height="100px"
+        android:layout_marginTop="26px"
+        android:src="@drawable/logo"
+        />
+
+    <TextView
+        android:id="@+id/name"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="26px"
+        android:layout_marginTop="40px"
+        android:layout_toRightOf="@+id/avatar"
+        tools:text="张三"
+        android:textColor="#191921"
+        android:textSize="36px"
+
+        />
+
+    <TextView
+        android:id="@+id/signature"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentBottom="true"
+        android:layout_marginBottom="40px"
+        android:layout_marginLeft="26px"
+        android:layout_toRightOf="@+id/avatar"
+        tools:text="nihao"
+        android:textColor="#cc191921"
+        android:textSize="28px"
+
+        />
+    <ImageView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:src="@drawable/iv_plus"
+        android:id="@+id/add_friend"
+        android:layout_alignParentRight="true"
+        android:layout_centerVertical="true"
+        />
+
+
+
+    <View
+        android:id="@+id/bottomline"
+        android:layout_width="match_parent"
+        android:layout_height="1px"
+        android:layout_alignParentBottom="true"
+        android:background="@drawable/dashline"
+        />
+</RelativeLayout>

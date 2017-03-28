@@ -101,4 +101,5 @@
     <string name="no_more">没有更多数据了</string>
     <string name="no_pre_page">当前已为第一页</string>
     <string name="reply_num">条回复</string>
+    <string name="likes_info">点赞过的用户</string>
 </resources>
