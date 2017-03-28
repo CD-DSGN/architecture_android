@@ -33,6 +33,7 @@ public class ContactsDao extends AbstractDao<Contacts, Long> {
         public final static Property PyName = new Property(6, String.class, "pyName", false, "PY_NAME");
         public final static Property Clientid = new Property(7, String.class, "clientid", false, "CLIENTID");
         public final static Property Remark = new Property(8, String.class, "remark", false, "REMARK");
+        public final static Property Gender = new Property(9, int.class, "gender", false, "GENDER");
     }
 
 
@@ -56,7 +57,8 @@ public class ContactsDao extends AbstractDao<Contacts, Long> {
                 "\"LETTER\" TEXT," + // 5: letter
                 "\"PY_NAME\" TEXT," + // 6: pyName
                 "\"CLIENTID\" TEXT," + // 7: clientid
-                "\"REMARK\" TEXT);"); // 8: remark
+                "\"REMARK\" TEXT," + // 8: remark
+                "\"GENDER\" INTEGER NOT NULL );"); // 9: gender
     }
 
     /** Drops the underlying database table. */
@@ -105,6 +107,7 @@ public class ContactsDao extends AbstractDao<Contacts, Long> {
         if (remark != null) {
             stmt.bindString(9, remark);
         }
+        stmt.bindLong(10, entity.getGender());
     }
 
     @Override
@@ -147,6 +150,7 @@ public class ContactsDao extends AbstractDao<Contacts, Long> {
         if (remark != null) {
             stmt.bindString(9, remark);
         }
+        stmt.bindLong(10, entity.getGender());
     }
 
     @Override
@@ -165,7 +169,8 @@ public class ContactsDao extends AbstractDao<Contacts, Long> {
             cursor.isNull(offset + 5) ? null : cursor.getString(offset + 5), // letter
             cursor.isNull(offset + 6) ? null : cursor.getString(offset + 6), // pyName
             cursor.isNull(offset + 7) ? null : cursor.getString(offset + 7), // clientid
-            cursor.isNull(offset + 8) ? null : cursor.getString(offset + 8) // remark
+            cursor.isNull(offset + 8) ? null : cursor.getString(offset + 8), // remark
+            cursor.getInt(offset + 9) // gender
         );
         return entity;
     }
@@ -181,6 +186,7 @@ public class ContactsDao extends AbstractDao<Contacts, Long> {
         entity.setPyName(cursor.isNull(offset + 6) ? null : cursor.getString(offset + 6));
         entity.setClientid(cursor.isNull(offset + 7) ? null : cursor.getString(offset + 7));
         entity.setRemark(cursor.isNull(offset + 8) ? null : cursor.getString(offset + 8));
+        entity.setGender(cursor.getInt(offset + 9));
      }
     
     @Override

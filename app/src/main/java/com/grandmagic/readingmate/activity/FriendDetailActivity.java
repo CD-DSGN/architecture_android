@@ -26,8 +26,11 @@ import com.grandmagic.readingmate.adapter.DefaultEmptyAdapter;
 import com.grandmagic.readingmate.adapter.PersonCollectAdapter;
 import com.grandmagic.readingmate.base.AppBaseActivity;
 import com.grandmagic.readingmate.base.AppBaseResponseCallBack;
+import com.grandmagic.readingmate.bean.response.Contacts;
 import com.grandmagic.readingmate.bean.response.PersonCollectBookResponse;
 import com.grandmagic.readingmate.bean.response.PersonInfo;
+import com.grandmagic.readingmate.db.ContactsDao;
+import com.grandmagic.readingmate.db.DBHelper;
 import com.grandmagic.readingmate.event.ContactDeleteEvent;
 import com.grandmagic.readingmate.model.ContactModel;
 import com.grandmagic.readingmate.utils.AutoUtils;
@@ -161,7 +164,7 @@ public class FriendDetailActivity extends AppBaseActivity {
         ImageLoader.loadCircleImage(this, Environment.BASEULR_PRODUCTION + mPersonInfo.getAvatar(), mAvatar);
         mName.setText(mPersonInfo.getNickname());
         mClientid.setText(mPersonInfo.getClientid());
-        isFriend=ContactModel.isFriend(this,mPersonInfo.getUser_id());
+        isFriend = ContactModel.isFriend(this, mPersonInfo.getUser_id());
         if (isFriend) {//是否已经是好友关系
             mFab.hide();
             mRecommend.setVisibility(View.VISIBLE);
@@ -276,8 +279,8 @@ public class FriendDetailActivity extends AppBaseActivity {
 
     private void toRecommend() {
         Intent mIntent = new Intent(FriendDetailActivity.this, RecommendActivity.class);
-        Bundle mBundle=new Bundle();
-        mBundle.putParcelable(PERSON_INFO,mPersonInfo);
+        Bundle mBundle = new Bundle();
+        mBundle.putParcelable(PERSON_INFO, mPersonInfo);
         mIntent.putExtras(mBundle);
         startActivity(mIntent);
     }
@@ -289,6 +292,7 @@ public class FriendDetailActivity extends AppBaseActivity {
         Intent mIntent = new Intent(this, ChatActivity.class);
         mIntent.putExtra(ChatActivity.CHAT_NAME, userid);
         mIntent.putExtra(ChatActivity.CHAT_IM_NAME, mNickname);
+        mIntent.putExtra(ChatActivity.GENDER, mPersonInfo.getGender());
         startActivity(mIntent);
     }
 
@@ -338,6 +342,12 @@ public class FriendDetailActivity extends AppBaseActivity {
             @Override
             public void onSuccee(NovateResponse response) {
                 EventBus.getDefault().post(new ContactDeleteEvent(userid));
+//                删除好友的同时将对方从本地好友列表移除
+                ContactsDao mContactsDao = DBHelper.getContactsDao(FriendDetailActivity.this);
+                Contacts mUnique = mContactsDao.queryBuilder().where(ContactsDao.Properties.User_id.eq(userid)).unique();
+                if (mUnique != null) {
+                    mContactsDao.delete(mUnique);
+                }
                 finish();
             }
         });

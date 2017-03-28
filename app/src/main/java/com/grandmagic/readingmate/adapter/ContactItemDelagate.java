@@ -60,6 +60,7 @@ private int remarkPosition=-1;
                 Intent mIntent = new Intent(mContext, ChatActivity.class);
                 mIntent.putExtra(ChatActivity.CHAT_NAME, mContacts.getUser_name());
                 mIntent.putExtra(ChatActivity.CHAT_IM_NAME, mContacts.getUser_id() + "");
+                mIntent.putExtra(ChatActivity.GENDER, mContacts.getGender());
                 mContext.startActivity(mIntent);
             }
         });

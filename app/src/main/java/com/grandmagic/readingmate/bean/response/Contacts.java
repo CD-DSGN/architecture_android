@@ -37,6 +37,16 @@ public class Contacts {
     private String pyName;
     private String clientid;
 private String remark;
+    private int gender;
+
+    public int getGender() {
+        return gender;
+    }
+
+    public void setGender(int mGender) {
+        gender = mGender;
+    }
+
     public Contacts() {
     }
 
@@ -132,9 +142,9 @@ private String remark;
         type = mType;
     }
 
-    @Generated(hash = 1811722507)
+    @Generated(hash = 439821357)
     public Contacts(Long id, int user_id, String avatar_native, String user_name, boolean needline,
-            String letter, String pyName, String clientid, String remark) {
+            String letter, String pyName, String clientid, String remark, int gender) {
         this.id = id;
         this.user_id = user_id;
         this.avatar_native = avatar_native;
@@ -144,6 +154,7 @@ private String remark;
         this.pyName = pyName;
         this.clientid = clientid;
         this.remark = remark;
+        this.gender = gender;
     }
 
     public TYPE getType() {

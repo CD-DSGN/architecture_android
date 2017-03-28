@@ -67,6 +67,7 @@ import rx.functions.Action1;
 public class ChatActivity extends AppBaseActivity implements EMMessageListener, ChatItemViewDelegate.chatClickListener {
     private static final String TAG = "ChatActivity";
     public static final String CHAT_NAME = "chat_name";
+    public static final String GENDER = "gender";
     public static final String CHAT_IM_NAME = "chat_im_name";
     public static final String CHAT_TYPE = "chat_type";
     public static final int REQUEST_DETAIL = 101;
@@ -107,6 +108,7 @@ public class ChatActivity extends AppBaseActivity implements EMMessageListener, 
 
     RxPermissions mRxPermissions;
     boolean hasRecordVoicePermissions;//是否已经得到授权
+    int gender;//对方的性别
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -125,6 +127,7 @@ public class ChatActivity extends AppBaseActivity implements EMMessageListener, 
         mRxPermissions = new RxPermissions(this);
         chat_name = getIntent().getStringExtra(CHAT_NAME);
         toChatUserName = getIntent().getStringExtra(CHAT_IM_NAME);
+        gender = getIntent().getIntExtra(GENDER,3);
         conversationInit();
     }
 
@@ -425,7 +428,6 @@ public class ChatActivity extends AppBaseActivity implements EMMessageListener, 
         EMClient.getInstance().chatManager().removeMessageListener(this);//移除监听
         IMHelper.getInstance().popActivity(this);
     }
-
     /**
      * 点击头像事件
      *
@@ -442,6 +444,7 @@ public class ChatActivity extends AppBaseActivity implements EMMessageListener, 
         mInf.setFriend(true);
         mInf.setNickname(mContacts.getUser_name());
         mInf.setClientid(mContacts.getClientid());
+        mInf.setGender(gender);
         mBundle.putParcelable(FriendDetailActivity.PERSON_INFO, mInf);
         mIntent.putExtras(mBundle);
         startActivityForResult(mIntent, REQUEST_DETAIL);

@@ -12,7 +12,9 @@ import com.grandmagic.readingmate.R;
 import com.grandmagic.readingmate.adapter.RequestListAdapter;
 import com.grandmagic.readingmate.base.AppBaseActivity;
 import com.grandmagic.readingmate.base.AppBaseResponseCallBack;
+import com.grandmagic.readingmate.bean.response.Contacts;
 import com.grandmagic.readingmate.bean.response.RequestListResponse;
+import com.grandmagic.readingmate.db.DBHelper;
 import com.grandmagic.readingmate.model.ContactModel;
 import com.tamic.novate.NovateResponse;
 
@@ -81,12 +83,18 @@ public class FriendRequestActivity extends AppBaseActivity implements RequestLis
      * @param mPosition
      */
     @Override
-    public void accpet(RequestListResponse data, final int mPosition) {
+    public void accpet(final RequestListResponse data, final int mPosition) {
         mModel.acceptFriend(data.getRequest_id(), new AppBaseResponseCallBack<NovateResponse>(this) {
             @Override
             public void onSuccee(NovateResponse response) {
                 mListResponses.remove(mPosition);
                 mAdapter.setdata(mListResponses);
+                //添加好友时候将对方添加到自己的本地数据库
+                Contacts mContacts = new Contacts();
+                mContacts.setUser_id(Integer.valueOf(data.getUser_id()));
+                mContacts.setUser_name(data.getUser_name());
+                mContacts.setAvatar_native(data.getAvatar_native());
+                DBHelper.getContactsDao(FriendRequestActivity.this).save(mContacts);
             }
         });
     }

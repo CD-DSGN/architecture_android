@@ -27,6 +27,9 @@ import com.grandmagic.readingmate.adapter.MultiItemTypeAdapter;
 import com.grandmagic.readingmate.adapter.RecentConversationDelagate;
 import com.grandmagic.readingmate.base.AppBaseActivity;
 import com.grandmagic.readingmate.base.AppBaseFragment;
+import com.grandmagic.readingmate.bean.response.Contacts;
+import com.grandmagic.readingmate.db.ContactsDao;
+import com.grandmagic.readingmate.db.DBHelper;
 import com.grandmagic.readingmate.event.ConnectStateEvent;
 import com.grandmagic.readingmate.event.ContactDeleteEvent;
 import com.grandmagic.readingmate.utils.AutoUtils;
@@ -102,18 +105,18 @@ public class ChatFragment extends AppBaseFragment implements RecentConversationD
 
 
     DefaultEmptyAdapter mAdapter;
-    List<EMConversation> mConversations=new ArrayList<>();
+    List<EMConversation> mConversations = new ArrayList<>();
 
     private void initview() {
         setstate();
         mContext = getActivity();
         mRecyclerview.setLayoutManager(new LinearLayoutManager(mContext));
         //为了以后也许会加入群组会话等，使用MultiItemTypeAdapter，便于扩展
-        MultiItemTypeAdapter   minnerAdapter = new MultiItemTypeAdapter(mContext, mConversations);
+        MultiItemTypeAdapter minnerAdapter = new MultiItemTypeAdapter(mContext, mConversations);
         RecentConversationDelagate mRecentConversationDelagate = new RecentConversationDelagate(mContext);
         mRecentConversationDelagate.setRecentConversationListener(this);
         minnerAdapter.addItemViewDelegate(mRecentConversationDelagate);
-        mAdapter=new DefaultEmptyAdapter(minnerAdapter,mContext);
+        mAdapter = new DefaultEmptyAdapter(minnerAdapter, mContext);
         mRecyclerview.setAdapter(mAdapter);
         initrefreshlayout();
         onrefreshConversation();
@@ -121,6 +124,7 @@ public class ChatFragment extends AppBaseFragment implements RecentConversationD
 
     /**
      * 连接状态改变的状态处理
+     *
      * @param event
      */
     @Subscribe(threadMode = ThreadMode.MAIN)
@@ -235,7 +239,7 @@ public class ChatFragment extends AppBaseFragment implements RecentConversationD
      */
     public void onrefreshConversation() {
         mConversations.clear();
-        mConversations .addAll(loadAllConversation());
+        mConversations.addAll(loadAllConversation());
         mAdapter.refresh();
     }
 
@@ -256,9 +260,9 @@ public class ChatFragment extends AppBaseFragment implements RecentConversationD
     public void delete(String username) {
         //删除和某个user会话，如果需要保留聊天记录，传false
         boolean mB = EMClient.getInstance().chatManager().deleteConversation(username, true);
-        if (mB){
+        if (mB) {
             onrefreshConversation();
-        }else {
+        } else {
             Toast.makeText(mContext, "移除会话失败", Toast.LENGTH_SHORT).show();
         }
     }
@@ -270,6 +274,10 @@ public class ChatFragment extends AppBaseFragment implements RecentConversationD
         mIntent.putExtra(ChatActivity.CHAT_IM_NAME, mLastMessage.direct() == EMMessage.Direct.SEND ?
                 mLastMessage.getTo() : mLastMessage.getFrom());
         mIntent.putExtra(ChatActivity.CHAT_NAME, mFinalUsername);
+        ContactsDao mContactsDao = DBHelper.getContactsDao(mContext);
+        Contacts mUnique = mContactsDao.queryBuilder().where(ContactsDao.Properties.User_name.eq(mFinalUsername)).build().unique();
+        if (mUnique != null)
+            mIntent.putExtra(ChatActivity.GENDER, mUnique.getGender());
         mConversations.get(position).markAllMessagesAsRead();
         onrefreshConversation();
         ((MainActivity) mContext).startActivityForResult(mIntent, REQUEST_READMSG);
@@ -285,8 +293,8 @@ public class ChatFragment extends AppBaseFragment implements RecentConversationD
     }
 
     @Subscribe(threadMode = ThreadMode.MAIN)
-    public void contactDelete(ContactDeleteEvent mEvent){
-        EMClient.getInstance().chatManager().deleteConversation(mEvent.getUser_id(),true);
+    public void contactDelete(ContactDeleteEvent mEvent) {
+        EMClient.getInstance().chatManager().deleteConversation(mEvent.getUser_id(), true);
         onrefreshConversation();
     }
 }
