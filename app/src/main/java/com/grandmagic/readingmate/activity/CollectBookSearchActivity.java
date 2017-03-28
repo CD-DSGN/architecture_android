@@ -17,6 +17,7 @@ import com.grandmagic.readingmate.base.AppBaseActivity;
 import com.grandmagic.readingmate.base.AppBaseResponseCallBack;
 import com.grandmagic.readingmate.bean.response.SimpleBookInfoListResponseBean;
 import com.grandmagic.readingmate.model.BookModel;
+import com.grandmagic.readingmate.utils.AutoUtils;
 import com.tamic.novate.NovateResponse;
 
 import java.util.ArrayList;
@@ -43,8 +44,10 @@ public class CollectBookSearchActivity extends AppBaseActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        setTranslucentStatus(true);
         setContentView(R.layout.activity_collect_book_search);
         ButterKnife.bind(this);
+        AutoUtils.auto(this);
         initView();
     }
 

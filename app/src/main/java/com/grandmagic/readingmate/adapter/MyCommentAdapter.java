@@ -6,6 +6,7 @@ import android.text.TextUtils;
 import android.view.View;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
+import android.widget.TextView;
 
 import com.grandmagic.readingmate.R;
 import com.grandmagic.readingmate.activity.CommentsActivity;
@@ -24,20 +25,24 @@ import java.util.List;
 
 public class MyCommentAdapter extends CommonAdapter<PersonnalCommentResponseBean> {
     String mUrl;
-    String mUsername;
+    private String mUsername;
 
     ImageView mAvatar;
 
     LinearLayout mLlShare;
 
     public SharePopUpWindow mSharePopUpWindow;
+    private OnitemDeleteListener mOnitemDeleteListener;
 
-    public MyCommentAdapter(Context context, List datas, String username, String url) {
+    public MyCommentAdapter(Context context, List datas, String username, String url, OnitemDeleteListener onitemDeleteListener) {
         super(context, R.layout.item_my_comments, datas);
         mUrl = url;
         mUsername = username;
         mSharePopUpWindow = new SharePopUpWindow(mContext);
+        mOnitemDeleteListener = onitemDeleteListener;
     }
+
+
 
 
     @Override
@@ -75,6 +80,19 @@ public class MyCommentAdapter extends CommonAdapter<PersonnalCommentResponseBean
             }
 
             holder.setText(R.id.content, personnalCommentResponseBean.getContent());
+
+            TextView tv_delete = holder.getView(R.id.delete);
+            final PersonnalCommentResponseBean tmp = personnalCommentResponseBean;
+            tv_delete.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    mOnitemDeleteListener.onDelete(tmp);
+                }
+            });
+
+            holder.setText(R.id.replynum, personnalCommentResponseBean.getReply_count() + mContext.getString(R.string.reply_num));
+
+
         }
 
         final String book_id = personnalCommentResponseBean.getBook_id();
@@ -100,4 +118,9 @@ public class MyCommentAdapter extends CommonAdapter<PersonnalCommentResponseBean
     public List getList() {
         return mDatas;
     }
+
+    public interface OnitemDeleteListener {
+        public void onDelete(PersonnalCommentResponseBean personnalCommentResponseBean);
+    }
+
 }

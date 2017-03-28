@@ -144,14 +144,14 @@ public class BookModel {
     /**
      * 删除对图书的评论
      *
-     * @param bookid bookid
+     * @param comment_id comment_id
      * @param mBack
      */
-    public void deleteBookComment(String bookid, AppBaseResponseCallBack mBack) {
+    public void deleteBookComment(String comment_id, AppBaseResponseCallBack mBack) {
         Novate mNovate = new Novate.Builder(mContext).build();
         JSONObject mJSONObject = new JSONObject();
         try {
-            mJSONObject.put("book_id", bookid);
+            mJSONObject.put("comment_id", comment_id);
         } catch (JSONException mE) {
             mE.printStackTrace();
         }
@@ -218,5 +218,11 @@ public class BookModel {
         mNovate.executeJson(ApiInterface.COLLECT_BOOK_SEARCH, mJSONObject.toString(), mAppBaseResponseCallBack);
     }
 
-
+    //删除已关注的图书
+    public void deleteCollectBook(String book_id,AppBaseResponseCallBack mAppBaseResponseCallBack) {
+        Novate mNovate = new Novate.Builder(mContext).build();
+        HashMap<String, Object> map = new HashMap<>();
+        map.put("book_id", book_id);
+        mNovate.executeGet(ApiInterface.COLLECT_BOOK_DELETE, map, mAppBaseResponseCallBack);
+    }
 }

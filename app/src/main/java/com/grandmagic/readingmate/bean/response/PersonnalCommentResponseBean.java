@@ -11,6 +11,24 @@ public class PersonnalCommentResponseBean {
     private String book_id;
     private String book_name;
     private String photo;
+    private String comment_id;
+    private String reply_count;
+
+    public String getComment_id() {
+        return comment_id;
+    }
+
+    public void setComment_id(String comment_id) {
+        this.comment_id = comment_id;
+    }
+
+    public String getReply_count() {
+        return reply_count;
+    }
+
+    public void setReply_count(String reply_count) {
+        this.reply_count = reply_count;
+    }
 
     public String getContent() {
         return content;

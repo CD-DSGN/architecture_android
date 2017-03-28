@@ -1,7 +1,6 @@
 package com.grandmagic.readingmate.fragment;
 
 
-import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
@@ -9,7 +8,6 @@ import android.support.v4.app.Fragment;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.text.TextUtils;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -29,6 +27,7 @@ import com.grandmagic.readingmate.bean.response.ImageUrlResponseBean;
 import com.grandmagic.readingmate.bean.response.PersonalCommentListResponseBean;
 import com.grandmagic.readingmate.bean.response.PersonnalCommentResponseBean;
 import com.grandmagic.readingmate.bean.response.UserInfoResponseBean;
+import com.grandmagic.readingmate.model.BookModel;
 import com.grandmagic.readingmate.model.MyCommentsModel;
 import com.grandmagic.readingmate.model.UserInfoModel;
 import com.grandmagic.readingmate.utils.AutoUtils;
@@ -52,7 +51,7 @@ import cn.bingoogolapple.refreshlayout.BGAStickinessRefreshViewHolder;
 /**
  * A simple {@link Fragment} subclass.
  */
-public class PersonalFragment extends AppBaseFragment {
+public class PersonalFragment extends AppBaseFragment implements MyCommentAdapter.OnitemDeleteListener {
     Context mContext;
 
     RecyclerView mRvMyComments;
@@ -93,6 +92,8 @@ public class PersonalFragment extends AppBaseFragment {
     Page mPage;
 
     private ArrayList<PersonnalCommentResponseBean> mComments = new ArrayList<>();
+    BookModel mBookModel;
+
 
     public PersonalFragment() {
 
@@ -148,10 +149,14 @@ public class PersonalFragment extends AppBaseFragment {
 
     private void initView() {
 
+        if (mBookModel == null) {
+            mBookModel = new BookModel(mContext);
+        }
+
         mRvMyComments.setLayoutManager(new LinearLayoutManager(mContext));
         mView = LayoutInflater.from(mContext).inflate(R.layout.personal_fragment_header, mRvMyComments, false);
         ButterKnife.bind(this, mView);
-        mMAdapter = new MyCommentAdapter(mContext, mComments, "", "");
+        mMAdapter = new MyCommentAdapter(mContext, mComments, "", "", this);
         mMHeaderAndFooterWrapper = new HeaderAndFooterWrapper(mMAdapter);
 
         AutoUtils.auto(mView);
@@ -169,6 +174,10 @@ public class PersonalFragment extends AppBaseFragment {
                         mUserInfoResponseBean = (UserInfoResponseBean) response.getData();
                         //设置相应的数据
                         setPersonalView();
+                        mMAdapter.setUsername(mUserInfoResponseBean.getUser_name());
+                        if (mMHeaderAndFooterWrapper != null) {
+                            mMHeaderAndFooterWrapper.notifyDataSetChanged();
+                        }
                         NEED_REFRESH = false;
 
                     }
@@ -189,14 +198,14 @@ public class PersonalFragment extends AppBaseFragment {
                     if (imageUrlResponseBean != null) {
                         url = imageUrlResponseBean.getLarge();
                     }
+//                    mMAdapter.setUsername(personalCommentListResponseBean.getUsername());
                     if (personalCommentListResponseBean != null) {
                         List<PersonnalCommentResponseBean> list = personalCommentListResponseBean.getComment_info();
 
                         mMAdapter.setUrl(url);
-                        mMAdapter.setUsername(personalCommentListResponseBean.getUsername());
                         if (mcallback.isRefresh) {
                             mPage.refresh(list);  //刷新
-                        }else{
+                        } else {
                             mPage.more(list);  //加载更多
                         }
                         try {
@@ -305,7 +314,7 @@ public class PersonalFragment extends AppBaseFragment {
                 if (mPage.hasMore()) {
                     mMyCommentsModel.getMyComment(mPage.cur_page);
                     mcallback.isRefresh = false;
-                }else{
+                } else {
                     ViewUtils.showToast("暂无更多数据");
                     return false;
                 }
@@ -317,4 +326,27 @@ public class PersonalFragment extends AppBaseFragment {
 
     AppBaseResponseCallBack<NovateResponse<PersonalCommentListResponseBean>> mcallback;
 
+    @Override
+    public void onDelete(PersonnalCommentResponseBean personnalCommentResponseBean) {
+        final String comment_id = personnalCommentResponseBean.getComment_id();
+        mBookModel.deleteBookComment(personnalCommentResponseBean.getComment_id(),
+                new AppBaseResponseCallBack<NovateResponse<Object>>(mContext) {
+                    @Override
+                    public void onSuccee(NovateResponse<Object> response) {
+                        //删除成功,更新本地数据
+                        for (int i = 0 ; i < mComments.size(); i++) {
+                            PersonnalCommentResponseBean comment = mComments.get(i);
+                            if (comment != null) {
+                                if (comment.getComment_id().equals(comment_id)) {
+                                    mPage.delete(i);
+                                    mMHeaderAndFooterWrapper.notifyDataSetChanged();
+                                    break;
+                                }
+
+                            }
+                        }
+
+                    }
+                });
+    }
 }
