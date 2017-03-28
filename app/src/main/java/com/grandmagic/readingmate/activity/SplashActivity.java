@@ -66,9 +66,10 @@ public class SplashActivity extends AppBaseActivity {
      * 检测登陆状态，未登录则进入登陆，否则进入主页
      */
     boolean canDestroy = false;
+    boolean mLogin;
 
     private void checklogin() {
-        boolean mLogin = SPUtils.getInstance().isLogin(this);
+        mLogin = SPUtils.getInstance().isLogin(this);
         if (mLogin) {
 //            保存一份联系人信息
             new ContactModel(this).getAllFriendFromServer(new AppBaseResponseCallBack<NovateResponse<List<Contacts>>>(this) {
@@ -93,12 +94,17 @@ public class SplashActivity extends AppBaseActivity {
                 }
             });
         } else {
+            canDestroy = true;
         }
 
     }
 
     private void toMain() {
-        startActivity(new Intent(SplashActivity.this, MainActivity.class));
+        if (mLogin) {
+            startActivity(new Intent(SplashActivity.this, MainActivity.class));
+        } else {
+            startActivity(new Intent(SplashActivity.this, LoginActivity.class));
+        }
         finish();
     }
 
