@@ -10,6 +10,7 @@ import android.support.v4.app.Fragment;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.text.TextUtils;
+import android.util.Log;
 import android.util.TypedValue;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -18,6 +19,7 @@ import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.airbnb.lottie.LottieAnimationView;
 import com.baidu.location.Address;
@@ -26,6 +28,7 @@ import com.baidu.location.BDLocationListener;
 import com.baidu.location.LocationClient;
 import com.baidu.location.LocationClientOption;
 import com.grandmagic.readingmate.R;
+import com.grandmagic.readingmate.activity.AddFriendActivity;
 import com.grandmagic.readingmate.adapter.SearchPersonAdapter;
 import com.grandmagic.readingmate.base.AppBaseActivity;
 import com.grandmagic.readingmate.base.AppBaseFragment;
@@ -33,7 +36,10 @@ import com.grandmagic.readingmate.base.AppBaseResponseCallBack;
 import com.grandmagic.readingmate.bean.response.SearchPersonResponse;
 import com.grandmagic.readingmate.listener.LocationListener;
 import com.grandmagic.readingmate.model.SearchModel;
+import com.grandmagic.readingmate.model.SearchUserModel;
+import com.grandmagic.readingmate.ui.CustomDialog;
 import com.grandmagic.readingmate.utils.AutoUtils;
+import com.grandmagic.readingmate.utils.InputMethodUtils;
 import com.tamic.novate.NovateResponse;
 import com.tamic.novate.Throwable;
 import com.tbruyelle.rxpermissions.RxPermissions;
@@ -52,7 +58,7 @@ import rx.functions.Action1;
 /**
  * A simple {@link Fragment} subclass. test
  */
-public class SearchFragment extends AppBaseFragment {
+public class SearchFragment extends AppBaseFragment implements SearchPersonAdapter.AdapterListener {
 
     LocationClient mLocationClient;
     BDLocationListener mBDLocationListener;
@@ -108,6 +114,7 @@ public class SearchFragment extends AppBaseFragment {
         mAnimaview.setImageAssetsFolder("images/");//为有图片资源的动画设置路径
         mRecyclerview.setLayoutManager(new LinearLayoutManager(mContext));
         mAdapter = new SearchPersonAdapter(mContext, mPersonList);
+        mAdapter.setListener(this);
         mRecyclerview.setAdapter(mAdapter);
         initRefresh();
     }
@@ -159,7 +166,10 @@ public class SearchFragment extends AppBaseFragment {
         String mDistrict = mAddress.district;
         String mStreet = mAddress.street;
         mLocationClient.stop();
-        if (TextUtils.isEmpty(mCity)){reset();return;}
+        if (TextUtils.isEmpty(mCity)){
+            Log.e(TAG, "updateLocation() called with: mLocation = [" + mLocation + "]");
+            Toast.makeText(mContext, "定位失败"+mLocation.getLocType(), Toast.LENGTH_SHORT).show();
+            reset();return;}
         mModel.stepLocation(mLatitude, mLongitude,mProvince,mCity,mDistrict,mStreet, new AppBaseResponseCallBack<NovateResponse>(mContext) {
             @Override
             public void onSuccee(NovateResponse response) {
@@ -170,6 +180,8 @@ public class SearchFragment extends AppBaseFragment {
             public void onError(Throwable e) {
                 super.onError(e);
                 reset();//失败重置。不然一直在转圈圈
+                Log.e(TAG, "onError() called with: e = [" + e + "]");
+
             }
         });
     }
@@ -200,6 +212,7 @@ public class SearchFragment extends AppBaseFragment {
             public void onError(Throwable e) {
                 super.onError(e);
                 reset();
+                Log.e(TAG, "onError() called with: e = [" + e + "]");
             }
         });
     }
@@ -208,6 +221,7 @@ public class SearchFragment extends AppBaseFragment {
     public void onClick(View view) {
         switch (view.getId()) {
             case R.id.title_more:
+                Log.e(TAG, "onClick() called with: view = [" + view + "]");
                 reset();
                 break;
             case R.id.btn_location:
@@ -232,7 +246,9 @@ public class SearchFragment extends AppBaseFragment {
     /**
      * 恢复默认状态
      */
+    private static final String TAG = "SearchFragment";
     private void reset() {
+        Log.e(TAG, "reset() called");
         systembarColor= R.color.bg_search;
         mRefreshLayout.setVisibility(View.GONE);
         mAnimaview.setVisibility(View.GONE);
@@ -330,5 +346,47 @@ public class SearchFragment extends AppBaseFragment {
         //可选，默认false，设置是否需要过滤GPS仿真结果，默认需要
         mLocationClient.setLocOption(option);
         mLocationClient.registerLocationListener(mBDLocationListener);
+    }
+
+    @Override
+    public void addfriend(int userid,int pos) {
+        showAddFriendDialog(userid+"", pos);
+    }
+    private void showAddFriendDialog(final String mUserid, final int pos) {
+        final CustomDialog mDialog = new CustomDialog(mContext);
+        mDialog.setMaxNum(20);
+        mDialog.setYesStr("发送");
+        mDialog.setOnBtnOnclickListener(new CustomDialog.BtnOnclickListener() {
+            @Override
+            public void onYesClick() {
+                addContact(mDialog.getMessage(),mUserid,pos);
+                mDialog.dismiss();
+            }
+
+            @Override
+            public void onNoClick() {
+                mDialog.dismiss();
+            }
+        });
+        mDialog.show();
+    }
+
+    /**
+     * 添加好友，
+     *
+     * @param mUser_id
+     * @param reason
+     */
+    private void addContact(String reason, String mUser_id, final int pos) {
+        SearchUserModel mSearchUserModel = new SearchUserModel(mContext);
+        mSearchUserModel.requestAddFriend(mUser_id, reason, new AppBaseResponseCallBack<NovateResponse>(mContext) {
+            @Override
+            public void onSuccee(NovateResponse response) {
+                Toast.makeText(mContext, "" + response.getMessage(), Toast.LENGTH_SHORT).show();
+                //发送成功暂时隐藏掉添加好友的Relativelayout
+                mPersonList.get(pos).setIs_friend(1);
+                mAdapter.notifyDataSetChanged();
+            }
+        });
     }
 }

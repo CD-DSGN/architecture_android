@@ -51,9 +51,9 @@ public class SearchUserModel {
     Novate mNovate=new Novate.Builder(mContext).baseUrl(Environment.BASEULR_PRODUCTION).build();
   JSONObject mJSONObject=new JSONObject();
     try {
-        mJSONObject.put("user_id2",user_id2);
+        mJSONObject.put("user_id2",Integer.valueOf(user_id2));
         mJSONObject.put("message",message);
-    } catch (JSONException mE) {
+    } catch (Exception mE) {
         mE.printStackTrace();
     }
     mNovate.executeJson(ApiInterface.REQUEST_ADD,mJSONObject.toString(),mBack);

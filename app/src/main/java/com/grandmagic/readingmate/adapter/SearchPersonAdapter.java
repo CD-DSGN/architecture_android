@@ -19,7 +19,9 @@ import com.zhy.adapter.recyclerview.base.ViewHolder;
 import java.util.List;
 
 /**
- * Created by dangxiaohui on 2017/3/16.
+ * Created by lps on 2017/3/16.
+ *
+ * @since 2017年3月28日11:22:53 添加好友功能
  */
 
 public class SearchPersonAdapter extends CommonAdapter<SearchPersonResponse.InfoBean> {
@@ -29,26 +31,33 @@ public class SearchPersonAdapter extends CommonAdapter<SearchPersonResponse.Info
 
 
     @Override
-    protected void convert(ViewHolder holder, final SearchPersonResponse.InfoBean data, int position) {
-        holder.setText(R.id.name,data.getUser_name());
-        ImageLoader.loadCircleImage(mContext, Environment.BASEULR_PRODUCTION+data.getAvatar_url().getLarge(),
+    protected void convert(ViewHolder holder, final SearchPersonResponse.InfoBean data, final int position) {
+        holder.setText(R.id.name, data.getUser_name());
+        ImageLoader.loadCircleImage(mContext, Environment.BASEULR_PRODUCTION + data.getAvatar_url().getLarge(),
                 (ImageView) holder.getView(R.id.avatar));
-        holder.setVisible(R.id.rela_addfriend,data.getIs_friend()!=1);
+        holder.setVisible(R.id.rela_addfriend, data.getIs_friend() != 1);
         boolean hassamebook = isHassamebook(holder, data);
-        holder.setVisible(R.id.rela_sameInterest,hassamebook);
-
+        holder.setVisible(R.id.rela_sameInterest, hassamebook);
+        holder.setOnClickListener(R.id.rela_addfriend, new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                if (mListener != null) {
+                    mListener.addfriend(data.getUser_id(),position);
+                }
+            }
+        });
         holder.getConvertView().setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 Intent mIntent = new Intent(mContext, FriendDetailActivity.class);
-                Bundle mBundle=new Bundle();
-                PersonInfo mInfo=new PersonInfo();
+                Bundle mBundle = new Bundle();
+                PersonInfo mInfo = new PersonInfo();
                 mInfo.setAvatar(data.getAvatar_url().getLarge());
                 mInfo.setClientid(data.getClientid());
-                mInfo.setUser_id(data.getUser_id()+"");
-                mInfo.setFriend(data.getIs_friend()==1);
+                mInfo.setUser_id(data.getUser_id() + "");
+                mInfo.setFriend(data.getIs_friend() == 1);
                 mInfo.setNickname(data.getUser_name());
-                mBundle.putParcelable(FriendDetailActivity.PERSON_INFO,mInfo);
+                mBundle.putParcelable(FriendDetailActivity.PERSON_INFO, mInfo);
                 mIntent.putExtras(mBundle);
                 mContext.startActivity(mIntent);
             }
@@ -56,18 +65,28 @@ public class SearchPersonAdapter extends CommonAdapter<SearchPersonResponse.Info
     }
 
     private boolean isHassamebook(ViewHolder holder, SearchPersonResponse.InfoBean data) {
-        boolean hassamebook=false;
+        boolean hassamebook = false;
         LinearLayout mLayout = holder.getView(R.id.lin_collection);
         mLayout.removeAllViews();
-        for (SearchPersonResponse.InfoBean.CollectionBean coll:data.getCollection()) {
+        for (SearchPersonResponse.InfoBean.CollectionBean coll : data.getCollection()) {
             TextView mTextView = new TextView(mContext);
             mTextView.setText("《" + coll.getBook_name() + "》");
             if (coll.getIs_both_enjoy() == 1) {
                 hassamebook = true;
                 mTextView.setTextColor(mContext.getResources().getColor(R.color.text_green));
             }
-        mLayout.addView(mTextView);
+            mLayout.addView(mTextView);
         }
         return hassamebook;
+    }
+
+    public interface AdapterListener {
+        void addfriend(int mUser_id,int pos);
+    }
+
+    AdapterListener mListener;
+
+    public void setListener(AdapterListener mListener) {
+        this.mListener = mListener;
     }
 }

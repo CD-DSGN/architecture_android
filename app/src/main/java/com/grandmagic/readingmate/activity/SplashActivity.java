@@ -1,8 +1,12 @@
 package com.grandmagic.readingmate.activity;
 
+import android.animation.AnimatorSet;
+import android.animation.ObjectAnimator;
 import android.content.Intent;
-import android.database.sqlite.SQLiteDatabase;
 import android.os.Bundle;
+import android.os.CountDownTimer;
+import android.widget.ImageView;
+import android.widget.RelativeLayout;
 import android.widget.Toast;
 
 import com.grandmagic.readingmate.R;
@@ -11,26 +15,33 @@ import com.grandmagic.readingmate.base.AppBaseResponseCallBack;
 import com.grandmagic.readingmate.bean.response.Contacts;
 import com.grandmagic.readingmate.db.ContactsDao;
 import com.grandmagic.readingmate.db.DBHelper;
-import com.grandmagic.readingmate.db.DaoMaster;
-import com.grandmagic.readingmate.db.DaoSession;
 import com.grandmagic.readingmate.model.ContactModel;
 import com.grandmagic.readingmate.utils.AutoUtils;
 import com.hyphenate.chat.EMClient;
-import com.tamic.novate.util.SPUtils;
 import com.orhanobut.logger.Logger;
 import com.tamic.novate.NovateResponse;
 import com.tamic.novate.Throwable;
+import com.tamic.novate.util.SPUtils;
 
 import java.util.List;
+
+import butterknife.BindView;
+import butterknife.ButterKnife;
 
 //启动页面
 public class SplashActivity extends AppBaseActivity {
     private static final String TAG = "SplashActivity";
+    @BindView(R.id.activity_splash)
+    RelativeLayout mActivitySplash;
+    @BindView(R.id.logo)
+    ImageView mLogo;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         AutoUtils.setSize(this, false, 750, 1334);
         setContentView(R.layout.activity_splash);
+        ButterKnife.bind(this);
         initview();
         checkfrist();
 //        startActivity(new Intent(SplashActivity.this,SettingActivity.class));
@@ -54,6 +65,8 @@ public class SplashActivity extends AppBaseActivity {
     /**
      * 检测登陆状态，未登录则进入登陆，否则进入主页
      */
+    boolean canDestroy = false;
+
     private void checklogin() {
         boolean mLogin = SPUtils.getInstance().isLogin(this);
         if (mLogin) {
@@ -69,26 +82,44 @@ public class SplashActivity extends AppBaseActivity {
                     }
                     EMClient.getInstance().chatManager().loadAllConversations();
                     EMClient.getInstance().groupManager().loadAllGroups();
-                    startActivity(new Intent(SplashActivity.this, MainActivity.class));
-                    finish();
+                    canDestroy = true;
                 }
 
                 @Override
                 public void onError(Throwable e) {
                     super.onError(e);
-                    startActivity(new Intent(SplashActivity.this, MainActivity.class));
-                    finish();
+                    canDestroy = true;
+                    mCountDownTimer.onFinish();
                 }
             });
         } else {
-            startActivity(new Intent(SplashActivity.this, LoginActivity.class));
-            finish();
-
         }
 
     }
 
-    private void initview() {
-
+    private void toMain() {
+        startActivity(new Intent(SplashActivity.this, MainActivity.class));
+        finish();
     }
+
+    private void initview() {
+        ObjectAnimator mScaleX = ObjectAnimator.ofFloat(mLogo, "scaleX", 0, 1f);
+        ObjectAnimator mScaleY = ObjectAnimator.ofFloat(mLogo, "scaleY", 0, 1f);
+        AnimatorSet mAnimatorSet = new AnimatorSet();
+        mAnimatorSet.setDuration(600);
+        mAnimatorSet.playTogether(mScaleX, mScaleY);
+        mAnimatorSet.start();
+        mCountDownTimer.start();
+    }
+
+    CountDownTimer mCountDownTimer = new CountDownTimer(2000, 1000) {
+        @Override
+        public void onTick(long millisUntilFinished) {
+        }
+
+        @Override
+        public void onFinish() {
+            if (canDestroy) toMain();
+        }
+    };
 }

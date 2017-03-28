@@ -31,7 +31,7 @@ public class ContactModel {
      * @param mBack
      */
     public void getAllFriendFromServer(AppBaseResponseCallBack mBack) {
-        Novate mNovate = new Novate.Builder(mContext).build();
+        Novate mNovate = new Novate.Builder(mContext).connectTimeout(5).build();
         mNovate.executeGet(ApiInterface.SHOWFRIEND, mBack);
     }
 

@@ -69,7 +69,9 @@
             android:name="com.baidu.lbsapi.API_KEY"
             android:value="CEXKVVgThv2CrnjFFtbvd7XdLcEYGHGl"/>
         //key:开发者申请的Key
-        <activity android:name=".activity.SplashActivity">
+        <activity android:name=".activity.SplashActivity"
+            android:theme="@style/fullsrceen"
+            >
             <intent-filter>
                 <action android:name="android.intent.action.MAIN"/>
 
@@ -216,9 +218,12 @@
             android:name=".activity.CollectedPersonActivity"
             android:theme="@style/notitle">
         </activity>
-        <activity android:name=".activity.RecommendActivity"
-            android:theme="@style/notitle"
-            >
+        <activity
+            android:name=".activity.RecommendActivity"
+            android:theme="@style/notitle">
+        </activity>
+        <activity android:name=".activity.GuideActivity"
+            android:theme="@style/fullsrceen">
         </activity>
     </application>
 
