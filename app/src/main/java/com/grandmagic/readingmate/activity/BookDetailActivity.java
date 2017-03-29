@@ -4,7 +4,6 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.support.v4.view.ViewPager;
 import android.util.TypedValue;
-import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
@@ -52,6 +51,12 @@ public class BookDetailActivity extends AppBaseActivity implements View.OnLayout
     View mDashlineTvhot;
     @BindView(R.id.his_score)
     TextView mHisScore;
+    @BindView(R.id.total_score)
+    StarView mTotalScore;
+    @BindView(R.id.iv_collect)
+    ImageView mIvCollect;
+    @BindView(R.id.tv2)
+    TextView mTv2;
     private String book_id;
     @BindView(R.id.back)
     ImageView mBack;
@@ -168,8 +173,8 @@ public class BookDetailActivity extends AppBaseActivity implements View.OnLayout
     private void initView() {
         List<View> mViews = new ArrayList<>();
 //        为了减少Activity的代码，将评论的相关功能抽离到HotcommentView了
-        View mRecentView = new HotcommentView(this,HotcommentView.COMMENT_TIME,mModel,book_id);
-        View mHotView = new HotcommentView(this,HotcommentView.COMMENT_LIKE,mModel,book_id);
+        View mRecentView = new HotcommentView(this, HotcommentView.COMMENT_TIME, mModel, book_id);
+        View mHotView = new HotcommentView(this, HotcommentView.COMMENT_LIKE, mModel, book_id);
         mViews.add(mRecentView);
         mViews.add(mHotView);
         mViewpager.setAdapter(new CommonPagerAdapter(mViews));
@@ -191,7 +196,7 @@ public class BookDetailActivity extends AppBaseActivity implements View.OnLayout
             @Override
             public void onSuccee(NovateResponse<HistoryComment> response) {
                 hisScore = response.getData().getScore_num();
-                mRatingbar.setScore(hisScore*1.0f);
+                mRatingbar.setScore(hisScore * 1.0f);
                 mHisScore.setText(hisScore + "分");
             }
         });
@@ -233,12 +238,13 @@ public class BookDetailActivity extends AppBaseActivity implements View.OnLayout
         mCollectionNum.setText(s.getCollect_count());
         ImageLoader.loadImage(this, s.getPhoto(), mIvConver);
         setCollectView(s.getCollect_user());
-        mRatingbar.setScore(Float.valueOf(s.getTotal_score()));
+        mTotalScore.setScore(Float.valueOf(s.getTotal_score()));
         mScore.setText(s.getTotal_score());
-        mNumPeople.setText("分("+s.getScore_times()+"人评)");
+        mNumPeople.setText("分(" + s.getScore_times() + "人评)");
+        mBottomlayout.setVisibility(s.getIs_follow() == 1 ? View.VISIBLE : View.GONE);
     }
 
-    @OnClick({R.id.back, R.id.submit, R.id.tv_last, R.id.tv_hot,R.id.coll_more})
+    @OnClick({R.id.back, R.id.submit, R.id.tv_last, R.id.tv_hot, R.id.coll_more})
     public void onClick(View view) {
         switch (view.getId()) {
             case R.id.back:
@@ -255,7 +261,7 @@ public class BookDetailActivity extends AppBaseActivity implements View.OnLayout
                 break;
             case R.id.coll_more:
                 Intent mIntent = new Intent(BookDetailActivity.this, CollectedPersonActivity.class);
-                mIntent.putExtra(BOOK_ID,book_id);
+                mIntent.putExtra(BOOK_ID, book_id);
                 startActivity(mIntent);
                 break;
         }
@@ -282,15 +288,16 @@ public class BookDetailActivity extends AppBaseActivity implements View.OnLayout
 
     /**
      * 设置收藏的UI
+     *
      * @param mCollectView
      */
     public void setCollectView(List<BookdetailResponse.CollectUserBean> mCollectView) {
         for (BookdetailResponse.CollectUserBean user : mCollectView) {
-            ImageView mView =new ImageView(this);
-            LinearLayout.LayoutParams mParams=new LinearLayout.LayoutParams(70,70);
-           mView.setLayoutParams(mParams);
+            ImageView mView = new ImageView(this);
+            LinearLayout.LayoutParams mParams = new LinearLayout.LayoutParams(70, 70);
+            mView.setLayoutParams(mParams);
             AutoUtils.auto(mView);
-            ImageLoader.loadRoundImage(this, Environment.BASEULR_PRODUCTION+ user.getAvatar_url().getMid(), mView);
+            ImageLoader.loadRoundImage(this, Environment.BASEULR_PRODUCTION + user.getAvatar_url().getMid(), mView);
             mLinCollection.addView(mView);
         }
 

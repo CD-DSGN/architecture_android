@@ -25,7 +25,7 @@ import butterknife.ButterKnife;
 import butterknife.OnClick;
 
 public class CommentsActivity extends AppBaseActivity {
-
+public static final String COMMENT_ID="comment_id";
     @BindView(R.id.back)
     ImageView mBack;
     @BindView(R.id.title)

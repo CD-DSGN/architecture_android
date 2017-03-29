@@ -60,8 +60,10 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginLeft="30px"
-                android:text="@string/reply"
-                android:textColor="#1cc9a2"
+                android:text="4条回复"
+                android:id="@+id/reply_count"
+                android:visibility="visible"
+                android:textColor="#999999"
                 android:textSize="22px"
                 />
         </LinearLayout>

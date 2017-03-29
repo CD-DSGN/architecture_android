@@ -53,7 +53,7 @@
 
             <com.grandmagic.readingmate.view.StarView
                 xmlns:app="http://schemas.android.com/apk/res-auto"
-                android:id="@+id/ratingbar"
+                android:id="@+id/total_score"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_below="@+id/t_publishtime"
@@ -72,7 +72,7 @@
                 android:id="@+id/rela_score"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_below="@+id/ratingbar"
+                android:layout_below="@+id/total_score"
                 android:layout_marginLeft="410px"
                 android:layout_marginRight="20px"
                 >

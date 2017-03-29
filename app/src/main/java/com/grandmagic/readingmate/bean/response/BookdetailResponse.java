@@ -1,5 +1,7 @@
 package com.grandmagic.readingmate.bean.response;
 
+import android.text.TextUtils;
+
 import com.google.gson.annotations.JsonAdapter;
 import com.google.gson.internal.bind.ListTypeAdapterFactory;
 import com.google.gson.internal.bind.ObjectDeserializer;
@@ -43,6 +45,7 @@ public class BookdetailResponse {
     }
 
     public String getScore_times() {
+        if (TextUtils.isEmpty(score_times))return "0";
         return score_times;
     }
 
@@ -51,6 +54,7 @@ public class BookdetailResponse {
     }
 
     public String getTotal_score() {
+        if (TextUtils.isEmpty(total_score))return "0";
         return total_score;
     }
 
