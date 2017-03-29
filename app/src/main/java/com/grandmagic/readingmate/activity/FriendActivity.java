@@ -81,27 +81,8 @@ public class FriendActivity extends AppBaseActivity implements ContactItemDelaga
     List<Contacts> mSouseDatas = new ArrayList<>();//服务端返回的列表
     List<String> mLetters = new ArrayList<>();//首字母 A，B。。Z
 
-    private void initdata() {//模拟假数据
+    private void initdata() {
         initServerData();
-        getallFriendfromEM();
-
-    }
-
-    private void getallFriendfromEM() {
-        new Thread(new Runnable() {
-            @Override
-            public void run() {
-                try {
-                    List<String> mAllContactsFromServer = EMClient.getInstance().
-                            contactManager().getAllContactsFromServer();//需要在子线程执行。否则会报303
-                    for (int i = 0; i < mAllContactsFromServer.size(); i++) {
-                        Log.e(TAG, "initdata: " + mAllContactsFromServer.get(i));
-                    }
-                } catch (HyphenateException mE) {
-                    mE.printStackTrace();
-                }
-            }
-        }).start();
     }
 
     /**
@@ -115,11 +96,7 @@ public class FriendActivity extends AppBaseActivity implements ContactItemDelaga
             mAdapterData.add(mContacts);
             for (int j = 0; j < mSouseDatas.size(); j++) {
                 if (letter.equals(mSouseDatas.get(j).getLetter())) {
-                    Contacts mContacts1 = new Contacts(Contacts.TYPE.TYPE_FRIEND, mSouseDatas.get(j).getUser_id(),
-                            mSouseDatas.get(j).getUser_name(),
-                            mSouseDatas.get(j).getAvatar_native());
-                    mContacts1.setRemark(mSouseDatas.get(j).getRemark());
-                    mAdapterData.add(mContacts1);
+                    mAdapterData.add(mSouseDatas.get(j).setType(Contacts.TYPE.TYPE_FRIEND));
                 }
             }
         }
@@ -197,9 +174,9 @@ public class FriendActivity extends AppBaseActivity implements ContactItemDelaga
         LinearLayoutManager mLinearLayoutManager = new LinearLayoutManager(mContext);
         mRecyclerviewFriend.setLayoutManager(mLinearLayoutManager);
         mAdapter = new MultiItemTypeAdapter(mContext, mAdapterData);
-        mAdapter.addItemViewDelegate(new ContactItemDelagate(mContext).setRemarkListener(this)).
-                addItemViewDelegate(new ContactLetterDelagate()).
-                addItemViewDelegate(new ContactNewFriendDelagate(mContext));
+        mAdapter.addItemViewDelegate(new ContactItemDelagate(mContext).setRemarkListener(this)).//好友
+                addItemViewDelegate(new ContactLetterDelagate()).//字母
+                addItemViewDelegate(new ContactNewFriendDelagate(mContext));//新朋友的头部
         mRecyclerviewFriend.setAdapter(mAdapter);
         mIndexbar.setLayoutmanager(mLinearLayoutManager).
                 setSouseData(mSouseDatas).

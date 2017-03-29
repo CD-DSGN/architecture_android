@@ -5,6 +5,7 @@ import android.graphics.drawable.AnimationDrawable;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.ImageView;
+import android.widget.RelativeLayout;
 
 import com.grandmagic.readingmate.R;
 import com.grandmagic.readingmate.listener.VoicePlayClickListener;
@@ -53,9 +54,9 @@ public class MessageVoiceRecDelagate extends ChatItemViewDelegate {
     }
 
     @Override
-    protected View setContentView(EMMessage mChatMessage) {
+    protected View setContentView(EMMessage mChatMessage, RelativeLayout mHolderView) {
         return LayoutInflater.from(mContext).inflate(  R.layout.item_recivevoicemsg,
-        null);
+        mHolderView,true);
     }
 
 

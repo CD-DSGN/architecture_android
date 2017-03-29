@@ -22,6 +22,7 @@ import com.grandmagic.readingmate.R;
 import com.grandmagic.readingmate.adapter.ChatItemViewDelegate;
 import com.grandmagic.readingmate.adapter.MessageIMGRecDelagate;
 import com.grandmagic.readingmate.adapter.MessageIMGSendDelagate;
+import com.grandmagic.readingmate.adapter.MessageLocationDelagate;
 import com.grandmagic.readingmate.adapter.MessageTextRecDelagate;
 import com.grandmagic.readingmate.adapter.MessageTextSendDelagate;
 import com.grandmagic.readingmate.adapter.MessageVoiceRecDelagate;
@@ -263,6 +264,7 @@ public class ChatActivity extends AppBaseActivity implements EMMessageListener, 
         mAdapter.addItemViewDelegate(new MessageIMGRecDelagate(this).setChatClickListener(this));
         mAdapter.addItemViewDelegate(new MessageVoiceRecDelagate(this).setChatClickListener(this));
         mAdapter.addItemViewDelegate(new MessageVoiceSendDelagate(this).setChatClickListener(this));
+        mAdapter.addItemViewDelegate(new MessageLocationDelagate(this).setChatClickListener(this));
         mMessagerecyclerview.setAdapter(mAdapter);
         initrefreshlayout();
 
@@ -440,11 +442,12 @@ public class ChatActivity extends AppBaseActivity implements EMMessageListener, 
         Contacts mContacts = IMHelper.getInstance().getUserInfo(mFrom);
         PersonInfo mInf = new PersonInfo();
         mInf.setUser_id(mContacts.getUser_id() + "");
-        mInf.setAvatar(mContacts.getAvatar_native());
+        mInf.setAvatar(mContacts.getAvatar_url().getLarge());
         mInf.setFriend(true);
         mInf.setNickname(mContacts.getUser_name());
         mInf.setClientid(mContacts.getClientid());
         mInf.setGender(gender);
+        mInf.setSignature(mContacts.getSignature());
         mBundle.putParcelable(FriendDetailActivity.PERSON_INFO, mInf);
         mIntent.putExtras(mBundle);
         startActivityForResult(mIntent, REQUEST_DETAIL);

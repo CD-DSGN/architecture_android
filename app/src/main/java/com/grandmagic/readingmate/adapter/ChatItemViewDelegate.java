@@ -64,7 +64,7 @@ mUserInfo=IMHelper.getInstance().getUserInfo(SPUtils.getInstance().getString(mCo
         if (mUserInfo != null) {
             holder.setText(R.id.name, mUserInfo.getUser_name());
             ImageLoader.loadRoundImage(mContext,
-                    Environment.BASEULR_PRODUCTION + mUserInfo.getAvatar_native(),
+                    Environment.BASEULR_PRODUCTION + mUserInfo.getAvatar_url().getLarge(),
                     (ImageView) holder.getView(R.id.avatar)
             );
         }
@@ -77,10 +77,12 @@ mUserInfo=IMHelper.getInstance().getUserInfo(SPUtils.getInstance().getString(mCo
         });
         final View statesView = holder.getView(R.id.send_status);
         final View progress = holder.getView(R.id.status_prgress);
-        View childView = setContentView(mChatMessage);
-        ViewHolder mHolder = ViewHolder.createViewHolder(mContext, childView);
         RelativeLayout holderView = holder.getView(R.id.contentView);
-        childConvert(mHolder, mChatMessage, position);
+        View childView = setContentView(mChatMessage,holderView);
+        if (childView!=null) {
+            ViewHolder mHolder = ViewHolder.createViewHolder(mContext, childView);
+            childConvert(mHolder, mChatMessage, position);
+        }
         final Handler mHandler = new Handler() {
             @Override
             public void handleMessage(Message msg) {
@@ -117,15 +119,11 @@ mUserInfo=IMHelper.getInstance().getUserInfo(SPUtils.getInstance().getString(mCo
             }
 
         });
-        // FIXME 此方法似乎会被多次调用。导致=视图重复add进来,暂时先移除其他view。
-        holderView.removeAllViews();
-        holderView.addView(childView);
-
     }
 
     protected abstract void childConvert(ViewHolder mHolder, EMMessage mChatMessage, int mPosition);
 
-    protected abstract View setContentView(EMMessage mChatMessage);
+    protected abstract View setContentView(EMMessage mChatMessage, RelativeLayout mHolderView);
 
     protected abstract boolean isForViewType(EMMessage mItem);
 

@@ -11,6 +11,7 @@ import android.os.Parcelable;
  * 以及通过手机号{@link com.grandmagic.readingmate.activity.AddFriendActivity}
  * 搜索跳转的时候携带个人信息,因为之前的接口返回的实体类已经包含这些信息 ，但是各自是不同的类，
  * 字段也不完全一致用Intent分别传输需要的每个字段页较为繁琐
+ * @since 2017年3月29日13:44:00 添加签名字段{@link #signture}
  */
 
 public class PersonInfo implements Parcelable {
@@ -20,6 +21,7 @@ public class PersonInfo implements Parcelable {
     private String clientid;//读家账号字段
     private boolean isFriend;//是否已经是好友关系
     private int gender = 3;
+    private String signature;
 
     public String getAvatar() {
         return avatar;
@@ -69,6 +71,14 @@ public class PersonInfo implements Parcelable {
         gender = mGender;
     }
 
+    public String getSignature() {
+        return signature;
+    }
+
+    public void setSignature(String mSignature) {
+        signature = mSignature;
+    }
+
     @Override
     public int describeContents() {
         return 0;
@@ -82,6 +92,7 @@ public class PersonInfo implements Parcelable {
         dest.writeString(this.clientid);
         dest.writeByte(this.isFriend ? (byte) 1 : (byte) 0);
         dest.writeInt(this.gender);
+        dest.writeString(this.signature);
     }
 
     public PersonInfo() {
@@ -94,6 +105,7 @@ public class PersonInfo implements Parcelable {
         this.clientid = in.readString();
         this.isFriend = in.readByte() != 0;
         this.gender = in.readInt();
+        this.signature = in.readString();
     }
 
     public static final Creator<PersonInfo> CREATOR = new Creator<PersonInfo>() {

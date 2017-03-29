@@ -93,7 +93,7 @@ public class FriendRequestActivity extends AppBaseActivity implements RequestLis
                 Contacts mContacts = new Contacts();
                 mContacts.setUser_id(Integer.valueOf(data.getUser_id()));
                 mContacts.setUser_name(data.getUser_name());
-                mContacts.setAvatar_native(data.getAvatar_native());
+                mContacts.setAvatar_url(data.getAvatar_native());
                 DBHelper.getContactsDao(FriendRequestActivity.this).save(mContacts);
             }
         });

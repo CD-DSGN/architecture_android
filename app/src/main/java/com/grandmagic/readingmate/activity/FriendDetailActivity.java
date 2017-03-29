@@ -51,6 +51,11 @@ import butterknife.OnClick;
 import cn.bingoogolapple.refreshlayout.BGARefreshLayout;
 import cn.bingoogolapple.refreshlayout.BGAStickinessRefreshViewHolder;
 
+/**
+ * @see  #mPersonInfo 此页面进入时必传
+ *
+ *
+ */
 public class FriendDetailActivity extends AppBaseActivity {
     ContactModel mModel;
     public static final String PERSON_INFO = "person_info";

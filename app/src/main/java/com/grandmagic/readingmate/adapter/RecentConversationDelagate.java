@@ -71,7 +71,7 @@ public class RecentConversationDelagate implements ItemViewDelegate<EMConversati
 
             if (mUserInfo != null) {
                 ImageLoader.loadCircleImage(mContext,
-                        Environment.BASEULR_PRODUCTION+mUserInfo.getAvatar_native(),
+                        Environment.BASEULR_PRODUCTION+mUserInfo.getAvatar_url().getLarge(),
                         (ImageView) holder.getView(R.id.avatar)
                 );
                 holder.setText(R.id.name,mUserInfo.getUser_name()==null?mUserInfo.getUser_id()+"":mUserInfo.getUser_name());

@@ -57,6 +57,7 @@ public class SearchPersonAdapter extends CommonAdapter<SearchPersonResponse.Info
                 mInfo.setUser_id(data.getUser_id() + "");
                 mInfo.setFriend(data.getIs_friend() == 1);
                 mInfo.setNickname(data.getUser_name());
+                mInfo.setSignature(data.getSignature());
                 mBundle.putParcelable(FriendDetailActivity.PERSON_INFO, mInfo);
                 mIntent.putExtras(mBundle);
                 mContext.startActivity(mIntent);

@@ -6,7 +6,6 @@ import android.app.Fragment;
 import android.app.FragmentManager;
 import android.content.DialogInterface;
 import android.content.Intent;
-import android.database.sqlite.SQLiteDatabase;
 import android.graphics.Color;
 import android.os.Bundle;
 import android.support.v7.app.AlertDialog;
@@ -26,8 +25,6 @@ import com.grandmagic.readingmate.bean.response.Contacts;
 import com.grandmagic.readingmate.bean.response.SearchUserResponse;
 import com.grandmagic.readingmate.db.ContactsDao;
 import com.grandmagic.readingmate.db.DBHelper;
-import com.grandmagic.readingmate.db.DaoMaster;
-import com.grandmagic.readingmate.db.DaoSession;
 import com.grandmagic.readingmate.event.ConnectStateEvent;
 import com.grandmagic.readingmate.fragment.ChatFragment;
 import com.grandmagic.readingmate.fragment.HomeFragment;
@@ -36,7 +33,6 @@ import com.grandmagic.readingmate.fragment.SearchFragment;
 import com.grandmagic.readingmate.listener.IMMessageListenerApp;
 import com.grandmagic.readingmate.listener.IMMessageListenerMain;
 import com.grandmagic.readingmate.model.SearchUserModel;
-import com.grandmagic.readingmate.ui.CustomDialog;
 import com.grandmagic.readingmate.utils.AutoUtils;
 import com.grandmagic.readingmate.utils.IMHelper;
 import com.grandmagic.readingmate.utils.KitUtils;
@@ -54,7 +50,6 @@ import org.greenrobot.eventbus.Subscribe;
 import org.greenrobot.eventbus.ThreadMode;
 
 import java.util.HashMap;
-import java.util.List;
 import java.util.Map;
 
 import butterknife.BindView;
@@ -129,9 +124,11 @@ public class MainActivity extends AppBaseActivity {
                 if (responseData != null) {
 
                     Contacts mContacts = new Contacts();
-                    mContacts.setAvatar_native(responseData.getAvatar_url().getLarge());
+                    mContacts.setAvatar_url(responseData.getAvatar_url().getLarge());
                     mContacts.setUser_id(Integer.valueOf(responseData.getUser_id()));
                     mContacts.setUser_name(responseData.getUser_name());
+                    mContacts.setClientid(responseData.getClientid());
+                    mContacts.setSignature(responseData.getSignature());
                     ContactsDao mContactsDao = DBHelper.getContactsDao(MainActivity.this);
                     mContactsDao.insertOrReplace(mContacts);
                 }

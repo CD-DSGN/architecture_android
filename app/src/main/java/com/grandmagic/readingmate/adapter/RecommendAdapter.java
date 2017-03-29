@@ -42,7 +42,7 @@ public class RecommendAdapter extends CommonAdapter<Contacts> {
     @Override
     protected void convert(final ViewHolder holder, Contacts data, final int position) {
         holder.setText(R.id.name, data.getUser_name());
-        ImageLoader.loadRoundImage(mContext, data.getAvatar_native(),
+        ImageLoader.loadRoundImage(mContext, data.getAvatar_url().getLarge(),
                 (ImageView) holder.getView(R.id.avatar));
         final View check = holder.getView(R.id.checkbtn);
         holder.setOnClickListener(R.id.checkbtn, new View.OnClickListener() {

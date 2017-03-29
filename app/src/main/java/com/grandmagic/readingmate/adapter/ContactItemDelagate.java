@@ -45,7 +45,7 @@ private int remarkPosition=-1;
     public void convert(ViewHolder holder, final Contacts mContacts, final int position) {
         holder.setVisible(R.id.dashline, mContacts.isNeedline());
         holder.setText(R.id.name, TextUtils.isEmpty(mContacts.getRemark())?mContacts.getUser_name():mContacts.getRemark());
-        ImageLoader.loadRoundImage(mContext, Environment.BASEULR_PRODUCTION + mContacts.getAvatar_native(),
+        ImageLoader.loadRoundImage(mContext, Environment.BASEULR_PRODUCTION + mContacts.getAvatar_url().getLarge(),
                 (ImageView) holder.getView(R.id.avatar));
         holder.setOnClickListener(R.id.notename, new View.OnClickListener() {
             @Override

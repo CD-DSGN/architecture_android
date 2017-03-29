@@ -6,6 +6,7 @@ import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.ImageView;
+import android.widget.RelativeLayout;
 
 import com.grandmagic.readingmate.R;
 import com.grandmagic.readingmate.activity.FriendDetailActivity;
@@ -37,9 +38,10 @@ public class MessageTextSendDelagate extends ChatItemViewDelegate {
         EMTextMessageBody mBody = (EMTextMessageBody) mChatMessage.getBody();
         if ("card".equals(mChatMessage.getStringAttribute("type", ""))) {//名片类型消息
             try {
-                ImageLoader.loadRoundImage(mContext, Environment.BASEULR_PRODUCTION + mChatMessage.getStringAttribute("avatar"), (ImageView) mHolder.getView(R.id.cardavatar));
-                mHolder.setText(R.id.cardname, mChatMessage.getStringAttribute("nickname"));
                 cardMsgClick(mHolder, mChatMessage);
+                ImageLoader.loadRoundImage(mContext, mChatMessage.getStringAttribute("avatar"), (ImageView) mHolder.getView(R.id.cardavatar));
+                mHolder.setText(R.id.cardname, mChatMessage.getStringAttribute("nickname"));
+                mHolder.setText(R.id.cardsignature, mChatMessage.getStringAttribute("signature"));
             } catch (HyphenateException mE) {
                 mE.printStackTrace();
             }
@@ -49,6 +51,11 @@ public class MessageTextSendDelagate extends ChatItemViewDelegate {
         }
     }
 
+    /**
+     * 名片的点击事件
+     * @param mHolder
+     * @param mChatMessage
+     */
     private void cardMsgClick(ViewHolder mHolder, final EMMessage mChatMessage) {
         mHolder.getConvertView().setOnClickListener(
                 new View.OnClickListener() {
@@ -62,6 +69,9 @@ public class MessageTextSendDelagate extends ChatItemViewDelegate {
                             mPersonInfo.setNickname(mChatMessage.getStringAttribute("nickname"));
                             mPersonInfo.setClientid(mChatMessage.getStringAttribute("clientid"));
                             mPersonInfo.setUser_id(mChatMessage.getStringAttribute("userid"));
+                            mPersonInfo.setGender(mChatMessage.getIntAttribute("gender"));
+                            mPersonInfo.setSignature(mChatMessage.getStringAttribute("signture"));
+
                             mBundle.putParcelable(FriendDetailActivity.PERSON_INFO, mPersonInfo);
                             mIntent.putExtras(mBundle);
                             mContext.startActivity(mIntent);
@@ -74,12 +84,12 @@ public class MessageTextSendDelagate extends ChatItemViewDelegate {
     }
 
     @Override
-    protected View setContentView(EMMessage mChatMessage) {
+    protected View setContentView(EMMessage mChatMessage, RelativeLayout mHolderView) {
         //处理名片类型消息 如果有存在type且为card则为名片类型
 //     使用2个参数的mChatMessage.getStringAttribute(String key,String defValue)
         return "card".equals(mChatMessage.getStringAttribute("type", ""))
-                ? LayoutInflater.from(mContext).inflate(R.layout.item_sendcardmsg, null)
-                : LayoutInflater.from(mContext).inflate(R.layout.item_sendtextmsg, null);
+                ? LayoutInflater.from(mContext).inflate(R.layout.item_sendcardmsg, mHolderView,true)
+                : LayoutInflater.from(mContext).inflate(R.layout.item_sendtextmsg, mHolderView,true);
     }
 
 

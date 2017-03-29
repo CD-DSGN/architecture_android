@@ -4,6 +4,7 @@ import android.content.Context;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.ImageView;
+import android.widget.RelativeLayout;
 
 import com.grandmagic.readingmate.R;
 import com.grandmagic.readingmate.utils.ImageLoader;
@@ -33,8 +34,8 @@ public class MessageIMGRecDelagate extends ChatItemViewDelegate {
     }
 
     @Override
-    protected View setContentView(EMMessage mChatMessage) {
-        return LayoutInflater.from(mContext).inflate(R.layout.item_reciveimgmsg,null);
+    protected View setContentView(EMMessage mChatMessage, RelativeLayout mHolderView) {
+        return LayoutInflater.from(mContext).inflate(R.layout.item_reciveimgmsg,mHolderView,true);
     }
 
 

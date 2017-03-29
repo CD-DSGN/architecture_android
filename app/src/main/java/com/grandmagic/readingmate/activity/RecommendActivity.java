@@ -21,6 +21,7 @@ import com.grandmagic.readingmate.utils.AutoUtils;
 import com.hyphenate.chat.EMClient;
 import com.hyphenate.chat.EMMessage;
 import com.hyphenate.chat.EMTextMessageBody;
+import com.tamic.novate.util.Environment;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -151,11 +152,12 @@ public class RecommendActivity extends AppBaseActivity {
      */
     private void createCommendmsg(EMMessage mCardMsg) {
         mCardMsg.setAttribute("type", "card");
-        mCardMsg.setAttribute("avatar", com.tamic.novate.util.Environment.BASEULR_DEVELOPMENT + mPersonInfo.getAvatar());
+        mCardMsg.setAttribute("avatar", Environment.BASEULR_PRODUCTION + mPersonInfo.getAvatar());
         mCardMsg.setAttribute("clientid", mPersonInfo.getClientid());
         mCardMsg.setAttribute("nickname", mPersonInfo.getNickname());
         mCardMsg.setAttribute("userid", mPersonInfo.getUser_id());
         mCardMsg.setAttribute("gender", mPersonInfo.getGender());
+        mCardMsg.setAttribute("signature", mPersonInfo.getSignature());
     }
 
     PersonInfo mPersonInfo;// 从个人详情页面传递过来的用户信息

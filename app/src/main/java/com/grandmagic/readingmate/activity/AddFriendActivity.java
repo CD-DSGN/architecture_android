@@ -158,6 +158,7 @@ public class AddFriendActivity extends AppBaseActivity {
         mInfo.setUser_id(responseData.getUser_id());
         mInfo.setFriend(responseData.getIs_friend()==1);
         mInfo.setNickname(responseData.getUser_name());
+        mInfo.setSignature(responseData.getSignature());
         mBundle.putParcelable(FriendDetailActivity.PERSON_INFO,mInfo);
         mIntent.putExtras(mBundle);
         startActivity(mIntent);
