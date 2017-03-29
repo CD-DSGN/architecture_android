@@ -73,6 +73,7 @@ public class Contacts {
     }
 
     public void setAvatar_url(String mAvatar_url) {
+        if (avatar_url==null)avatar_url=new AvatarUrlBean();
         avatar_url.setLarge(mAvatar_url);
     }
 
