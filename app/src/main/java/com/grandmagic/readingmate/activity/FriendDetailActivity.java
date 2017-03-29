@@ -28,6 +28,7 @@ import com.grandmagic.readingmate.base.AppBaseActivity;
 import com.grandmagic.readingmate.base.AppBaseResponseCallBack;
 import com.grandmagic.readingmate.bean.response.Contacts;
 import com.grandmagic.readingmate.bean.response.PersonCollectBookResponse;
+import com.grandmagic.readingmate.bean.response.PersonCommentResponse;
 import com.grandmagic.readingmate.bean.response.PersonInfo;
 import com.grandmagic.readingmate.db.ContactsDao;
 import com.grandmagic.readingmate.db.DBHelper;
@@ -124,13 +125,15 @@ public class FriendDetailActivity extends AppBaseActivity {
     List<PersonCollectBookResponse.InfoBean> mCollectList = new ArrayList<>();//用户收藏list
     DefaultEmptyAdapter mCollDefaultAdapter;
     DefaultEmptyAdapter mCommentDefaultAdapter;
-    List<String> mStrings = new ArrayList<>();
+    CommentsAdapter mCommentsAdapter;
+
+    List<PersonCommentResponse.CommentInfoBean> mCommentInfoBeanList = new ArrayList<>();
 
     private void initview() {
         mTitleMore.setVisibility(View.VISIBLE);
         mTitle.setText("详细信息");
         mRecyclerview.setLayoutManager(new LinearLayoutManager(this));
-        CommentsAdapter mCommentsAdapter = new CommentsAdapter(this, mStrings);
+        mCommentsAdapter = new CommentsAdapter(this, mCommentInfoBeanList);
         mCommentDefaultAdapter = new DefaultEmptyAdapter(mCommentsAdapter, this);
         mRecyclerview.setAdapter(mCommentDefaultAdapter);
 
@@ -240,12 +243,13 @@ public class FriendDetailActivity extends AppBaseActivity {
      * @param mCommentcurrpage 页码
      */
     private void loadComment(int mCommentcurrpage) {
-        mModel.loadUserComment(userid, mCommentcurrpage, new AppBaseResponseCallBack<NovateResponse>(this) {
+        mModel.loadUserComment(userid, mCommentcurrpage, new AppBaseResponseCallBack<NovateResponse<PersonCommentResponse>>(this) {
             @Override
-            public void onSuccee(NovateResponse response) {
-                for (int i = 0; i < 50; i++) {
-                    mStrings.add("af");
-                }
+            public void onSuccee(NovateResponse<PersonCommentResponse> response) {
+                mCommentInfoBeanList.addAll(response.getData().getComment_info());
+                comentpagecount = response.getData().getPageCount();
+                mCommentsAdapter.setAvatar(response.getData().getAvatar_url());
+                mCommentsAdapter.setusername(response.getData().getUser_name());
                 mCommentDefaultAdapter.refresh();
             }
 
