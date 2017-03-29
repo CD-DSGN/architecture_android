@@ -19,7 +19,7 @@ import java.util.HashMap;
 
 public class CommentDetailModel {
     private Context mContext;
-    public static int PAGE_COUNT_LIKERS = 3;
+    public static int PAGE_COUNT_LIKERS = 20;
     public CommentDetailModel(Context context) {
         mContext = context;
     }

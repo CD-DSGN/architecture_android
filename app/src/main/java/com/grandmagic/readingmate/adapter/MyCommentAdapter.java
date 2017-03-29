@@ -95,12 +95,12 @@ public class MyCommentAdapter extends CommonAdapter<PersonnalCommentResponseBean
 
         }
 
-        final String book_id = personnalCommentResponseBean.getBook_id();
+        final String comment_id = personnalCommentResponseBean.getComment_id();
         holder.setOnClickListener(R.id.ll_item_my_comment, new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 Intent intent = new Intent(mContext, CommentsActivity.class);
-                intent.putExtra("book_id", book_id);
+                intent.putExtra("comment_id", comment_id);
                 mContext.startActivity(intent);
             }
         });
