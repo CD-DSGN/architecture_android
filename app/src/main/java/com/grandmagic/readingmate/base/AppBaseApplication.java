@@ -5,6 +5,7 @@ import android.app.Application;
 import android.content.pm.PackageManager;
 import android.os.Build;
 import android.os.StrictMode;
+import android.support.multidex.MultiDex;
 import android.util.Log;
 
 import com.facebook.stetho.Stetho;
@@ -34,6 +35,7 @@ public class AppBaseApplication extends Application {
     @Override
     public void onCreate() {
         super.onCreate();
+        MultiDex.install(this);
         ctx = this;
         Stetho.initializeWithDefaults(this);  //初始化facebook调试工具stetho
         LeakCanary.install(this);    //内存泄漏检测
