@@ -95,6 +95,7 @@ public class ChatFragment extends AppBaseFragment implements RecentConversationD
     public void onResume() {
         super.onResume();
         setSystemBarColor(false);
+        onrefreshConversation();
     }
 
     @Override
@@ -119,7 +120,6 @@ public class ChatFragment extends AppBaseFragment implements RecentConversationD
         mAdapter = new DefaultEmptyAdapter(minnerAdapter, mContext);
         mRecyclerview.setAdapter(mAdapter);
         initrefreshlayout();
-        onrefreshConversation();
     }
 
     /**

@@ -13,6 +13,7 @@ import com.grandmagic.readingmate.R;
 import com.grandmagic.readingmate.utils.SystemBarTintManager;
 import com.tamic.novate.RxApiManager;
 import com.umeng.analytics.MobclickAgent;
+import com.umeng.message.PushAgent;
 
 /**
  * Created by zhangmengqi on 2017/1/22.
@@ -26,6 +27,7 @@ public class AppBaseActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         SystemBarTintManager tintManager = new SystemBarTintManager(this);
         tintManager.setStatusBarTintEnabled(true);
+        PushAgent.getInstance(this).onAppStart();
     }
 
     @Override

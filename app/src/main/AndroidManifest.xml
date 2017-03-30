@@ -61,7 +61,11 @@
         android:theme="@style/AppTheme">
         <meta-data
             android:name="UMENG_APPKEY"
-            android:value="58848a9476661315aa0006b5">
+            android:value="58dcb50107fe65608d0010a0">
+        </meta-data>
+        <meta-data
+            android:name="UMENG_MESSAGE_SECRET"
+            android:value="3fcf552ebf48d213ee5b4b085aa5b4a6">
         </meta-data>
         <meta-data
             android:name="UMENG_CHANNEL"
@@ -155,7 +159,7 @@
         <!-- 设置环信应用的AppKey -->
         <meta-data
             android:name="EASEMOB_APPKEY"
-            android:value="1151170221178533#dsdj"/>
+            android:value="1141170330115247#readingmate"/>
         <!-- 声明SDK所需的service SDK核心功能 -->
         <service
             android:name="com.hyphenate.chat.EMChatService"

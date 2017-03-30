@@ -1,5 +1,6 @@
 package com.grandmagic.readingmate.activity;
 
+import android.Manifest;
 import android.animation.AnimatorSet;
 import android.animation.ObjectAnimator;
 import android.content.Intent;
@@ -22,11 +23,13 @@ import com.orhanobut.logger.Logger;
 import com.tamic.novate.NovateResponse;
 import com.tamic.novate.Throwable;
 import com.tamic.novate.util.SPUtils;
+import com.tbruyelle.rxpermissions.RxPermissions;
 
 import java.util.List;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
+import rx.functions.Action1;
 
 //启动页面
 public class SplashActivity extends AppBaseActivity {
@@ -60,6 +63,12 @@ public class SplashActivity extends AppBaseActivity {
         } else {
             checklogin();
         }
+        new RxPermissions(this).request(Manifest.permission.WRITE_EXTERNAL_STORAGE).subscribe(new Action1<Boolean>() {
+            @Override
+            public void call(Boolean mBoolean) {
+
+            }
+        });
     }
 
     /**

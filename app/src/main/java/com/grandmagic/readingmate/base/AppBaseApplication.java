@@ -9,6 +9,8 @@ import android.support.multidex.MultiDex;
 import android.util.Log;
 
 import com.facebook.stetho.Stetho;
+import com.grandmagic.readingmate.push.IUmengMessageHandler;
+import com.grandmagic.readingmate.push.IUmengNotificationClickHandler;
 import com.grandmagic.readingmate.utils.IMHelper;
 import com.hyphenate.chat.EMClient;
 import com.hyphenate.chat.EMOptions;
@@ -66,13 +68,19 @@ public class AppBaseApplication extends Application {
                 Log.d(TAG, "onFailure() called with: s = [" + s + "], s1 = [" + s1 + "]");
             }
         });
-
+//        默认情况下，同一台设备在1分钟内收到同一个应用的多条通知时，不会重复提醒，
+// 同时在通知栏里新的通知会替换掉旧的通知。可以通过如下方法来设置冷却时间：
+        mPushAgent.setMuteDurationSeconds(3);
+      //  是否检查集成配置文件
+        mPushAgent.setPushCheck(true);
+        mPushAgent.setMessageHandler(new IUmengMessageHandler());
+        mPushAgent.setNotificationClickHandler(new IUmengNotificationClickHandler());
     }
 
     {
         //微信和新浪分享配置
         PlatformConfig.setWeixin("wxdc1e388c3822c80b", "3baf1193c85774b3fd9d18447d76cab0");
-        PlatformConfig.setSinaWeibo("3921700954", "04b48b094faeb16683c32669824ebdad","http://sns.whalecloud.com");
+        PlatformConfig.setSinaWeibo("3921700954", "04b48b094faeb16683c32669824ebdad", "http://sns.whalecloud.com");
     }
 
     /**
