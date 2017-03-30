@@ -265,9 +265,9 @@ public class HomeFragment extends AppBaseFragment implements HomeBookAdapter.Cli
     public void onActivityResult(int requestCode, int resultCode, Intent data) {
         if (requestCode == REQUEST_CAPTURE && Activity.RESULT_OK == resultCode) {
             if (data == null) return;
-            String isbn_code = data.getStringExtra("result");
+            String book_id = data.getStringExtra("result");
             Intent mIntent = new Intent(getActivity(), BookDetailActivity.class);
-            mIntent.putExtra(BookDetailActivity.ISBN_CODE, isbn_code);
+            mIntent.putExtra(BookDetailActivity.BOOK_ID, book_id);
             startActivityForResult(mIntent, REQUEST_BOOKDETAIL);
         } else if (requestCode == REQUEST_BOOKDETAIL && requestCode == Activity.RESULT_OK) {
 //如果从图书详情页需要返回做什么处理。可以在这里处理

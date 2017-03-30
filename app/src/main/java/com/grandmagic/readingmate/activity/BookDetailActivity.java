@@ -37,7 +37,6 @@ import butterknife.ButterKnife;
 import butterknife.OnClick;
 
 public class BookDetailActivity extends AppBaseActivity implements View.OnLayoutChangeListener {
-    public static final String ISBN_CODE = "isbn_code";
     public static final String BOOK_ID = "book_id";
     @BindView(R.id.rela_score)
     RelativeLayout mRelaScore;

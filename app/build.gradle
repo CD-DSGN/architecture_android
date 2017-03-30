@@ -7,8 +7,8 @@ android {
     compileSdkVersion 25
     buildToolsVersion "25.0.0"
     defaultConfig {
-//        applicationId "com.grandmagic.readingmate"
-        applicationId "com.umeng.soexample"
+        applicationId "com.grandmagic.readingmate"
+//        applicationId "com.umeng.soexample"
 
         minSdkVersion 14
         targetSdkVersion 23

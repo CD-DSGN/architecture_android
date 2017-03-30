@@ -20,8 +20,12 @@ import android.widget.RelativeLayout;
 
 import com.google.zxing.Result;
 import com.grandmagic.readingmate.R;
+import com.grandmagic.readingmate.base.AppBaseResponseCallBack;
+import com.grandmagic.readingmate.bean.response.ScanBookResponse;
+import com.grandmagic.readingmate.model.BookModel;
 import com.grandmagic.readingmate.permission.CameraPermission;
 import com.grandmagic.readingmate.utils.AutoUtils;
+import com.tamic.novate.NovateResponse;
 import com.tbruyelle.rxpermissions.RxPermissions;
 import com.xys.libzxing.zxing.camera.CameraManager;
 import com.xys.libzxing.zxing.decode.DecodeThread;
@@ -179,17 +183,25 @@ public class CaptureActivity extends com.xys.libzxing.zxing.activity.CaptureActi
      * @param rawResult The contents of the barcode.
      * @param bundle    The extras
      */
-    public void handleDecode(Result rawResult, Bundle bundle) {
+    BookModel mModel;
+
+    public void handleDecode(final Result rawResult, final Bundle bundle) {
         inactivityTimer.onActivity();
         beepManager.playBeepSoundAndVibrate();
+        mModel = new BookModel(this);
+        mModel.fllowBook(rawResult.getText(), new AppBaseResponseCallBack<NovateResponse<ScanBookResponse>>(this) {
+            @Override
+            public void onSuccee(NovateResponse<ScanBookResponse> response) {
+                Intent resultIntent = new Intent();
+                bundle.putInt("width", mCropRect.width());
+                bundle.putInt("height", mCropRect.height());
+                bundle.putString("result",response.getData().getBook_id());
+                resultIntent.putExtras(bundle);
+                CaptureActivity.this.setResult(RESULT_OK, resultIntent);
+                CaptureActivity.this.finish();
+            }
+        });
 
-        Intent resultIntent = new Intent();
-        bundle.putInt("width", mCropRect.width());
-        bundle.putInt("height", mCropRect.height());
-        bundle.putString("result", rawResult.getText());
-        resultIntent.putExtras(bundle);
-        this.setResult(RESULT_OK, resultIntent);
-        CaptureActivity.this.finish();
     }
 
     private void initCamera(SurfaceHolder surfaceHolder) {
