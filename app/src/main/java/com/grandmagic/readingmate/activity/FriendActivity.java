@@ -23,6 +23,7 @@ import com.grandmagic.readingmate.base.AppBaseActivity;
 import com.grandmagic.readingmate.base.AppBaseResponseCallBack;
 import com.grandmagic.readingmate.bean.response.Contacts;
 import com.grandmagic.readingmate.bean.response.DataBean;
+import com.grandmagic.readingmate.db.DBHelper;
 import com.grandmagic.readingmate.db.DaoMaster;
 import com.grandmagic.readingmate.db.DaoSession;
 import com.grandmagic.readingmate.event.ContactDeleteEvent;
@@ -34,6 +35,7 @@ import com.hyphenate.chat.EMClient;
 import com.hyphenate.exceptions.HyphenateException;
 import com.orhanobut.logger.Logger;
 import com.tamic.novate.NovateResponse;
+import com.tamic.novate.Throwable;
 
 import org.greenrobot.eventbus.EventBus;
 import org.greenrobot.eventbus.Subscribe;
@@ -89,6 +91,7 @@ public class FriendActivity extends AppBaseActivity implements ContactItemDelaga
      * 生成adapter需要的list
      */
     private void initadapterData() {
+        mAdapterData.add(new Contacts(Contacts.TYPE.TYPE_NEWFRIEND));//新朋友的头部
         for (int i = 0; i < mLetters.size(); i++) {
             String letter = mLetters.get(i);
             mAdapterData.get(mAdapterData.size() - 1).setNeedline(false);
@@ -97,6 +100,7 @@ public class FriendActivity extends AppBaseActivity implements ContactItemDelaga
             for (int j = 0; j < mSouseDatas.size(); j++) {
                 if (letter.equals(mSouseDatas.get(j).getLetter())) {
                     mAdapterData.add(mSouseDatas.get(j).setType(Contacts.TYPE.TYPE_FRIEND));
+                    DBHelper.getContactsDao(FriendActivity.this).insertOrReplace(mSouseDatas.get(j));
                 }
             }
         }
@@ -151,13 +155,22 @@ public class FriendActivity extends AppBaseActivity implements ContactItemDelaga
     }
 
     private void initServerData() {
+        mAdapterData.add(new Contacts(Contacts.TYPE.TYPE_NEWFRIEND));//新朋友的头部
         mModel.getAllFriendFromServer(new AppBaseResponseCallBack<NovateResponse<List<Contacts>>>(this) {
             @Override
             public void onSuccee(NovateResponse<List<Contacts>> response) {
+                mSouseDatas.clear();
+                mAdapterData.clear();
+                mLetters.clear();//防止删除好友的时候重新加载好友列表数据重复
                 List<Contacts> mData = response.getData();
                 mSouseDatas.addAll(mData);
                 initsouseData();
                 initadapterData();
+            }
+
+            @Override
+            public void onError(Throwable e) {
+                super.onError(e);
             }
         });
     }
@@ -166,7 +179,6 @@ public class FriendActivity extends AppBaseActivity implements ContactItemDelaga
 
     private void initview() {
         mContext = this;
-        mAdapterData.add(new Contacts(Contacts.TYPE.TYPE_NEWFRIEND));//新朋友的头部
 
         mTitle.setText(R.string.read_friend);
         mTitlelayout.setBackgroundColor(Color.parseColor("#ffffff"));
@@ -204,6 +216,7 @@ public class FriendActivity extends AppBaseActivity implements ContactItemDelaga
     @Subscribe(threadMode = ThreadMode.MAIN)
     public void contactDelete(ContactDeleteEvent mEvent){
       initServerData();
+
     }
 
     @Override

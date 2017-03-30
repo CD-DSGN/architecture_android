@@ -217,6 +217,8 @@ public class IMNotifier {
         NotificationCompat.Builder mBuilder = new NotificationCompat.Builder(mAppContext)
                 .setSmallIcon(mAppContext.getApplicationInfo().icon)
                 .setWhen(System.currentTimeMillis())
+                .setContentTitle("好友相关")
+//                .setContentInfo(msg.getFrom()+msg.getStatus().name())
                 .setAutoCancel(true);
         Intent msgIntent = mAppContext.getPackageManager().getLaunchIntentForPackage(packName);
         PendingIntent mPendingIntent = PendingIntent.getActivity(mAppContext, notifyID, msgIntent, PendingIntent.FLAG_UPDATE_CURRENT);

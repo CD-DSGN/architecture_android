@@ -37,6 +37,8 @@ public class CommentsAdapter extends CommonAdapter<PersonCommentResponse.Comment
         holder.setText(R.id.replynum, data.getReply_count() + "回复");
         holder.setText(R.id.content, data.getContent());
         holder.setText(R.id.like_num, data.getLike_times());
+        holder.setTextColor(R.id.like_num,data.getIs_thumb()==1?R.color.text_green:R.color.text_gray);
+        holder.setImageResource(R.id.iv_like,data.getIs_thumb()==1?R.drawable.iv_like:R.drawable.iv_like_gray);
         holder.getConvertView().setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {

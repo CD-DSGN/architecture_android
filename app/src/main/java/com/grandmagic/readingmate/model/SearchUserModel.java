@@ -6,6 +6,8 @@ import com.google.gson.Gson;
 import com.grandmagic.readingmate.base.AppBaseResponseCallBack;
 import com.grandmagic.readingmate.bean.request.UserInfoRequest;
 import com.grandmagic.readingmate.consts.ApiInterface;
+import com.hyphenate.chat.EMClient;
+import com.hyphenate.exceptions.HyphenateException;
 import com.tamic.novate.util.SPUtils;
 import com.tamic.novate.Novate;
 import com.tamic.novate.util.Environment;
@@ -56,6 +58,11 @@ public class SearchUserModel {
     } catch (Exception mE) {
         mE.printStackTrace();
     }
+        try {
+            EMClient.getInstance().contactManager().addContact(user_id2,message);
+        } catch (HyphenateException mE) {
+            mE.printStackTrace();
+        }
     mNovate.executeJson(ApiInterface.REQUEST_ADD,mJSONObject.toString(),mBack);
 }
 }

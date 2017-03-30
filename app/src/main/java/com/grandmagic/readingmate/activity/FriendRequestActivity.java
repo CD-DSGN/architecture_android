@@ -16,6 +16,8 @@ import com.grandmagic.readingmate.bean.response.Contacts;
 import com.grandmagic.readingmate.bean.response.RequestListResponse;
 import com.grandmagic.readingmate.db.DBHelper;
 import com.grandmagic.readingmate.model.ContactModel;
+import com.hyphenate.chat.EMClient;
+import com.hyphenate.exceptions.HyphenateException;
 import com.tamic.novate.NovateResponse;
 
 import java.util.ArrayList;
@@ -87,6 +89,11 @@ public class FriendRequestActivity extends AppBaseActivity implements RequestLis
         mModel.acceptFriend(data.getRequest_id(), new AppBaseResponseCallBack<NovateResponse>(this) {
             @Override
             public void onSuccee(NovateResponse response) {
+                try {
+                    EMClient.getInstance().contactManager().acceptInvitation(data.getUser_id());
+                } catch (HyphenateException mE) {
+                    mE.printStackTrace();
+                }
                 mListResponses.remove(mPosition);
                 mAdapter.setdata(mListResponses);
                 //添加好友时候将对方添加到自己的本地数据库
@@ -106,10 +113,15 @@ public class FriendRequestActivity extends AppBaseActivity implements RequestLis
      * @param mPosition
      */
     @Override
-    public void refuse(RequestListResponse mData, final int mPosition) {
+    public void refuse(final RequestListResponse mData, final int mPosition) {
         mModel.refuseFriend(mData.getRequest_id(), new AppBaseResponseCallBack<NovateResponse>(this) {
             @Override
             public void onSuccee(NovateResponse response) {
+                try {
+                    EMClient.getInstance().contactManager().declineInvitation(mData.getUser_id());
+                } catch (HyphenateException mE) {
+                    mE.printStackTrace();
+                }
                 mListResponses.remove(mPosition);
                 mAdapter.setdata(mListResponses);
             }

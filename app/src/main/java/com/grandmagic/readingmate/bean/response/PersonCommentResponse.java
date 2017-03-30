@@ -114,6 +114,15 @@ public class PersonCommentResponse {
         private String book_id;
         private String book_name;
         private String photo;
+private int is_thumb;
+
+        public int getIs_thumb() {
+            return is_thumb;
+        }
+
+        public void setIs_thumb(int mIs_thumb) {
+            is_thumb = mIs_thumb;
+        }
 
         public String getComment_id() {
             return comment_id;

@@ -79,7 +79,6 @@ public class SplashActivity extends AppBaseActivity {
                     ContactsDao mContactsDao = DBHelper.getContactsDao(SplashActivity.this);
                     for (Contacts mContacts : mData) {
                         mContactsDao.insertOrReplace(mContacts);
-                        Logger.e(mContacts.toString());
                     }
                     EMClient.getInstance().chatManager().loadAllConversations();
                     EMClient.getInstance().groupManager().loadAllGroups();

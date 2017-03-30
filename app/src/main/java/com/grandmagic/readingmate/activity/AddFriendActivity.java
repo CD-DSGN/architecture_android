@@ -22,6 +22,8 @@ import com.grandmagic.readingmate.ui.CustomDialog;
 import com.grandmagic.readingmate.utils.AutoUtils;
 import com.grandmagic.readingmate.utils.ImageLoader;
 import com.grandmagic.readingmate.utils.InputMethodUtils;
+import com.hyphenate.chat.EMClient;
+import com.hyphenate.exceptions.HyphenateException;
 import com.tamic.novate.NovateResponse;
 import com.tamic.novate.util.Environment;
 
@@ -188,7 +190,7 @@ public class AddFriendActivity extends AppBaseActivity {
      *
      * @param reason
      */
-    private void addContact(String reason) {
+    private void addContact(final String reason) {
 
         InputMethodUtils.hide(AddFriendActivity.this);
         mModel.requestAddFriend(mUser_id, reason, new AppBaseResponseCallBack<NovateResponse>(this) {

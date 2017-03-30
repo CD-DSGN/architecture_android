@@ -59,6 +59,10 @@ public class IMContactListener implements EMContactListener {
         mUnique.setStatus(InviteMessage.InviteMesageStatus.BEAGREED);
         mUnique.setTime(System.currentTimeMillis());
         mInviteDao.update(mUnique);
+
+        InviteMessage mMessage = new InviteMessage();
+mMessage.setFrom(mS);
+        IMHelper.getInstance().newInvaiteMsg(mMessage);
     }
 
     /**
