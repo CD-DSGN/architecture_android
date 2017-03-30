@@ -100,7 +100,7 @@ dependencies {
     compile 'org.greenrobot:eventbus:3.0.0'
     //从相册选择图片
     compile 'com.yuyh.imgsel:library:1.3.7'
-//    播放动画的库
+    //    播放动画的库
     compile 'com.airbnb.android:lottie:1.5.3'
-
+    compile project(':Pushlib')
 }

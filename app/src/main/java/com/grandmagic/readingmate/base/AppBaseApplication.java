@@ -11,8 +11,11 @@ import com.facebook.stetho.Stetho;
 import com.grandmagic.readingmate.utils.IMHelper;
 import com.hyphenate.chat.EMClient;
 import com.hyphenate.chat.EMOptions;
+import com.orhanobut.logger.Logger;
 import com.squareup.leakcanary.LeakCanary;
 import com.umeng.analytics.MobclickAgent;
+import com.umeng.message.IUmengRegisterCallback;
+import com.umeng.message.PushAgent;
 import com.umeng.socialize.Config;
 import com.umeng.socialize.PlatformConfig;
 import com.umeng.socialize.UMShareAPI;
@@ -42,6 +45,26 @@ public class AppBaseApplication extends Application {
         //友盟分享配置
         Config.DEBUG = true;
         UMShareAPI.get(this);
+        initUPush();
+    }
+
+    private void initUPush() {
+        PushAgent mPushAgent = PushAgent.getInstance(this);
+//注册推送服务，每次调用register方法都会回调该接口
+        mPushAgent.register(new IUmengRegisterCallback() {
+
+            @Override
+            public void onSuccess(String deviceToken) {
+                //注册成功会返回device token
+                Log.d(TAG, "onSuccess() called with: deviceToken = [" + deviceToken + "]");
+            }
+
+            @Override
+            public void onFailure(String s, String s1) {
+                Log.d(TAG, "onFailure() called with: s = [" + s + "], s1 = [" + s1 + "]");
+            }
+        });
+
     }
 
     {

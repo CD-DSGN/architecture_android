@@ -12,3 +12,5 @@
 /build.gradle
 /gradle/wrapper/gradle-wrapper.properties
 /*.gitignore
+/Pushlib/*
+/Pushlib/*.iml
