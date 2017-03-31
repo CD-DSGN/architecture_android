@@ -20,6 +20,7 @@ import com.zhy.adapter.recyclerview.base.ViewHolder;
 
 public class ContactNewFriendDelagate implements ItemViewDelegate<Contacts> {
     private Context mContext;
+    View mView;
 
     public ContactNewFriendDelagate(Context mContext) {
 
@@ -38,6 +39,9 @@ public class ContactNewFriendDelagate implements ItemViewDelegate<Contacts> {
 
     @Override
     public void convert(ViewHolder holder, Contacts mContacts, int position) {
+        mView = holder.getView(R.id.textView2);
+        holder.setText(R.id.textView2,mContacts.getGender()+"");
+        holder.setVisible(R.id.textView2,mContacts.getGender()>0);
         holder.getConvertView().setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -46,5 +50,9 @@ public class ContactNewFriendDelagate implements ItemViewDelegate<Contacts> {
             }
         });
 
+    }
+
+    public void read() {
+        mView.setVisibility(View.GONE);
     }
 }

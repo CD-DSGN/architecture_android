@@ -34,7 +34,8 @@ public class InviteMessageDao extends AbstractDao<InviteMessage, Long> {
         public final static Property GroupId = new Property(4, String.class, "groupId", false, "GROUP_ID");
         public final static Property GroupName = new Property(5, String.class, "groupName", false, "GROUP_NAME");
         public final static Property GroupInviter = new Property(6, String.class, "groupInviter", false, "GROUP_INVITER");
-        public final static Property Id = new Property(7, Long.class, "id", true, "_id");
+        public final static Property Isread = new Property(7, int.class, "isread", false, "ISREAD");
+        public final static Property Id = new Property(8, Long.class, "id", true, "_id");
     }
 
     private final InviteMesageStatusConver statusConverter = new InviteMesageStatusConver();
@@ -58,7 +59,8 @@ public class InviteMessageDao extends AbstractDao<InviteMessage, Long> {
                 "\"GROUP_ID\" TEXT," + // 4: groupId
                 "\"GROUP_NAME\" TEXT," + // 5: groupName
                 "\"GROUP_INVITER\" TEXT," + // 6: groupInviter
-                "\"_id\" INTEGER PRIMARY KEY );"); // 7: id
+                "\"ISREAD\" INTEGER NOT NULL ," + // 7: isread
+                "\"_id\" INTEGER PRIMARY KEY );"); // 8: id
     }
 
     /** Drops the underlying database table. */
@@ -101,10 +103,11 @@ public class InviteMessageDao extends AbstractDao<InviteMessage, Long> {
         if (groupInviter != null) {
             stmt.bindString(7, groupInviter);
         }
+        stmt.bindLong(8, entity.getIsread());
  
         Long id = entity.getId();
         if (id != null) {
-            stmt.bindLong(8, id);
+            stmt.bindLong(9, id);
         }
     }
 
@@ -142,16 +145,17 @@ public class InviteMessageDao extends AbstractDao<InviteMessage, Long> {
         if (groupInviter != null) {
             stmt.bindString(7, groupInviter);
         }
+        stmt.bindLong(8, entity.getIsread());
  
         Long id = entity.getId();
         if (id != null) {
-            stmt.bindLong(8, id);
+            stmt.bindLong(9, id);
         }
     }
 
     @Override
     public Long readKey(Cursor cursor, int offset) {
-        return cursor.isNull(offset + 7) ? null : cursor.getLong(offset + 7);
+        return cursor.isNull(offset + 8) ? null : cursor.getLong(offset + 8);
     }    
 
     @Override
@@ -164,7 +168,8 @@ public class InviteMessageDao extends AbstractDao<InviteMessage, Long> {
             cursor.isNull(offset + 4) ? null : cursor.getString(offset + 4), // groupId
             cursor.isNull(offset + 5) ? null : cursor.getString(offset + 5), // groupName
             cursor.isNull(offset + 6) ? null : cursor.getString(offset + 6), // groupInviter
-            cursor.isNull(offset + 7) ? null : cursor.getLong(offset + 7) // id
+            cursor.getInt(offset + 7), // isread
+            cursor.isNull(offset + 8) ? null : cursor.getLong(offset + 8) // id
         );
         return entity;
     }
@@ -178,7 +183,8 @@ public class InviteMessageDao extends AbstractDao<InviteMessage, Long> {
         entity.setGroupId(cursor.isNull(offset + 4) ? null : cursor.getString(offset + 4));
         entity.setGroupName(cursor.isNull(offset + 5) ? null : cursor.getString(offset + 5));
         entity.setGroupInviter(cursor.isNull(offset + 6) ? null : cursor.getString(offset + 6));
-        entity.setId(cursor.isNull(offset + 7) ? null : cursor.getLong(offset + 7));
+        entity.setIsread(cursor.getInt(offset + 7));
+        entity.setId(cursor.isNull(offset + 8) ? null : cursor.getLong(offset + 8));
      }
     
     @Override

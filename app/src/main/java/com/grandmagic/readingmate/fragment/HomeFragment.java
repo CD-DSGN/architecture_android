@@ -277,7 +277,7 @@ public class HomeFragment extends AppBaseFragment implements HomeBookAdapter.Cli
     @Override
     public void onResume() {
         super.onResume();
-        setSystemBarColor(false);
+//        setSystemBarColor(false);
     }
 
     @Override

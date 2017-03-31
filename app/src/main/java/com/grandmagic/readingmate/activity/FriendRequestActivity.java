@@ -13,8 +13,10 @@ import com.grandmagic.readingmate.adapter.RequestListAdapter;
 import com.grandmagic.readingmate.base.AppBaseActivity;
 import com.grandmagic.readingmate.base.AppBaseResponseCallBack;
 import com.grandmagic.readingmate.bean.response.Contacts;
+import com.grandmagic.readingmate.bean.response.InviteMessage;
 import com.grandmagic.readingmate.bean.response.RequestListResponse;
 import com.grandmagic.readingmate.db.DBHelper;
+import com.grandmagic.readingmate.db.InviteMessageDao;
 import com.grandmagic.readingmate.model.ContactModel;
 import com.hyphenate.chat.EMClient;
 import com.hyphenate.exceptions.HyphenateException;
@@ -63,6 +65,13 @@ public class FriendRequestActivity extends AppBaseActivity implements RequestLis
     }
 
     private void loadDataFromServer() {
+        //标记为已读
+        InviteMessageDao mInviteDao = DBHelper.getInviteDao(this);
+        List<InviteMessage> mInviteMessages = DBHelper.getInviteDao(this).loadAll();
+        for (int i = 0; i < mInviteMessages.size(); i++) {
+            mInviteMessages.get(i).setIsread(0);
+            mInviteDao.update(mInviteMessages.get(i));
+        }
         mModel = new ContactModel(this);
         mModel.getallRequest(new AppBaseResponseCallBack<NovateResponse<List<RequestListResponse>>>(this) {
             @Override

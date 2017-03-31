@@ -234,10 +234,10 @@ public class LoginActivity extends AppBaseActivity implements View.OnClickListen
         String pwd_comfirm = mEtPasssureRg.getText().toString();
 
         RegisterRequestBean registerBean = new RegisterRequestBean(pwd, phone_num, verify_code);
-        new RegisterModel(LoginActivity.this, registerBean, new AppBaseResponseCallBack<NovateResponse<String>>
+        new RegisterModel(LoginActivity.this, registerBean, new AppBaseResponseCallBack<NovateResponse>
                 (LoginActivity.this, true) {
             @Override
-            public void onSuccee(NovateResponse<String> response) {
+            public void onSuccee(NovateResponse response) {
             login(phone_num,pwd);//改为注册成功调用登陆接口，不返回token
             }
         }, pwd_comfirm).register();

@@ -41,6 +41,7 @@ public class IMContactListener implements EMContactListener {
         mMessage.setTime(System.currentTimeMillis());
         mMessage.setStatus(InviteMessage.InviteMesageStatus.BEINVITEED);
         mMessage.setReason(reason);
+        mMessage.setIsread(1);
         IMHelper.getInstance().newInvaiteMsg(mMessage);
     }
 

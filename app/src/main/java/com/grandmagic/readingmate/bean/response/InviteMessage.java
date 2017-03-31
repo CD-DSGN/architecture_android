@@ -32,14 +32,21 @@ public class InviteMessage {
     private String groupId;
     private String groupName;
     private String groupInviter;
-private int count;
+    private int isread;
     @Id
     private Long id;
 
-    
+    public int getIsread() {
+        return isread;
+    }
+
+    public void setIsread(int mIsread) {
+        isread = mIsread;
+    }
+
     public InviteMessage(String from, long time, String reason,
-            InviteMesageStatus status, String groupId, String groupName,
-            String groupInviter, long id) {
+                         InviteMesageStatus status, String groupId, String groupName,
+                         String groupInviter, long id) {
         this.from = from;
         this.time = time;
         this.reason = reason;
@@ -50,12 +57,9 @@ private int count;
         this.id = id;
     }
 
-
-
-    @Generated(hash = 1711924327)
-    public InviteMessage(String from, long time, String reason,
-            InviteMesageStatus status, String groupId, String groupName,
-            String groupInviter, Long id) {
+    @Generated(hash = 1631714425)
+    public InviteMessage(String from, long time, String reason, InviteMesageStatus status,
+            String groupId, String groupName, String groupInviter, int isread, Long id) {
         this.from = from;
         this.time = time;
         this.reason = reason;
@@ -63,15 +67,15 @@ private int count;
         this.groupId = groupId;
         this.groupName = groupName;
         this.groupInviter = groupInviter;
+        this.isread = isread;
         this.id = id;
     }
-
-
 
     @Generated(hash = 1613074736)
     public InviteMessage() {
     }
 
+    
 
 
     public String getFrom() {
@@ -88,14 +92,6 @@ private int count;
 
     public void setTime(long time) {
         this.time = time;
-    }
-
-    public int getCount() {
-        return count;
-    }
-
-    public void setCount(int mCount) {
-        count = mCount;
     }
 
     public String getReason() {
@@ -145,11 +141,9 @@ private int count;
     }
 
 
-
     public void setId(Long id) {
         this.id = id;
     }
-
 
 
     public enum InviteMesageStatus {
@@ -176,11 +170,11 @@ private int count;
          */
         BEAPPLYED,
         /**
-         *同意
+         * 同意
          */
         AGREED,
         /**
-         *拒绝加入群聊
+         * 拒绝加入群聊
          */
         REFUSED,
 
@@ -209,6 +203,7 @@ private int count;
                 ", groupId='" + groupId + '\'' +
                 ", groupName='" + groupName + '\'' +
                 ", groupInviter='" + groupInviter + '\'' +
+                ", isread=" + isread +
                 ", id=" + id +
                 '}';
     }

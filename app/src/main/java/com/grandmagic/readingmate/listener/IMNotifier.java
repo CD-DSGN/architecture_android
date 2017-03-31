@@ -197,10 +197,7 @@ public class IMNotifier {
      */
     public void newInvaiteMsg(InviteMessage mInviteMessage) {
         InviteMessageDao mInviteDao = DBHelper.getInviteDao(mAppContext);
-        InviteMessage mUnique = mInviteDao.queryBuilder().where(InviteMessageDao.Properties.From.eq(mInviteMessage.getFrom())).build().unique();
-      if (mUnique!=null){
-        mInviteDao.delete(mUnique);}
-        mInviteDao.save(mInviteMessage);
+        mInviteDao.insertOrReplace(mInviteMessage);//每次收到新的好友请求保存到表里
         vibrateAndPlayTone(null);
         sendInviteNotification(mInviteMessage);
     }
@@ -218,15 +215,17 @@ public class IMNotifier {
                 .setSmallIcon(mAppContext.getApplicationInfo().icon)
                 .setWhen(System.currentTimeMillis())
                 .setContentTitle("好友相关")
+                .setContentText("新的好友请求")
+                .setTicker("新的好友请求")
 //                .setContentInfo(msg.getFrom()+msg.getStatus().name())
                 .setAutoCancel(true);
         Intent msgIntent = mAppContext.getPackageManager().getLaunchIntentForPackage(packName);
         PendingIntent mPendingIntent = PendingIntent.getActivity(mAppContext, notifyID, msgIntent, PendingIntent.FLAG_UPDATE_CURRENT);
-        mBuilder.setContentTitle(contenttitle);
-        mBuilder.setTicker(msg.getFrom());
-        if (msg.getStatus() == InviteMessage.InviteMesageStatus.BEINVITEED) {
-            mBuilder.setContentText(msg.getReason());
-        }
+//        mBuilder.setContentTitle(contenttitle);
+//        mBuilder.setTicker(msg.getFrom());
+//        if (msg.getStatus() == InviteMessage.InviteMesageStatus.BEINVITEED) {
+//            mBuilder.setContentText(msg.getReason());
+//        }
         mBuilder.setContentIntent(mPendingIntent);
         Notification mNotification = mBuilder.build();
         mNotificationManager.notify(foregroundNotifyID, mNotification);

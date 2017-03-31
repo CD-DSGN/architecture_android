@@ -81,6 +81,7 @@
                     android:layout_marginTop="-6px"
                     android:layout_toRightOf="@+id/iv_friend"
                     android:src="@drawable/red_point"
+                    android:id="@+id/red_point"
                     />
             </RelativeLayout>
         </RelativeLayout>

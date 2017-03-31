@@ -52,6 +52,7 @@ import butterknife.OnClick;
 
 public class FriendActivity extends AppBaseActivity implements ContactItemDelagate.remarkListener {
     public static final int REQUEST_NEWFRIEND = 1;
+    public static final String NEW_FRIEND="new_friend";
     @BindView(R.id.back)
     ImageView mBack;
     @BindView(R.id.title)
@@ -67,6 +68,8 @@ public class FriendActivity extends AppBaseActivity implements ContactItemDelaga
     @BindView(R.id.titlelayout)
     RelativeLayout mTitlelayout;
     private static final String TAG = "FriendActivity";
+    int newFriendCOunt;//好友邀请数量
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -84,6 +87,8 @@ public class FriendActivity extends AppBaseActivity implements ContactItemDelaga
     List<String> mLetters = new ArrayList<>();//首字母 A，B。。Z
 
     private void initdata() {
+        newFriendCOunt = getIntent().getIntExtra(NEW_FRIEND, 0);
+
         initServerData();
     }
 
@@ -155,7 +160,7 @@ public class FriendActivity extends AppBaseActivity implements ContactItemDelaga
     }
 
     private void initServerData() {
-        mAdapterData.add(new Contacts(Contacts.TYPE.TYPE_NEWFRIEND));//新朋友的头部
+        mAdapterData.add(new Contacts(Contacts.TYPE.TYPE_NEWFRIEND,newFriendCOunt));//新朋友的头部
         mModel.getAllFriendFromServer(new AppBaseResponseCallBack<NovateResponse<List<Contacts>>>(this) {
             @Override
             public void onSuccee(NovateResponse<List<Contacts>> response) {
@@ -176,6 +181,7 @@ public class FriendActivity extends AppBaseActivity implements ContactItemDelaga
     }
 
     MultiItemTypeAdapter mAdapter;
+    ContactNewFriendDelagate mContactNewFriendDelagate;
 
     private void initview() {
         mContext = this;
@@ -186,9 +192,11 @@ public class FriendActivity extends AppBaseActivity implements ContactItemDelaga
         LinearLayoutManager mLinearLayoutManager = new LinearLayoutManager(mContext);
         mRecyclerviewFriend.setLayoutManager(mLinearLayoutManager);
         mAdapter = new MultiItemTypeAdapter(mContext, mAdapterData);
+        mContactNewFriendDelagate = new ContactNewFriendDelagate(mContext);
         mAdapter.addItemViewDelegate(new ContactItemDelagate(mContext).setRemarkListener(this)).//好友
                 addItemViewDelegate(new ContactLetterDelagate()).//字母
-                addItemViewDelegate(new ContactNewFriendDelagate(mContext));//新朋友的头部
+
+                addItemViewDelegate(mContactNewFriendDelagate);//新朋友的头部
         mRecyclerviewFriend.setAdapter(mAdapter);
         mIndexbar.setLayoutmanager(mLinearLayoutManager).
                 setSouseData(mSouseDatas).
@@ -210,13 +218,15 @@ public class FriendActivity extends AppBaseActivity implements ContactItemDelaga
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
+        if (requestCode==REQUEST_NEWFRIEND){
+          mContactNewFriendDelagate.read();
+        }
     }
 
     ContactModel mModel = new ContactModel(this);
     @Subscribe(threadMode = ThreadMode.MAIN)
     public void contactDelete(ContactDeleteEvent mEvent){
       initServerData();
-
     }
 
     @Override

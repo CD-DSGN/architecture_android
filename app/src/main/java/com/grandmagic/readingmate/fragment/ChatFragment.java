@@ -20,7 +20,6 @@ import com.grandmagic.readingmate.R;
 import com.grandmagic.readingmate.activity.AddFriendActivity;
 import com.grandmagic.readingmate.activity.ChatActivity;
 import com.grandmagic.readingmate.activity.FriendActivity;
-import com.grandmagic.readingmate.activity.FriendDetailActivity;
 import com.grandmagic.readingmate.activity.MainActivity;
 import com.grandmagic.readingmate.adapter.DefaultEmptyAdapter;
 import com.grandmagic.readingmate.adapter.MultiItemTypeAdapter;
@@ -28,8 +27,10 @@ import com.grandmagic.readingmate.adapter.RecentConversationDelagate;
 import com.grandmagic.readingmate.base.AppBaseActivity;
 import com.grandmagic.readingmate.base.AppBaseFragment;
 import com.grandmagic.readingmate.bean.response.Contacts;
+import com.grandmagic.readingmate.bean.response.InviteMessage;
 import com.grandmagic.readingmate.db.ContactsDao;
 import com.grandmagic.readingmate.db.DBHelper;
+import com.grandmagic.readingmate.db.InviteMessageDao;
 import com.grandmagic.readingmate.event.ConnectStateEvent;
 import com.grandmagic.readingmate.event.ContactDeleteEvent;
 import com.grandmagic.readingmate.utils.AutoUtils;
@@ -44,6 +45,7 @@ import com.tamic.novate.util.SPUtils;
 import org.greenrobot.eventbus.EventBus;
 import org.greenrobot.eventbus.Subscribe;
 import org.greenrobot.eventbus.ThreadMode;
+import org.greenrobot.greendao.query.CountQuery;
 
 import java.util.ArrayList;
 import java.util.Collections;
@@ -54,6 +56,7 @@ import java.util.Map;
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
+import butterknife.Unbinder;
 import cn.bingoogolapple.refreshlayout.BGARefreshLayout;
 import cn.bingoogolapple.refreshlayout.BGAStickinessRefreshViewHolder;
 import cn.bingoogolapple.refreshlayout.util.SimpleRefreshListener;
@@ -78,14 +81,16 @@ public class ChatFragment extends AppBaseFragment implements RecentConversationD
     TextView mTvConnectErrormsg;
     @BindView(R.id.view_error)
     LinearLayout mViewError;
-
+    @BindView(R.id.red_point)
+    ImageView mRedPoint;
+    Unbinder mBind;
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_chat, container, false);
         AutoUtils.auto(view);
-        ButterKnife.bind(this, view);
+         mBind = ButterKnife.bind(this, view);
         EventBus.getDefault().register(this);
         initview();
         return view;
@@ -94,7 +99,7 @@ public class ChatFragment extends AppBaseFragment implements RecentConversationD
     @Override
     public void onResume() {
         super.onResume();
-        setSystemBarColor(false);
+//        setSystemBarColor(false);
         onrefreshConversation();
     }
 
@@ -102,6 +107,7 @@ public class ChatFragment extends AppBaseFragment implements RecentConversationD
     public void onDestroyView() {
         super.onDestroyView();
         EventBus.getDefault().unregister(this);
+        mBind.unbind();
     }
 
 
@@ -229,7 +235,9 @@ public class ChatFragment extends AppBaseFragment implements RecentConversationD
                 startActivity(new Intent(getActivity(), AddFriendActivity.class));
                 break;
             case R.id.rela_friend:
-                startActivity(new Intent(getActivity(), FriendActivity.class));
+                Intent mIntent = new Intent(getActivity(), FriendActivity.class);
+                mIntent.putExtra(FriendActivity.NEW_FRIEND,mCount);
+                startActivity(mIntent);
                 break;
         }
     }
@@ -237,10 +245,16 @@ public class ChatFragment extends AppBaseFragment implements RecentConversationD
     /**
      * 收到新消息时候刷新
      */
+    int mCount;//好友邀请
+
     public void onrefreshConversation() {
         mConversations.clear();
         mConversations.addAll(loadAllConversation());
         mAdapter.refresh();
+        InviteMessageDao mInviteDao = DBHelper.getInviteDao(mContext);
+        CountQuery<InviteMessage> mInviteMessageCountQuery = mInviteDao.queryBuilder().where(InviteMessageDao.Properties.Isread.eq(1)).buildCount();
+        mCount = (int) mInviteMessageCountQuery.count();
+    mRedPoint.setVisibility(mCount>0?View.VISIBLE:View.GONE);
     }
 
     @Override

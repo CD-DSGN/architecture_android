@@ -265,7 +265,7 @@ public class SearchFragment extends AppBaseFragment implements SearchPersonAdapt
     @Override
     public void onResume() {
         super.onResume();
-        setSystemBarColor(false);
+//        setSystemBarColor(false);
     }
 
     @Override

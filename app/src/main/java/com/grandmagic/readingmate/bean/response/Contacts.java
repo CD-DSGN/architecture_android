@@ -27,6 +27,11 @@ public class Contacts {
     @Transient
     private TYPE type;
 
+    public Contacts(TYPE mTypeNewfriend, int mNewFriendCOunt) {
+        type=mTypeNewfriend;
+        gender=mNewFriendCOunt;//新朋友的时候用不到gender字段。借用来保存请求数量
+    }
+
 
     public enum TYPE {
         TYPE_LETTER,//字母索引
