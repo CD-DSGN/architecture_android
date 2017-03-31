@@ -3,6 +3,7 @@ package com.grandmagic.readingmate.model;
 import android.content.Context;
 
 import com.grandmagic.readingmate.base.AppBaseResponseCallBack;
+import com.grandmagic.readingmate.bean.request.AddReplyRequestBean;
 import com.grandmagic.readingmate.consts.ApiInterface;
 import com.tamic.novate.Novate;
 
@@ -61,8 +62,11 @@ public class CommentDetailModel {
             return;
         }
         mNovate.executeJson(ApiInterface.REPLY_INFO, jsonObject.toString(), callBack);
-
-
     }
 
+    //回复评论
+    public void addReply(AddReplyRequestBean addReplyRequestBean, AppBaseResponseCallBack callBack) {
+        Novate mNovate = new Novate.Builder(mContext).build();
+        mNovate.executeJson(ApiInterface.REPLY_ADD, addReplyRequestBean.toGson(), callBack);
+    }
 }

@@ -1,6 +1,7 @@
 package com.grandmagic.readingmate.adapter;
 
 import android.content.Context;
+import android.text.TextUtils;
 import android.widget.ImageView;
 
 import com.grandmagic.readingmate.R;
@@ -38,8 +39,8 @@ public class CommentDetailAdapter extends CommonAdapter<ReplyInfoResponseBean.In
 
         holder.setText(R.id.tv_nickname_reply, data.getFrom_user_name());
         StringBuilder content = new StringBuilder(data.getReply_content());
-        if (content != null && data.getTo_user_name() != null) {
-            content.append("  @" + data.getTo_user_name());
+        if (!TextUtils.isEmpty(data.getTo_user_name())) {
+            content.append(":@" + data.getTo_user_name());
         }
 
         SpanTextView spanTextView = holder.getView(R.id.tv_signature_reply);

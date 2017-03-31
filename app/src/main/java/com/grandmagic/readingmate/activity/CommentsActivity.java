@@ -6,24 +6,32 @@ import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
+import android.widget.Button;
+import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
+import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import com.grandmagic.readingmate.R;
 import com.grandmagic.readingmate.adapter.CommentDetailAdapter;
 import com.grandmagic.readingmate.base.AppBaseActivity;
 import com.grandmagic.readingmate.base.AppBaseResponseCallBack;
+import com.grandmagic.readingmate.bean.request.AddReplyRequestBean;
 import com.grandmagic.readingmate.bean.response.CommentsDetailResponoseBean;
 import com.grandmagic.readingmate.bean.response.ReplyInfoResponseBean;
+import com.grandmagic.readingmate.model.BookModel;
 import com.grandmagic.readingmate.model.CommentDetailModel;
 import com.grandmagic.readingmate.utils.AutoUtils;
 import com.grandmagic.readingmate.utils.DateUtil;
+import com.grandmagic.readingmate.utils.DensityUtil;
 import com.grandmagic.readingmate.utils.ImageLoader;
+import com.grandmagic.readingmate.utils.InputMethodUtils;
 import com.grandmagic.readingmate.utils.KitUtils;
 import com.grandmagic.readingmate.utils.Page;
 import com.grandmagic.readingmate.utils.ViewUtils;
 import com.grandmagic.readingmate.view.SharePopUpWindow;
+import com.grandmagic.readingmate.view.StarView;
 import com.tamic.novate.NovateResponse;
 import com.tamic.novate.Throwable;
 import com.umeng.socialize.UMShareAPI;
@@ -38,8 +46,8 @@ import butterknife.OnClick;
 import cn.bingoogolapple.refreshlayout.BGARefreshLayout;
 import cn.bingoogolapple.refreshlayout.BGAStickinessRefreshViewHolder;
 
-public class CommentsActivity extends AppBaseActivity {
-public static final String COMMENT_ID="comment_id";
+public class CommentsActivity extends AppBaseActivity implements View.OnLayoutChangeListener {
+    public static final String COMMENT_ID = "comment_id";
     @BindView(R.id.back)
     ImageView mBack;
     @BindView(R.id.title)
@@ -50,6 +58,16 @@ public static final String COMMENT_ID="comment_id";
     LinearLayout mLinShare;
     @BindView(R.id.BGARefreshLayout)
     BGARefreshLayout mRefreshLayout;
+    @BindView(R.id.et_comment)
+    EditText mEtComment;
+    @BindView(R.id.rela_rating)
+    RelativeLayout mRelaRating;
+    @BindView(R.id.submit)
+    Button mSubmit;
+    @BindView(R.id.bottomlayout)
+    LinearLayout mBottomlayout;
+    @BindView(R.id.ratingbar)
+    StarView mRatingbar;
 
     private View mView;
     private CommentDetailAdapter mMAdapter;
@@ -82,6 +100,8 @@ public static final String COMMENT_ID="comment_id";
     BGAStickinessRefreshViewHolder mRefreshViewHolder;
 
     List<ReplyInfoResponseBean.InfoBean> mReplys = new ArrayList<>();
+
+    BookModel mModel;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -119,7 +139,7 @@ public static final String COMMENT_ID="comment_id";
                     if (list != null) {
                         if (mReplyCallBack.isRefresh) {
                             mPage.refresh(list);
-                        }else{
+                        } else {
                             mPage.more(list);
                         }
                         mMHeaderAndFooterWrapper.notifyDataSetChanged();
@@ -134,6 +154,11 @@ public static final String COMMENT_ID="comment_id";
                 }
             };
         }
+
+        if (mModel == null) {
+            mModel = new BookModel(this);
+        }
+
     }
 
     private void loadData() {
@@ -162,10 +187,11 @@ public static final String COMMENT_ID="comment_id";
         } catch (Exception e) {
             e.printStackTrace();
         }
+
+        mBookName.setText(mCommentsDetailResponoseBean.getBook_name());
         mReplyNum.setText(mCommentsDetailResponoseBean.getReply_count() + "人回复");
         mContent.setText(mCommentsDetailResponoseBean.getContent());
         String cover_url = mCommentsDetailResponoseBean.getPhoto();
-
         ImageLoader.loadCircleImage(this, KitUtils.getAbsoluteUrl(cover_url), mCover);
         int like_num = mCommentsDetailResponoseBean.getLike_times();
         mGoodsNum.setText(like_num + "人赞过");
@@ -209,6 +235,7 @@ public static final String COMMENT_ID="comment_id";
         mRvCommentsDetail.setAdapter(mMHeaderAndFooterWrapper);
         mMHeaderAndFooterWrapper.notifyDataSetChanged();
         initRefresh();
+        mBottomlayout.addOnLayoutChangeListener(this);
     }
 
     private void initRefresh() {
@@ -275,7 +302,7 @@ public static final String COMMENT_ID="comment_id";
     }
 
 
-    @OnClick({R.id.back, R.id.title, R.id.lin_share})
+    @OnClick({R.id.back, R.id.title, R.id.lin_share, R.id.submit})
     public void onClick(View view) {
         switch (view.getId()) {
             case R.id.back:
@@ -287,6 +314,10 @@ public static final String COMMENT_ID="comment_id";
             case R.id.lin_share:
                 //分享评论
                 showSharePopWindow();
+                break;
+
+            case R.id.submit:
+                submitReply(); //提交回复
                 break;
         }
     }
@@ -305,4 +336,55 @@ public static final String COMMENT_ID="comment_id";
         super.onActivityResult(requestCode, resultCode, data);
         UMShareAPI.get(this).onActivityResult(requestCode, resultCode, data);
     }
+
+    @Override
+    //感知软键盘展开和收起
+    public void onLayoutChange(View v, int left, int top, int right, int bottom, int oldLeft, int oldTop, int oldRight, int oldBottom) {
+        LinearLayout.LayoutParams mParams = (LinearLayout.LayoutParams) mEtComment.getLayoutParams();
+
+        if (oldBottom != 0 && bottom != 0 && oldBottom - bottom > DensityUtil.getScreenHeight(this) / 3) {
+            //            键盘弹出
+            mRelaRating.setVisibility(View.VISIBLE);
+            mLinShare.setVisibility(View.GONE);
+            mSubmit.setVisibility(View.VISIBLE);
+            mParams.height = 4 * mEtComment.getMeasuredHeight();
+
+        } else if (oldBottom != 0 && bottom != 0 && bottom - oldBottom > DensityUtil.getScreenHeight(this) / 3) {
+            mRelaRating.setVisibility(View.GONE);
+            mLinShare.setVisibility(View.VISIBLE);
+            mSubmit.setVisibility(View.GONE);
+            mParams.height = mEtComment.getMeasuredHeight() / 4;
+            //            键盘收起
+        }
+        mEtComment.setLayoutParams(mParams);
+    }
+
+
+    /**
+     * 提交评论到后台
+     */
+    private void submitReply() {
+        String comment_id = mCommentsDetailResponoseBean.getComment_id();
+
+        AddReplyRequestBean addReplyRequestBean = new AddReplyRequestBean();
+        addReplyRequestBean.setComment_id(comment_id);
+
+        String content = mEtComment.getText().toString();
+        addReplyRequestBean.setContent(content);
+
+        addReplyRequestBean.setPid("0");
+
+
+        mCommentDetailModel.addReply(addReplyRequestBean, new AppBaseResponseCallBack<NovateResponse>(this, true) {
+            @Override
+            public void onSuccee(NovateResponse response) {
+                InputMethodUtils.hide(CommentsActivity.this);
+                mEtComment.setText("");
+                //刷新回复表
+                mCommentDetailModel.getAllReplys(mCommentID, mReplyCallBack, 1);
+                mReplyCallBack.isRefresh = true;
+            }
+        });
+    }
+
 }
