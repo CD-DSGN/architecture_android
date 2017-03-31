@@ -6,6 +6,7 @@ import android.text.TextUtils;
 import com.grandmagic.readingmate.base.AppBaseResponseCallBack;
 import com.grandmagic.readingmate.consts.ApiInterface;
 import com.tamic.novate.Novate;
+import com.tamic.novate.NovateResponse;
 import com.tamic.novate.util.SPUtils;
 
 import org.json.JSONException;
@@ -224,5 +225,17 @@ public class BookModel {
         HashMap<String, Object> map = new HashMap<>();
         map.put("book_id", book_id);
         mNovate.executeGet(ApiInterface.COLLECT_BOOK_DELETE, map, mAppBaseResponseCallBack);
+    }
+
+    public void bindDeviceToken(String mDevicetoken, AppBaseResponseCallBack mBack) {
+        Novate mNovate
+                =new Novate.Builder(mContext).build();
+        JSONObject mJSONObject=new JSONObject();
+        try {
+            mJSONObject.put("device_token",mDevicetoken);
+        } catch (JSONException mE) {
+            mE.printStackTrace();
+        }
+        mNovate.executeJson(ApiInterface.BIND_DEVICE_TOKEN,mJSONObject.toString(),mBack);
     }
 }

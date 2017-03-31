@@ -9,6 +9,7 @@ import android.support.multidex.MultiDex;
 import android.util.Log;
 
 import com.facebook.stetho.Stetho;
+import com.grandmagic.readingmate.event.BindDeviceTokenEvent;
 import com.grandmagic.readingmate.push.IUmengMessageHandler;
 import com.grandmagic.readingmate.push.IUmengNotificationClickHandler;
 import com.grandmagic.readingmate.utils.IMHelper;
@@ -16,12 +17,15 @@ import com.hyphenate.chat.EMClient;
 import com.hyphenate.chat.EMOptions;
 import com.orhanobut.logger.Logger;
 import com.squareup.leakcanary.LeakCanary;
+import com.tamic.novate.util.SPUtils;
 import com.umeng.analytics.MobclickAgent;
 import com.umeng.message.IUmengRegisterCallback;
 import com.umeng.message.PushAgent;
 import com.umeng.socialize.Config;
 import com.umeng.socialize.PlatformConfig;
 import com.umeng.socialize.UMShareAPI;
+
+import org.greenrobot.eventbus.EventBus;
 
 import java.util.Iterator;
 import java.util.List;
@@ -61,6 +65,8 @@ public class AppBaseApplication extends Application {
             public void onSuccess(String deviceToken) {
                 //注册成功会返回device token
                 Log.d(TAG, "onSuccess() called with: deviceToken = [" + deviceToken + "]");
+                SPUtils.getInstance().putString(ctx,SPUtils.DEVICE_TOKEN,deviceToken);
+                EventBus.getDefault().post(new BindDeviceTokenEvent(deviceToken));
             }
 
             @Override

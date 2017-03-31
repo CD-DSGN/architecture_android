@@ -6,6 +6,7 @@ import android.animation.ObjectAnimator;
 import android.content.Intent;
 import android.os.Bundle;
 import android.os.CountDownTimer;
+import android.os.SystemClock;
 import android.widget.ImageView;
 import android.widget.RelativeLayout;
 import android.widget.Toast;
@@ -34,6 +35,7 @@ import rx.functions.Action1;
 //启动页面
 public class SplashActivity extends AppBaseActivity {
     private static final String TAG = "SplashActivity";
+    public static final int DEFAULT_TIME=3000;
     @BindView(R.id.activity_splash)
     RelativeLayout mActivitySplash;
     @BindView(R.id.logo)
@@ -98,7 +100,9 @@ public class SplashActivity extends AppBaseActivity {
                 public void onError(Throwable e) {
                     super.onError(e);
                     canDestroy = true;
-                    mCountDownTimer.onFinish();
+                    if (System.currentTimeMillis()-start>DEFAULT_TIME) {
+                        mCountDownTimer.onFinish();
+                    }
                 }
             });
         } else {
@@ -115,6 +119,7 @@ public class SplashActivity extends AppBaseActivity {
         }
         finish();
     }
+    long start;
 
     private void initview() {
         ObjectAnimator mScaleX = ObjectAnimator.ofFloat(mLogo, "scaleX", 0, 1f);
@@ -124,9 +129,10 @@ public class SplashActivity extends AppBaseActivity {
         mAnimatorSet.playTogether(mScaleX, mScaleY);
         mAnimatorSet.start();
         mCountDownTimer.start();
+        start = System.currentTimeMillis();
     }
 
-    CountDownTimer mCountDownTimer = new CountDownTimer(2000, 1000) {
+    CountDownTimer mCountDownTimer = new CountDownTimer(DEFAULT_TIME, 1000) {
         @Override
         public void onTick(long millisUntilFinished) {
         }

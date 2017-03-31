@@ -35,6 +35,7 @@ public class ApiInterface {
     public static final String PERSON_COMMENT_DETAIL = "comment/commentuser"; //获取用户详细页的评论
     public static final String BOOK_PERSON_COLLECT = "comment/collectuser"; //查找用户对应的收藏书籍
     public static final String BOOK_ALL_FOLLOWERS = "collect/getallfollowers"; //获取某本图书的所有收藏的人
+    public static final String BIND_DEVICE_TOKEN = " device/setdevicetoken"; //绑定device token
 
     public static final String GET_USR_INFO = "userinfo/getuserinfo"; //获取用户基本信息
     public static final String SET_USR_INFO = "userinfo/setpersonal"; //设置用户信息

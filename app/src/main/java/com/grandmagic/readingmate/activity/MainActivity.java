@@ -25,6 +25,7 @@ import com.grandmagic.readingmate.bean.response.Contacts;
 import com.grandmagic.readingmate.bean.response.SearchUserResponse;
 import com.grandmagic.readingmate.db.ContactsDao;
 import com.grandmagic.readingmate.db.DBHelper;
+import com.grandmagic.readingmate.event.BindDeviceTokenEvent;
 import com.grandmagic.readingmate.event.ConnectStateEvent;
 import com.grandmagic.readingmate.fragment.ChatFragment;
 import com.grandmagic.readingmate.fragment.HomeFragment;
@@ -32,6 +33,7 @@ import com.grandmagic.readingmate.fragment.PersonalFragment;
 import com.grandmagic.readingmate.fragment.SearchFragment;
 import com.grandmagic.readingmate.listener.IMMessageListenerApp;
 import com.grandmagic.readingmate.listener.IMMessageListenerMain;
+import com.grandmagic.readingmate.model.BookModel;
 import com.grandmagic.readingmate.model.SearchUserModel;
 import com.grandmagic.readingmate.utils.AutoUtils;
 import com.grandmagic.readingmate.utils.IMHelper;
@@ -168,19 +170,31 @@ public class MainActivity extends AppBaseActivity {
     }
 
     private void initdata() {
+        bindDeviceToken(SPUtils.getInstance().getString(this, SPUtils.DEVICE_TOKEN));
         mFragmentManager = getFragmentManager();
         mFragments = new HashMap<>();
         mcurrentFragment = mFragmentManager.findFragmentById(R.id.contentframe);
-     //初始化homefragment
-            Fragment mHomeFragment = createFragment(HomeFragment.class);
-            mFragmentManager.beginTransaction().add(R.id.contentframe, mHomeFragment).show(mHomeFragment).commit();
-            mcurrentFragment = mHomeFragment;
-            mcurrentIV = mIvHome;
-            mcurrentIV.setSelected(true);
-            mcurrentTV = mTextHome;
-            scalelarge();
+        //初始化homefragment
+        Fragment mHomeFragment = createFragment(HomeFragment.class);
+        mFragmentManager.beginTransaction().add(R.id.contentframe, mHomeFragment).show(mHomeFragment).commit();
+        mcurrentFragment = mHomeFragment;
+        mcurrentIV = mIvHome;
+        mcurrentIV.setSelected(true);
+        mcurrentTV = mTextHome;
+        scalelarge();
 
         checkVersion();
+    }
+
+    private void bindDeviceToken(String devicetoken) {
+        if (devicetoken == null || devicetoken.isEmpty()) return;
+        new BookModel(this).bindDeviceToken(devicetoken, new AppBaseResponseCallBack<NovateResponse>(this) {
+            @Override
+            public void onSuccee(NovateResponse response) {
+
+            }
+        });
+
     }
 
     /**
@@ -263,13 +277,14 @@ public class MainActivity extends AppBaseActivity {
 
     /**
      * app级别的新消息处理
+     *
      * @param intent
      */
     @Override
     protected void onNewIntent(Intent intent) {
         super.onNewIntent(intent);
         String mStringExtra = intent.getStringExtra(IMMessageListenerApp.FLAG_NEWMESSAGE);
-        if (IMMessageListenerApp.FLAG_NEWMESSAGE.equals(mStringExtra)){
+        if (IMMessageListenerApp.FLAG_NEWMESSAGE.equals(mStringExtra)) {
             newMsg();
             mLayoutChat.performClick();
         }
@@ -373,6 +388,11 @@ public class MainActivity extends AppBaseActivity {
             mDialog.setMessage("账号已在其他设备登陆，您被迫下线");
             mDialog.show();
         }
+    }
+
+    @Subscribe(threadMode = ThreadMode.MAIN)
+    public void bindDeviceToken(BindDeviceTokenEvent mEvent) {
+        bindDeviceToken(mEvent.getDevicetoken());
     }
 
     @Override

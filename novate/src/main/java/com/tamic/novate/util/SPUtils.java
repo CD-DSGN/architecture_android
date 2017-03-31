@@ -17,6 +17,7 @@ public class SPUtils {
     public static final String IM_PWD="im_pwd";//环信的密码
     public static final String IM_NAME="im_name";//环信的name
     public static final String IM_STATE="im_state";//环信的连接状态
+    public static final String DEVICE_TOKEN="device_token";//umeng推送的devicetoken
     static SPUtils mSPUtils;
 
     public static SPUtils getInstance() {

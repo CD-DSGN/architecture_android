@@ -32,7 +32,7 @@ public class InviteMessage {
     private String groupId;
     private String groupName;
     private String groupInviter;
-
+private int count;
     @Id
     private Long id;
 
@@ -90,6 +90,13 @@ public class InviteMessage {
         this.time = time;
     }
 
+    public int getCount() {
+        return count;
+    }
+
+    public void setCount(int mCount) {
+        count = mCount;
+    }
 
     public String getReason() {
         return reason;

@@ -32,6 +32,7 @@ public class SearchPersonAdapter extends CommonAdapter<SearchPersonResponse.Info
 
     @Override
     protected void convert(ViewHolder holder, final SearchPersonResponse.InfoBean data, final int position) {
+        if (data==null)return;
         holder.setText(R.id.name, data.getUser_name());
         ImageLoader.loadCircleImage(mContext, Environment.BASEULR_PRODUCTION + data.getAvatar_url().getLarge(),
                 (ImageView) holder.getView(R.id.avatar));

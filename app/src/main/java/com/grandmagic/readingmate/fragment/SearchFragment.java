@@ -203,6 +203,7 @@ public class SearchFragment extends AppBaseFragment implements SearchPersonAdapt
                 mTitleMore.setVisibility(View.VISIBLE);
                 mTitle.setTextColor(getResources().getColor(R.color.text_black));
                 mRootview.setBackgroundColor(getResources().getColor(R.color.white));
+                if (response.getData().getInfo()!=null&&!response.getData().getInfo().isEmpty())
                 mPersonList.addAll(response.getData().getInfo());
                 mAdapter.refreshData(mPersonList);
                 setSystemBarColor(false);
