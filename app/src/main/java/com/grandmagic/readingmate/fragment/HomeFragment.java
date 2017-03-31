@@ -84,6 +84,7 @@ public class HomeFragment extends AppBaseFragment implements HomeBookAdapter.Cli
         AutoUtils.auto(rootview);
         ButterKnife.bind(this, rootview);
         mContext = getActivity();
+        mModel = new BookModel(getActivity());
         initview();
         initdata();
         return rootview;
@@ -101,7 +102,6 @@ public class HomeFragment extends AppBaseFragment implements HomeBookAdapter.Cli
     int pagecount = 1, currpage = 1;
 
     private void initdata() {
-        mModel = new BookModel(getActivity());
         mModel.loadCollectBook(currpage, new AppBaseResponseCallBack<NovateResponse<DisplayBook>>(getActivity(), false) {
             @Override
             public void onSuccee(NovateResponse<DisplayBook> response) {
@@ -270,7 +270,9 @@ public class HomeFragment extends AppBaseFragment implements HomeBookAdapter.Cli
             mIntent.putExtra(BookDetailActivity.BOOK_ID, book_id);
             startActivityForResult(mIntent, REQUEST_BOOKDETAIL);
         } else if (requestCode == REQUEST_BOOKDETAIL && requestCode == Activity.RESULT_OK) {
-//如果从图书详情页需要返回做什么处理。可以在这里处理
+//如果从图书详情页需要返回做什么处理。可以在这里处理,暂时是重新加载书籍
+            mBookList.clear();
+            initdata();
         }
     }
 
