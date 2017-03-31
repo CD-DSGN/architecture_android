@@ -23,6 +23,7 @@ public abstract class AppBaseResponseCallBack<T> implements Novate.ResponseCallB
     private Object mLoadingView = null;
 
     public boolean isRefresh = false;
+    public boolean mLoadingOnce = false;
 
     public AppBaseResponseCallBack(Context context) {
         mContext = context;
@@ -32,6 +33,13 @@ public abstract class AppBaseResponseCallBack<T> implements Novate.ResponseCallB
         mContext = context;
         mNeedLoading = needLoading;
 
+        mLoadingView = (Object) new ProgressDialog(context);
+    }
+
+    public AppBaseResponseCallBack(Context context, boolean needLoading, boolean loadingOnce) {
+        mContext = context;
+        mNeedLoading = needLoading;
+        mLoadingOnce = loadingOnce;
         mLoadingView = (Object) new ProgressDialog(context);
     }
 
@@ -50,6 +58,9 @@ public abstract class AppBaseResponseCallBack<T> implements Novate.ResponseCallB
     @Override
     public void onCompleted() {
         dismissLoading();
+        if (mLoadingOnce) {
+            mNeedLoading = false;
+        }
     }
 
     @Override
@@ -67,6 +78,9 @@ public abstract class AppBaseResponseCallBack<T> implements Novate.ResponseCallB
                 mContext.startActivity(intent);
             }
 
+        }
+        if (mLoadingOnce) {
+            mNeedLoading = false;
         }
     }
 

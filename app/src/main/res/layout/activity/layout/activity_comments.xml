@@ -12,7 +12,8 @@
     <RelativeLayout
         android:id="@+id/rl_title"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content">
+        android:layout_height="wrap_content"
+        >
 
         <include
             android:id="@+id/title_layout"
@@ -29,13 +30,26 @@
             android:textSize="28px"/>
     </RelativeLayout>
 
-    <android.support.v7.widget.RecyclerView
-        android:id="@+id/rv_comments_detail"
+
+    <cn.bingoogolapple.refreshlayout.BGARefreshLayout
+        xmlns:android="http://schemas.android.com/apk/res/android"
+        android:id="@+id/BGARefreshLayout"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:layout_marginTop="30px"
+        android:layout_marginBottom="30px"
         android:layout_below="@+id/rl_title"
-        >
-    </android.support.v7.widget.RecyclerView>
+        android:layout_above="@+id/bottomlayout">
+
+        <android.support.v7.widget.RecyclerView
+            android:id="@+id/rv_comments_detail"
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
+            android:layout_weight="1"
+            android:layout_below="@+id/rl_title"
+            >
+        </android.support.v7.widget.RecyclerView>
+    </cn.bingoogolapple.refreshlayout.BGARefreshLayout>
 
     <include layout="@layout/view_comment"/>
 </RelativeLayout>

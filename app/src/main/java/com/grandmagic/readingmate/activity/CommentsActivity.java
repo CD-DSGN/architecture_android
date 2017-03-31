@@ -15,13 +15,17 @@ import com.grandmagic.readingmate.adapter.CommentDetailAdapter;
 import com.grandmagic.readingmate.base.AppBaseActivity;
 import com.grandmagic.readingmate.base.AppBaseResponseCallBack;
 import com.grandmagic.readingmate.bean.response.CommentsDetailResponoseBean;
+import com.grandmagic.readingmate.bean.response.ReplyInfoResponseBean;
 import com.grandmagic.readingmate.model.CommentDetailModel;
 import com.grandmagic.readingmate.utils.AutoUtils;
 import com.grandmagic.readingmate.utils.DateUtil;
 import com.grandmagic.readingmate.utils.ImageLoader;
 import com.grandmagic.readingmate.utils.KitUtils;
+import com.grandmagic.readingmate.utils.Page;
+import com.grandmagic.readingmate.utils.ViewUtils;
 import com.grandmagic.readingmate.view.SharePopUpWindow;
 import com.tamic.novate.NovateResponse;
+import com.tamic.novate.Throwable;
 import com.umeng.socialize.UMShareAPI;
 import com.zhy.adapter.recyclerview.wrapper.HeaderAndFooterWrapper;
 
@@ -31,6 +35,8 @@ import java.util.List;
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
+import cn.bingoogolapple.refreshlayout.BGARefreshLayout;
+import cn.bingoogolapple.refreshlayout.BGAStickinessRefreshViewHolder;
 
 public class CommentsActivity extends AppBaseActivity {
 public static final String COMMENT_ID="comment_id";
@@ -42,6 +48,8 @@ public static final String COMMENT_ID="comment_id";
     RecyclerView mRvCommentsDetail;
     @BindView(R.id.lin_share)
     LinearLayout mLinShare;
+    @BindView(R.id.BGARefreshLayout)
+    BGARefreshLayout mRefreshLayout;
 
     private View mView;
     private CommentDetailAdapter mMAdapter;
@@ -68,6 +76,12 @@ public static final String COMMENT_ID="comment_id";
     ArrayList<ImageView> iv_list;
 
     CommentsDetailResponoseBean mCommentsDetailResponoseBean;
+    AppBaseResponseCallBack mReplyCallBack;
+    Page mPage;
+
+    BGAStickinessRefreshViewHolder mRefreshViewHolder;
+
+    List<ReplyInfoResponseBean.InfoBean> mReplys = new ArrayList<>();
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -86,6 +100,40 @@ public static final String COMMENT_ID="comment_id";
         if (mCommentDetailModel == null) {
             mCommentDetailModel = new CommentDetailModel(this);
         }
+
+        mPage = new Page(mReplys, CommentDetailModel.PAGE_COUNT_REPLYS);
+
+        if (mReplyCallBack == null) {
+            mReplyCallBack = new AppBaseResponseCallBack<NovateResponse<ReplyInfoResponseBean>>(CommentsActivity.this, true) {
+                @Override
+                public void onSuccee(NovateResponse<ReplyInfoResponseBean> response) {
+                    mRefreshLayout.endRefreshing();
+                    mRefreshLayout.endLoadingMore();
+                    ReplyInfoResponseBean replyInfoResponseBean = response.getData();
+                    try {
+                        mPage.total_num = Integer.parseInt(replyInfoResponseBean.getTotal_num());
+                    } catch (NumberFormatException e) {
+                        e.printStackTrace();
+                    }
+                    List<ReplyInfoResponseBean.InfoBean> list = replyInfoResponseBean.getInfo();
+                    if (list != null) {
+                        if (mReplyCallBack.isRefresh) {
+                            mPage.refresh(list);
+                        }else{
+                            mPage.more(list);
+                        }
+                        mMHeaderAndFooterWrapper.notifyDataSetChanged();
+                    }
+                }
+
+                @Override
+                public void onError(Throwable e) {
+                    super.onError(e);
+                    mRefreshLayout.endRefreshing();
+                    mRefreshLayout.endLoadingMore();
+                }
+            };
+        }
     }
 
     private void loadData() {
@@ -94,11 +142,11 @@ public static final String COMMENT_ID="comment_id";
             public void onSuccee(NovateResponse<CommentsDetailResponoseBean> response) {
                 mCommentsDetailResponoseBean = response.getData();
                 setHeaderView();
-
             }
         });
 
-
+        mCommentDetailModel.getAllReplys(mCommentID, mReplyCallBack, 1);
+        mReplyCallBack.isRefresh = false;
     }
 
     private void setHeaderView() {
@@ -118,12 +166,12 @@ public static final String COMMENT_ID="comment_id";
         mContent.setText(mCommentsDetailResponoseBean.getContent());
         String cover_url = mCommentsDetailResponoseBean.getPhoto();
 
-        ImageLoader.loadCircleImage(this,KitUtils.getAbsoluteUrl(cover_url),mCover);
+        ImageLoader.loadCircleImage(this, KitUtils.getAbsoluteUrl(cover_url), mCover);
         int like_num = mCommentsDetailResponoseBean.getLike_times();
-        mGoodsNum.setText(like_num + "点赞");
+        mGoodsNum.setText(like_num + "人赞过");
         if (like_num > 4) {   //显示省略号
             mApostrophe.setVisibility(View.VISIBLE);
-        }else{
+        } else {
             mApostrophe.setVisibility(View.INVISIBLE);
         }
 
@@ -131,7 +179,7 @@ public static final String COMMENT_ID="comment_id";
         hideLikers();
         if (thumbUserAvatarBeenList != null) {
             int size = thumbUserAvatarBeenList.size();
-            for (int i = 0 ; i < 4 && i <size; i++) {
+            for (int i = 0; i < 4 && i < size; i++) {
                 CommentsDetailResponoseBean.ThumbUserAvatarBean bean = thumbUserAvatarBeenList.get(i);
                 CommentsDetailResponoseBean.ThumbUserAvatarBean.AvatarUrlBeanX avatar_url = bean.getAvatar_url();
                 String url_tmp = avatar_url.getLarge();
@@ -149,23 +197,45 @@ public static final String COMMENT_ID="comment_id";
     }
 
     private void initView() {
-        ArrayList<String> data = new ArrayList<>();
-        for (int i = 0; i < 50; i++) {
-            data.add("电影不错");
-            data.add("结局缺乏新意，其他没什么");
-        }
         mTitle.setText(R.string.comment_detail);
         mRvCommentsDetail.setLayoutManager(new LinearLayoutManager(this));
         mView = LayoutInflater.from(this).inflate(R.layout.item_comments_detail, mRvCommentsDetail, false);
         initHeaderView();
         AutoUtils.auto(mView);
-        mMAdapter = new CommentDetailAdapter(this, data);
+        mMAdapter = new CommentDetailAdapter(this, mReplys);
         mMHeaderAndFooterWrapper = new HeaderAndFooterWrapper(mMAdapter);
 
         mMHeaderAndFooterWrapper.addHeaderView(mView);
         mRvCommentsDetail.setAdapter(mMHeaderAndFooterWrapper);
         mMHeaderAndFooterWrapper.notifyDataSetChanged();
+        initRefresh();
+    }
 
+    private void initRefresh() {
+        mRefreshViewHolder = new BGAStickinessRefreshViewHolder(this, true);
+        mRefreshViewHolder.setStickinessColor(R.color.colorAccent);
+        mRefreshViewHolder.setRotateImage(R.drawable.bga_refresh_stickiness);
+
+        mRefreshLayout.setRefreshViewHolder(mRefreshViewHolder);
+        mRefreshLayout.setDelegate(new BGARefreshLayout.BGARefreshLayoutDelegate() {
+            @Override
+            public void onBGARefreshLayoutBeginRefreshing(BGARefreshLayout refreshLayout) {
+                mCommentDetailModel.getAllReplys(mCommentID, mReplyCallBack, 1);
+                mReplyCallBack.isRefresh = true;
+            }
+
+            @Override
+            public boolean onBGARefreshLayoutBeginLoadingMore(BGARefreshLayout refreshLayout) {
+                if (mPage.hasMore()) {
+                    mCommentDetailModel.getAllReplys(mCommentID, mReplyCallBack, mPage.cur_page);
+                    mReplyCallBack.isRefresh = false;
+                } else {
+                    ViewUtils.showToast("暂无更多数据");
+                    return false;
+                }
+                return true;
+            }
+        });
     }
 
     private void initHeaderView() {
@@ -196,7 +266,6 @@ public static final String COMMENT_ID="comment_id";
             @Override
             public void onClick(View v) {
                 //跳转到点赞详情页
-
                 Intent intent = new Intent(CommentsActivity.this, LikersInfoActivity.class);
                 //把评论ID带过去
                 intent.putExtra("comment_id", mCommentID);

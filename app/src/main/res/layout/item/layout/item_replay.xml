@@ -4,7 +4,8 @@
                 android:layout_height="wrap_content"
                 android:layout_marginLeft="26px"
                 android:layout_marginRight="20px"
-                android:layout_marginTop="30px">
+                android:layout_marginTop="30px"
+                xmlns:tools="http://schemas.android.com/tools">
 
     <ImageView
         android:id="@+id/iv_replay_header"
@@ -26,17 +27,17 @@
             android:id="@+id/tv_nickname_reply"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="花花"
+            tools:text="花花"
             android:textColor="#1cc9a2"
             android:textSize="30px"
             />
 
-        <TextView
+        <com.grandmagic.readingmate.ui.SpanTextView
             android:id="@+id/tv_signature_reply"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginTop="15px"
-            android:text="这个可以有"
+            tools:text="这个可以有"
             android:textColor="#181e1d"
             android:textSize="28px"
             />
@@ -51,7 +52,7 @@
                 android:id="@+id/tv_time_replay"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="2017/01/03 13:58"
+                tools:text="2017/01/03 13:58"
                 android:textColor="#999999"
                 android:textSize="22px"
                 />

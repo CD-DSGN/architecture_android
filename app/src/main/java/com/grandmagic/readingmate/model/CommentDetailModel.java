@@ -2,15 +2,12 @@ package com.grandmagic.readingmate.model;
 
 import android.content.Context;
 
-
 import com.grandmagic.readingmate.base.AppBaseResponseCallBack;
 import com.grandmagic.readingmate.consts.ApiInterface;
 import com.tamic.novate.Novate;
 
 import org.json.JSONException;
 import org.json.JSONObject;
-
-import java.util.HashMap;
 
 
 /**
@@ -20,6 +17,8 @@ import java.util.HashMap;
 public class CommentDetailModel {
     private Context mContext;
     public static int PAGE_COUNT_LIKERS = 20;
+    public static int PAGE_COUNT_REPLYS = 10;
+
     public CommentDetailModel(Context context) {
         mContext = context;
     }
@@ -40,7 +39,6 @@ public class CommentDetailModel {
         Novate mNovate = new Novate.Builder(mContext).build();
         JSONObject jsonObject = new JSONObject();
         try {
-            HashMap<String, Object> map = new HashMap<>();
             jsonObject.put("comment_id", commnet_id);
             jsonObject.put("cpage", cur_page);
             jsonObject.put("pagesize", PAGE_COUNT_LIKERS);
@@ -49,6 +47,22 @@ public class CommentDetailModel {
             return;
         }
         mNovate.executeJson(ApiInterface.LIKERS_INFO, jsonObject.toString(), callBack);
+    }
+
+    public void getAllReplys(String comment_id, AppBaseResponseCallBack callBack, int cur_page) {
+        Novate mNovate = new Novate.Builder(mContext).build();
+        JSONObject jsonObject = new JSONObject();
+        try {
+            jsonObject.put("comment_id", comment_id);
+            jsonObject.put("cpage", cur_page);
+            jsonObject.put("pagesize", PAGE_COUNT_REPLYS);
+        } catch (JSONException e) {
+            e.printStackTrace();
+            return;
+        }
+        mNovate.executeJson(ApiInterface.REPLY_INFO, jsonObject.toString(), callBack);
+
+
     }
 
 }
