@@ -32,7 +32,8 @@ import com.grandmagic.readingmate.db.ContactsDao;
 import com.grandmagic.readingmate.db.DBHelper;
 import com.grandmagic.readingmate.db.InviteMessageDao;
 import com.grandmagic.readingmate.event.ConnectStateEvent;
-import com.grandmagic.readingmate.event.ContactDeleteEvent;
+import com.grandmagic.readingmate.event.ContactDeletedEvent;
+import com.grandmagic.readingmate.event.FriendDeleteEvent;
 import com.grandmagic.readingmate.utils.AutoUtils;
 import com.grandmagic.readingmate.view.SwipRecycleView;
 import com.hyphenate.EMError;
@@ -90,7 +91,7 @@ public class ChatFragment extends AppBaseFragment implements RecentConversationD
                              Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_chat, container, false);
         AutoUtils.auto(view);
-         mBind = ButterKnife.bind(this, view);
+        mBind = ButterKnife.bind(this, view);
         EventBus.getDefault().register(this);
         initview();
         return view;
@@ -236,7 +237,7 @@ public class ChatFragment extends AppBaseFragment implements RecentConversationD
                 break;
             case R.id.rela_friend:
                 Intent mIntent = new Intent(getActivity(), FriendActivity.class);
-                mIntent.putExtra(FriendActivity.NEW_FRIEND,mCount);
+                mIntent.putExtra(FriendActivity.NEW_FRIEND, mCount);
                 startActivity(mIntent);
                 break;
         }
@@ -254,7 +255,7 @@ public class ChatFragment extends AppBaseFragment implements RecentConversationD
         InviteMessageDao mInviteDao = DBHelper.getInviteDao(mContext);
         CountQuery<InviteMessage> mInviteMessageCountQuery = mInviteDao.queryBuilder().where(InviteMessageDao.Properties.Isread.eq(1)).buildCount();
         mCount = (int) mInviteMessageCountQuery.count();
-    mRedPoint.setVisibility(mCount>0?View.VISIBLE:View.GONE);
+        mRedPoint.setVisibility(mCount > 0 ? View.VISIBLE : View.GONE);
     }
 
     @Override
@@ -306,9 +307,27 @@ public class ChatFragment extends AppBaseFragment implements RecentConversationD
         if (!hidden) ((AppBaseActivity) (mContext)).setSystemBarColor(android.R.color.darker_gray);
     }
 
+    /**
+     * 当删除好友的时候回调
+     * @param mEvent
+     */
     @Subscribe(threadMode = ThreadMode.MAIN)
-    public void contactDelete(ContactDeleteEvent mEvent) {
+    public void friendDelete(FriendDeleteEvent mEvent) {
         EMClient.getInstance().chatManager().deleteConversation(mEvent.getUser_id(), true);
         onrefreshConversation();
+    }
+
+    /**
+     * 当被好友删除的时候回调
+     * @param mEvent
+     */
+    @Subscribe(threadMode = ThreadMode.MAIN)
+    public void contactDeleted(ContactDeletedEvent mEvent) {
+        for (EMConversation mConversation : mConversations) {
+            if (mConversation.conversationId().equals(mEvent.getName())) {
+                boolean mB = EMClient.getInstance().chatManager().deleteConversation(mEvent.getName(), false);
+                if (mB) onrefreshConversation();
+            }
+        }
     }
 }

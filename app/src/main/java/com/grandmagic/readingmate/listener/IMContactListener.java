@@ -1,20 +1,18 @@
 package com.grandmagic.readingmate.listener;
 
 import android.content.Context;
-import android.database.sqlite.SQLiteDatabase;
-import android.util.Log;
 
+import com.grandmagic.readingmate.bean.response.Contacts;
 import com.grandmagic.readingmate.bean.response.InviteMessage;
+import com.grandmagic.readingmate.db.ContactsDao;
 import com.grandmagic.readingmate.db.DBHelper;
-import com.grandmagic.readingmate.db.DaoMaster;
-import com.grandmagic.readingmate.db.DaoSession;
 import com.grandmagic.readingmate.db.InviteMessageDao;
+import com.grandmagic.readingmate.event.ContactDeletedEvent;
 import com.grandmagic.readingmate.utils.IMHelper;
 import com.hyphenate.EMContactListener;
 import com.orhanobut.logger.Logger;
 
-import java.util.ArrayList;
-import java.util.List;
+import org.greenrobot.eventbus.EventBus;
 
 /**
  * Created by lps on 2017/3/7.
@@ -62,7 +60,7 @@ public class IMContactListener implements EMContactListener {
         mInviteDao.update(mUnique);
 
         InviteMessage mMessage = new InviteMessage();
-mMessage.setFrom(mS);
+        mMessage.setFrom(mS);
         IMHelper.getInstance().newInvaiteMsg(mMessage);
     }
 
@@ -79,7 +77,10 @@ mMessage.setFrom(mS);
     @Override
     public void onContactDeleted(String username) {
         Logger.e("onContactDeleted: " + username);
-
+        EventBus.getDefault().post(new ContactDeletedEvent(username));
+        ContactsDao mContactsDao = DBHelper.getContactsDao(mContext);
+        Contacts mUnique = mContactsDao.queryBuilder().where(ContactsDao.Properties.User_name.eq(username)).build().unique();
+        if (mUnique != null) mContactsDao.delete(mUnique);
         //被删除时回调此方法
     }
 

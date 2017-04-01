@@ -108,6 +108,7 @@ public class SearchFragment extends AppBaseFragment implements SearchPersonAdapt
 
     private void initview() {
         mTitle.setTextSize(TypedValue.COMPLEX_UNIT_PX, 36);
+        mTitle.setText("定位搜索");
         mBack.setVisibility(View.GONE);
         AutoUtils.autoTextSize(mTitle);
         mTitleMore.setImageResource(R.drawable.ic_location);
@@ -117,6 +118,7 @@ public class SearchFragment extends AppBaseFragment implements SearchPersonAdapt
         mAdapter.setListener(this);
         mRecyclerview.setAdapter(mAdapter);
         initRefresh();
+        setSystemBarColor(false);
     }
 
     private void initdata() {

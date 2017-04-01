@@ -5,14 +5,14 @@ package com.grandmagic.readingmate.event;
  * 删除好友的event
  */
 
-public class ContactDeleteEvent {
+public class FriendDeleteEvent {
     String user_id;
 
-    public ContactDeleteEvent(String mUser_id) {
+    public FriendDeleteEvent(String mUser_id) {
         user_id = mUser_id;
     }
 
-    public ContactDeleteEvent() {
+    public FriendDeleteEvent() {
     }
 
     public String getUser_id() {

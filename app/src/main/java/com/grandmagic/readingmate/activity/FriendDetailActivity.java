@@ -32,7 +32,7 @@ import com.grandmagic.readingmate.bean.response.PersonCommentResponse;
 import com.grandmagic.readingmate.bean.response.PersonInfo;
 import com.grandmagic.readingmate.db.ContactsDao;
 import com.grandmagic.readingmate.db.DBHelper;
-import com.grandmagic.readingmate.event.ContactDeleteEvent;
+import com.grandmagic.readingmate.event.FriendDeleteEvent;
 import com.grandmagic.readingmate.model.ContactModel;
 import com.grandmagic.readingmate.utils.AutoUtils;
 import com.grandmagic.readingmate.utils.ImageLoader;
@@ -350,7 +350,7 @@ public class FriendDetailActivity extends AppBaseActivity {
         mModel.deleteContact(userid, new AppBaseResponseCallBack<NovateResponse>(this) {
             @Override
             public void onSuccee(NovateResponse response) {
-                EventBus.getDefault().post(new ContactDeleteEvent(userid));
+                EventBus.getDefault().post(new FriendDeleteEvent(userid));
 //                删除好友的同时将对方从本地好友列表移除
                 ContactsDao mContactsDao = DBHelper.getContactsDao(FriendDetailActivity.this);
                 Contacts mUnique = mContactsDao.queryBuilder().where(ContactsDao.Properties.User_id.eq(userid)).unique();

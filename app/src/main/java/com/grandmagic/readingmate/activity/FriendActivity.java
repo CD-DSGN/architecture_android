@@ -2,12 +2,10 @@ package com.grandmagic.readingmate.activity;
 
 import android.content.Context;
 import android.content.Intent;
-import android.database.sqlite.SQLiteDatabase;
 import android.graphics.Color;
 import android.os.Bundle;
 import android.support.v7.widget.LinearLayoutManager;
 import android.text.TextUtils;
-import android.util.Log;
 import android.view.View;
 import android.widget.ImageView;
 import android.widget.RelativeLayout;
@@ -22,17 +20,13 @@ import com.grandmagic.readingmate.adapter.MultiItemTypeAdapter;
 import com.grandmagic.readingmate.base.AppBaseActivity;
 import com.grandmagic.readingmate.base.AppBaseResponseCallBack;
 import com.grandmagic.readingmate.bean.response.Contacts;
-import com.grandmagic.readingmate.bean.response.DataBean;
 import com.grandmagic.readingmate.db.DBHelper;
-import com.grandmagic.readingmate.db.DaoMaster;
-import com.grandmagic.readingmate.db.DaoSession;
-import com.grandmagic.readingmate.event.ContactDeleteEvent;
+import com.grandmagic.readingmate.event.ContactDeletedEvent;
+import com.grandmagic.readingmate.event.FriendDeleteEvent;
 import com.grandmagic.readingmate.model.ContactModel;
 import com.grandmagic.readingmate.utils.AutoUtils;
 import com.grandmagic.readingmate.view.IndexBar;
 import com.grandmagic.readingmate.view.SwipRecycleView;
-import com.hyphenate.chat.EMClient;
-import com.hyphenate.exceptions.HyphenateException;
 import com.orhanobut.logger.Logger;
 import com.tamic.novate.NovateResponse;
 import com.tamic.novate.Throwable;
@@ -224,11 +218,24 @@ public class FriendActivity extends AppBaseActivity implements ContactItemDelaga
     }
 
     ContactModel mModel = new ContactModel(this);
+
+    /**
+     * 当移除好友的时候
+     * @param mEvent
+     */
     @Subscribe(threadMode = ThreadMode.MAIN)
-    public void contactDelete(ContactDeleteEvent mEvent){
+    public void frienddelete(FriendDeleteEvent mEvent){
       initServerData();
     }
 
+    /**
+     * 当被移除的时候
+     * @param mEvent
+     */
+    @Subscribe(threadMode = ThreadMode.MAIN)
+    public void contactDelete(ContactDeletedEvent mEvent){
+        initServerData();
+    }
     @Override
     protected void onDestroy() {
         super.onDestroy();

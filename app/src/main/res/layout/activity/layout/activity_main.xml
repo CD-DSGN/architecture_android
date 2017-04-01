@@ -16,9 +16,11 @@
     </FrameLayout>
 
     <LinearLayout
+        android:elevation="5dp"
         android:id="@+id/bottomlayout"
         android:layout_width="match_parent"
         android:layout_height="88px"
+        android:background="@color/white"
         android:layout_alignParentBottom="true"
         android:orientation="horizontal">
 
@@ -144,5 +146,10 @@
                 android:src="@drawable/selector_person"/>
         </RelativeLayout>
     </LinearLayout>
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="1px"
+        android:layout_above="@id/bottomlayout"
+        android:background="@color/gray_select"/>
 </RelativeLayout>
 

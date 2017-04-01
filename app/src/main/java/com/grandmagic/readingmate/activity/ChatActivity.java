@@ -31,7 +31,8 @@ import com.grandmagic.readingmate.adapter.MultiItemTypeAdapter;
 import com.grandmagic.readingmate.base.AppBaseActivity;
 import com.grandmagic.readingmate.bean.response.Contacts;
 import com.grandmagic.readingmate.bean.response.PersonInfo;
-import com.grandmagic.readingmate.event.ContactDeleteEvent;
+import com.grandmagic.readingmate.event.ContactDeletedEvent;
+import com.grandmagic.readingmate.event.FriendDeleteEvent;
 import com.grandmagic.readingmate.listener.VoicePlayClickListener;
 import com.grandmagic.readingmate.utils.AutoUtils;
 import com.grandmagic.readingmate.utils.IMHelper;
@@ -119,8 +120,8 @@ public class ChatActivity extends AppBaseActivity implements EMMessageListener, 
         AutoUtils.auto(this);
         setTranslucentStatus(true);
         EventBus.getDefault().register(this);
-        initview();
         initData();
+        initview();
         initlistener();
     }
 
@@ -129,7 +130,6 @@ public class ChatActivity extends AppBaseActivity implements EMMessageListener, 
         chat_name = getIntent().getStringExtra(CHAT_NAME);
         toChatUserName = getIntent().getStringExtra(CHAT_IM_NAME);
         gender = getIntent().getIntExtra(GENDER,3);
-        conversationInit();
     }
 
     @Override
@@ -235,6 +235,10 @@ public class ChatActivity extends AppBaseActivity implements EMMessageListener, 
      * @param mMessage 有时候选择的图片有路径但是可能导致失效，创建一个null 的message
      */
     private void sendMessage(EMMessage mMessage) {
+        if (!isfriend){
+            Toast.makeText(this, "你们暂时还不是好友，无法发送消息", Toast.LENGTH_SHORT).show();
+            return;
+        }
         if (mMessage == null) {
             Toast.makeText(this, "发送的消息无效", Toast.LENGTH_SHORT).show();
             return;
@@ -267,7 +271,7 @@ public class ChatActivity extends AppBaseActivity implements EMMessageListener, 
         mAdapter.addItemViewDelegate(new MessageLocationDelagate(this).setChatClickListener(this));
         mMessagerecyclerview.setAdapter(mAdapter);
         initrefreshlayout();
-
+        conversationInit();
     }
 
     /**
@@ -443,7 +447,7 @@ public class ChatActivity extends AppBaseActivity implements EMMessageListener, 
         PersonInfo mInf = new PersonInfo();
         mInf.setUser_id(mContacts.getUser_id() + "");
         mInf.setAvatar(mContacts.getAvatar_url().getLarge());
-        mInf.setFriend(true);
+        mInf.setFriend(isfriend);
         mInf.setNickname(mContacts.getUser_name());
         mInf.setClientid(mContacts.getClientid());
         mInf.setGender(gender);
@@ -475,15 +479,22 @@ public class ChatActivity extends AppBaseActivity implements EMMessageListener, 
     }
 
     /**
-     * 被对方删除的Event
+     * 删除好友的Event
      *
      * @param mEvent
      */
     @Subscribe(threadMode = ThreadMode.MAIN)
-    public void contactDelete(ContactDeleteEvent mEvent) {
+    public void contactDelete(FriendDeleteEvent mEvent) {
         finish();
     }
-
+    boolean isfriend=true;
+    /**
+     * 被删除
+     */
+    @Subscribe(threadMode = ThreadMode.MAIN)
+    public void contactDeleted(ContactDeletedEvent mEvent) {
+       isfriend=false;
+    }
     @Override
     protected void onDestroy() {
         super.onDestroy();
