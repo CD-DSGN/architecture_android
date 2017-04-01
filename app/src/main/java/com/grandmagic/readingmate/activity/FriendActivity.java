@@ -133,6 +133,7 @@ public class FriendActivity extends AppBaseActivity implements ContactItemDelaga
 
         }
         sortData();
+        initadapterData();
     }
 
     private void sortData() {
@@ -163,14 +164,18 @@ public class FriendActivity extends AppBaseActivity implements ContactItemDelaga
                 mAdapterData.clear();
                 mLetters.clear();//防止删除好友的时候重新加载好友列表数据重复
                 List<Contacts> mData = response.getData();
+                if (mData!=null&&!mData.isEmpty())
                 mSouseDatas.addAll(mData);
                 initsouseData();
-                initadapterData();
             }
 
             @Override
             public void onError(Throwable e) {
                 super.onError(e);
+                mSouseDatas.clear();
+                mAdapterData.clear();
+                mLetters.clear();//防止删除好友的时候重新加载好友列表数据重复
+                initsouseData();
             }
         });
     }
