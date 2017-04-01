@@ -18,6 +18,7 @@ import com.hyphenate.chat.EMOptions;
 import com.orhanobut.logger.Logger;
 import com.squareup.leakcanary.LeakCanary;
 import com.tamic.novate.util.SPUtils;
+import com.tencent.bugly.crashreport.CrashReport;
 import com.umeng.analytics.MobclickAgent;
 import com.umeng.message.IUmengRegisterCallback;
 import com.umeng.message.PushAgent;
@@ -54,6 +55,8 @@ public class AppBaseApplication extends Application {
         Config.DEBUG = true;
         UMShareAPI.get(this);
         initUPush();
+        CrashReport.setIsDevelopmentDevice(this, true);
+        CrashReport.initCrashReport(getApplicationContext());
     }
 
     private void initUPush() {
