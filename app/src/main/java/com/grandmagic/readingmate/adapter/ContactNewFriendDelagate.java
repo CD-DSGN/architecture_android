@@ -53,6 +53,7 @@ public class ContactNewFriendDelagate implements ItemViewDelegate<Contacts> {
     }
 
     public void read() {
+        if (mView!=null)
         mView.setVisibility(View.GONE);
     }
 }

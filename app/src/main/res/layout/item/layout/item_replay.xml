@@ -64,6 +64,8 @@
                 android:text="@string/reply"
                 android:textColor="#1cc9a2"
                 android:textSize="22px"
+                android:clickable="true"
+                android:id="@+id/tv_reply"
                 />
         </LinearLayout>
 

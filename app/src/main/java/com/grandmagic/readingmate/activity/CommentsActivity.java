@@ -10,7 +10,6 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
-import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import com.grandmagic.readingmate.R;
@@ -31,7 +30,6 @@ import com.grandmagic.readingmate.utils.KitUtils;
 import com.grandmagic.readingmate.utils.Page;
 import com.grandmagic.readingmate.utils.ViewUtils;
 import com.grandmagic.readingmate.view.SharePopUpWindow;
-import com.grandmagic.readingmate.view.StarView;
 import com.tamic.novate.NovateResponse;
 import com.tamic.novate.Throwable;
 import com.umeng.socialize.UMShareAPI;
@@ -60,14 +58,11 @@ public class CommentsActivity extends AppBaseActivity implements View.OnLayoutCh
     BGARefreshLayout mRefreshLayout;
     @BindView(R.id.et_comment)
     EditText mEtComment;
-    @BindView(R.id.rela_rating)
-    RelativeLayout mRelaRating;
     @BindView(R.id.submit)
     Button mSubmit;
     @BindView(R.id.bottomlayout)
     LinearLayout mBottomlayout;
-    @BindView(R.id.ratingbar)
-    StarView mRatingbar;
+
 
     private View mView;
     private CommentDetailAdapter mMAdapter;
@@ -102,6 +97,7 @@ public class CommentsActivity extends AppBaseActivity implements View.OnLayoutCh
     List<ReplyInfoResponseBean.InfoBean> mReplys = new ArrayList<>();
 
     BookModel mModel;
+    int mPosition = -1;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -214,6 +210,8 @@ public class CommentsActivity extends AppBaseActivity implements View.OnLayoutCh
                 iv.setVisibility(View.VISIBLE);
             }
         }
+
+
     }
 
     private void hideLikers() {
@@ -224,11 +222,28 @@ public class CommentsActivity extends AppBaseActivity implements View.OnLayoutCh
 
     private void initView() {
         mTitle.setText(R.string.comment_detail);
-        mRvCommentsDetail.setLayoutManager(new LinearLayoutManager(this));
+        final LinearLayoutManager linearLayoutManager = new LinearLayoutManager(this);
+        mRvCommentsDetail.setLayoutManager(linearLayoutManager);
         mView = LayoutInflater.from(this).inflate(R.layout.item_comments_detail, mRvCommentsDetail, false);
         initHeaderView();
         AutoUtils.auto(mView);
         mMAdapter = new CommentDetailAdapter(this, mReplys);
+        mMAdapter.setOnReplyListener(new CommentDetailAdapter.OnReplyListener() {
+            @Override
+            public void onReplyClick(int position) {
+
+//                ReplyInfoResponseBean.InfoBean reply = mReplys.get(position);
+//                addReply(reply.getPid());
+                //弹键盘
+
+                InputMethodUtils.openSoftKeyboard(CommentsActivity.this, mEtComment);
+                mEtComment.setHint(getString(R.string.reply) + mReplys.get(position).getFrom_user_name());
+                mPosition = position;
+//                LinearLayoutManager linearLayoutManager1 = linearLayoutManager;
+//                mRvCommentsDetail.smoothScrollToPosition(position);
+            }
+        });
+
         mMHeaderAndFooterWrapper = new HeaderAndFooterWrapper(mMAdapter);
 
         mMHeaderAndFooterWrapper.addHeaderView(mView);
@@ -236,7 +251,11 @@ public class CommentsActivity extends AppBaseActivity implements View.OnLayoutCh
         mMHeaderAndFooterWrapper.notifyDataSetChanged();
         initRefresh();
         mBottomlayout.addOnLayoutChangeListener(this);
+
+
+
     }
+
 
     private void initRefresh() {
         mRefreshViewHolder = new BGAStickinessRefreshViewHolder(this, true);
@@ -344,16 +363,20 @@ public class CommentsActivity extends AppBaseActivity implements View.OnLayoutCh
 
         if (oldBottom != 0 && bottom != 0 && oldBottom - bottom > DensityUtil.getScreenHeight(this) / 3) {
             //            键盘弹出
-            mRelaRating.setVisibility(View.VISIBLE);
+
             mLinShare.setVisibility(View.GONE);
             mSubmit.setVisibility(View.VISIBLE);
             mParams.height = 4 * mEtComment.getMeasuredHeight();
 
         } else if (oldBottom != 0 && bottom != 0 && bottom - oldBottom > DensityUtil.getScreenHeight(this) / 3) {
-            mRelaRating.setVisibility(View.GONE);
             mLinShare.setVisibility(View.VISIBLE);
             mSubmit.setVisibility(View.GONE);
             mParams.height = mEtComment.getMeasuredHeight() / 4;
+
+            //还原成评论状态
+            mPosition = -1;
+            mEtComment.setHint("写评论");
+
             //            键盘收起
         }
         mEtComment.setLayoutParams(mParams);
@@ -361,9 +384,17 @@ public class CommentsActivity extends AppBaseActivity implements View.OnLayoutCh
 
 
     /**
-     * 提交评论到后台
+     * 提交回复到后台
      */
     private void submitReply() {
+        if (mPosition == -1) {
+            addReply("0");
+        }else{
+            addReply(mReplys.get(mPosition).getReply_comment_reply_id());
+        }
+    }
+
+    private void addReply(String pid) {
         String comment_id = mCommentsDetailResponoseBean.getComment_id();
 
         AddReplyRequestBean addReplyRequestBean = new AddReplyRequestBean();
@@ -372,17 +403,17 @@ public class CommentsActivity extends AppBaseActivity implements View.OnLayoutCh
         String content = mEtComment.getText().toString();
         addReplyRequestBean.setContent(content);
 
-        addReplyRequestBean.setPid("0");
-
+        addReplyRequestBean.setPid(pid);
 
         mCommentDetailModel.addReply(addReplyRequestBean, new AppBaseResponseCallBack<NovateResponse>(this, true) {
             @Override
             public void onSuccee(NovateResponse response) {
-                InputMethodUtils.hide(CommentsActivity.this);
+                mEtComment.clearFocus();
+                InputMethodUtils.hideForced(CommentsActivity.this);
                 mEtComment.setText("");
                 //刷新回复表
-                mCommentDetailModel.getAllReplys(mCommentID, mReplyCallBack, 1);
-                mReplyCallBack.isRefresh = true;
+                mCommentDetailModel.getAllReplys(mCommentID, mReplyCallBack, mPage.cur_page);
+                mReplyCallBack.isRefresh = false;
             }
         });
     }

@@ -294,6 +294,7 @@ public class BookDetailActivity extends AppBaseActivity implements View.OnLayout
         for (BookdetailResponse.CollectUserBean user : mCollectView) {
             ImageView mView = new ImageView(this);
             LinearLayout.LayoutParams mParams = new LinearLayout.LayoutParams(70, 70);
+            mParams.setMargins(10,10,10,10);
             mView.setLayoutParams(mParams);
             AutoUtils.auto(mView);
             ImageLoader.loadRoundImage(this, Environment.BASEULR_PRODUCTION + user.getAvatar_url().getMid(), mView);
