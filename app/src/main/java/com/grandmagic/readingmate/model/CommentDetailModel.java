@@ -18,7 +18,7 @@ import org.json.JSONObject;
 public class CommentDetailModel {
     private Context mContext;
     public static int PAGE_COUNT_LIKERS = 20;
-    public static int PAGE_COUNT_REPLYS = 10;
+    public static int PAGE_COUNT_REPLYS = 40;
 
     public CommentDetailModel(Context context) {
         mContext = context;

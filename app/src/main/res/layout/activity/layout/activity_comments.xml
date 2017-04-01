@@ -6,7 +6,8 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:fitsSystemWindows="true"
-    tools:context="com.grandmagic.readingmate.activity.CommentsActivity">
+    tools:context="com.grandmagic.readingmate.activity.CommentsActivity"
+    android:background="#ffffff">
 
 
     <RelativeLayout
@@ -52,5 +53,5 @@
     </cn.bingoogolapple.refreshlayout.BGARefreshLayout>
 
 
-    <include layout="@layout/view_comment"/>
+    <include layout="@layout/view_comment_without_rating"/>
 </RelativeLayout>

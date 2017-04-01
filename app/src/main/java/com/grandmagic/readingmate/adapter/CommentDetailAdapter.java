@@ -2,7 +2,9 @@ package com.grandmagic.readingmate.adapter;
 
 import android.content.Context;
 import android.text.TextUtils;
+import android.view.View;
 import android.widget.ImageView;
+import android.widget.TextView;
 
 import com.grandmagic.readingmate.R;
 import com.grandmagic.readingmate.bean.response.ReplyInfoResponseBean;
@@ -28,7 +30,7 @@ public class CommentDetailAdapter extends CommonAdapter<ReplyInfoResponseBean.In
     }
 
     @Override
-    protected void convert(ViewHolder holder, ReplyInfoResponseBean.InfoBean data, int position) {
+    protected void convert(ViewHolder holder, ReplyInfoResponseBean.InfoBean data, final int position) {
         ImageView fromAvar = holder.getView(R.id.iv_replay_header);
 
         ReplyInfoResponseBean.InfoBean.FromUserAvatarUrlBean from_avar = data.getFrom_user_avatar_url();
@@ -40,11 +42,16 @@ public class CommentDetailAdapter extends CommonAdapter<ReplyInfoResponseBean.In
         holder.setText(R.id.tv_nickname_reply, data.getFrom_user_name());
         StringBuilder content = new StringBuilder(data.getReply_content());
         if (!TextUtils.isEmpty(data.getTo_user_name())) {
-            content.append(":@" + data.getTo_user_name());
+            content.append("@" + data.getTo_user_name());
         }
 
         SpanTextView spanTextView = holder.getView(R.id.tv_signature_reply);
-        spanTextView.setText(content.toString(), "    "+data.getTo_user_comment());
+        if (!TextUtils.isEmpty(data.getTo_user_comment())) {
+            spanTextView.setText(content.toString(), ":   "+data.getTo_user_comment());
+        }else{
+            spanTextView.setText(content.toString());
+        }
+
         spanTextView.setMovementMethod(mLinkMovementMethod.getInstance(context));
 
         try {
@@ -53,5 +60,24 @@ public class CommentDetailAdapter extends CommonAdapter<ReplyInfoResponseBean.In
             e.printStackTrace();
         }
 
+        TextView tv_reply = holder.getView(R.id.tv_reply);
+        tv_reply.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                mOnReplyListener.onReplyClick(position - 1);   //回复按钮响应, 因为有header的缘故，实际上应该减1
+            }
+        });
     }
+
+    public interface OnReplyListener {
+        public void onReplyClick(int position);
+    }
+
+    public void setOnReplyListener(OnReplyListener onReplyListener) {
+        mOnReplyListener = onReplyListener;
+    }
+
+    private OnReplyListener mOnReplyListener;
+
+
 }
