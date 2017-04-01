@@ -19,6 +19,7 @@ import android.widget.LinearLayout;
 import android.widget.PopupWindow;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.grandmagic.readingmate.R;
 import com.grandmagic.readingmate.adapter.CommentsAdapter;
@@ -30,12 +31,16 @@ import com.grandmagic.readingmate.bean.response.Contacts;
 import com.grandmagic.readingmate.bean.response.PersonCollectBookResponse;
 import com.grandmagic.readingmate.bean.response.PersonCommentResponse;
 import com.grandmagic.readingmate.bean.response.PersonInfo;
+import com.grandmagic.readingmate.bean.response.SearchUserResponse;
 import com.grandmagic.readingmate.db.ContactsDao;
 import com.grandmagic.readingmate.db.DBHelper;
 import com.grandmagic.readingmate.event.FriendDeleteEvent;
 import com.grandmagic.readingmate.model.ContactModel;
+import com.grandmagic.readingmate.model.SearchUserModel;
+import com.grandmagic.readingmate.ui.CustomDialog;
 import com.grandmagic.readingmate.utils.AutoUtils;
 import com.grandmagic.readingmate.utils.ImageLoader;
+import com.grandmagic.readingmate.utils.InputMethodUtils;
 import com.tamic.novate.NovateResponse;
 import com.tamic.novate.Throwable;
 import com.tamic.novate.util.Environment;
@@ -276,6 +281,7 @@ public class FriendDetailActivity extends AppBaseActivity {
                 toRecommend();
                 break;
             case R.id.fab:
+                showAddFriendDialog();
                 break;
             case R.id.title_more:
                 showDeletePop();
@@ -286,6 +292,46 @@ public class FriendDetailActivity extends AppBaseActivity {
         }
     }
 
+    /**
+     * 弹出请求添加好友的dialog
+     */
+    private void showAddFriendDialog() {
+        final CustomDialog mDialog = new CustomDialog(this);
+        mDialog.setMaxNum(20);
+        mDialog.setYesStr("发送");
+        mDialog.setOnBtnOnclickListener(new CustomDialog.BtnOnclickListener() {
+            @Override
+            public void onYesClick() {
+                addContact(mDialog.getMessage());
+                mDialog.dismiss();
+            }
+
+            @Override
+            public void onNoClick() {
+                mDialog.dismiss();
+            }
+        });
+        mDialog.show();
+    }
+
+    /**
+     * 添加好友，
+     *
+     * @param reason
+     */
+    private void addContact(final String reason) {
+        InputMethodUtils.hide(this);
+        new SearchUserModel(this).requestAddFriend(userid, reason, new AppBaseResponseCallBack<NovateResponse>(this) {
+            @Override
+            public void onSuccee(NovateResponse response) {
+                Toast.makeText(FriendDetailActivity.this, "" + response.getMessage(), Toast.LENGTH_SHORT).show();
+            }
+        });
+    }
+
+    /**
+     * 去推荐好友
+     */
     private void toRecommend() {
         Intent mIntent = new Intent(FriendDetailActivity.this, RecommendActivity.class);
         Bundle mBundle = new Bundle();
@@ -307,6 +353,9 @@ public class FriendDetailActivity extends AppBaseActivity {
 
     PopupWindow mPopupWindow;
 
+    /**
+     * 弹出删除好友的popupwindow
+     */
     private void showDeletePop() {
         if (mPopupWindow == null) {
             View mpopview = LayoutInflater.from(this).inflate(R.layout.pop_deletefriend, null);

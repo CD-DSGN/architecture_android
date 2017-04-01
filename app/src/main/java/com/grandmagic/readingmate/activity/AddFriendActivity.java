@@ -191,7 +191,6 @@ public class AddFriendActivity extends AppBaseActivity {
      * @param reason
      */
     private void addContact(final String reason) {
-
         InputMethodUtils.hide(AddFriendActivity.this);
         mModel.requestAddFriend(mUser_id, reason, new AppBaseResponseCallBack<NovateResponse>(this) {
             @Override

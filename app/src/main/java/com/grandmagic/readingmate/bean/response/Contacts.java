@@ -64,8 +64,9 @@ public class Contacts {
         return gender;
     }
 
-    public void setGender(int mGender) {
+    public Contacts setGender(int mGender) {
         gender = mGender;
+        return this;
     }
 
     public Contacts(TYPE mTypeLetter, String mLetter) {

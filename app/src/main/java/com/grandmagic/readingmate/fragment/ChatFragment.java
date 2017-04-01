@@ -34,6 +34,7 @@ import com.grandmagic.readingmate.db.InviteMessageDao;
 import com.grandmagic.readingmate.event.ConnectStateEvent;
 import com.grandmagic.readingmate.event.ContactDeletedEvent;
 import com.grandmagic.readingmate.event.FriendDeleteEvent;
+import com.grandmagic.readingmate.event.NewFriendRequestEvent;
 import com.grandmagic.readingmate.utils.AutoUtils;
 import com.grandmagic.readingmate.view.SwipRecycleView;
 import com.hyphenate.EMError;
@@ -329,5 +330,9 @@ public class ChatFragment extends AppBaseFragment implements RecentConversationD
                 if (mB) onrefreshConversation();
             }
         }
+    }
+    @Subscribe(threadMode = ThreadMode.MAIN)
+    public  void newFriendRequestevent(NewFriendRequestEvent mEvent){
+        onrefreshConversation();
     }
 }

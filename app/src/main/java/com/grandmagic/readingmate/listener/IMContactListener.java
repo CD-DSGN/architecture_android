@@ -8,6 +8,7 @@ import com.grandmagic.readingmate.db.ContactsDao;
 import com.grandmagic.readingmate.db.DBHelper;
 import com.grandmagic.readingmate.db.InviteMessageDao;
 import com.grandmagic.readingmate.event.ContactDeletedEvent;
+import com.grandmagic.readingmate.event.NewFriendRequestEvent;
 import com.grandmagic.readingmate.utils.IMHelper;
 import com.hyphenate.EMContactListener;
 import com.orhanobut.logger.Logger;
@@ -41,6 +42,7 @@ public class IMContactListener implements EMContactListener {
         mMessage.setReason(reason);
         mMessage.setIsread(1);
         IMHelper.getInstance().newInvaiteMsg(mMessage);
+        EventBus.getDefault().post(new NewFriendRequestEvent());
     }
 
 
@@ -62,6 +64,7 @@ public class IMContactListener implements EMContactListener {
         InviteMessage mMessage = new InviteMessage();
         mMessage.setFrom(mS);
         IMHelper.getInstance().newInvaiteMsg(mMessage);
+        EventBus.getDefault().post(new NewFriendRequestEvent());
     }
 
     /**

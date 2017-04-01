@@ -1,6 +1,8 @@
 package com.grandmagic.readingmate.model;
 
 import android.content.Context;
+import android.util.Log;
+import android.widget.Toast;
 
 import com.google.gson.Gson;
 import com.grandmagic.readingmate.base.AppBaseResponseCallBack;
@@ -23,7 +25,7 @@ import java.util.Map;
  */
 
 public class SearchUserModel {
-
+    private static final String TAG = "SearchUserModel";
     private Context mContext;
 
     public SearchUserModel(Context mContext) {
@@ -32,37 +34,40 @@ public class SearchUserModel {
 
     /**
      * 通过手机号搜索好友
+     *
      * @param phone
      * @param mBack
      */
-    public void searchUser(String phone, AppBaseResponseCallBack mBack){
-        Novate mNovate=new Novate.Builder(mContext).baseUrl(Environment.BASEULR_PRODUCTION).build();
-        UserInfoRequest mUserInfoRequest=new UserInfoRequest();
+    public void searchUser(String phone, AppBaseResponseCallBack mBack) {
+        Novate mNovate = new Novate.Builder(mContext).baseUrl(Environment.BASEULR_PRODUCTION).build();
+        UserInfoRequest mUserInfoRequest = new UserInfoRequest();
         mUserInfoRequest.setMobile_phone(phone);
         String mS = new Gson().toJson(mUserInfoRequest);
-        mNovate.executeJson(ApiInterface.SEARCH_USER,mS,mBack);
+        mNovate.executeJson(ApiInterface.SEARCH_USER, mS, mBack);
     }
 
     /**
      * 请求添加对方为好友
+     *
      * @param user_id2
      * @param message
      * @param mBack
      */
-    public void requestAddFriend(String user_id2,String message,AppBaseResponseCallBack mBack){
-    Novate mNovate=new Novate.Builder(mContext).baseUrl(Environment.BASEULR_PRODUCTION).build();
-  JSONObject mJSONObject=new JSONObject();
-    try {
-        mJSONObject.put("user_id2",Integer.valueOf(user_id2));
-        mJSONObject.put("message",message);
-    } catch (Exception mE) {
-        mE.printStackTrace();
-    }
+    public void requestAddFriend(String user_id2, String message, AppBaseResponseCallBack mBack) {
+        Novate mNovate = new Novate.Builder(mContext).baseUrl(Environment.BASEULR_PRODUCTION).build();
+        JSONObject mJSONObject = new JSONObject();
         try {
-            EMClient.getInstance().contactManager().addContact(user_id2,message);
-        } catch (HyphenateException mE) {
+            mJSONObject.put("user_id2", Integer.valueOf(user_id2));
+            mJSONObject.put("message", message);
+        } catch (Exception mE) {
             mE.printStackTrace();
         }
-    mNovate.executeJson(ApiInterface.REQUEST_ADD,mJSONObject.toString(),mBack);
-}
+        try {
+            EMClient.getInstance().contactManager().addContact(user_id2, message);
+        } catch (HyphenateException mE) {
+            Log.d(TAG, "requestAddFriend() called with: user_id2 = [" + user_id2 + "], message = [" + message + "], mBack = [" + mBack + "]");
+            Toast.makeText(mContext, mE.getMessage(), Toast.LENGTH_SHORT).show();
+        }
+        mNovate.executeJson(ApiInterface.REQUEST_ADD, mJSONObject.toString(), mBack);
+    }
 }

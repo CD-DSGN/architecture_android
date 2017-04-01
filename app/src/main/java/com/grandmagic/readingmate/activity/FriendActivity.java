@@ -23,6 +23,7 @@ import com.grandmagic.readingmate.bean.response.Contacts;
 import com.grandmagic.readingmate.db.DBHelper;
 import com.grandmagic.readingmate.event.ContactDeletedEvent;
 import com.grandmagic.readingmate.event.FriendDeleteEvent;
+import com.grandmagic.readingmate.event.NewFriendRequestEvent;
 import com.grandmagic.readingmate.model.ContactModel;
 import com.grandmagic.readingmate.utils.AutoUtils;
 import com.grandmagic.readingmate.view.IndexBar;
@@ -46,7 +47,7 @@ import butterknife.OnClick;
 
 public class FriendActivity extends AppBaseActivity implements ContactItemDelagate.remarkListener {
     public static final int REQUEST_NEWFRIEND = 1;
-    public static final String NEW_FRIEND="new_friend";
+    public static final String NEW_FRIEND = "new_friend";
     @BindView(R.id.back)
     ImageView mBack;
     @BindView(R.id.title)
@@ -90,7 +91,7 @@ public class FriendActivity extends AppBaseActivity implements ContactItemDelaga
      * 生成adapter需要的list
      */
     private void initadapterData() {
-        mAdapterData.add(new Contacts(Contacts.TYPE.TYPE_NEWFRIEND));//新朋友的头部
+        mAdapterData.add(new Contacts(Contacts.TYPE.TYPE_NEWFRIEND).setGender(newFriendCOunt));//新朋友的头部
         for (int i = 0; i < mLetters.size(); i++) {
             String letter = mLetters.get(i);
             mAdapterData.get(mAdapterData.size() - 1).setNeedline(false);
@@ -115,7 +116,7 @@ public class FriendActivity extends AppBaseActivity implements ContactItemDelaga
         for (int i = 0; i < mSize; i++) {
             Contacts data = mSouseDatas.get(i);
             StringBuilder pySb = new StringBuilder();
-            String dataName = TextUtils.isEmpty(data.getRemark())?data.getUser_name(): data.getRemark();//如果有备注就按备注的处理
+            String dataName = TextUtils.isEmpty(data.getRemark()) ? data.getUser_name() : data.getRemark();//如果有备注就按备注的处理
             for (int j = 0; dataName != null && j < dataName.length(); j++) {
                 pySb.append(Pinyin.toPinyin(dataName.charAt(j)));
             }
@@ -154,7 +155,7 @@ public class FriendActivity extends AppBaseActivity implements ContactItemDelaga
     }
 
     private void initServerData() {
-        mAdapterData.add(new Contacts(Contacts.TYPE.TYPE_NEWFRIEND,newFriendCOunt));//新朋友的头部
+        mAdapterData.add(new Contacts(Contacts.TYPE.TYPE_NEWFRIEND, newFriendCOunt));//新朋友的头部
         mModel.getAllFriendFromServer(new AppBaseResponseCallBack<NovateResponse<List<Contacts>>>(this) {
             @Override
             public void onSuccee(NovateResponse<List<Contacts>> response) {
@@ -212,8 +213,9 @@ public class FriendActivity extends AppBaseActivity implements ContactItemDelaga
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
-        if (requestCode==REQUEST_NEWFRIEND){
-          mContactNewFriendDelagate.read();
+        if (requestCode == REQUEST_NEWFRIEND) {
+            newFriendCOunt = 0;
+            initServerData();
         }
     }
 
@@ -221,21 +223,36 @@ public class FriendActivity extends AppBaseActivity implements ContactItemDelaga
 
     /**
      * 当移除好友的时候
+     *
      * @param mEvent
      */
     @Subscribe(threadMode = ThreadMode.MAIN)
-    public void frienddelete(FriendDeleteEvent mEvent){
-      initServerData();
+    public void frienddelete(FriendDeleteEvent mEvent) {
+        initServerData();
     }
 
     /**
      * 当被移除的时候
+     *
      * @param mEvent
      */
     @Subscribe(threadMode = ThreadMode.MAIN)
-    public void contactDelete(ContactDeletedEvent mEvent){
+    public void contactDelete(ContactDeletedEvent mEvent) {
         initServerData();
     }
+
+    /**
+     * 收到新的好友请求
+     *
+     * @param mEvent
+     */
+    @Subscribe(threadMode = ThreadMode.MAIN)
+    public void newFriendRequestevent(NewFriendRequestEvent mEvent) {
+        newFriendCOunt += 1;
+        mAdapterData.get(0).setGender(newFriendCOunt);
+        mAdapter.notifyDataSetChanged();
+    }
+
     @Override
     protected void onDestroy() {
         super.onDestroy();
@@ -244,6 +261,7 @@ public class FriendActivity extends AppBaseActivity implements ContactItemDelaga
 
     /**
      * 设置备注
+     *
      * @param mMessage
      * @param mRemarkPosition
      */
