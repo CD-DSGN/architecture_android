@@ -47,11 +47,8 @@ public class ApiInterface {
     public static final String COMMENT_DETAIL = "comment/commentdetail"; //评论详情页
     public static final String LIKERS_INFO = "comment/getallthumbers"; //点赞者信息
     public static final String REPLY_INFO = "reply/replydetail"; //回复详情
-    public static final String REPLY_ADD = "reply/commentreply"; //回复详情
-
-
-
-    
-
+    public static final String REPLY_ADD = "reply/commentreply"; //增加回复
+    public static final String REPLY_DEL= "reply/deletereply"; //删除回复
+    public static final String REPLY_LIKE = "reply/thumbupreplycomment"; //点赞
 
 }
