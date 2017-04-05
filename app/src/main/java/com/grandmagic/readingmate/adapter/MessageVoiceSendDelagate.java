@@ -31,7 +31,7 @@ public class MessageVoiceSendDelagate extends ChatItemViewDelegate {
     @Override
     protected void childConvert(ViewHolder mHolder, final EMMessage mChatMessage, int mPosition) {
         EMVoiceMessageBody mBody = (EMVoiceMessageBody) mChatMessage.getBody();
-        mHolder.setText(R.id.time, mBody.getLength() + "");
+        mHolder.setText(R.id.time, mBody.getLength() + "s");
         final ImageView mvoiceImageview = mHolder.getView(R.id.voice);
         if (VoicePlayClickListener.playMsgId!=null&&
                 VoicePlayClickListener.playMsgId.equals(mChatMessage.getMsgId())

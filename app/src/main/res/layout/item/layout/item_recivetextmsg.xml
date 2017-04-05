@@ -8,6 +8,5 @@
     android:textColor="#181e1d"
     android:textSize="28px"
     android:padding="12px"
-    android:layout_marginRight="94px"
     xmlns:android="http://schemas.android.com/apk/res/android"/>
 

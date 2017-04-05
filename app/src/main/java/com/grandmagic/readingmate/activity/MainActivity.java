@@ -10,6 +10,7 @@ import android.graphics.Color;
 import android.os.Bundle;
 import android.support.v7.app.AlertDialog;
 import android.text.TextUtils;
+import android.util.Log;
 import android.view.View;
 import android.widget.FrameLayout;
 import android.widget.ImageView;
@@ -38,13 +39,13 @@ import com.grandmagic.readingmate.model.SearchUserModel;
 import com.grandmagic.readingmate.utils.AutoUtils;
 import com.grandmagic.readingmate.utils.IMHelper;
 import com.grandmagic.readingmate.utils.KitUtils;
-import com.hyphenate.EMError;
-import com.tamic.novate.NovateResponse;
-import com.tamic.novate.util.SPUtils;
 import com.grandmagic.readingmate.utils.UpdateManager;
 import com.hyphenate.EMCallBack;
+import com.hyphenate.EMError;
 import com.hyphenate.chat.EMClient;
 import com.orhanobut.logger.Logger;
+import com.tamic.novate.NovateResponse;
+import com.tamic.novate.util.SPUtils;
 import com.tbruyelle.rxpermissions.RxPermissions;
 
 import org.greenrobot.eventbus.EventBus;
@@ -95,6 +96,8 @@ public class MainActivity extends AppBaseActivity {
     @BindView(R.id.text_person)
     TextView mTextPerson;
     IMMessageListenerMain mIMMessageListenerMain;
+    @BindView(R.id.unredmsg)
+    TextView mUnredmsg;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -177,6 +180,8 @@ public class MainActivity extends AppBaseActivity {
         mcurrentFragment = mFragmentManager.findFragmentById(R.id.contentframe);
         //初始化homefragment
         Fragment mHomeFragment = createFragment(HomeFragment.class);
+        Fragment mchatfragment = createFragment(ChatFragment.class);//初始化的时候吧聊天页也初始化了，可能需要调用他的消息方法
+        mFragmentManager.beginTransaction().add(R.id.contentframe,mchatfragment).show(mchatfragment).hide(mchatfragment).commit();
         mFragmentManager.beginTransaction().add(R.id.contentframe, mHomeFragment).show(mHomeFragment).commit();
         mcurrentFragment = mHomeFragment;
         mcurrentIV = mIvHome;
@@ -342,9 +347,15 @@ public class MainActivity extends AppBaseActivity {
                     ((ChatFragment) mFragments.get(ChatFragment.class.getName())).onrefreshConversation();
                 } catch (Exception mE) {
                     mE.printStackTrace();
+                    Log.d("Exception", "run() called"+mE);
                 }
             }
         });
+    }
+
+    public void setUnredmsg(int count) {
+        mUnredmsg.setVisibility(count > 0 ? View.VISIBLE : View.GONE);
+        mUnredmsg.setText("" + count);
     }
 
     @Override

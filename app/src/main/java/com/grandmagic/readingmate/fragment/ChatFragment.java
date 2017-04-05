@@ -180,6 +180,7 @@ public class ChatFragment extends AppBaseFragment implements RecentConversationD
      * 创建测试数据
      */
     private List<EMConversation> loadAllConversation() {
+        unreadmsgCount=0;
         // get all conversations
         Map<String, EMConversation> conversations = EMClient.getInstance().chatManager().getAllConversations();
         List<Pair<Long, EMConversation>> sortList = new ArrayList<Pair<Long, EMConversation>>();
@@ -205,9 +206,15 @@ public class ChatFragment extends AppBaseFragment implements RecentConversationD
             list.add(sortItem.second);
         }
         Logger.d(list);
+        for (EMConversation mConversation:
+             list) {
+         unreadmsgCount+=   mConversation.getUnreadMsgCount();//每个会话的未读消息
+        }
+        if (munredInviteCount>0)
+        unreadmsgCount+= 1;//如果有未读的邀请信息
         return list;
     }
-
+int unreadmsgCount;//未读消息
     /**
      * sort conversations according time stamp of last message
      *
@@ -238,7 +245,7 @@ public class ChatFragment extends AppBaseFragment implements RecentConversationD
                 break;
             case R.id.rela_friend:
                 Intent mIntent = new Intent(getActivity(), FriendActivity.class);
-                mIntent.putExtra(FriendActivity.NEW_FRIEND, mCount);
+                mIntent.putExtra(FriendActivity.NEW_FRIEND, munredInviteCount);
                 startActivity(mIntent);
                 break;
         }
@@ -247,7 +254,7 @@ public class ChatFragment extends AppBaseFragment implements RecentConversationD
     /**
      * 收到新消息时候刷新
      */
-    int mCount;//好友邀请
+    int munredInviteCount;//好友邀请
 
     public void onrefreshConversation() {
         mConversations.clear();
@@ -255,9 +262,10 @@ public class ChatFragment extends AppBaseFragment implements RecentConversationD
         mAdapter.refresh();
         InviteMessageDao mInviteDao = DBHelper.getInviteDao(mContext);
         CountQuery<InviteMessage> mInviteMessageCountQuery = mInviteDao.queryBuilder().where(InviteMessageDao.Properties.Isread.eq(1)).buildCount();
-        mCount = (int) mInviteMessageCountQuery.count();
+        munredInviteCount = (int) mInviteMessageCountQuery.count();
         DBHelper.close();
-        mRedPoint.setVisibility(mCount > 0 ? View.VISIBLE : View.GONE);
+        mRedPoint.setVisibility(munredInviteCount > 0 ? View.VISIBLE : View.GONE);
+        ((MainActivity) getActivity()).setUnredmsg(unreadmsgCount);
     }
 
     @Override

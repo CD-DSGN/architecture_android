@@ -3,8 +3,9 @@
     xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:fitsSystemWindows="true"
+    xmlns:tools="http://schemas.android.com/tools"
     android:clipToPadding="false"
+    android:fitsSystemWindows="true"
     >
 
     <FrameLayout
@@ -16,12 +17,12 @@
     </FrameLayout>
 
     <LinearLayout
-        android:elevation="5dp"
         android:id="@+id/bottomlayout"
         android:layout_width="match_parent"
         android:layout_height="88px"
-        android:background="@color/white"
         android:layout_alignParentBottom="true"
+        android:background="@color/white"
+        android:elevation="5dp"
         android:orientation="horizontal">
 
         <RelativeLayout
@@ -37,8 +38,8 @@
                 android:layout_alignParentBottom="true"
                 android:layout_centerHorizontal="true"
                 android:button="@null"
-                android:textColor="#666666"
                 android:text="@string/home"
+                android:textColor="#666666"
                 android:textSize="22px"
                 />
 
@@ -69,8 +70,24 @@
                 android:layout_centerHorizontal="true"
                 android:button="@null"
                 android:text="读友"
-                android:textSize="22px"
                 android:textColor="#666666"
+                android:textSize="22px"
+                />
+
+            <TextView
+                android:id="@+id/unredmsg"
+                android:layout_width="30px"
+                android:layout_height="30px"
+                android:layout_alignTop="@+id/iv_chat"
+                android:layout_marginLeft="-15px"
+                android:layout_marginTop="-15px"
+                android:layout_toRightOf="@+id/iv_chat"
+                android:background="@drawable/red_point"
+                android:gravity="center"
+                tools:text="2"
+                android:visibility="gone"
+                tools:visibility="visible"
+                android:textColor="@color/white"
                 />
 
             <ImageView
@@ -139,13 +156,14 @@
                 android:id="@+id/iv_person"
                 android:layout_width="34px"
                 android:layout_height="34px"
+                android:layout_above="@id/text_person"
                 android:layout_centerHorizontal="true"
                 android:layout_marginBottom="8px"
                 android:layout_marginTop="6px"
-                android:layout_above="@id/text_person"
                 android:src="@drawable/selector_person"/>
         </RelativeLayout>
     </LinearLayout>
+
     <View
         android:layout_width="match_parent"
         android:layout_height="1px"

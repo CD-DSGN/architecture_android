@@ -75,6 +75,7 @@ mUserInfo=IMHelper.getInstance().getUserInfo(SPUtils.getInstance().getString(mCo
         final View statesView = holder.getView(R.id.send_status);
         final View progress = holder.getView(R.id.status_prgress);
         RelativeLayout holderView = holder.getView(R.id.contentView);
+        holderView.removeAllViews();
         View childView = setContentView(mChatMessage,holderView);
         if (childView!=null) {
             ViewHolder mHolder = ViewHolder.createViewHolder(mContext, childView);
