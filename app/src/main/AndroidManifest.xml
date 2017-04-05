@@ -257,7 +257,11 @@
         </activity>
         <activity android:name=".activity.GuideActivity"
             android:theme="@style/fullsrceen">
-        </activity>  
+        </activity>
+
+        <activity android:name=".activity.CollectBookSearchActivity"
+                  android:theme="@style/notitle">
+        </activity>
 
     </application>
 
