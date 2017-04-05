@@ -22,6 +22,7 @@ import java.util.List;
 
 public class MyCollectBookAdapter extends CommonAdapter<DisplayBook.InfoBean> {
     OnitemDeleteListener mOnitemDeleteListener;
+
     public MyCollectBookAdapter(Context context, List datas, OnitemDeleteListener onitemDeleteListener) {
         super(context, R.layout.item_vp_book_details, datas);
         mOnitemDeleteListener = onitemDeleteListener;
@@ -46,15 +47,39 @@ public class MyCollectBookAdapter extends CommonAdapter<DisplayBook.InfoBean> {
             }
             starView.setScore(score);
             holder.setText(R.id.tv_book_score, score + "");
-            holder.setText(R.id.tv_comment_person_num, book_info.getScore_times());
-            holder.setText(R.id.tv_publisher, book_info.getPublisher());
 
+            int score_num = 0;
             try {
-                holder.setText(R.id.tv_publistime, DateUtil.timeTodate(book_info.getPub_date()));
+                score_num = Integer.parseInt(book_info.getScore_times());
+            } catch (NumberFormatException e) {
+                e.printStackTrace();
+            }
+
+            String str_score_num = mContext.getString(R.string.comment_num);
+            if (score_num > 10000) {
+                str_score_num = String.format(str_score_num, score_num / 10000 + "万");
+//                str_score_num.append(score_num / 10000 + "万");
+            }else if (score_num > 1000) {
+                str_score_num = String.format(str_score_num, score_num / 1000 + "千");
+//                str_score_num.append(score_num / 1000 + "千");
+            }else{
+                str_score_num = String.format(str_score_num, score_num);
+//                str_score_num.append(score_num);
+            }
+//            str_score_num.append(mContext.getString(R.string.comment_num));
+            holder.setText(R.id.tv_comment_person_num, str_score_num);
+            String str_publisher = mContext.getString(R.string.publisher) + book_info.getPublisher();
+            holder.setText(R.id.tv_publisher, str_publisher);
+
+            String str_time = "";
+            try {
+                str_time = DateUtil.timeTodate(book_info.getPub_date());
             } catch (Exception e) {
                 e.printStackTrace();
             }
 
+            String str_publistime = mContext.getString(R.string.publish_time) + str_time;
+            holder.setText(R.id.tv_publistime, str_publistime);
             holder.setText(R.id.tv_book_content, book_info.getSynopsis());
 
             TextView tv_delete_book = holder.getView(R.id.delete_book);
@@ -65,6 +90,15 @@ public class MyCollectBookAdapter extends CommonAdapter<DisplayBook.InfoBean> {
                     mOnitemDeleteListener.deleteItem(book_id);
                 }
             });
+
+            String str_time_scan = "";
+            try {
+                str_time_scan = DateUtil.timeTodate(book_info.getScan_time());
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+            holder.setText(R.id.tv_time, str_time_scan);
+
         }
 
     }

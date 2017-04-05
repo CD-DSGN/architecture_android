@@ -146,7 +146,8 @@
             <ImageView
                 android:layout_width="26px"
                 android:layout_height="26px"
-                android:src="@drawable/iv_like"
+                android:background="@drawable/iv_like_gray"
+                android:id="@+id/iv_like"
                 />
 
             <TextView

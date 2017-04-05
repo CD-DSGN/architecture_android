@@ -3,6 +3,7 @@
              xmlns:app="http://schemas.android.com/apk/res-auto"
              android:layout_width="match_parent"
              android:layout_height="wrap_content"
+             xmlns:tools="http://schemas.android.com/tools"
     >
 
     <FrameLayout
@@ -13,7 +14,7 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginLeft="66px"
-            android:layout_marginRight="22px"
+            android:layout_marginRight="20px"
             android:layout_marginTop="22px"
             app:cardCornerRadius="5dp"
             app:cardElevation="0dp"
@@ -36,12 +37,12 @@
                         android:id="@+id/tv_book_name"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:layout_marginLeft="46px"
                         android:layout_marginTop="40px"
                         android:gravity="center_horizontal"
-                        android:text="从你的全世界路过"
+                        tools:text="从你的全世界路过"
                         android:textColor="#181e1d"
                         android:textSize="32px"
+                        android:layout_centerHorizontal="true"
                         />
 
                     <TextView
@@ -49,12 +50,12 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_below="@id/tv_book_name"
-                        android:layout_marginLeft="164px"
                         android:layout_marginTop="28px"
                         android:gravity="center_horizontal"
-                        android:text="张嘉佳"
+                        tools:text="张嘉佳"
                         android:textColor="#181e1d"
                         android:textSize="24px"
+                        android:layout_centerHorizontal="true"
                         />
 
                     <com.grandmagic.readingmate.view.StarView
@@ -63,13 +64,13 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_below="@id/tv_book_author"
-                        android:layout_marginLeft="121px"
                         android:layout_marginTop="20px"
                         app:isIndicator="true"
                         app:starEmpty="@drawable/star_empty"
                         app:starFill="@drawable/star"
                         app:starHeight="22px"
                         app:starWidth="24px"
+                        android:layout_centerHorizontal="true"
                         />
 
                     <LinearLayout
@@ -105,7 +106,7 @@
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:layout_marginLeft="20px"
-                            android:text="(2.3万人评)"
+                            tools:text="(2.3万人评)"
                             android:textColor="#99999999"
                             android:textSize="22px"
                             />
@@ -140,8 +141,9 @@
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:layout_below="@id/tv_publistime"
-                        android:layout_marginLeft="46px"
+                        android:layout_centerHorizontal="true"
                         android:layout_marginRight="46px"
+                        android:layout_marginLeft="46px"
                         android:layout_marginTop="40px">
 
                         <ImageButton
@@ -181,12 +183,14 @@
                     android:layout_below="@+id/rl_top_right"
                     android:layout_marginLeft="46px"
                     android:layout_marginRight="46px"
-                    android:layout_marginTop="40px"
-                    android:lineSpacingExtra="20px"
+                    android:layout_marginTop="20px"
+                    android:lineSpacingExtra="8px"
                     android:maxLines="5"
-                    android:text="        读过睡前故事的人都会知道,这是一本纷杂凌乱的书。像朋友在深夜跟你叙述，叙述他走过的千山万水。那么多篇章，有温暖的，有明亮的。"
+                    tools:text="        读过睡前故事的人都会知道,这是一本纷杂凌乱的书。像朋友在深夜跟你叙述，叙述他走过的千山万水。那么多篇章，有温暖的，有明亮的。"
                     android:textColor="#181e1d"
                     android:textSize="24px"
+                    android:ellipsize="end"
+
                     />
 
                 <TextView
@@ -195,10 +199,10 @@
                     android:layout_alignParentBottom="true"
                     android:layout_marginBottom="22px"
                     android:layout_marginLeft="46px"
-                    android:text="2017/01/03  13:58"
+                    tools:text="2017/01/03  13:58"
                     android:textColor="#999999"
                     android:textSize="22px"
-
+                    android:id="@+id/tv_time"
                     />
 
             </RelativeLayout>
@@ -209,7 +213,7 @@
             android:layout_width="310px"
             android:layout_height="435px"
             android:layout_marginLeft="26px"
-
+            android:scaleType="centerCrop"
             />
     </FrameLayout>
 </FrameLayout>
