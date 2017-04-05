@@ -2,10 +2,10 @@
 
 <com.grandmagic.readingmate.view.SwipeItemLayout
     xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/swipeitemlayout"
     android:layout_width="match_parent"
     android:layout_height="152px"
-
     >
 
     <TextView
@@ -33,6 +33,7 @@
             android:layout_height="100px"
             android:layout_centerVertical="true"
             android:layout_marginLeft="20px"
+            tools:src="@mipmap/logo6"
             />
 
         <TextView
@@ -43,6 +44,7 @@
             android:layout_toRightOf="@+id/avatar"
             android:textColor="#181e1d"
             android:textSize="32px"
+            tools:text="测试"
             />
 
         <TextView
@@ -51,9 +53,23 @@
             android:layout_height="wrap_content"
             android:layout_alignParentBottom="true"
             android:layout_marginBottom="30px"
-            android:layout_toRightOf="@+id/avatar"
+            android:layout_toRightOf="@+id/draft"
             android:textColor="#80191921"
             android:textSize="28px"
+            tools:text="南侧死啊减肥呢"
+            />
+
+        <TextView
+            android:id="@+id/draft"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentBottom="true"
+            android:layout_marginBottom="30px"
+            android:layout_toRightOf="@id/avatar"
+            android:text="[草稿]"
+            android:textSize="28px"
+            android:textColor="@color/colorAccent"
+            android:visibility="gone"
             />
 
         <TextView
@@ -65,6 +81,7 @@
             android:layout_marginTop="35px"
             android:textColor="#80191921"
             android:textSize="24px"
+            tools:text="2012-12-2"
             />
 
         <View
@@ -77,15 +94,15 @@
             />
 
         <TextView
+            android:id="@+id/unread"
             android:layout_width="40px"
             android:layout_height="40px"
-            android:background="@drawable/red_point"
-            android:text="6"
-            android:id="@+id/unread"
-            android:gravity="center"
-            android:textColor="@color/white"
-            android:layout_centerVertical="true"
             android:layout_alignParentRight="true"
+            android:layout_centerVertical="true"
+            android:background="@drawable/red_point"
+            android:gravity="center"
+            android:text="6"
+            android:textColor="@color/white"
             />
     </RelativeLayout>
 </com.grandmagic.readingmate.view.SwipeItemLayout>

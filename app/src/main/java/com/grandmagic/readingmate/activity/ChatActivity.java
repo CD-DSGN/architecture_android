@@ -7,6 +7,7 @@ import android.graphics.Color;
 import android.os.Bundle;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.text.TextUtils;
 import android.view.KeyEvent;
 import android.view.MotionEvent;
 import android.view.View;
@@ -29,8 +30,11 @@ import com.grandmagic.readingmate.adapter.MessageVoiceRecDelagate;
 import com.grandmagic.readingmate.adapter.MessageVoiceSendDelagate;
 import com.grandmagic.readingmate.adapter.MultiItemTypeAdapter;
 import com.grandmagic.readingmate.base.AppBaseActivity;
+import com.grandmagic.readingmate.bean.db.ChatDraftBox;
 import com.grandmagic.readingmate.bean.db.Contacts;
 import com.grandmagic.readingmate.bean.response.PersonInfo;
+import com.grandmagic.readingmate.db.ChatDraftBoxDao;
+import com.grandmagic.readingmate.db.DBHelper;
 import com.grandmagic.readingmate.event.ContactDeletedEvent;
 import com.grandmagic.readingmate.event.FriendDeleteEvent;
 import com.grandmagic.readingmate.listener.VoicePlayClickListener;
@@ -129,7 +133,18 @@ public class ChatActivity extends AppBaseActivity implements EMMessageListener, 
         mRxPermissions = new RxPermissions(this);
         chat_name = getIntent().getStringExtra(CHAT_NAME);
         toChatUserName = getIntent().getStringExtra(CHAT_IM_NAME);
-        gender = getIntent().getIntExtra(GENDER,3);
+        gender = getIntent().getIntExtra(GENDER, 3);
+        loadDraftFromDB();
+    }
+    ChatDraftBox mChatDraftBox;
+    private void loadDraftFromDB() {
+        mChatDraftBox = DBHelper.getChatDraftBoxDao(this).queryBuilder().
+                where(ChatDraftBoxDao.Properties.Tochatuserid.eq(toChatUserName), ChatDraftBoxDao.Properties.MType.eq(mChatType))
+                .build().unique();
+        DBHelper.close();
+        if (mChatDraftBox != null) {
+            mEtInput.setText(mChatDraftBox.getTxt());
+        }
     }
 
     @Override
@@ -235,7 +250,7 @@ public class ChatActivity extends AppBaseActivity implements EMMessageListener, 
      * @param mMessage 有时候选择的图片有路径但是可能导致失效，创建一个null 的message
      */
     private void sendMessage(EMMessage mMessage) {
-        if (!isfriend){
+        if (!isfriend) {
             Toast.makeText(this, "你们暂时还不是好友，无法发送消息", Toast.LENGTH_SHORT).show();
             return;
         }
@@ -318,7 +333,7 @@ public class ChatActivity extends AppBaseActivity implements EMMessageListener, 
     }
 
 
-    @OnClick({R.id.back, R.id.iv_select_img, R.id.voice,R.id.title_more})
+    @OnClick({R.id.back, R.id.iv_select_img, R.id.voice, R.id.title_more})
     public void onClick(View view) {
         switch (view.getId()) {
             case R.id.back:
@@ -328,7 +343,7 @@ public class ChatActivity extends AppBaseActivity implements EMMessageListener, 
                 chooseImg();
                 break;
             case R.id.title_more:
-               clickAvatar(toChatUserName);
+                clickAvatar(toChatUserName);
                 break;
         }
     }
@@ -434,6 +449,7 @@ public class ChatActivity extends AppBaseActivity implements EMMessageListener, 
         EMClient.getInstance().chatManager().removeMessageListener(this);//移除监听
         IMHelper.getInstance().popActivity(this);
     }
+
     /**
      * 点击头像事件
      *
@@ -487,20 +503,41 @@ public class ChatActivity extends AppBaseActivity implements EMMessageListener, 
     public void contactDelete(FriendDeleteEvent mEvent) {
         finish();
     }
-    boolean isfriend=true;
+
+    boolean isfriend = true;
+
     /**
      * 被删除
      */
     @Subscribe(threadMode = ThreadMode.MAIN)
     public void contactDeleted(ContactDeletedEvent mEvent) {
-       isfriend=false;
+        isfriend = false;
     }
+
     @Override
     protected void onDestroy() {
-        super.onDestroy();
         EventBus.getDefault().unregister(this);
         if (VoicePlayClickListener.isPlaying) {//activity destroy的时候如果还在播放音频，停止播放
             VoicePlayClickListener.currentPlayListener.stopPlayVoice();
         }
+        super.onDestroy();
     }
+
+    @Override
+    protected void onPause() {
+        super.onPause();
+        if (!TextUtils.isEmpty(mEtInput.getText())) {//保存草稿
+            ChatDraftBox mChatDraftBox = new ChatDraftBox();
+            mChatDraftBox.setType(mChatType);
+            mChatDraftBox.setTochatuserid(toChatUserName);
+            mChatDraftBox.setTxt(mEtInput.getText().toString());
+            DBHelper.getChatDraftBoxDao(this).insertOrReplace(mChatDraftBox);
+            DBHelper.close();
+        }else {
+            if (mChatDraftBox!=null)
+                DBHelper.getChatDraftBoxDao(this).delete(mChatDraftBox);
+        }
+    }
+
+    EMMessage.ChatType mChatType = EMMessage.ChatType.Chat;
 }

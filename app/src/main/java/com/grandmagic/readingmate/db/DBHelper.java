@@ -46,6 +46,10 @@ public class DBHelper {
         mSession = getDaoSession(mContext);
         return mSession.getBookCommentDao();
     }
+    public static ChatDraftBoxDao getChatDraftBoxDao(Context mContext) {
+        mSession = getDaoSession(mContext);
+        return mSession.getChatDraftBoxDao();
+    }
 
     public static void close() {
         closeDaosession();
