@@ -315,7 +315,7 @@ int unreadmsgCount;//未读消息
     }
 
     private void setSystemBarColor(boolean hidden) {
-        if (!hidden) ((AppBaseActivity) (mContext)).setSystemBarColor(android.R.color.darker_gray);
+        if (!hidden) ((AppBaseActivity) (mContext)).setSystemBarColor(R.color.white);
     }
 
     /**

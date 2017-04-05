@@ -112,7 +112,7 @@ public class FriendRequestActivity extends AppBaseActivity implements RequestLis
                 mContacts.setUser_id(Integer.valueOf(data.getUser_id()));
                 mContacts.setUser_name(data.getUser_name());
                 mContacts.setAvatar_url(data.getAvatar_native());
-                DBHelper.getContactsDao(FriendRequestActivity.this).save(mContacts);
+                DBHelper.getContactsDao(FriendRequestActivity.this).insertOrReplace(mContacts);
                 DBHelper.close();
                 EMMessage mTxtSendMessage = EMMessage.createTxtSendMessage("我们已经是好友啦，快来聊天吧！", data.getUser_id());
                 if (mTxtSendMessage != null) {

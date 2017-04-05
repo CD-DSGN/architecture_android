@@ -35,7 +35,7 @@ import rx.functions.Action1;
 //启动页面
 public class SplashActivity extends AppBaseActivity {
     private static final String TAG = "SplashActivity";
-    public static final int DEFAULT_TIME=3000;
+    public static final int DEFAULT_TIME=2000;
     @BindView(R.id.activity_splash)
     RelativeLayout mActivitySplash;
     @BindView(R.id.logo)
