@@ -57,11 +57,11 @@ public class CommentDetailModel {
             jsonObject.put("comment_id", comment_id);
             jsonObject.put("cpage", cur_page);
             jsonObject.put("pagesize", PAGE_COUNT_REPLYS);
+            mNovate.executeJson(ApiInterface.REPLY_INFO, jsonObject.toString(), callBack);
         } catch (JSONException e) {
             e.printStackTrace();
             return;
         }
-        mNovate.executeJson(ApiInterface.REPLY_INFO, jsonObject.toString(), callBack);
     }
 
     //回复评论
@@ -69,4 +69,29 @@ public class CommentDetailModel {
         Novate mNovate = new Novate.Builder(mContext).build();
         mNovate.executeJson(ApiInterface.REPLY_ADD, addReplyRequestBean.toGson(), callBack);
     }
+
+    //删除回复
+    public void delReply(String reply_id, AppBaseResponseCallBack callBack) {
+        Novate mNovate = new Novate.Builder(mContext).build();
+        JSONObject jsonObject = new JSONObject();
+        try {
+            jsonObject.put("reply_id", reply_id);
+            mNovate.executeJson(ApiInterface.REPLY_DEL, jsonObject.toString(), callBack);
+        } catch (JSONException e) {
+            e.printStackTrace();
+        }
+    }
+
+    public void likeReply(String reply_id, AppBaseResponseCallBack callBack) {
+        Novate mNovate = new Novate.Builder(mContext).build();
+        JSONObject jsonObject = new JSONObject();
+        try {
+            jsonObject.put("reply_id", reply_id);
+            mNovate.executeJson(ApiInterface.REPLY_LIKE, jsonObject.toString(), callBack);
+        } catch (JSONException e) {
+            e.printStackTrace();
+        }
+    }
+
+
 }

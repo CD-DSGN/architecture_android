@@ -231,16 +231,38 @@ public class CommentsActivity extends AppBaseActivity implements View.OnLayoutCh
         mMAdapter.setOnReplyListener(new CommentDetailAdapter.OnReplyListener() {
             @Override
             public void onReplyClick(int position) {
-
-//                ReplyInfoResponseBean.InfoBean reply = mReplys.get(position);
-//                addReply(reply.getPid());
-                //弹键盘
-
                 InputMethodUtils.openSoftKeyboard(CommentsActivity.this, mEtComment);
                 mEtComment.setHint(getString(R.string.reply) + mReplys.get(position).getFrom_user_name());
                 mPosition = position;
-//                LinearLayoutManager linearLayoutManager1 = linearLayoutManager;
-//                mRvCommentsDetail.smoothScrollToPosition(position);
+                //                LinearLayoutManager linearLayoutManager1 = linearLayoutManager;
+                //                mRvCommentsDetail.smoothScrollToPosition(position);
+            }
+
+            @Override
+            public void onDeleteClick(final int position) {
+                mCommentDetailModel.delReply(mReplys.get(position).getReply_comment_reply_id(),
+                        new AppBaseResponseCallBack<NovateResponse>(CommentsActivity.this) {
+                            @Override
+                            public void onSuccee(NovateResponse response) {
+                                mPage.delete(position);
+                                mMHeaderAndFooterWrapper.notifyDataSetChanged();
+                            }
+                        });
+            }
+
+            @Override
+            public void onLike(final int position) {   //点赞
+                mCommentDetailModel.likeReply(mReplys.get(position).getReply_comment_reply_id(),
+                        new AppBaseResponseCallBack<NovateResponse>(CommentsActivity.this) {
+                            @Override
+                            public void onSuccee(NovateResponse response) {
+                                ReplyInfoResponseBean.InfoBean reply = mReplys.get(position);
+                                reply.setIs_reply_thumb(1);
+                                reply.setLike_times(Integer.parseInt(reply.getLike_times()) + 1 + "");
+                                mMHeaderAndFooterWrapper.notifyDataSetChanged();
+                            }
+                        });
+
             }
         });
 
@@ -251,7 +273,6 @@ public class CommentsActivity extends AppBaseActivity implements View.OnLayoutCh
         mMHeaderAndFooterWrapper.notifyDataSetChanged();
         initRefresh();
         mBottomlayout.addOnLayoutChangeListener(this);
-
 
 
     }
@@ -389,7 +410,7 @@ public class CommentsActivity extends AppBaseActivity implements View.OnLayoutCh
     private void submitReply() {
         if (mPosition == -1) {
             addReply("0");
-        }else{
+        } else {
             addReply(mReplys.get(mPosition).getReply_comment_reply_id());
         }
     }

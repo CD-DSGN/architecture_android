@@ -3,6 +3,7 @@ package com.grandmagic.readingmate.adapter;
 import android.content.Context;
 import android.text.TextUtils;
 import android.view.View;
+import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.TextView;
 
@@ -60,17 +61,55 @@ public class CommentDetailAdapter extends CommonAdapter<ReplyInfoResponseBean.In
             e.printStackTrace();
         }
 
+        //判断该评论是否属于当前用户，相应显示删除还是回复
         TextView tv_reply = holder.getView(R.id.tv_reply);
-        tv_reply.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                mOnReplyListener.onReplyClick(position - 1);   //回复按钮响应, 因为有header的缘故，实际上应该减1
-            }
-        });
+
+        if (data.getIs_commented() == 1) {  //该评论属于当前用户，于是只能删除
+            tv_reply.setText(R.string.delete);
+            tv_reply.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    mOnReplyListener.onDeleteClick(position - 1);   //回复按钮响应, 因为有header的缘故，实际上应该减1
+                }
+            });
+        }else{      //人家的回复，只能进行回复
+            tv_reply.setText(R.string.reply);
+            tv_reply.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    mOnReplyListener.onReplyClick(position - 1);   //回复按钮响应, 因为有header的缘故，实际上应该减1
+                }
+            });
+
+        }
+
+        //根据不同的情况显示赞的状态
+        ImageButton ib = holder.getView(R.id.ib_good);
+        if (data.getIs_reply_thumb() == 1) {  //已点赞
+            ib.setBackgroundResource(R.drawable.iv_like);
+            ib.setOnClickListener(null);
+        }else{                          //没有点赞，可以进行点赞操作
+            ib.setBackgroundResource(R.drawable.iv_like_gray);
+            ib.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    mOnReplyListener.onLike(position - 1);
+                }
+            });
+
+        }
+
+        //点赞数量
+        String like_time = data.getLike_times();
+        String like = like_time.equals("0") ? mContext.getString(R.string.good) : like_time;
+        holder.setText(R.id.like_num, like);
+
     }
 
     public interface OnReplyListener {
         public void onReplyClick(int position);
+        public void onDeleteClick(int position);
+        public void onLike(int position);
     }
 
     public void setOnReplyListener(OnReplyListener onReplyListener) {
