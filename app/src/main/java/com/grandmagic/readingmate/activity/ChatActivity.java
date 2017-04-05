@@ -29,7 +29,7 @@ import com.grandmagic.readingmate.adapter.MessageVoiceRecDelagate;
 import com.grandmagic.readingmate.adapter.MessageVoiceSendDelagate;
 import com.grandmagic.readingmate.adapter.MultiItemTypeAdapter;
 import com.grandmagic.readingmate.base.AppBaseActivity;
-import com.grandmagic.readingmate.bean.response.Contacts;
+import com.grandmagic.readingmate.bean.db.Contacts;
 import com.grandmagic.readingmate.bean.response.PersonInfo;
 import com.grandmagic.readingmate.event.ContactDeletedEvent;
 import com.grandmagic.readingmate.event.FriendDeleteEvent;

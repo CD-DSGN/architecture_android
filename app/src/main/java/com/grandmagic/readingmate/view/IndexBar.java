@@ -15,8 +15,7 @@ import android.view.View;
 import android.widget.TextView;
 
 import com.grandmagic.readingmate.R;
-import com.grandmagic.readingmate.bean.response.Contacts;
-import com.grandmagic.readingmate.bean.response.DataBean;
+import com.grandmagic.readingmate.bean.db.Contacts;
 
 import java.util.Arrays;
 import java.util.List;

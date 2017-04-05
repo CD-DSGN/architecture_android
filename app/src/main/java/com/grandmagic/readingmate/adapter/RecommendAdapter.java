@@ -2,14 +2,11 @@ package com.grandmagic.readingmate.adapter;
 
 import android.content.Context;
 import android.view.View;
-import android.widget.ImageButton;
 import android.widget.ImageView;
-import android.widget.TextView;
 
 import com.grandmagic.readingmate.R;
-import com.grandmagic.readingmate.bean.response.Contacts;
+import com.grandmagic.readingmate.bean.db.Contacts;
 import com.grandmagic.readingmate.utils.ImageLoader;
-import com.tamic.novate.util.Environment;
 import com.zhy.adapter.recyclerview.base.ViewHolder;
 
 import java.util.ArrayList;
@@ -17,9 +14,6 @@ import java.util.HashMap;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
-import java.util.Set;
-
-import butterknife.BindView;
 
 /**
  * Created by lps on 2017-3-27

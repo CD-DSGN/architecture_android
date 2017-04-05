@@ -1,6 +1,5 @@
 package com.grandmagic.readingmate.listener;
 
-import android.app.Activity;
 import android.app.ActivityManager;
 import android.app.Notification;
 import android.app.NotificationManager;
@@ -18,13 +17,11 @@ import android.support.v4.app.NotificationCompat;
 import android.util.Log;
 
 import com.grandmagic.readingmate.activity.MainActivity;
-import com.grandmagic.readingmate.bean.response.InviteMessage;
+import com.grandmagic.readingmate.bean.db.InviteMessage;
 import com.grandmagic.readingmate.db.DBHelper;
 import com.grandmagic.readingmate.db.InviteMessageDao;
 import com.grandmagic.readingmate.utils.IMHelper;
 import com.hyphenate.chat.EMMessage;
-
-import org.greenrobot.greendao.query.Query;
 
 import java.util.List;
 

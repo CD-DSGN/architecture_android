@@ -19,7 +19,7 @@ import com.grandmagic.readingmate.adapter.ContactNewFriendDelagate;
 import com.grandmagic.readingmate.adapter.MultiItemTypeAdapter;
 import com.grandmagic.readingmate.base.AppBaseActivity;
 import com.grandmagic.readingmate.base.AppBaseResponseCallBack;
-import com.grandmagic.readingmate.bean.response.Contacts;
+import com.grandmagic.readingmate.bean.db.Contacts;
 import com.grandmagic.readingmate.db.DBHelper;
 import com.grandmagic.readingmate.event.ContactDeletedEvent;
 import com.grandmagic.readingmate.event.FriendDeleteEvent;

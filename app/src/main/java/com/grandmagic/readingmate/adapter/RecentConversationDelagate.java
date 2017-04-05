@@ -1,15 +1,11 @@
 package com.grandmagic.readingmate.adapter;
 
 import android.content.Context;
-import android.content.Intent;
 import android.view.View;
 import android.widget.ImageView;
 
 import com.grandmagic.readingmate.R;
-import com.grandmagic.readingmate.activity.ChatActivity;
-import com.grandmagic.readingmate.activity.MainActivity;
-import com.grandmagic.readingmate.bean.response.Contacts;
-import com.grandmagic.readingmate.fragment.ChatFragment;
+import com.grandmagic.readingmate.bean.db.Contacts;
 import com.grandmagic.readingmate.utils.IMHelper;
 import com.grandmagic.readingmate.utils.ImageLoader;
 import com.hyphenate.chat.EMConversation;

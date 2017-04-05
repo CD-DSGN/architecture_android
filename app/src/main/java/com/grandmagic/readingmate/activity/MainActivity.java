@@ -21,7 +21,7 @@ import android.widget.Toast;
 import com.grandmagic.readingmate.R;
 import com.grandmagic.readingmate.base.AppBaseActivity;
 import com.grandmagic.readingmate.base.AppBaseResponseCallBack;
-import com.grandmagic.readingmate.bean.response.Contacts;
+import com.grandmagic.readingmate.bean.db.Contacts;
 import com.grandmagic.readingmate.bean.response.SearchUserResponse;
 import com.grandmagic.readingmate.db.ContactsDao;
 import com.grandmagic.readingmate.db.DBHelper;

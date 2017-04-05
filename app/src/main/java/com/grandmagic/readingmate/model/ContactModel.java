@@ -3,12 +3,10 @@ package com.grandmagic.readingmate.model;
 import android.content.Context;
 
 import com.grandmagic.readingmate.base.AppBaseResponseCallBack;
-import com.grandmagic.readingmate.bean.response.Contacts;
+import com.grandmagic.readingmate.bean.db.Contacts;
 import com.grandmagic.readingmate.consts.ApiInterface;
 import com.grandmagic.readingmate.db.ContactsDao;
 import com.grandmagic.readingmate.db.DBHelper;
-import com.tamic.novate.NovateResponse;
-import com.tamic.novate.util.SPUtils;
 import com.tamic.novate.Novate;
 
 import org.json.JSONException;

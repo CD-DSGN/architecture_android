@@ -1,6 +1,6 @@
-package com.grandmagic.readingmate.bean.response;
+package com.grandmagic.readingmate.bean.db;
 
-import com.grandmagic.readingmate.bean.response.InviteMessage;
+import com.grandmagic.readingmate.bean.db.InviteMessage;
 
 import org.greenrobot.greendao.converter.PropertyConverter;
 

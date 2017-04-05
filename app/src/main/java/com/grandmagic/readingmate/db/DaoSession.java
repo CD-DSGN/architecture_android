@@ -8,9 +8,11 @@ import org.greenrobot.greendao.database.Database;
 import org.greenrobot.greendao.identityscope.IdentityScopeType;
 import org.greenrobot.greendao.internal.DaoConfig;
 
-import com.grandmagic.readingmate.bean.response.Contacts;
-import com.grandmagic.readingmate.bean.response.InviteMessage;
+import com.grandmagic.readingmate.bean.db.BookComment;
+import com.grandmagic.readingmate.bean.db.Contacts;
+import com.grandmagic.readingmate.bean.db.InviteMessage;
 
+import com.grandmagic.readingmate.db.BookCommentDao;
 import com.grandmagic.readingmate.db.ContactsDao;
 import com.grandmagic.readingmate.db.InviteMessageDao;
 
@@ -23,9 +25,11 @@ import com.grandmagic.readingmate.db.InviteMessageDao;
  */
 public class DaoSession extends AbstractDaoSession {
 
+    private final DaoConfig bookCommentDaoConfig;
     private final DaoConfig contactsDaoConfig;
     private final DaoConfig inviteMessageDaoConfig;
 
+    private final BookCommentDao bookCommentDao;
     private final ContactsDao contactsDao;
     private final InviteMessageDao inviteMessageDao;
 
@@ -33,22 +37,32 @@ public class DaoSession extends AbstractDaoSession {
             daoConfigMap) {
         super(db);
 
+        bookCommentDaoConfig = daoConfigMap.get(BookCommentDao.class).clone();
+        bookCommentDaoConfig.initIdentityScope(type);
+
         contactsDaoConfig = daoConfigMap.get(ContactsDao.class).clone();
         contactsDaoConfig.initIdentityScope(type);
 
         inviteMessageDaoConfig = daoConfigMap.get(InviteMessageDao.class).clone();
         inviteMessageDaoConfig.initIdentityScope(type);
 
+        bookCommentDao = new BookCommentDao(bookCommentDaoConfig, this);
         contactsDao = new ContactsDao(contactsDaoConfig, this);
         inviteMessageDao = new InviteMessageDao(inviteMessageDaoConfig, this);
 
+        registerDao(BookComment.class, bookCommentDao);
         registerDao(Contacts.class, contactsDao);
         registerDao(InviteMessage.class, inviteMessageDao);
     }
     
     public void clear() {
+        bookCommentDaoConfig.clearIdentityScope();
         contactsDaoConfig.clearIdentityScope();
         inviteMessageDaoConfig.clearIdentityScope();
+    }
+
+    public BookCommentDao getBookCommentDao() {
+        return bookCommentDao;
     }
 
     public ContactsDao getContactsDao() {

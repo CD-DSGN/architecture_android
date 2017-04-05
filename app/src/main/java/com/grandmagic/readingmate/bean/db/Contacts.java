@@ -1,14 +1,10 @@
-package com.grandmagic.readingmate.bean.response;
+package com.grandmagic.readingmate.bean.db;
 
 import android.text.TextUtils;
-
-import com.google.gson.annotations.SerializedName;
-import com.tamic.novate.util.Environment;
 
 import org.greenrobot.greendao.annotation.Convert;
 import org.greenrobot.greendao.annotation.Entity;
 import org.greenrobot.greendao.annotation.Id;
-import org.greenrobot.greendao.annotation.ToOne;
 import org.greenrobot.greendao.annotation.Transient;
 import org.greenrobot.greendao.annotation.Generated;
 import org.greenrobot.greendao.annotation.Unique;

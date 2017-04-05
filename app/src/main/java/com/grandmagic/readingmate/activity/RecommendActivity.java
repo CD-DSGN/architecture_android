@@ -13,7 +13,7 @@ import android.widget.TextView;
 import com.grandmagic.readingmate.R;
 import com.grandmagic.readingmate.adapter.RecommendAdapter;
 import com.grandmagic.readingmate.base.AppBaseActivity;
-import com.grandmagic.readingmate.bean.response.Contacts;
+import com.grandmagic.readingmate.bean.db.Contacts;
 import com.grandmagic.readingmate.bean.response.PersonInfo;
 import com.grandmagic.readingmate.db.ContactsDao;
 import com.grandmagic.readingmate.db.DBHelper;

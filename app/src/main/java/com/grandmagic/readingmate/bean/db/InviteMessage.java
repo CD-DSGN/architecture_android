@@ -13,12 +13,11 @@
  */
 
 //好友请求相关实体类
-package com.grandmagic.readingmate.bean.response;
+package com.grandmagic.readingmate.bean.db;
 
 import org.greenrobot.greendao.annotation.Convert;
 import org.greenrobot.greendao.annotation.Entity;
 import org.greenrobot.greendao.annotation.Id;
-import org.greenrobot.greendao.converter.PropertyConverter;
 import org.greenrobot.greendao.annotation.Generated;
 
 @Entity

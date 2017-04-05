@@ -2,22 +2,18 @@ package com.grandmagic.readingmate.utils;
 
 import android.app.Activity;
 import android.content.Context;
-import android.database.sqlite.SQLiteDatabase;
 import android.util.Log;
 
-import com.grandmagic.readingmate.bean.response.Contacts;
-import com.grandmagic.readingmate.bean.response.InviteMessage;
+import com.grandmagic.readingmate.bean.db.Contacts;
+import com.grandmagic.readingmate.bean.db.InviteMessage;
 import com.grandmagic.readingmate.db.ContactsDao;
 import com.grandmagic.readingmate.db.DBHelper;
-import com.grandmagic.readingmate.db.DaoMaster;
-import com.grandmagic.readingmate.db.DaoSession;
 import com.grandmagic.readingmate.listener.DefaultSettingsProvider;
 import com.grandmagic.readingmate.listener.IMConnectionListener;
 import com.grandmagic.readingmate.listener.IMContactListener;
 import com.grandmagic.readingmate.listener.IMMessageListenerApp;
 import com.grandmagic.readingmate.listener.IMNotifier;
 import com.grandmagic.readingmate.listener.IMSettingsProvider;
-import com.grandmagic.readingmate.listener.IMUserProfileProvider;
 import com.hyphenate.chat.EMClient;
 import com.hyphenate.chat.EMMessage;
 

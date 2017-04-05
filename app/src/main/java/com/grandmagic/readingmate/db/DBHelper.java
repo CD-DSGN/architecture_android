@@ -33,4 +33,12 @@ public class DBHelper {
         DaoSession mSession = mDaoMaster.newSession();
         return mSession.getContactsDao();
     }
+
+    public static BookCommentDao getBookCommentDao(Context mContext){
+        DaoMaster.DevOpenHelper mDevOpenHelper = new DaoMaster.DevOpenHelper(mContext, getDBName(mContext), null);
+        SQLiteDatabase db = mDevOpenHelper.getWritableDatabase();
+        DaoMaster mDaoMaster = new DaoMaster(db);
+        DaoSession mSession = mDaoMaster.newSession();
+        return mSession.getBookCommentDao();
+    }
 }

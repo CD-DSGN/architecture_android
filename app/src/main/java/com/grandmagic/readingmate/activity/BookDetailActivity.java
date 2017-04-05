@@ -3,6 +3,7 @@ package com.grandmagic.readingmate.activity;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.v4.view.ViewPager;
+import android.text.TextUtils;
 import android.util.TypedValue;
 import android.view.View;
 import android.widget.Button;
@@ -17,8 +18,11 @@ import com.grandmagic.readingmate.R;
 import com.grandmagic.readingmate.adapter.CommonPagerAdapter;
 import com.grandmagic.readingmate.base.AppBaseActivity;
 import com.grandmagic.readingmate.base.AppBaseResponseCallBack;
+import com.grandmagic.readingmate.bean.db.BookComment;
 import com.grandmagic.readingmate.bean.response.BookdetailResponse;
 import com.grandmagic.readingmate.bean.response.HistoryComment;
+import com.grandmagic.readingmate.db.BookCommentDao;
+import com.grandmagic.readingmate.db.DBHelper;
 import com.grandmagic.readingmate.model.BookModel;
 import com.grandmagic.readingmate.utils.AutoUtils;
 import com.grandmagic.readingmate.utils.DensityUtil;
@@ -181,9 +185,10 @@ public class BookDetailActivity extends AppBaseActivity implements View.OnLayout
 
     BookModel mModel;
     int hisScore;//我之前对这本书的评分，
-
+    BookCommentDao mCommentDao;
     private void initdata() {
         mModel = new BookModel(this);
+        mCommentDao = DBHelper.getBookCommentDao(this);
         book_id = getIntent().getStringExtra(BOOK_ID);
         mModel.getBookDetail(book_id, new AppBaseResponseCallBack<NovateResponse<BookdetailResponse>>(this) {
             @Override
@@ -199,6 +204,19 @@ public class BookDetailActivity extends AppBaseActivity implements View.OnLayout
                 mHisScore.setText(hisScore + "分");
             }
         });
+        loadCommentFromDB();
+    }
+
+    /**
+     * 从db加载之前是否有未提交的评论
+     */
+    BookComment mHisComment;
+    private void loadCommentFromDB() {
+        mHisComment = mCommentDao.queryBuilder().where(BookCommentDao.Properties.Bookid.eq(book_id)).build().unique();
+        if (mHisComment!=null){
+            mEtComment.setText(mHisComment.getComment_content());
+            mScore.setText(mHisComment.getScore()+"");
+        }
     }
 
 
@@ -269,18 +287,23 @@ public class BookDetailActivity extends AppBaseActivity implements View.OnLayout
     /**
      * 提交评论到后台
      */
+    int mbookScore;
+
     private void submitComment() {
-        int mScore = (int) mRatingbar.getScore();
+        mbookScore = (int) mRatingbar.getScore();
         String content = mEtComment.getText().toString();
-        if (mScore == 0) {
+        if (mbookScore == 0) {
             Toast.makeText(this, "还是评个分再提交吧", Toast.LENGTH_SHORT).show();
             return;
         }
-        mModel.ScoreBook(book_id, mScore, content, new AppBaseResponseCallBack<NovateResponse>(this) {
+        mModel.ScoreBook(book_id, mbookScore, content, new AppBaseResponseCallBack<NovateResponse>(this) {
             @Override
             public void onSuccee(NovateResponse response) {
                 InputMethodUtils.hide(BookDetailActivity.this);
                 mEtComment.setText("");
+                if (mHisComment != null) {
+                    mCommentDao.delete(mHisComment);
+                }
             }
         });
     }
@@ -301,5 +324,17 @@ public class BookDetailActivity extends AppBaseActivity implements View.OnLayout
             mLinCollection.addView(mView);
         }
 
+    }
+
+    @Override
+    protected void onDestroy() {
+        if (!TextUtils.isEmpty(mEtComment.getText())) {//如果有未提交的评论则保存到本地
+            BookComment mBookComment = new BookComment();
+            mBookComment.setScore(mbookScore);
+            mBookComment.setBookid(book_id);
+            mBookComment.setComment_content(mEtComment.getText().toString());
+            mCommentDao.insertOrReplace(mBookComment);
+        }
+        super.onDestroy();
     }
 }

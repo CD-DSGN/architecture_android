@@ -3,9 +3,7 @@ package com.grandmagic.readingmate.adapter;
 import android.content.Context;
 import android.view.View;
 
-import com.grandmagic.readingmate.bean.response.Contacts;
 import com.grandmagic.readingmate.utils.AutoUtils;
-import com.hyphenate.chat.EMMessage;
 import com.zhy.adapter.recyclerview.base.ViewHolder;
 
 import java.util.List;

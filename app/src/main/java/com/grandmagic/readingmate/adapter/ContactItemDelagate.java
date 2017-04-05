@@ -9,7 +9,7 @@ import android.widget.ImageView;
 import com.grandmagic.readingmate.R;
 import com.grandmagic.readingmate.activity.ChatActivity;
 import com.grandmagic.readingmate.base.AppBaseResponseCallBack;
-import com.grandmagic.readingmate.bean.response.Contacts;
+import com.grandmagic.readingmate.bean.db.Contacts;
 import com.grandmagic.readingmate.model.ContactModel;
 import com.grandmagic.readingmate.ui.CustomDialog;
 import com.grandmagic.readingmate.utils.ImageLoader;

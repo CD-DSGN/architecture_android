@@ -1,8 +1,7 @@
 package com.grandmagic.readingmate.adapter;
 
 import com.grandmagic.readingmate.R;
-import com.grandmagic.readingmate.bean.response.Contacts;
-import com.grandmagic.readingmate.utils.AutoUtils;
+import com.grandmagic.readingmate.bean.db.Contacts;
 import com.zhy.adapter.recyclerview.base.ItemViewDelegate;
 import com.zhy.adapter.recyclerview.base.ViewHolder;
 

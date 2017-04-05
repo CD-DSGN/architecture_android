@@ -2,8 +2,8 @@ package com.grandmagic.readingmate.listener;
 
 import android.content.Context;
 
-import com.grandmagic.readingmate.bean.response.Contacts;
-import com.grandmagic.readingmate.bean.response.InviteMessage;
+import com.grandmagic.readingmate.bean.db.Contacts;
+import com.grandmagic.readingmate.bean.db.InviteMessage;
 import com.grandmagic.readingmate.db.ContactsDao;
 import com.grandmagic.readingmate.db.DBHelper;
 import com.grandmagic.readingmate.db.InviteMessageDao;
