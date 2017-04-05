@@ -62,8 +62,9 @@ public class MyCommentAdapter extends CommonAdapter<PersonnalCommentResponseBean
             holder.setText(R.id.time, time_str);  //显示发表评论时间
             String like_times = personnalCommentResponseBean.getLike_times();
             if (like_times == null) {
-                like_times = " ";
+                like_times = "0";
             }
+
             holder.setText(R.id.tv_likenum, like_times); //设置点赞的数目
             mLlShare = holder.getView(R.id.ll_share);
             mLlShare.setOnClickListener(new View.OnClickListener() {
