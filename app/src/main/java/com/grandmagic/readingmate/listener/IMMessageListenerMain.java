@@ -28,7 +28,7 @@ public class IMMessageListenerMain implements EMMessageListener {
     public void onMessageReceived(List<EMMessage> mList) {
         for (EMMessage msg : mList) {
             Log.e(TAG, "onMessageReceived: " + msg);
-            IMHelper.getInstance().onNewMsg(msg);
+//            IMHelper.getInstance().onNewMsg(msg);
             ((MainActivity) (mContext)).newMsg();
         }
     }

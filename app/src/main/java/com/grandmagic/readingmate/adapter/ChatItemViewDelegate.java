@@ -3,6 +3,7 @@ package com.grandmagic.readingmate.adapter;
 import android.content.Context;
 import android.os.Handler;
 import android.os.Message;
+import android.util.Log;
 import android.view.View;
 import android.widget.ImageView;
 import android.widget.RelativeLayout;
@@ -29,6 +30,7 @@ public abstract class ChatItemViewDelegate implements ItemViewDelegate<EMMessage
     private static final String TAG = "ChatItemViewDelegate";
     EMMessage.Direct mDirect;
     Context mContext;
+    long premsgtime;//上一条消息的时间戳
 
     public ChatItemViewDelegate(Context mContext) {
         this.mContext = mContext;
@@ -47,11 +49,15 @@ public abstract class ChatItemViewDelegate implements ItemViewDelegate<EMMessage
 
     @Override
     public void convert(ViewHolder holder, final EMMessage mChatMessage, int position) {
-        long mMsgTime = mChatMessage.getMsgTime();
         holder.setText(R.id.time, DateUtil.timeTodate(mChatMessage.getMsgTime() + ""));
+        //间隔小于30秒不显示时间戳
+        if (position == 0 || Math.abs(mChatMessage.getMsgTime() - premsgtime) > 30 * 1000) {
+            holder.setVisible(R.id.time, true);
+            premsgtime = mChatMessage.getMsgTime();
+        } else holder.setVisible(R.id.time, false);
         Contacts mUserInfo;
         if (mDirect == EMMessage.Direct.SEND) {
-mUserInfo=IMHelper.getInstance().getUserInfo(SPUtils.getInstance().getString(mContext,SPUtils.IM_NAME));
+            mUserInfo = IMHelper.getInstance().getUserInfo(SPUtils.getInstance().getString(mContext, SPUtils.IM_NAME));
         } else {
             mUserInfo = IMHelper.getInstance()
                     .getUserInfo(mChatMessage.getFrom());
@@ -76,8 +82,8 @@ mUserInfo=IMHelper.getInstance().getUserInfo(SPUtils.getInstance().getString(mCo
         final View progress = holder.getView(R.id.status_prgress);
         RelativeLayout holderView = holder.getView(R.id.contentView);
         holderView.removeAllViews();
-        View childView = setContentView(mChatMessage,holderView);
-        if (childView!=null) {
+        View childView = setContentView(mChatMessage, holderView);
+        if (childView != null) {
             ViewHolder mHolder = ViewHolder.createViewHolder(mContext, childView);
             childConvert(mHolder, mChatMessage, position);
         }
@@ -117,6 +123,7 @@ mUserInfo=IMHelper.getInstance().getUserInfo(SPUtils.getInstance().getString(mCo
             }
 
         });
+
     }
 
     protected abstract void childConvert(ViewHolder mHolder, EMMessage mChatMessage, int mPosition);
