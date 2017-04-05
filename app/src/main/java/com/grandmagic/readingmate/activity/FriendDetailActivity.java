@@ -405,6 +405,7 @@ public class FriendDetailActivity extends AppBaseActivity {
                 if (mUnique != null) {
                     mContactsDao.delete(mUnique);
                 }
+                DBHelper.close();
                 finish();
             }
         });

@@ -131,6 +131,7 @@ public class BookDetailActivity extends AppBaseActivity implements View.OnLayout
         initlistener();
     }
 
+
     private void initlistener() {
         mBottomlayout.addOnLayoutChangeListener(this);
         mViewpager.addOnPageChangeListener(new ViewPager.SimpleOnPageChangeListener() {
@@ -185,10 +186,9 @@ public class BookDetailActivity extends AppBaseActivity implements View.OnLayout
 
     BookModel mModel;
     int hisScore;//我之前对这本书的评分，
-    BookCommentDao mCommentDao;
+
     private void initdata() {
         mModel = new BookModel(this);
-        mCommentDao = DBHelper.getBookCommentDao(this);
         book_id = getIntent().getStringExtra(BOOK_ID);
         mModel.getBookDetail(book_id, new AppBaseResponseCallBack<NovateResponse<BookdetailResponse>>(this) {
             @Override
@@ -211,11 +211,13 @@ public class BookDetailActivity extends AppBaseActivity implements View.OnLayout
      * 从db加载之前是否有未提交的评论
      */
     BookComment mHisComment;
+
     private void loadCommentFromDB() {
-        mHisComment = mCommentDao.queryBuilder().where(BookCommentDao.Properties.Bookid.eq(book_id)).build().unique();
-        if (mHisComment!=null){
+        mHisComment = DBHelper.getBookCommentDao(this).queryBuilder().where(BookCommentDao.Properties.Bookid.eq(book_id)).build().unique();
+        DBHelper.close();
+        if (mHisComment != null) {
             mEtComment.setText(mHisComment.getComment_content());
-            mScore.setText(mHisComment.getScore()+"");
+            mScore.setText(mHisComment.getScore() + "");
         }
     }
 
@@ -302,7 +304,8 @@ public class BookDetailActivity extends AppBaseActivity implements View.OnLayout
                 InputMethodUtils.hide(BookDetailActivity.this);
                 mEtComment.setText("");
                 if (mHisComment != null) {
-                    mCommentDao.delete(mHisComment);
+                    DBHelper.getBookCommentDao(BookDetailActivity.this).delete(mHisComment);
+                    DBHelper.close();
                 }
             }
         });
@@ -317,7 +320,7 @@ public class BookDetailActivity extends AppBaseActivity implements View.OnLayout
         for (BookdetailResponse.CollectUserBean user : mCollectView) {
             ImageView mView = new ImageView(this);
             LinearLayout.LayoutParams mParams = new LinearLayout.LayoutParams(70, 70);
-            mParams.setMargins(10,10,10,10);
+            mParams.setMargins(10, 10, 10, 10);
             mView.setLayoutParams(mParams);
             AutoUtils.auto(mView);
             ImageLoader.loadRoundImage(this, Environment.BASEULR_PRODUCTION + user.getAvatar_url().getMid(), mView);
@@ -333,8 +336,10 @@ public class BookDetailActivity extends AppBaseActivity implements View.OnLayout
             mBookComment.setScore(mbookScore);
             mBookComment.setBookid(book_id);
             mBookComment.setComment_content(mEtComment.getText().toString());
-            mCommentDao.insertOrReplace(mBookComment);
+            DBHelper.getBookCommentDao(this).insertOrReplace(mBookComment);
+            DBHelper.close();
         }
         super.onDestroy();
     }
+
 }

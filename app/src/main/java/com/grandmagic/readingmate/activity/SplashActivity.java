@@ -24,6 +24,8 @@ import com.tamic.novate.Throwable;
 import com.tamic.novate.util.SPUtils;
 import com.tbruyelle.rxpermissions.RxPermissions;
 
+import org.greenrobot.greendao.query.QueryBuilder;
+
 import java.util.List;
 
 import butterknife.BindView;
@@ -47,6 +49,8 @@ public class SplashActivity extends AppBaseActivity {
         ButterKnife.bind(this);
         initview();
         checkfrist();
+        QueryBuilder.LOG_SQL = true;
+        QueryBuilder.LOG_VALUES = true;
 //        startActivity(new Intent(SplashActivity.this,SettingActivity.class));
     }
 
@@ -89,6 +93,7 @@ public class SplashActivity extends AppBaseActivity {
                     for (Contacts mContacts : mData) {
                         mContactsDao.insertOrReplace(mContacts);
                     }
+                    DBHelper.close();
                     EMClient.getInstance().chatManager().loadAllConversations();
                     EMClient.getInstance().groupManager().loadAllGroups();
                     canDestroy = true;

@@ -73,6 +73,7 @@ public class FriendRequestActivity extends AppBaseActivity implements RequestLis
             mInviteMessages.get(i).setIsread(0);
             mInviteDao.update(mInviteMessages.get(i));
         }
+        DBHelper.close();
         mModel = new ContactModel(this);
         mModel.getallRequest(new AppBaseResponseCallBack<NovateResponse<List<RequestListResponse>>>(this) {
             @Override
@@ -112,6 +113,7 @@ public class FriendRequestActivity extends AppBaseActivity implements RequestLis
                 mContacts.setUser_name(data.getUser_name());
                 mContacts.setAvatar_url(data.getAvatar_native());
                 DBHelper.getContactsDao(FriendRequestActivity.this).save(mContacts);
+                DBHelper.close();
                 EMMessage mTxtSendMessage = EMMessage.createTxtSendMessage("我们已经是好友啦，快来聊天吧！", data.getUser_id());
                 if (mTxtSendMessage != null) {
                     EMClient.getInstance().chatManager().sendMessage(mTxtSendMessage);

@@ -160,6 +160,7 @@ public class ContactModel {
     public static boolean isFriend(Context mContext, String userid) {
         ContactsDao mContactsDao = DBHelper.getContactsDao(mContext);
         Contacts mUnique = mContactsDao.queryBuilder().where(ContactsDao.Properties.User_id.eq(userid)).build().unique();
+        DBHelper.close();
         return mUnique != null;
     }
 }

@@ -54,15 +54,10 @@ public class IMContactListener implements EMContactListener {
     @Override
     public void onFriendRequestAccepted(String mS) {
         Logger.e("onFriendRequestAccepted: " + mS);
-        InviteMessageDao mInviteDao = DBHelper.getInviteDao(mContext);
-        InviteMessage mUnique = mInviteDao.queryBuilder().where(InviteMessageDao.Properties.From.eq(mS)).build().unique();
-        if (mUnique == null) return;
-        mUnique.setStatus(InviteMessage.InviteMesageStatus.BEAGREED);
-        mUnique.setTime(System.currentTimeMillis());
-        mInviteDao.update(mUnique);
-
         InviteMessage mMessage = new InviteMessage();
         mMessage.setFrom(mS);
+        mMessage.setStatus(InviteMessage.InviteMesageStatus.BEAGREED);
+        mMessage.setTime(System.currentTimeMillis());
         IMHelper.getInstance().newInvaiteMsg(mMessage);
         EventBus.getDefault().post(new NewFriendRequestEvent());
     }
@@ -84,6 +79,7 @@ public class IMContactListener implements EMContactListener {
         ContactsDao mContactsDao = DBHelper.getContactsDao(mContext);
         Contacts mUnique = mContactsDao.queryBuilder().where(ContactsDao.Properties.User_name.eq(username)).build().unique();
         if (mUnique != null) mContactsDao.delete(mUnique);
+        DBHelper.close();
         //被删除时回调此方法
     }
 

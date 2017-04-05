@@ -70,6 +70,7 @@ public class IMHelper {
         ContactsDao mContactsDao = DBHelper.getContactsDao(mAppContext);
         Contacts mContacts = mContactsDao.queryBuilder().whereOr(ContactsDao.Properties.User_id.eq(mUsernam),ContactsDao.Properties.User_name.eq(mUsernam)).build().unique();
         Log.e(TAG, "getUserInfo: "+(mContacts==null?null:mContacts.toString()) );
+        DBHelper.close();
         return mContacts;
     }
 

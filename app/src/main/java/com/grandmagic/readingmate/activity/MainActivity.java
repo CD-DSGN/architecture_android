@@ -133,6 +133,7 @@ public class MainActivity extends AppBaseActivity {
                     mContacts.setSignature(responseData.getSignature());
                     ContactsDao mContactsDao = DBHelper.getContactsDao(MainActivity.this);
                     mContactsDao.insertOrReplace(mContacts);
+                    DBHelper.close();
                 }
             }
         });

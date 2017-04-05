@@ -169,6 +169,7 @@ public class RecommendActivity extends AppBaseActivity {
         List<Contacts> mLoadAll = mContactsDao.queryBuilder().
 //                排除掉这个用户自己
         where(ContactsDao.Properties.User_id.notEq(mPersonInfo.getUser_id())).list();
+        DBHelper.close();
         if (mLoadAll != null && !mLoadAll.isEmpty()) {
             mContactses.addAll(mLoadAll);
             mAdapter.notifyDataSetChanged();

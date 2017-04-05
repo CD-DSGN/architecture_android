@@ -256,6 +256,7 @@ public class ChatFragment extends AppBaseFragment implements RecentConversationD
         InviteMessageDao mInviteDao = DBHelper.getInviteDao(mContext);
         CountQuery<InviteMessage> mInviteMessageCountQuery = mInviteDao.queryBuilder().where(InviteMessageDao.Properties.Isread.eq(1)).buildCount();
         mCount = (int) mInviteMessageCountQuery.count();
+        DBHelper.close();
         mRedPoint.setVisibility(mCount > 0 ? View.VISIBLE : View.GONE);
     }
 
@@ -292,6 +293,7 @@ public class ChatFragment extends AppBaseFragment implements RecentConversationD
         mIntent.putExtra(ChatActivity.CHAT_NAME, mFinalUsername);
         ContactsDao mContactsDao = DBHelper.getContactsDao(mContext);
         Contacts mUnique = mContactsDao.queryBuilder().where(ContactsDao.Properties.User_name.eq(mFinalUsername)).build().unique();
+        DBHelper.close();
         if (mUnique != null)
             mIntent.putExtra(ChatActivity.GENDER, mUnique.getGender());
         mConversations.get(position).markAllMessagesAsRead();
@@ -310,6 +312,7 @@ public class ChatFragment extends AppBaseFragment implements RecentConversationD
 
     /**
      * 当删除好友的时候回调
+     *
      * @param mEvent
      */
     @Subscribe(threadMode = ThreadMode.MAIN)
@@ -320,6 +323,7 @@ public class ChatFragment extends AppBaseFragment implements RecentConversationD
 
     /**
      * 当被好友删除的时候回调
+     *
      * @param mEvent
      */
     @Subscribe(threadMode = ThreadMode.MAIN)
@@ -331,8 +335,9 @@ public class ChatFragment extends AppBaseFragment implements RecentConversationD
             }
         }
     }
+
     @Subscribe(threadMode = ThreadMode.MAIN)
-    public  void newFriendRequestevent(NewFriendRequestEvent mEvent){
+    public void newFriendRequestevent(NewFriendRequestEvent mEvent) {
         onrefreshConversation();
     }
 }

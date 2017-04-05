@@ -195,6 +195,7 @@ public class IMNotifier {
     public void newInvaiteMsg(InviteMessage mInviteMessage) {
         InviteMessageDao mInviteDao = DBHelper.getInviteDao(mAppContext);
         mInviteDao.insertOrReplace(mInviteMessage);//每次收到新的好友请求保存到表里
+        DBHelper.close();
         vibrateAndPlayTone(null);
         sendInviteNotification(mInviteMessage);
     }

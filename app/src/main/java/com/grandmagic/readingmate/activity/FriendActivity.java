@@ -104,6 +104,7 @@ public class FriendActivity extends AppBaseActivity implements ContactItemDelaga
                 }
             }
         }
+        DBHelper.close();
         Logger.e("更新好友列表");
         mAdapter.setData(mAdapterData);
     }
