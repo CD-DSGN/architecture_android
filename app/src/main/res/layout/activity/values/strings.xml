@@ -102,4 +102,6 @@
     <string name="no_pre_page">当前已为第一页</string>
     <string name="reply_num">条回复</string>
     <string name="likes_info">点赞过的用户</string>
+    <string name="no_duplicate_good">不能重复点赞</string>
+    <string name="goods_num">%d人赞过</string>
 </resources>

@@ -1,6 +1,7 @@
 package com.grandmagic.readingmate.activity;
 
 import android.content.Intent;
+import android.graphics.Color;
 import android.os.Bundle;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
@@ -80,7 +81,9 @@ public class CommentsActivity extends AppBaseActivity implements View.OnLayoutCh
     ImageView mCover;
     TextView mBookName;
     TextView mGoodsNum;
+    TextView mLikeNum;
     ImageView mApostrophe;
+    ImageView mCommentGood;
 
     ImageView iv1;
     ImageView iv2;
@@ -98,6 +101,8 @@ public class CommentsActivity extends AppBaseActivity implements View.OnLayoutCh
 
     BookModel mModel;
     int mPosition = -1;
+    private int mLike_num = 0;
+    private int mIsThumb = 2;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -189,9 +194,9 @@ public class CommentsActivity extends AppBaseActivity implements View.OnLayoutCh
         mContent.setText(mCommentsDetailResponoseBean.getContent());
         String cover_url = mCommentsDetailResponoseBean.getPhoto();
         ImageLoader.loadCircleImage(this, KitUtils.getAbsoluteUrl(cover_url), mCover);
-        int like_num = mCommentsDetailResponoseBean.getLike_times();
-        mGoodsNum.setText(like_num + "人赞过");
-        if (like_num > 4) {   //显示省略号
+        mLike_num = mCommentsDetailResponoseBean.getLike_times();
+        mGoodsNum.setText(mLike_num + "人赞过");
+        if (mLike_num > 4) {   //显示省略号
             mApostrophe.setVisibility(View.VISIBLE);
         } else {
             mApostrophe.setVisibility(View.INVISIBLE);
@@ -210,8 +215,8 @@ public class CommentsActivity extends AppBaseActivity implements View.OnLayoutCh
                 iv.setVisibility(View.VISIBLE);
             }
         }
-
-
+        mIsThumb = mCommentsDetailResponoseBean.getIs_thumb();
+        setCommentThumb();
     }
 
     private void hideLikers() {
@@ -297,7 +302,7 @@ public class CommentsActivity extends AppBaseActivity implements View.OnLayoutCh
                     mCommentDetailModel.getAllReplys(mCommentID, mReplyCallBack, mPage.cur_page);
                     mReplyCallBack.isRefresh = false;
                 } else {
-                    ViewUtils.showToast("暂无更多数据");
+                    ViewUtils.showToast(getString(R.string.no_more));
                     return false;
                 }
                 return true;
@@ -316,6 +321,8 @@ public class CommentsActivity extends AppBaseActivity implements View.OnLayoutCh
         mBookName = (TextView) mView.findViewById(R.id.tv_book_name);
         mGoodsNum = (TextView) mView.findViewById(R.id.tv_goods_num);
         mApostrophe = (ImageView) mView.findViewById(R.id.iv_apostrophe);
+        mCommentGood = (ImageView) mView.findViewById(R.id.iv_comment_good);
+        mLikeNum = (TextView) mView.findViewById(R.id.like_num);
         iv1 = (ImageView) mView.findViewById(R.id.iv_1);
         iv2 = (ImageView) mView.findViewById(R.id.iv_2);
         iv3 = (ImageView) mView.findViewById(R.id.iv_3);
@@ -339,6 +346,48 @@ public class CommentsActivity extends AppBaseActivity implements View.OnLayoutCh
                 startActivity(intent);
             }
         });
+
+        setCommentThumb();
+
+        //对图书评论进行点赞
+        mCommentGood.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                if (mIsThumb == 2) {  //未点赞情况下进行点赞
+                    mModel.thumbBookComment(mCommentID, new AppBaseResponseCallBack<NovateResponse>(CommentsActivity.this) {
+                        @Override
+                        public void onSuccee(NovateResponse response) {
+                            String good_text = String.format(getString(R.string.goods_num), ++mLike_num);
+                            mGoodsNum.setText(good_text);
+                            mIsThumb = 1;
+                            mCommentsDetailResponoseBean.setIs_thumb(mIsThumb);
+                            mCommentsDetailResponoseBean.setLike_times(mLike_num);
+                            setCommentThumb();
+                        }
+                    });
+                }else{
+                    ViewUtils.showToast(getString(R.string.no_duplicate_good));
+                }
+            }
+        });
+    }
+
+    private void setCommentThumb() {
+        if (mIsThumb == 1) {   //已点赞
+            mCommentGood.setBackgroundResource(R.drawable.iv_like);
+        } else if (mIsThumb == 2) {   //未点赞
+            mCommentGood.setBackgroundResource(R.drawable.iv_like_gray);
+        }else{
+
+        }
+
+        if (mLike_num > 0) {
+            mLikeNum.setText(mLike_num + "");
+            mLikeNum.setTextColor(Color.parseColor("#991cc9a2"));
+        }else{
+            mLikeNum.setText(R.string.good);
+            mLikeNum.setTextColor(Color.parseColor("#99999999"));
+        }
     }
 
 
