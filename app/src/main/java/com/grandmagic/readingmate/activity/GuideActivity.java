@@ -33,7 +33,7 @@ public class GuideActivity extends AppBaseActivity {
     List<Fragment> mViews = new ArrayList<>();
 
     private void initview() {
-        for (int i = 0; i < 3; i++) {
+        for (int i = 0; i < 4; i++) {
             GuideFragment mGuideFragment=new GuideFragment();
             Bundle mBundle=new Bundle();
             mBundle.putInt("position",i);
@@ -41,7 +41,7 @@ public class GuideActivity extends AppBaseActivity {
             mViews.add(mGuideFragment);
         }
     mViewpager.setAdapter(new Myadapter(getSupportFragmentManager()));
-
+mViewpager.setOffscreenPageLimit(4);
 
 
     }

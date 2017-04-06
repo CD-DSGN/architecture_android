@@ -47,8 +47,10 @@ public class SplashActivity extends AppBaseActivity {
         AutoUtils.setSize(this, false, 750, 1334);
         setContentView(R.layout.activity_splash);
         ButterKnife.bind(this);
-        initview();
-        checkfrist();
+        startActivity(new Intent(this,GuideActivity.class));
+        finish();
+//        initview();
+//        checkfrist();
         QueryBuilder.LOG_SQL = true;
         QueryBuilder.LOG_VALUES = true;
 //        startActivity(new Intent(SplashActivity.this,SettingActivity.class));
