@@ -4,6 +4,7 @@ import android.app.ActivityManager;
 import android.app.Notification;
 import android.app.NotificationManager;
 import android.app.PendingIntent;
+import android.content.ComponentName;
 import android.content.Context;
 import android.content.Intent;
 import android.content.pm.PackageManager;
@@ -16,6 +17,9 @@ import android.os.Vibrator;
 import android.support.v4.app.NotificationCompat;
 import android.util.Log;
 
+import com.grandmagic.readingmate.activity.ChatActivity;
+import com.grandmagic.readingmate.activity.FriendActivity;
+import com.grandmagic.readingmate.activity.FriendRequestActivity;
 import com.grandmagic.readingmate.activity.MainActivity;
 import com.grandmagic.readingmate.bean.db.InviteMessage;
 import com.grandmagic.readingmate.db.DBHelper;
@@ -97,7 +101,7 @@ public class IMNotifier {
                     .setAutoCancel(true);
 //            Intent msgIntent = mAppContext.getPackageManager().getLaunchIntentForPackage(packName);
             Intent msgIntent = new Intent(mAppContext, MainActivity.class);
-            msgIntent.putExtra(IMMessageListenerApp.FLAG_NEWMESSAGE,IMMessageListenerApp.FLAG_NEWMESSAGE);
+            msgIntent.putExtra(IMMessageListenerApp.FLAG_NEWMESSAGE, IMMessageListenerApp.FLAG_NEWMESSAGE);
             PendingIntent mPendingIntent = PendingIntent.getActivity(mAppContext, notifyID, msgIntent, PendingIntent.FLAG_UPDATE_CURRENT);
             mBuilder.setContentTitle(contenttitle);
             mBuilder.setTicker(notifytxt);
@@ -212,20 +216,43 @@ public class IMNotifier {
         NotificationCompat.Builder mBuilder = new NotificationCompat.Builder(mAppContext)
                 .setSmallIcon(mAppContext.getApplicationInfo().icon)
                 .setWhen(System.currentTimeMillis())
-                .setContentTitle("好友相关")
-                .setContentText("新的好友请求")
-                .setTicker("新的好友请求")
+                .setContentTitle("验证消息")
 //                .setContentInfo(msg.getFrom()+msg.getStatus().name())
                 .setAutoCancel(true);
-        Intent msgIntent = mAppContext.getPackageManager().getLaunchIntentForPackage(packName);
-        PendingIntent mPendingIntent = PendingIntent.getActivity(mAppContext, notifyID, msgIntent, PendingIntent.FLAG_UPDATE_CURRENT);
+        if (msg.getStatus().equals(InviteMessage.InviteMesageStatus.BEAGREED)) {
+            mBuilder.setContentText(msg.getFrom() + "同意了你的好友请求")
+                    .setTicker(msg.getFrom() + "同意了你的好友请求");
+            PendingIntent mPendingIntent = PendingIntent.getActivities(mAppContext, 0, makechatIntentStack(), PendingIntent.FLAG_CANCEL_CURRENT);
+            mBuilder.setContentIntent(mPendingIntent);
+        } else if (msg.getStatus().equals(InviteMessage.InviteMesageStatus.BEINVITEED)) {
+            mBuilder.setContentText(msg.getFrom() + "请求添加你为好友")
+                    .setTicker(msg.getFrom() + "请求添加你为好友");
+            PendingIntent mPendingIntent = PendingIntent.getActivities(mAppContext, 0, makerequestIntentStack(), PendingIntent.FLAG_CANCEL_CURRENT);
+            mBuilder.setContentIntent(mPendingIntent);
+        }
+//        Intent msgIntent = mAppContext.getPackageManager().getLaunchIntentForPackage(packName);
+//        PendingIntent mPendingIntent = PendingIntent.getActivity(mAppContext, notifyID, msgIntent, PendingIntent.FLAG_UPDATE_CURRENT);
 //        mBuilder.setContentTitle(contenttitle);
 //        mBuilder.setTicker(msg.getFrom());
 //        if (msg.getStatus() == InviteMessage.InviteMesageStatus.BEINVITEED) {
 //            mBuilder.setContentText(msg.getReason());
 //        }
-        mBuilder.setContentIntent(mPendingIntent);
+//        mBuilder.setContentIntent(mPendingIntent);
         Notification mNotification = mBuilder.build();
         mNotificationManager.notify(foregroundNotifyID, mNotification);
+    }
+
+    private Intent[] makerequestIntentStack() {
+        Intent[] intents = new Intent[3];
+        intents[0] = Intent.makeRestartActivityTask(new ComponentName(mAppContext, com.grandmagic.readingmate.activity.MainActivity.class));
+        intents[1] = new Intent(mAppContext, com.grandmagic.readingmate.activity.FriendActivity.class);
+        intents[2] = new Intent(mAppContext, com.grandmagic.readingmate.activity.FriendRequestActivity.class);
+        return intents;
+    }
+    private Intent[] makechatIntentStack() {
+        Intent[] intents = new Intent[2];
+        intents[0] = Intent.makeRestartActivityTask(new ComponentName(mAppContext,  com.grandmagic.readingmate.activity.MainActivity.class));
+        intents[1] = new Intent(mAppContext,  com.grandmagic.readingmate.activity.ChatActivity.class);
+        return intents;
     }
 }
