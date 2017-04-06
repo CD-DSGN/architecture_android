@@ -151,6 +151,16 @@ public class ContactModel {
         mNovate.executeJson(ApiInterface.PERSON_COMMENT_DETAIL, mJSONObject.toString(), mBack);
     }
 
+    public void getOtherUserInfo(String userid,AppBaseResponseCallBack mBack){
+        Novate mNovate=new Novate.Builder(mContext).build();
+        JSONObject mJSONObject=new JSONObject();
+        try {
+            mJSONObject.put("user_id",userid);
+        } catch (JSONException mE) {
+            mE.printStackTrace();
+        }
+        mNovate.executeJson(ApiInterface.GET_OTHER_USERINFO,mJSONObject.toString(),mBack);
+    }
     /**
      * 是否是好友关系
      * @param mContext

@@ -37,6 +37,7 @@ public class ApiInterface {
     public static final String BOOK_ALL_FOLLOWERS = "collect/getallfollowers"; //获取某本图书的所有收藏的人
     public static final String BIND_DEVICE_TOKEN = "device/setdevicetoken"; //绑定device token
     public static final String GETALLREPLY = "reply/getallreply"; //查看所有别人对自己的回复
+    public static final String GET_OTHER_USERINFO = "userinfo/getothersinfo"; //通过userid获取userinfo
 
     public static final String GET_USR_INFO = "userinfo/getuserinfo"; //获取用户基本信息
     public static final String SET_USR_INFO = "userinfo/setpersonal"; //设置用户信息
