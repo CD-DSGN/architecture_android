@@ -8,6 +8,7 @@ import android.content.ComponentName;
 import android.content.Context;
 import android.content.Intent;
 import android.content.pm.PackageManager;
+import android.graphics.Bitmap;
 import android.media.AudioManager;
 import android.media.Ringtone;
 import android.media.RingtoneManager;
@@ -16,18 +17,33 @@ import android.os.Build;
 import android.os.Vibrator;
 import android.support.v4.app.NotificationCompat;
 import android.util.Log;
+import android.widget.RemoteViews;
 
+import com.bumptech.glide.BitmapTypeRequest;
+import com.bumptech.glide.Glide;
+import com.bumptech.glide.request.animation.GlideAnimation;
+import com.bumptech.glide.request.target.SimpleTarget;
+import com.grandmagic.readingmate.R;
 import com.grandmagic.readingmate.activity.ChatActivity;
 import com.grandmagic.readingmate.activity.FriendActivity;
 import com.grandmagic.readingmate.activity.FriendRequestActivity;
 import com.grandmagic.readingmate.activity.MainActivity;
+import com.grandmagic.readingmate.bean.db.Contacts;
 import com.grandmagic.readingmate.bean.db.InviteMessage;
 import com.grandmagic.readingmate.db.DBHelper;
 import com.grandmagic.readingmate.db.InviteMessageDao;
+import com.grandmagic.readingmate.utils.GlideCircleTransform;
 import com.grandmagic.readingmate.utils.IMHelper;
 import com.hyphenate.chat.EMMessage;
+import com.hyphenate.chat.EMTextMessageBody;
+import com.tamic.novate.util.Environment;
 
 import java.util.List;
+
+import rx.Observable;
+import rx.Subscriber;
+import rx.android.schedulers.AndroidSchedulers;
+import rx.schedulers.Schedulers;
 
 /**
  * Created by lps on 2017/3/2.
@@ -81,7 +97,8 @@ public class IMNotifier {
      */
     protected void sendNotification(EMMessage message, boolean isForeground, boolean numIncrease) {
         // TODO: 2017/3/2 免打扰等设置判断，暂时没处理
-        String username = message.getFrom();
+        Contacts mUserInfo = IMHelper.getInstance().getUserInfo(message.getFrom());
+        String username = mUserInfo == null ? message.getFrom() : mUserInfo.getUser_name();
         try {
             String notifytxt = username + "";
             switch (message.getType()) {
@@ -94,9 +111,11 @@ public class IMNotifier {
             }
             PackageManager mPackageManager = mAppContext.getPackageManager();
             String appname = (String) mPackageManager.getApplicationLabel(mAppContext.getApplicationInfo());
-            String contenttitle = appname;
+            String contenttitle = mUserInfo == null ? appname : mUserInfo.getUser_name();
+            RemoteViews mRemoteViews = new RemoteViews(appname, R.layout.notification_view);
+            mRemoteViews.setTextViewText(R.id.notification_title, contenttitle);
+            getIconBitmap(mRemoteViews, mUserInfo);
             NotificationCompat.Builder mBuilder = new NotificationCompat.Builder(mAppContext)
-                    .setSmallIcon(mAppContext.getApplicationInfo().icon)
                     .setWhen(System.currentTimeMillis())
                     .setAutoCancel(true);
 //            Intent msgIntent = mAppContext.getPackageManager().getLaunchIntentForPackage(packName);
@@ -105,13 +124,60 @@ public class IMNotifier {
             PendingIntent mPendingIntent = PendingIntent.getActivity(mAppContext, notifyID, msgIntent, PendingIntent.FLAG_UPDATE_CURRENT);
             mBuilder.setContentTitle(contenttitle);
             mBuilder.setTicker(notifytxt);
-            mBuilder.setContentText(message.getBody().toString());
+            if (message.getType() == EMMessage.Type.TXT) {
+                mRemoteViews.setTextViewText(R.id.notgification_content, ((EMTextMessageBody) message.getBody()).getMessage());
+            } else if (message.getType() == EMMessage.Type.IMAGE) {
+                mRemoteViews.setTextViewText(R.id.notgification_content, "[图片]");
+            } else if (message.getType() == EMMessage.Type.VOICE) {
+                mRemoteViews.setTextViewText(R.id.notgification_content, "[语音]");
+            } else if (message.getType() == EMMessage.Type.LOCATION) {
+                mRemoteViews.setTextViewText(R.id.notgification_content, "[地理位置]");
+            } else {
+                mRemoteViews.setTextViewText(R.id.notgification_content, "有新的消息");
+            }
             mBuilder.setContentIntent(mPendingIntent);
+//            mBuilder.setContent(mRemoteViews);
             Notification mNotification = mBuilder.build();
             mNotificationManager.notify(foregroundNotifyID, mNotification);
         } catch (Exception e) {
-
+            Log.d(TAG, "sendNotification() called with: message = [" + message + "], isForeground = [" + isForeground + "], numIncrease = [" + numIncrease + "]");
         }
+    }
+
+    private void getIconBitmap(final RemoteViews mRemoteViews, final Contacts mUserInfo) {
+        Observable.create(new Observable.OnSubscribe<BitmapTypeRequest<String>>() {
+
+            @Override
+            public void call(Subscriber<? super BitmapTypeRequest<String>> mSubscriber) {
+                BitmapTypeRequest<String> mStringBitmapTypeRequest = Glide.with(mAppContext).load(Environment.BASEULR_PRODUCTION + mUserInfo.getAvatar_url().getMid())
+                        .asBitmap();
+                mSubscriber.onNext(mStringBitmapTypeRequest);
+            }
+        }).observeOn(AndroidSchedulers.mainThread())
+                .subscribeOn(Schedulers.io())
+                .subscribe(new Subscriber<BitmapTypeRequest<String>>() {
+                    @Override
+                    public void onCompleted() {
+
+                    }
+
+                    @Override
+                    public void onError(Throwable e) {
+
+                    }
+
+                    @Override
+                    public void onNext(BitmapTypeRequest<String> mStringBitmapTypeRequest) {
+                        mStringBitmapTypeRequest.into(new SimpleTarget<Bitmap>() {
+                            @Override
+                            public void onResourceReady(Bitmap resource, GlideAnimation<? super Bitmap> glideAnimation) {
+                                mRemoteViews.setImageViewBitmap(R.id.notification_large_icon, resource);
+                            }
+                        });
+                    }
+                });
+
+
     }
 
     /**
@@ -242,6 +308,11 @@ public class IMNotifier {
         mNotificationManager.notify(foregroundNotifyID, mNotification);
     }
 
+    /**
+     * 跳转到好友请求的Intent
+     *
+     * @return
+     */
     private Intent[] makerequestIntentStack() {
         Intent[] intents = new Intent[3];
         intents[0] = Intent.makeRestartActivityTask(new ComponentName(mAppContext, com.grandmagic.readingmate.activity.MainActivity.class));
@@ -249,10 +320,16 @@ public class IMNotifier {
         intents[2] = new Intent(mAppContext, com.grandmagic.readingmate.activity.FriendRequestActivity.class);
         return intents;
     }
+
+    /**
+     * 跳转到聊天相关的Intent
+     *
+     * @return
+     */
     private Intent[] makechatIntentStack() {
         Intent[] intents = new Intent[2];
-        intents[0] = Intent.makeRestartActivityTask(new ComponentName(mAppContext,  com.grandmagic.readingmate.activity.MainActivity.class));
-        intents[1] = new Intent(mAppContext,  com.grandmagic.readingmate.activity.ChatActivity.class);
+        intents[0] = Intent.makeRestartActivityTask(new ComponentName(mAppContext, com.grandmagic.readingmate.activity.MainActivity.class));
+        intents[1] = new Intent(mAppContext, com.grandmagic.readingmate.activity.ChatActivity.class);
         return intents;
     }
 }
