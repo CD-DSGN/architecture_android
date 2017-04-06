@@ -72,7 +72,7 @@
 
     <TextView
         android:id="@+id/content"
-        android:layout_width="wrap_content"
+        android:layout_width="618px"
         android:layout_height="wrap_content"
         android:layout_marginTop="10px"
         android:text="随便写吧。"
