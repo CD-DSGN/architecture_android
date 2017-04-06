@@ -17,6 +17,7 @@ import android.widget.TextView;
 
 import com.grandmagic.readingmate.R;
 import com.grandmagic.readingmate.activity.CollectionActivity;
+import com.grandmagic.readingmate.activity.MessageNotificationActivity;
 import com.grandmagic.readingmate.activity.PersonalInfoEditActivity;
 import com.grandmagic.readingmate.activity.SettingActivity;
 import com.grandmagic.readingmate.adapter.MyCommentAdapter;
@@ -231,7 +232,7 @@ public class PersonalFragment extends AppBaseFragment implements MyCommentAdapte
     }
 
 
-    @OnClick({R.id.tv_edit_personal_info, R.id.ll_collect, R.id.ll_setting})
+    @OnClick({R.id.tv_edit_personal_info, R.id.ll_collect, R.id.ll_setting,R.id.rela_notification})
     public void onClick(View view) {
         switch (view.getId()) {
             case R.id.tv_edit_personal_info:
@@ -247,6 +248,9 @@ public class PersonalFragment extends AppBaseFragment implements MyCommentAdapte
             case R.id.ll_setting:
                 Intent intent_setting = new Intent(mContext, SettingActivity.class);
                 startActivity(intent_setting);
+                break;
+            case R.id.rela_notification:
+                startActivity(new Intent(getActivity(), MessageNotificationActivity.class));
                 break;
             default:
                 break;

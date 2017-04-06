@@ -11,6 +11,7 @@ import android.widget.TextView;
 import com.grandmagic.readingmate.R;
 import com.grandmagic.readingmate.base.AppBaseActivity;
 import com.grandmagic.readingmate.base.AppBaseResponseCallBack;
+import com.grandmagic.readingmate.event.LogoutEvent;
 import com.grandmagic.readingmate.model.LoginModel;
 import com.grandmagic.readingmate.ui.CleanCacheDlg;
 import com.grandmagic.readingmate.utils.AutoUtils;
@@ -20,6 +21,8 @@ import com.hyphenate.chat.EMClient;
 import com.tamic.novate.NovateResponse;
 import com.tamic.novate.Throwable;
 import com.tamic.novate.util.SPUtils;
+
+import org.greenrobot.eventbus.EventBus;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
@@ -96,6 +99,7 @@ public class SettingActivity extends AppBaseActivity {
                                 getString(R.string.logout_success));
                         jumpToLoginActivity();
                         finish();
+                        EventBus.getDefault().post(new LogoutEvent());
                     }
 
                     @Override

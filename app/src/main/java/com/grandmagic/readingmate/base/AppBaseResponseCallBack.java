@@ -8,6 +8,7 @@ import android.content.Intent;
 import com.grandmagic.readingmate.activity.LoginActivity;
 import com.grandmagic.readingmate.consts.ApiErrorConsts;
 import com.grandmagic.readingmate.utils.ViewUtils;
+import com.hyphenate.chat.EMClient;
 import com.orhanobut.logger.Logger;
 import com.tamic.novate.Novate;
 import com.tamic.novate.Throwable;
@@ -73,6 +74,7 @@ public abstract class AppBaseResponseCallBack<T> implements Novate.ResponseCallB
                 ViewUtils.showToast(e.getMessage() + "");
                 Logger.e(e.getMessage());
             } else {
+                EMClient.getInstance().logout(true);//环信的退出
                 Intent intent = new Intent(mContext, LoginActivity.class);
                 Logger.e(e.getMessage()+mContext);
                 mContext.startActivity(intent);

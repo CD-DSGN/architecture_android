@@ -20,7 +20,7 @@
     <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE"/>
     <!-- 这个权限用于获取wifi的获取权限，wifi信息会用来进行网络定位 -->
     <uses-permission android:name="android.permission.CHANGE_WIFI_STATE"/>
-    <uses-permission android:name="android.permission.READ_LOGS" />
+    <uses-permission android:name="android.permission.READ_LOGS"/>
     <!-- 用于读取手机当前的状态 -->
     <uses-permission android:name="android.permission.READ_PHONE_STATE"/>
     <!-- 写入扩展存储，向扩展卡写入数据，用于写入离线定位数据 -->
@@ -52,13 +52,13 @@
     <uses-permission android:name="android.permission.ACCESS_COARSE_LOCATION"/>
     <uses-permission android:name="android.permission.ACCESS_LOCATION_EXTRA_COMMANDS"/>
 
+    <!-- bugly -->
+    <uses-permission android:name="android.permission.READ_PHONE_STATE"/>
+    <uses-permission android:name="android.permission.INTERNET"/>
+    <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE"/>
+    <uses-permission android:name="android.permission.ACCESS_WIFI_STATE"/>
+    <uses-permission android:name="android.permission.READ_LOGS"/>
 
-    <!--bugly-->
-    <uses-permission android:name="android.permission.READ_PHONE_STATE" />
-    <uses-permission android:name="android.permission.INTERNET" />
-    <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
-    <uses-permission android:name="android.permission.ACCESS_WIFI_STATE" />
-    <uses-permission android:name="android.permission.READ_LOGS" />
     <application
         android:name=".base.AppBaseApplication"
         android:allowBackup="true"
@@ -85,22 +85,23 @@
         <!-- 配置APP ID -->
         <meta-data
             android:name="BUGLY_APPID"
-            android:value="4381145a25" />
+            android:value="4381145a25"/>
         <!-- 配置APP版本号 -->
         <meta-data
             android:name="BUGLY_APP_VERSION"
-            android:value="2017年4月1日" />
+            android:value="2017年4月1日"/>
         <!-- 配置APP渠道号 -->
         <meta-data
             android:name="BUGLY_APP_CHANNEL"
-            android:value="lps" />
-        <!-- 配置Bugly调试模式（true或者false）-->
+            android:value="lps"/>
+        <!-- 配置Bugly调试模式（true或者false） -->
         <meta-data
             android:name="BUGLY_ENABLE_DEBUG"
-            android:value="true" />
-        <activity android:name=".activity.SplashActivity"
-            android:theme="@style/fullsrceen"
-            >
+            android:value="true"/>
+
+        <activity
+            android:name=".activity.SplashActivity"
+            android:theme="@style/fullsrceen">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN"/>
 
@@ -251,18 +252,22 @@
             android:name=".activity.RecommendActivity"
             android:theme="@style/notitle">
         </activity>
-
-        <activity android:name=".activity.LikersInfoActivity"
+        <activity
+            android:name=".activity.LikersInfoActivity"
             android:theme="@style/notitle">
         </activity>
-        <activity android:name=".activity.GuideActivity"
+        <activity
+            android:name=".activity.GuideActivity"
             android:theme="@style/fullsrceen">
         </activity>
-
-        <activity android:name=".activity.CollectBookSearchActivity"
-                  android:theme="@style/notitle">
+        <activity
+            android:name=".activity.CollectBookSearchActivity"
+            android:theme="@style/notitle">
         </activity>
-
+        <activity android:name=".activity.MessageNotificationActivity"
+            android:theme="@style/notitle"
+            >
+        </activity>
     </application>
 
 </manifest>

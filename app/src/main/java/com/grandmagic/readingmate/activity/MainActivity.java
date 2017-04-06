@@ -28,6 +28,7 @@ import com.grandmagic.readingmate.db.ContactsDao;
 import com.grandmagic.readingmate.db.DBHelper;
 import com.grandmagic.readingmate.event.BindDeviceTokenEvent;
 import com.grandmagic.readingmate.event.ConnectStateEvent;
+import com.grandmagic.readingmate.event.LogoutEvent;
 import com.grandmagic.readingmate.fragment.ChatFragment;
 import com.grandmagic.readingmate.fragment.HomeFragment;
 import com.grandmagic.readingmate.fragment.PersonalFragment;
@@ -181,7 +182,7 @@ public class MainActivity extends AppBaseActivity {
         //初始化homefragment
         Fragment mHomeFragment = createFragment(HomeFragment.class);
         Fragment mchatfragment = createFragment(ChatFragment.class);//初始化的时候吧聊天页也初始化了，可能需要调用他的消息方法
-        mFragmentManager.beginTransaction().add(R.id.contentframe,mchatfragment).show(mchatfragment).hide(mchatfragment).commit();
+        mFragmentManager.beginTransaction().add(R.id.contentframe, mchatfragment).show(mchatfragment).hide(mchatfragment).commit();
         mFragmentManager.beginTransaction().add(R.id.contentframe, mHomeFragment).show(mHomeFragment).commit();
         mcurrentFragment = mHomeFragment;
         mcurrentIV = mIvHome;
@@ -347,7 +348,7 @@ public class MainActivity extends AppBaseActivity {
                     ((ChatFragment) mFragments.get(ChatFragment.class.getName())).onrefreshConversation();
                 } catch (Exception mE) {
                     mE.printStackTrace();
-                    Log.d("Exception", "run() called"+mE);
+                    Log.d("Exception", "run() called" + mE);
                 }
             }
         });
@@ -390,6 +391,7 @@ public class MainActivity extends AppBaseActivity {
                 public void onClick(DialogInterface dialog, int which) {
                     mDialog.dismiss();
                     SPUtils.getInstance().clearToken(MainActivity.this);
+                    EMClient.getInstance().logout(true);//环信的退出
                     startActivity(new Intent(MainActivity.this, LoginActivity.class));
                     finish();
                 }
@@ -406,6 +408,16 @@ public class MainActivity extends AppBaseActivity {
     public void bindDeviceToken(BindDeviceTokenEvent mEvent) {
         bindDeviceToken(mEvent.getDevicetoken());
     }
+
+    /**
+     * 退出账号时结束掉Mainactivity
+     * @param mEvent
+     */
+    @Subscribe(threadMode = ThreadMode.MAIN)
+    public void logoutEvent(LogoutEvent mEvent) {
+        finish();
+    }
+
 
     @Override
     protected void onDestroy() {
