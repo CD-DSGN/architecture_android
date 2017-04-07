@@ -43,6 +43,7 @@ import java.util.List;
 import rx.Observable;
 import rx.Subscriber;
 import rx.android.schedulers.AndroidSchedulers;
+import rx.functions.Func1;
 import rx.schedulers.Schedulers;
 
 /**
@@ -109,52 +110,27 @@ public class IMNotifier {
                     notifytxt += msgs[1];
                     break;
             }
-            PackageManager mPackageManager = mAppContext.getPackageManager();
-            String appname = (String) mPackageManager.getApplicationLabel(mAppContext.getApplicationInfo());
-            String contenttitle = mUserInfo == null ? appname : mUserInfo.getUser_name();
-            RemoteViews mRemoteViews = new RemoteViews(appname, R.layout.notification_view);
-            mRemoteViews.setTextViewText(R.id.notification_title, contenttitle);
-            getIconBitmap(mRemoteViews, mUserInfo);
-            NotificationCompat.Builder mBuilder = new NotificationCompat.Builder(mAppContext)
-                    .setWhen(System.currentTimeMillis())
-                    .setAutoCancel(true);
-//            Intent msgIntent = mAppContext.getPackageManager().getLaunchIntentForPackage(packName);
-            Intent msgIntent = new Intent(mAppContext, MainActivity.class);
-            msgIntent.putExtra(IMMessageListenerApp.FLAG_NEWMESSAGE, IMMessageListenerApp.FLAG_NEWMESSAGE);
-            PendingIntent mPendingIntent = PendingIntent.getActivity(mAppContext, notifyID, msgIntent, PendingIntent.FLAG_UPDATE_CURRENT);
-            mBuilder.setContentTitle(contenttitle);
-            mBuilder.setTicker(notifytxt);
-            if (message.getType() == EMMessage.Type.TXT) {
-                mRemoteViews.setTextViewText(R.id.notgification_content, ((EMTextMessageBody) message.getBody()).getMessage());
-            } else if (message.getType() == EMMessage.Type.IMAGE) {
-                mRemoteViews.setTextViewText(R.id.notgification_content, "[图片]");
-            } else if (message.getType() == EMMessage.Type.VOICE) {
-                mRemoteViews.setTextViewText(R.id.notgification_content, "[语音]");
-            } else if (message.getType() == EMMessage.Type.LOCATION) {
-                mRemoteViews.setTextViewText(R.id.notgification_content, "[地理位置]");
-            } else {
-                mRemoteViews.setTextViewText(R.id.notgification_content, "有新的消息");
-            }
-            mBuilder.setContentIntent(mPendingIntent);
-//            mBuilder.setContent(mRemoteViews);
-            Notification mNotification = mBuilder.build();
-            mNotificationManager.notify(foregroundNotifyID, mNotification);
+
+
+            getIconBitmap(mUserInfo,notifytxt,message);
+
         } catch (Exception e) {
             Log.d(TAG, "sendNotification() called with: message = [" + message + "], isForeground = [" + isForeground + "], numIncrease = [" + numIncrease + "]");
         }
     }
 
-    private void getIconBitmap(final RemoteViews mRemoteViews, final Contacts mUserInfo) {
-        Observable.create(new Observable.OnSubscribe<BitmapTypeRequest<String>>() {
+    private void getIconBitmap(final Contacts mUserInfo, final String mNotifytxt, final EMMessage mMessage) {
 
-            @Override
-            public void call(Subscriber<? super BitmapTypeRequest<String>> mSubscriber) {
-                BitmapTypeRequest<String> mStringBitmapTypeRequest = Glide.with(mAppContext).load(Environment.BASEULR_PRODUCTION + mUserInfo.getAvatar_url().getMid())
-                        .asBitmap();
-                mSubscriber.onNext(mStringBitmapTypeRequest);
-            }
-        }).observeOn(AndroidSchedulers.mainThread())
-                .subscribeOn(Schedulers.io())
+        Observable
+                .just(Environment.BASEULR_PRODUCTION+mUserInfo.getAvatar_url().getMid())
+                .flatMap(new Func1<String, Observable<BitmapTypeRequest<String>>>() {
+                    @Override
+                    public Observable<BitmapTypeRequest<String>> call(String mS) {
+                        BitmapTypeRequest<String> mStringBitmapTypeRequest = Glide.with(mAppContext).load(mS).asBitmap();
+                        return Observable.just(mStringBitmapTypeRequest);
+                    }
+                })
+                .observeOn(AndroidSchedulers.mainThread())
                 .subscribe(new Subscriber<BitmapTypeRequest<String>>() {
                     @Override
                     public void onCompleted() {
@@ -163,7 +139,7 @@ public class IMNotifier {
 
                     @Override
                     public void onError(Throwable e) {
-
+                     showNotification(mUserInfo,mNotifytxt,mMessage,null);
                     }
 
                     @Override
@@ -171,7 +147,7 @@ public class IMNotifier {
                         mStringBitmapTypeRequest.into(new SimpleTarget<Bitmap>() {
                             @Override
                             public void onResourceReady(Bitmap resource, GlideAnimation<? super Bitmap> glideAnimation) {
-                                mRemoteViews.setImageViewBitmap(R.id.notification_large_icon, resource);
+                                showNotification(mUserInfo,mNotifytxt,mMessage,resource);
                             }
                         });
                     }
@@ -180,6 +156,46 @@ public class IMNotifier {
 
     }
 
+    private void showNotification(Contacts mUserInfo, String notifytxt, EMMessage message, Bitmap mResource){
+        Log.d(TAG, "showNotification() called with: mUserInfo = [" + mUserInfo + "], notifytxt = [" + notifytxt + "], message = [" + message + "], mResource = [" + mResource + "]");
+        PackageManager mPackageManager = mAppContext.getPackageManager();
+        String appname = (String) mPackageManager.getApplicationLabel(mAppContext.getApplicationInfo());
+
+        String contenttitle = mUserInfo == null ? appname : mUserInfo.getUser_name();
+        RemoteViews mRemoteViews = new RemoteViews(mAppContext.getPackageName(), R.layout.notification_view);
+        mRemoteViews.setTextViewText(R.id.notification_title, contenttitle);
+        if (mResource!=null){
+            mRemoteViews.setImageViewBitmap(R.id.notification_large_icon,mResource);
+        }else {
+            mRemoteViews.setImageViewResource(R.id.notification_large_icon,R.mipmap.logo6);
+        }
+        NotificationCompat.Builder mBuilder = new NotificationCompat.Builder(mAppContext)
+                .setWhen(System.currentTimeMillis())
+                .setContentText("xxx")
+.setSmallIcon(R.mipmap.logo6)
+                .setAutoCancel(true);
+//            Intent msgIntent = mAppContext.getPackageManager().getLaunchIntentForPackage(packName);
+        Intent msgIntent = new Intent(mAppContext, MainActivity.class);
+        msgIntent.putExtra(IMMessageListenerApp.FLAG_NEWMESSAGE, IMMessageListenerApp.FLAG_NEWMESSAGE);
+        PendingIntent mPendingIntent = PendingIntent.getActivity(mAppContext, notifyID, msgIntent, PendingIntent.FLAG_UPDATE_CURRENT);
+        mBuilder.setContentTitle(contenttitle);
+        mBuilder.setTicker(notifytxt);
+        if (message.getType() == EMMessage.Type.TXT) {
+            mRemoteViews.setTextViewText(R.id.notgification_content, ((EMTextMessageBody) message.getBody()).getMessage());
+        } else if (message.getType() == EMMessage.Type.IMAGE) {
+            mRemoteViews.setTextViewText(R.id.notgification_content, "[图片]");
+        } else if (message.getType() == EMMessage.Type.VOICE) {
+            mRemoteViews.setTextViewText(R.id.notgification_content, "[语音]");
+        } else if (message.getType() == EMMessage.Type.LOCATION) {
+            mRemoteViews.setTextViewText(R.id.notgification_content, "[地理位置]");
+        } else {
+            mRemoteViews.setTextViewText(R.id.notgification_content, "有新的消息");
+        }
+        mBuilder.setContentIntent(mPendingIntent);
+        mBuilder.setContent(mRemoteViews);
+        Notification mNotification = mBuilder.build();
+        mNotificationManager.notify(foregroundNotifyID, mNotification);
+    }
     /**
      * app是否在后台运行
      *
@@ -214,10 +230,10 @@ public class IMNotifier {
             return;
         }
         lastNotifiyTime = System.currentTimeMillis();
-        if (mAudioManager.getRingerMode() == AudioManager.RINGER_MODE_SILENT) {
-            Log.e(TAG, "vibrateAndPlayTone: 手机静音模式不提shi");
-            return;
-        }
+//        if (mAudioManager.getRingerMode() == AudioManager.RINGER_MODE_SILENT) {
+//            Log.e(TAG, "vibrateAndPlayTone: 手机静音模式不提shi");
+//            return;
+//        }
         if (mMessage == null || mSettingsProvider.isMsgVibrateAllowed(mMessage)) {
             long pattern[] = new long[]{0, 180, 80, 20};
             mVibrator.vibrate(pattern, -1);
