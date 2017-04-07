@@ -106,6 +106,9 @@ public class TextDlg extends Dialog {
      */
     public void setTitle(String title) {
         titleStr = title;
+        if (mTitle != null) {
+            mTitle.setText(titleStr);
+        }
     }
 
     public void setYesStr(String mYesStr) {

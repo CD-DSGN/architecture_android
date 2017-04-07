@@ -22,6 +22,7 @@ import com.grandmagic.readingmate.bean.response.CommentsDetailResponoseBean;
 import com.grandmagic.readingmate.bean.response.ReplyInfoResponseBean;
 import com.grandmagic.readingmate.model.BookModel;
 import com.grandmagic.readingmate.model.CommentDetailModel;
+import com.grandmagic.readingmate.ui.DeleteConfirmDlg;
 import com.grandmagic.readingmate.utils.AutoUtils;
 import com.grandmagic.readingmate.utils.DateUtil;
 import com.grandmagic.readingmate.utils.DensityUtil;
@@ -110,6 +111,8 @@ public class CommentsActivity extends AppBaseActivity implements View.OnLayoutCh
     private int mIsThumb = 2;
 
     private BookModel mBookModel;
+    private DeleteConfirmDlg mDelComment;
+    private DeleteConfirmDlg mDelReply;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -256,14 +259,22 @@ public class CommentsActivity extends AppBaseActivity implements View.OnLayoutCh
 
             @Override
             public void onDeleteClick(final int position) {
-                mCommentDetailModel.delReply(mReplys.get(position).getReply_comment_reply_id(),
-                        new AppBaseResponseCallBack<NovateResponse>(CommentsActivity.this) {
-                            @Override
-                            public void onSuccee(NovateResponse response) {
-                                mPage.delete(position);
-                                mMHeaderAndFooterWrapper.notifyDataSetChanged();
-                            }
-                        });
+                mDelReply.setOnClickYes(new DeleteConfirmDlg.OnClickYes() {
+                    @Override
+                    public void onClick() {
+                        mCommentDetailModel.delReply(mReplys.get(position).getReply_comment_reply_id(),
+                                new AppBaseResponseCallBack<NovateResponse>(CommentsActivity.this) {
+                                    @Override
+                                    public void onSuccee(NovateResponse response) {
+                                        mPage.delete(position);
+                                        mMHeaderAndFooterWrapper.notifyDataSetChanged();
+                                    }
+                                });
+                        mDelReply.dismiss();
+                    }
+                });
+                mDelReply.show();
+
             }
 
             @Override
@@ -281,6 +292,10 @@ public class CommentsActivity extends AppBaseActivity implements View.OnLayoutCh
 
             }
         });
+
+        if (mDelReply == null) {
+            mDelReply = new DeleteConfirmDlg(this);
+        }
 
         mMHeaderAndFooterWrapper = new HeaderAndFooterWrapper(mMAdapter);
 
@@ -382,6 +397,10 @@ public class CommentsActivity extends AppBaseActivity implements View.OnLayoutCh
                 }
             }
         });
+
+        if (mDelComment == null) {
+            mDelComment = new DeleteConfirmDlg(this);
+        }
     }
 
     private void setCommentThumb() {
@@ -422,24 +441,31 @@ public class CommentsActivity extends AppBaseActivity implements View.OnLayoutCh
                 break;
 
             case R.id.tv_delete_comment:
-                deleteReply();  //删除书评
+                deleteComment();  //删除书评
                 break;
         }
     }
 
-    private void deleteReply() {
-        mBookModel.deleteBookComment(mCommentsDetailResponoseBean.getComment_id(),
-                new AppBaseResponseCallBack<NovateResponse>(mContext) {
-                    @Override
-                    public void onSuccee(NovateResponse response) {
-                        ViewUtils.showToast(CommentsActivity.this.getString(R.string.delect_suc));
-                        Intent intent = new Intent();
-                        intent.putExtra(COMMENT_ID, mCommentID);
-                        setResult(RESULT_DEL, intent);
-                        finish();
-                    }
-                });
-
+    private void deleteComment() {
+        final String id = mCommentsDetailResponoseBean.getComment_id();
+        mDelComment.setOnClickYes(new DeleteConfirmDlg.OnClickYes() {
+            @Override
+            public void onClick() {
+                mBookModel.deleteBookComment(id,
+                        new AppBaseResponseCallBack<NovateResponse>(mContext) {
+                            @Override
+                            public void onSuccee(NovateResponse response) {
+                                ViewUtils.showToast(CommentsActivity.this.getString(R.string.delect_suc));
+                                Intent intent = new Intent();
+                                intent.putExtra(COMMENT_ID, mCommentID);
+                                setResult(RESULT_DEL, intent);
+                                finish();
+                            }
+                        });
+                mDelComment.dismiss();
+            }
+        });
+        mDelComment.show();
     }
 
     private void showSharePopWindow() {

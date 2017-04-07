@@ -32,6 +32,7 @@ import com.grandmagic.readingmate.bean.response.UserInfoResponseBean;
 import com.grandmagic.readingmate.model.BookModel;
 import com.grandmagic.readingmate.model.MyCommentsModel;
 import com.grandmagic.readingmate.model.UserInfoModel;
+import com.grandmagic.readingmate.ui.DeleteConfirmDlg;
 import com.grandmagic.readingmate.utils.AutoUtils;
 import com.grandmagic.readingmate.utils.ImageLoader;
 import com.grandmagic.readingmate.utils.KitUtils;
@@ -98,6 +99,8 @@ public class PersonalFragment extends AppBaseFragment implements MyCommentAdapte
     BookModel mBookModel;
 
     public static final int PF  = 1;
+
+    private DeleteConfirmDlg mCommentDlg;
 
 
     public PersonalFragment() {
@@ -245,6 +248,11 @@ public class PersonalFragment extends AppBaseFragment implements MyCommentAdapte
             };
             mMyCommentsModel = new MyCommentsModel(mContext, mcallback);
         }
+
+        if (mCommentDlg == null) {
+            mCommentDlg = new DeleteConfirmDlg(mContext);
+        }
+
         initRefresh();
     }
 
@@ -352,14 +360,22 @@ public class PersonalFragment extends AppBaseFragment implements MyCommentAdapte
     @Override
     public void onDelete(PersonnalCommentResponseBean personnalCommentResponseBean) {
         final String comment_id = personnalCommentResponseBean.getComment_id();
-        mBookModel.deleteBookComment(personnalCommentResponseBean.getComment_id(),
-                new AppBaseResponseCallBack<NovateResponse<Object>>(mContext) {
-                    @Override
-                    public void onSuccee(NovateResponse<Object> response) {
-                        //删除成功,更新本地数据
-                        deleteLocalComment(comment_id);
-                    }
-                });
+        //展示是否确定的弹框
+        mCommentDlg.setOnClickYes(new DeleteConfirmDlg.OnClickYes() {
+            @Override
+            public void onClick() {
+                mBookModel.deleteBookComment(comment_id,
+                        new AppBaseResponseCallBack<NovateResponse<Object>>(mContext) {
+                            @Override
+                            public void onSuccee(NovateResponse<Object> response) {
+                                //删除成功,更新本地数据
+                                deleteLocalComment(comment_id);
+                            }
+                        });
+                mCommentDlg.dismiss();
+            }
+        });
+        mCommentDlg.show();
     }
 
     private void deleteLocalComment(String comment_id) {
