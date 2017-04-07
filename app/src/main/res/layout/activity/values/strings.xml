@@ -106,5 +106,6 @@
     <string name="goods_num">%d人赞过</string>
     <string name="comment_num">(%s人评)</string>
     <string name="delect_suc">删除成功</string>
+    <string name="confirm_delete">是否删除该内容</string>
 
 </resources>
