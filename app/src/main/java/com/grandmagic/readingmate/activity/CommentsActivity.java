@@ -22,6 +22,7 @@ import com.grandmagic.readingmate.bean.response.CommentsDetailResponoseBean;
 import com.grandmagic.readingmate.bean.response.ReplyInfoResponseBean;
 import com.grandmagic.readingmate.model.BookModel;
 import com.grandmagic.readingmate.model.CommentDetailModel;
+import com.grandmagic.readingmate.ui.DeleteConfirmDlg;
 import com.grandmagic.readingmate.utils.AutoUtils;
 import com.grandmagic.readingmate.utils.DateUtil;
 import com.grandmagic.readingmate.utils.DensityUtil;
@@ -45,6 +46,8 @@ import butterknife.OnClick;
 import cn.bingoogolapple.refreshlayout.BGARefreshLayout;
 import cn.bingoogolapple.refreshlayout.BGAStickinessRefreshViewHolder;
 
+import static com.taobao.accs.ACCSManager.mContext;
+
 public class CommentsActivity extends AppBaseActivity implements View.OnLayoutChangeListener {
     public static final String COMMENT_ID = "comment_id";
     @BindView(R.id.back)
@@ -63,8 +66,10 @@ public class CommentsActivity extends AppBaseActivity implements View.OnLayoutCh
     Button mSubmit;
     @BindView(R.id.bottomlayout)
     LinearLayout mBottomlayout;
+    @BindView(R.id.tv_delete_comment)
+    TextView mTvDeleteComment;
 
-
+    public static final int RESULT_DEL = 1;
     private View mView;
     private CommentDetailAdapter mMAdapter;
     private HeaderAndFooterWrapper mMHeaderAndFooterWrapper;
@@ -104,6 +109,10 @@ public class CommentsActivity extends AppBaseActivity implements View.OnLayoutCh
     int mPosition = -1;
     private int mLike_num = 0;
     private int mIsThumb = 2;
+
+    private BookModel mBookModel;
+    private DeleteConfirmDlg mDelComment;
+    private DeleteConfirmDlg mDelReply;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -159,6 +168,10 @@ public class CommentsActivity extends AppBaseActivity implements View.OnLayoutCh
 
         if (mModel == null) {
             mModel = new BookModel(this);
+        }
+
+        if (mBookModel == null) {
+            mBookModel = new BookModel(this);
         }
 
     }
@@ -246,14 +259,22 @@ public class CommentsActivity extends AppBaseActivity implements View.OnLayoutCh
 
             @Override
             public void onDeleteClick(final int position) {
-                mCommentDetailModel.delReply(mReplys.get(position).getReply_comment_reply_id(),
-                        new AppBaseResponseCallBack<NovateResponse>(CommentsActivity.this) {
-                            @Override
-                            public void onSuccee(NovateResponse response) {
-                                mPage.delete(position);
-                                mMHeaderAndFooterWrapper.notifyDataSetChanged();
-                            }
-                        });
+                mDelReply.setOnClickYes(new DeleteConfirmDlg.OnClickYes() {
+                    @Override
+                    public void onClick() {
+                        mCommentDetailModel.delReply(mReplys.get(position).getReply_comment_reply_id(),
+                                new AppBaseResponseCallBack<NovateResponse>(CommentsActivity.this) {
+                                    @Override
+                                    public void onSuccee(NovateResponse response) {
+                                        mPage.delete(position);
+                                        mMHeaderAndFooterWrapper.notifyDataSetChanged();
+                                    }
+                                });
+                        mDelReply.dismiss();
+                    }
+                });
+                mDelReply.show();
+
             }
 
             @Override
@@ -271,6 +292,10 @@ public class CommentsActivity extends AppBaseActivity implements View.OnLayoutCh
 
             }
         });
+
+        if (mDelReply == null) {
+            mDelReply = new DeleteConfirmDlg(this);
+        }
 
         mMHeaderAndFooterWrapper = new HeaderAndFooterWrapper(mMAdapter);
 
@@ -367,11 +392,15 @@ public class CommentsActivity extends AppBaseActivity implements View.OnLayoutCh
                             setCommentThumb();
                         }
                     });
-                }else{
+                } else {
                     ViewUtils.showToast(getString(R.string.no_duplicate_good));
                 }
             }
         });
+
+        if (mDelComment == null) {
+            mDelComment = new DeleteConfirmDlg(this);
+        }
     }
 
     private void setCommentThumb() {
@@ -379,21 +408,21 @@ public class CommentsActivity extends AppBaseActivity implements View.OnLayoutCh
             mCommentGood.setBackgroundResource(R.drawable.iv_like);
         } else if (mIsThumb == 2) {   //未点赞
             mCommentGood.setBackgroundResource(R.drawable.iv_like_gray);
-        }else{
+        } else {
 
         }
 
         if (mLike_num > 0) {
             mLikeNum.setText(mLike_num + "");
             mLikeNum.setTextColor(Color.parseColor("#991cc9a2"));
-        }else{
+        } else {
             mLikeNum.setText(R.string.good);
             mLikeNum.setTextColor(Color.parseColor("#99999999"));
         }
     }
 
 
-    @OnClick({R.id.back, R.id.title, R.id.lin_share, R.id.submit})
+    @OnClick({R.id.back, R.id.title, R.id.lin_share, R.id.submit, R.id.tv_delete_comment})
     public void onClick(View view) {
         switch (view.getId()) {
             case R.id.back:
@@ -410,7 +439,33 @@ public class CommentsActivity extends AppBaseActivity implements View.OnLayoutCh
             case R.id.submit:
                 submitReply(); //提交回复
                 break;
+
+            case R.id.tv_delete_comment:
+                deleteComment();  //删除书评
+                break;
         }
+    }
+
+    private void deleteComment() {
+        final String id = mCommentsDetailResponoseBean.getComment_id();
+        mDelComment.setOnClickYes(new DeleteConfirmDlg.OnClickYes() {
+            @Override
+            public void onClick() {
+                mBookModel.deleteBookComment(id,
+                        new AppBaseResponseCallBack<NovateResponse>(mContext) {
+                            @Override
+                            public void onSuccee(NovateResponse response) {
+                                ViewUtils.showToast(CommentsActivity.this.getString(R.string.delect_suc));
+                                Intent intent = new Intent();
+                                intent.putExtra(COMMENT_ID, mCommentID);
+                                setResult(RESULT_DEL, intent);
+                                finish();
+                            }
+                        });
+                mDelComment.dismiss();
+            }
+        });
+        mDelComment.show();
     }
 
     private void showSharePopWindow() {
@@ -489,5 +544,6 @@ public class CommentsActivity extends AppBaseActivity implements View.OnLayoutCh
             }
         });
     }
+
 
 }

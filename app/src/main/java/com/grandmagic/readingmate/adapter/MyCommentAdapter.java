@@ -1,7 +1,6 @@
 package com.grandmagic.readingmate.adapter;
 
 import android.content.Context;
-import android.content.Intent;
 import android.text.TextUtils;
 import android.view.View;
 import android.widget.ImageView;
@@ -9,7 +8,6 @@ import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import com.grandmagic.readingmate.R;
-import com.grandmagic.readingmate.activity.CommentsActivity;
 import com.grandmagic.readingmate.bean.response.PersonnalCommentResponseBean;
 import com.grandmagic.readingmate.utils.DateUtil;
 import com.grandmagic.readingmate.utils.ImageLoader;
@@ -96,15 +94,7 @@ public class MyCommentAdapter extends CommonAdapter<PersonnalCommentResponseBean
 
         }
 
-        final String comment_id = personnalCommentResponseBean.getComment_id();
-        holder.setOnClickListener(R.id.ll_item_my_comment, new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                Intent intent = new Intent(mContext, CommentsActivity.class);
-                intent.putExtra("comment_id", comment_id);
-                mContext.startActivity(intent);
-            }
-        });
+
     }
 
 
