@@ -2,14 +2,20 @@
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
                 android:layout_width="match_parent"
                 xmlns:tools="http://schemas.android.com/tools"
+                android:background="@color/gray_noselect"
                 android:layout_height="64dp">
 
     <ImageView
+        android:layout_marginLeft="20dp"
         android:id="@+id/notification_large_icon"
         android:layout_width="48dp"
         android:layout_height="48dp"
         android:scaleType="fitXY"
-        tools:src="@drawable/chat_carmera"/>
+        tools:src="@drawable/chat_carmera"
+        android:layout_centerVertical="true"
+        android:layout_toRightOf="@+id/notification_small_icon"
+        android:layout_toEndOf="@+id/notification_small_icon"
+        android:layout_marginStart="41dp"/>
 
     <TextView
         android:id="@+id/notification_title"
@@ -64,6 +70,7 @@
         android:layout_alignParentRight="true"
         android:layout_centerVertical="true"
         android:textSize="12sp"
+        android:layout_marginRight="20dp"
         android:textColor="@color/white"
         />
 </RelativeLayout>

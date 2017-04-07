@@ -70,7 +70,7 @@ public class MessageTextRecDelagate extends ChatItemViewDelegate {
                             mPersonInfo.setClientid(mChatMessage.getStringAttribute("clientid"));
                             mPersonInfo.setUser_id(mChatMessage.getStringAttribute("userid"));
                             mPersonInfo.setGender(mChatMessage.getIntAttribute("gender"));
-                            mPersonInfo.setSignature(mChatMessage.getStringAttribute("signture"));
+                            mPersonInfo.setSignature(mChatMessage.getStringAttribute("signature"));
                             mBundle.putParcelable(FriendDetailActivity.PERSON_INFO, mPersonInfo);
                             mIntent.putExtras(mBundle);
                             mContext.startActivity(mIntent);

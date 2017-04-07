@@ -35,7 +35,7 @@
             android:layout_marginBottom="5px"
             android:layout_marginTop="5px"
             android:layout_weight="1"
-            android:background="@drawable/bg_comment"
+            android:background="@drawable/bg_chat_reciver"
             android:gravity="start"
             android:hint="写评论"
             android:paddingLeft="20px"
