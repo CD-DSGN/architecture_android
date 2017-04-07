@@ -22,15 +22,15 @@ import com.hyphenate.chat.EMMessage.ChatType;
 @Entity
 public class ChatDraftBox {
     @Id
-    long id;
+    Long id;
     @Unique
     private String tochatuserid;
     @Convert(columnType = String.class,converter = ChatTypeConver.class)
     private EMMessage.ChatType mType;
     private String txt;
 
-    @Generated(hash = 1435297750)
-    public ChatDraftBox(long id, String tochatuserid, EMMessage.ChatType mType,
+    @Generated(hash = 50557545)
+    public ChatDraftBox(Long id, String tochatuserid, EMMessage.ChatType mType,
             String txt) {
         this.id = id;
         this.tochatuserid = tochatuserid;
@@ -42,12 +42,8 @@ public class ChatDraftBox {
     public ChatDraftBox() {
     }
 
-    public long getId() {
+    public Long getId() {
         return id;
-    }
-
-    public void setId(long mId) {
-        id = mId;
     }
 
     public String getTochatuserid() {
@@ -80,5 +76,9 @@ public class ChatDraftBox {
 
     public void setMType(EMMessage.ChatType mType) {
         this.mType = mType;
+    }
+
+    public void setId(Long id) {
+        this.id = id;
     }
 }

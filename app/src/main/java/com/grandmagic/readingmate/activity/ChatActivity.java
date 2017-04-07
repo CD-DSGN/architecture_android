@@ -136,7 +136,9 @@ public class ChatActivity extends AppBaseActivity implements EMMessageListener, 
         gender = getIntent().getIntExtra(GENDER, 3);
         loadDraftFromDB();
     }
+
     ChatDraftBox mChatDraftBox;
+
     private void loadDraftFromDB() {
         mChatDraftBox = DBHelper.getChatDraftBoxDao(this).queryBuilder().
                 where(ChatDraftBoxDao.Properties.Tochatuserid.eq(toChatUserName), ChatDraftBoxDao.Properties.MType.eq(mChatType))
@@ -460,7 +462,7 @@ public class ChatActivity extends AppBaseActivity implements EMMessageListener, 
         Intent mIntent = new Intent(ChatActivity.this, FriendDetailActivity.class);
         Bundle mBundle = new Bundle();
         Contacts mContacts = IMHelper.getInstance().getUserInfo(mFrom);
-        if (mContacts==null)return;
+        if (mContacts == null) return;
         PersonInfo mInf = new PersonInfo();
         mInf.setUser_id(mContacts.getUser_id() + "");
         mInf.setAvatar(mContacts.getAvatar_url().getLarge());
@@ -534,9 +536,11 @@ public class ChatActivity extends AppBaseActivity implements EMMessageListener, 
             mChatDraftBox.setTxt(mEtInput.getText().toString());
             DBHelper.getChatDraftBoxDao(this).insertOrReplace(mChatDraftBox);
             DBHelper.close();
-        }else {
-            if (mChatDraftBox!=null)
+        } else {
+            if (mChatDraftBox != null) {
                 DBHelper.getChatDraftBoxDao(this).delete(mChatDraftBox);
+                DBHelper.close();
+            }
         }
     }
 

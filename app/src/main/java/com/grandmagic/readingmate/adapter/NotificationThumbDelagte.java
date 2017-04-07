@@ -56,10 +56,10 @@ public class NotificationThumbDelagte implements ItemViewDelegate<NotificationCo
     private SpannableStringBuilder getTitle(NotificationCommentResponse.InfoBean mData) {
 
         SpannableStringBuilder mBuilder=new SpannableStringBuilder();
-        mBuilder.append("你在");
+        mBuilder.append("觉得你在");
         mBuilder.append("《"+mData.getBook_name()+"》");
-        mBuilder.append("中的评论收到一个赞");
-        mBuilder.setSpan(new ForegroundColorSpan(Color.parseColor("#1cc9a2")),2,4+mData.getBook_name().length(),Spanned.SPAN_EXCLUSIVE_EXCLUSIVE);
+        mBuilder.append("中的评论很赞");
+        mBuilder.setSpan(new ForegroundColorSpan(Color.parseColor("#1cc9a2")),4,6+mData.getBook_name().length(),Spanned.SPAN_EXCLUSIVE_EXCLUSIVE);
         return mBuilder;
     }
 

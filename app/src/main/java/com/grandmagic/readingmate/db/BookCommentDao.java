@@ -24,7 +24,7 @@ public class BookCommentDao extends AbstractDao<BookComment, Long> {
      * Can be used for QueryBuilder and for referencing column names.
      */
     public static class Properties {
-        public final static Property Id = new Property(0, long.class, "id", true, "_id");
+        public final static Property Id = new Property(0, Long.class, "id", true, "_id");
         public final static Property Bookid = new Property(1, String.class, "bookid", false, "BOOKID");
         public final static Property Score = new Property(2, int.class, "score", false, "SCORE");
         public final static Property Comment_content = new Property(3, String.class, "comment_content", false, "COMMENT_CONTENT");
@@ -43,7 +43,7 @@ public class BookCommentDao extends AbstractDao<BookComment, Long> {
     public static void createTable(Database db, boolean ifNotExists) {
         String constraint = ifNotExists? "IF NOT EXISTS ": "";
         db.execSQL("CREATE TABLE " + constraint + "\"BOOK_COMMENT\" (" + //
-                "\"_id\" INTEGER PRIMARY KEY NOT NULL ," + // 0: id
+                "\"_id\" INTEGER PRIMARY KEY ," + // 0: id
                 "\"BOOKID\" TEXT UNIQUE ," + // 1: bookid
                 "\"SCORE\" INTEGER NOT NULL ," + // 2: score
                 "\"COMMENT_CONTENT\" TEXT);"); // 3: comment_content
@@ -58,7 +58,11 @@ public class BookCommentDao extends AbstractDao<BookComment, Long> {
     @Override
     protected final void bindValues(DatabaseStatement stmt, BookComment entity) {
         stmt.clearBindings();
-        stmt.bindLong(1, entity.getId());
+ 
+        Long id = entity.getId();
+        if (id != null) {
+            stmt.bindLong(1, id);
+        }
  
         String bookid = entity.getBookid();
         if (bookid != null) {
@@ -75,7 +79,11 @@ public class BookCommentDao extends AbstractDao<BookComment, Long> {
     @Override
     protected final void bindValues(SQLiteStatement stmt, BookComment entity) {
         stmt.clearBindings();
-        stmt.bindLong(1, entity.getId());
+ 
+        Long id = entity.getId();
+        if (id != null) {
+            stmt.bindLong(1, id);
+        }
  
         String bookid = entity.getBookid();
         if (bookid != null) {
@@ -91,13 +99,13 @@ public class BookCommentDao extends AbstractDao<BookComment, Long> {
 
     @Override
     public Long readKey(Cursor cursor, int offset) {
-        return cursor.getLong(offset + 0);
+        return cursor.isNull(offset + 0) ? null : cursor.getLong(offset + 0);
     }    
 
     @Override
     public BookComment readEntity(Cursor cursor, int offset) {
         BookComment entity = new BookComment( //
-            cursor.getLong(offset + 0), // id
+            cursor.isNull(offset + 0) ? null : cursor.getLong(offset + 0), // id
             cursor.isNull(offset + 1) ? null : cursor.getString(offset + 1), // bookid
             cursor.getInt(offset + 2), // score
             cursor.isNull(offset + 3) ? null : cursor.getString(offset + 3) // comment_content
@@ -107,7 +115,7 @@ public class BookCommentDao extends AbstractDao<BookComment, Long> {
      
     @Override
     public void readEntity(Cursor cursor, BookComment entity, int offset) {
-        entity.setId(cursor.getLong(offset + 0));
+        entity.setId(cursor.isNull(offset + 0) ? null : cursor.getLong(offset + 0));
         entity.setBookid(cursor.isNull(offset + 1) ? null : cursor.getString(offset + 1));
         entity.setScore(cursor.getInt(offset + 2));
         entity.setComment_content(cursor.isNull(offset + 3) ? null : cursor.getString(offset + 3));
@@ -130,7 +138,7 @@ public class BookCommentDao extends AbstractDao<BookComment, Long> {
 
     @Override
     public boolean hasKey(BookComment entity) {
-        throw new UnsupportedOperationException("Unsupported for entities with a non-null key");
+        return entity.getId() != null;
     }
 
     @Override

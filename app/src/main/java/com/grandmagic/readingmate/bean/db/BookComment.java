@@ -18,14 +18,14 @@ import org.greenrobot.greendao.annotation.Generated;
 @Entity
 public class BookComment {
     @Id
-    private long id;
+     Long id;
     @Unique
     private String bookid;
     private int score;
     private String comment_content;
 
-    @Generated(hash = 746469115)
-    public BookComment(long id, String bookid, int score, String comment_content) {
+    @Generated(hash = 1432762642)
+    public BookComment(Long id, String bookid, int score, String comment_content) {
         this.id = id;
         this.bookid = bookid;
         this.score = score;
@@ -36,13 +36,11 @@ public class BookComment {
     public BookComment() {
     }
 
-    public long getId() {
+    public Long getId() {
         return id;
     }
 
-    public void setId(long mId) {
-        id = mId;
-    }
+
 
     public String getBookid() {
         return bookid;
@@ -76,5 +74,9 @@ public class BookComment {
                 ", score=" + score +
                 ", comment_content='" + comment_content + '\'' +
                 '}';
+    }
+
+    public void setId(Long id) {
+        this.id = id;
     }
 }

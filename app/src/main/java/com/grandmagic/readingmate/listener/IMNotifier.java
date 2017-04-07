@@ -115,7 +115,7 @@ public class IMNotifier {
     private void getIconBitmap(final Contacts mUserInfo, final String mNotifytxt, final EMMessage mMessage) {
 
         Observable
-                .just(Environment.BASEULR_PRODUCTION+mUserInfo.getAvatar_url().getMid())
+                .just(Environment.BASEULR_PRODUCTION+mUserInfo.getAvatar_url().getLarge())
                 .flatMap(new Func1<String, Observable<BitmapRequestBuilder<String, Bitmap>>>() {
                     @Override
                     public Observable<BitmapRequestBuilder<String, Bitmap>> call(String mS) {

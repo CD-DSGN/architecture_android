@@ -9,7 +9,7 @@ import com.zhy.adapter.recyclerview.base.ViewHolder;
 import java.util.List;
 
 /**
- * Created by dangxiaohui on 2017/2/21.
+ * Created by lps on 2017/2/21.
  */
 
 public class MultiItemTypeAdapter extends com.zhy.adapter.recyclerview.MultiItemTypeAdapter {
