@@ -76,6 +76,7 @@ public class IMContactListener implements EMContactListener {
                 } catch (NumberFormatException mE) {
                     mE.printStackTrace();
                 }
+                mContacts.setUser_name(mData.getUser_name());
                 mContacts.setAvatar_url(mData.getAvatar_url());
                 mContacts.setClientid(mData.getClientid());
                 mContacts.setGender(mData.getGender());

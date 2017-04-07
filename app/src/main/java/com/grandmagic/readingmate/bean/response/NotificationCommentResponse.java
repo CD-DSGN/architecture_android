@@ -22,8 +22,9 @@ public class NotificationCommentResponse {
      * num : 1
      * info : [{"from_user_id":"41","user_name":"奂捷","avatar_url":{"large":"","mid":""},"book_id":6,"book_name":"深入浅出MySQL","time":"1491017408","native_comment":"1","reply_comment":"培生66"}]
      */
-
+    @JsonAdapter(ObjectDeserializer.class)
     private int total_num;
+    @JsonAdapter(ObjectDeserializer.class)
     private int num;
     @JsonAdapter(ListTypeAdapterFactory.class)
     private List<InfoBean> info;
@@ -62,18 +63,41 @@ public class NotificationCommentResponse {
          * time : 1491017408
          * native_comment : 1
          * reply_comment : 培生66
+         * pid
          */
 
         private String from_user_id;
         private String user_name;
         @JsonAdapter(ObjectDeserializer.class)
         private AvatarUrlBean avatar_url;
+        @JsonAdapter(ObjectDeserializer.class)
         private int book_id;
         private String book_name;
         private String time;
         private String native_comment;
         private String reply_comment;
+        @JsonAdapter(ObjectDeserializer.class)
         private int type;
+        @JsonAdapter(ObjectDeserializer.class)
+        private int comment_id;
+        @JsonAdapter(ObjectDeserializer.class)
+        private int pid;
+
+        public int getComment_id() {
+            return comment_id;
+        }
+
+        public void setComment_id(int mComment_id) {
+            comment_id = mComment_id;
+        }
+
+        public int getPid() {
+            return pid;
+        }
+
+        public void setPid(int mPid) {
+            pid = mPid;
+        }
 
         public int getType() {
             return type;

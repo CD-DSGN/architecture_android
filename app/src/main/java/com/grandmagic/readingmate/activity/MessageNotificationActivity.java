@@ -1,6 +1,5 @@
 package com.grandmagic.readingmate.activity;
 
-import android.app.Activity;
 import android.os.Bundle;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
@@ -27,6 +26,7 @@ import java.util.List;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
+import butterknife.OnClick;
 import cn.bingoogolapple.refreshlayout.BGARefreshLayout;
 import cn.bingoogolapple.refreshlayout.BGAStickinessRefreshViewHolder;
 
@@ -65,9 +65,9 @@ public class MessageNotificationActivity extends AppBaseActivity {
         mRecyclerview.setLayoutManager(new LinearLayoutManager(this));
         MultiItemTypeAdapter mInnerAdapter = new MultiItemTypeAdapter(this, mStrings);
         mInnerAdapter.addItemViewDelegate(new NotificationCommentDelagte(this))
-        .addItemViewDelegate(new NotificationThumbDelagte(this));
+                .addItemViewDelegate(new NotificationThumbDelagte(this));
         mAdapter = new DefaultEmptyAdapter(mInnerAdapter, this);
-        mRecyclerview.setAdapter(mInnerAdapter);
+        mRecyclerview.setAdapter(mAdapter);
     }
 
     CommentRecordModel mModel;
@@ -131,5 +131,10 @@ public class MessageNotificationActivity extends AppBaseActivity {
                 }
             }
         });
+    }
+
+    @OnClick(R.id.back)
+    public void onViewClicked() {
+        finish();
     }
 }

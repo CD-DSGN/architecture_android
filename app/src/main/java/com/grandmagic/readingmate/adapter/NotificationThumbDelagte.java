@@ -50,7 +50,7 @@ public class NotificationThumbDelagte implements ItemViewDelegate<NotificationCo
                 (ImageView) holder.getView(R.id.avatar));
         TextView title=holder.getView(R.id.title);
         title.setText(getTitle(data));
-        holder.setText(R.id.content,data.getReply_comment());
+        holder.setText(R.id.content,data.getNative_comment());
     }
 
     private SpannableStringBuilder getTitle(NotificationCommentResponse.InfoBean mData) {
