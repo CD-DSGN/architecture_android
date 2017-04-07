@@ -20,19 +20,18 @@ import android.support.v4.app.NotificationCompat;
 import android.util.Log;
 import android.widget.RemoteViews;
 
+import com.bumptech.glide.BitmapRequestBuilder;
 import com.bumptech.glide.BitmapTypeRequest;
 import com.bumptech.glide.Glide;
 import com.bumptech.glide.request.animation.GlideAnimation;
 import com.bumptech.glide.request.target.SimpleTarget;
 import com.grandmagic.readingmate.R;
-import com.grandmagic.readingmate.activity.ChatActivity;
-import com.grandmagic.readingmate.activity.FriendActivity;
-import com.grandmagic.readingmate.activity.FriendRequestActivity;
 import com.grandmagic.readingmate.activity.MainActivity;
 import com.grandmagic.readingmate.bean.db.Contacts;
 import com.grandmagic.readingmate.bean.db.InviteMessage;
 import com.grandmagic.readingmate.db.DBHelper;
 import com.grandmagic.readingmate.db.InviteMessageDao;
+import com.grandmagic.readingmate.utils.DateUtil;
 import com.grandmagic.readingmate.utils.GlideCircleTransform;
 import com.grandmagic.readingmate.utils.IMHelper;
 import com.hyphenate.chat.EMMessage;
@@ -45,7 +44,6 @@ import rx.Observable;
 import rx.Subscriber;
 import rx.android.schedulers.AndroidSchedulers;
 import rx.functions.Func1;
-import rx.schedulers.Schedulers;
 
 /**
  * Created by lps on 2017/3/2.
@@ -118,15 +116,15 @@ public class IMNotifier {
 
         Observable
                 .just(Environment.BASEULR_PRODUCTION+mUserInfo.getAvatar_url().getMid())
-                .flatMap(new Func1<String, Observable<BitmapTypeRequest<String>>>() {
+                .flatMap(new Func1<String, Observable<BitmapRequestBuilder<String, Bitmap>>>() {
                     @Override
-                    public Observable<BitmapTypeRequest<String>> call(String mS) {
-                        BitmapTypeRequest<String> mStringBitmapTypeRequest = Glide.with(mAppContext).load(mS).asBitmap();
-                        return Observable.just(mStringBitmapTypeRequest);
+                    public Observable<BitmapRequestBuilder<String, Bitmap>> call(String mS) {
+                        BitmapRequestBuilder<String, Bitmap> mTransform = Glide.with(mAppContext).load(mS).asBitmap().transform(new GlideCircleTransform(mAppContext));
+                        return Observable.just(mTransform);
                     }
                 })
                 .observeOn(AndroidSchedulers.mainThread())
-                .subscribe(new Subscriber<BitmapTypeRequest<String>>() {
+                .subscribe(new Subscriber<BitmapRequestBuilder<String, Bitmap>>() {
                     @Override
                     public void onCompleted() {
                         Log.e(TAG, "onCompleted: " );
@@ -139,7 +137,7 @@ public class IMNotifier {
                     }
 
                     @Override
-                    public void onNext(BitmapTypeRequest<String> mStringBitmapTypeRequest) {
+                    public void onNext(BitmapRequestBuilder<String, Bitmap> mStringBitmapTypeRequest) {
                         Log.e(TAG, "onNext: " );
                         mStringBitmapTypeRequest.into(new SimpleTarget<Bitmap>() {
                             @Override
@@ -173,6 +171,7 @@ public class IMNotifier {
 
         String contenttitle = mUserInfo == null ? appname : mUserInfo.getUser_name();
         RemoteViews mRemoteViews = new RemoteViews(mAppContext.getPackageName(), R.layout.notification_view);
+        mRemoteViews.setTextViewText(R.id.time, DateUtil.getNowTime());
         mRemoteViews.setTextViewText(R.id.notification_title, contenttitle);
         if (mResource!=null){
             mRemoteViews.setImageViewBitmap(R.id.notification_large_icon,mResource);

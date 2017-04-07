@@ -1,6 +1,8 @@
 package com.grandmagic.readingmate.utils;
 
 import java.text.SimpleDateFormat;
+import java.util.Calendar;
+import java.util.Date;
 import java.util.Locale;
 
 /**
@@ -86,5 +88,10 @@ public class DateUtil {
         }
         SimpleDateFormat simpleDateFormat = new SimpleDateFormat(format, Locale.getDefault());
         return simpleDateFormat.format(time1);
+    }
+
+    public static String getNowTime() {
+     return    new SimpleDateFormat("HH:mm").format(System.currentTimeMillis());
+
     }
 }
