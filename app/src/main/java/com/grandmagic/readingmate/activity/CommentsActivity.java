@@ -45,6 +45,8 @@ import butterknife.OnClick;
 import cn.bingoogolapple.refreshlayout.BGARefreshLayout;
 import cn.bingoogolapple.refreshlayout.BGAStickinessRefreshViewHolder;
 
+import static com.taobao.accs.ACCSManager.mContext;
+
 public class CommentsActivity extends AppBaseActivity implements View.OnLayoutChangeListener {
     public static final String COMMENT_ID = "comment_id";
     @BindView(R.id.back)
@@ -63,8 +65,10 @@ public class CommentsActivity extends AppBaseActivity implements View.OnLayoutCh
     Button mSubmit;
     @BindView(R.id.bottomlayout)
     LinearLayout mBottomlayout;
+    @BindView(R.id.tv_delete_comment)
+    TextView mTvDeleteComment;
 
-
+    public static final int RESULT_DEL = 1;
     private View mView;
     private CommentDetailAdapter mMAdapter;
     private HeaderAndFooterWrapper mMHeaderAndFooterWrapper;
@@ -104,6 +108,8 @@ public class CommentsActivity extends AppBaseActivity implements View.OnLayoutCh
     int mPosition = -1;
     private int mLike_num = 0;
     private int mIsThumb = 2;
+
+    private BookModel mBookModel;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -159,6 +165,10 @@ public class CommentsActivity extends AppBaseActivity implements View.OnLayoutCh
 
         if (mModel == null) {
             mModel = new BookModel(this);
+        }
+
+        if (mBookModel == null) {
+            mBookModel = new BookModel(this);
         }
 
     }
@@ -367,7 +377,7 @@ public class CommentsActivity extends AppBaseActivity implements View.OnLayoutCh
                             setCommentThumb();
                         }
                     });
-                }else{
+                } else {
                     ViewUtils.showToast(getString(R.string.no_duplicate_good));
                 }
             }
@@ -379,21 +389,21 @@ public class CommentsActivity extends AppBaseActivity implements View.OnLayoutCh
             mCommentGood.setBackgroundResource(R.drawable.iv_like);
         } else if (mIsThumb == 2) {   //未点赞
             mCommentGood.setBackgroundResource(R.drawable.iv_like_gray);
-        }else{
+        } else {
 
         }
 
         if (mLike_num > 0) {
             mLikeNum.setText(mLike_num + "");
             mLikeNum.setTextColor(Color.parseColor("#991cc9a2"));
-        }else{
+        } else {
             mLikeNum.setText(R.string.good);
             mLikeNum.setTextColor(Color.parseColor("#99999999"));
         }
     }
 
 
-    @OnClick({R.id.back, R.id.title, R.id.lin_share, R.id.submit})
+    @OnClick({R.id.back, R.id.title, R.id.lin_share, R.id.submit, R.id.tv_delete_comment})
     public void onClick(View view) {
         switch (view.getId()) {
             case R.id.back:
@@ -410,7 +420,26 @@ public class CommentsActivity extends AppBaseActivity implements View.OnLayoutCh
             case R.id.submit:
                 submitReply(); //提交回复
                 break;
+
+            case R.id.tv_delete_comment:
+                deleteReply();  //删除书评
+                break;
         }
+    }
+
+    private void deleteReply() {
+        mBookModel.deleteBookComment(mCommentsDetailResponoseBean.getComment_id(),
+                new AppBaseResponseCallBack<NovateResponse>(mContext) {
+                    @Override
+                    public void onSuccee(NovateResponse response) {
+                        ViewUtils.showToast(CommentsActivity.this.getString(R.string.delect_suc));
+                        Intent intent = new Intent();
+                        intent.putExtra(COMMENT_ID, mCommentID);
+                        setResult(RESULT_DEL, intent);
+                        finish();
+                    }
+                });
+
     }
 
     private void showSharePopWindow() {
@@ -489,5 +518,6 @@ public class CommentsActivity extends AppBaseActivity implements View.OnLayoutCh
             }
         });
     }
+
 
 }

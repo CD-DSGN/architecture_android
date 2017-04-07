@@ -28,7 +28,9 @@
             android:layout_marginRight="26px"
             android:text="@string/delete"
             android:textColor="#e73636"
-            android:textSize="28px"/>
+            android:textSize="28px"
+            android:id="@+id/tv_delete_comment"
+            android:clickable="true"/>
     </RelativeLayout>
 
 

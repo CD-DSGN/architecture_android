@@ -105,4 +105,6 @@
     <string name="no_duplicate_good">不能重复点赞</string>
     <string name="goods_num">%d人赞过</string>
     <string name="comment_num">(%s人评)</string>
+    <string name="delect_suc">删除成功</string>
+
 </resources>

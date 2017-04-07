@@ -17,6 +17,7 @@ import android.widget.TextView;
 
 import com.grandmagic.readingmate.R;
 import com.grandmagic.readingmate.activity.CollectionActivity;
+import com.grandmagic.readingmate.activity.CommentsActivity;
 import com.grandmagic.readingmate.activity.MessageNotificationActivity;
 import com.grandmagic.readingmate.activity.PersonalInfoEditActivity;
 import com.grandmagic.readingmate.activity.SettingActivity;
@@ -38,6 +39,7 @@ import com.grandmagic.readingmate.utils.Page;
 import com.grandmagic.readingmate.utils.ViewUtils;
 import com.tamic.novate.NovateResponse;
 import com.tamic.novate.Throwable;
+import com.zhy.adapter.recyclerview.MultiItemTypeAdapter;
 import com.zhy.adapter.recyclerview.wrapper.HeaderAndFooterWrapper;
 
 import java.util.ArrayList;
@@ -94,6 +96,8 @@ public class PersonalFragment extends AppBaseFragment implements MyCommentAdapte
 
     private ArrayList<PersonnalCommentResponseBean> mComments = new ArrayList<>();
     BookModel mBookModel;
+
+    public static final int PF  = 1;
 
 
     public PersonalFragment() {
@@ -158,6 +162,19 @@ public class PersonalFragment extends AppBaseFragment implements MyCommentAdapte
         mView = LayoutInflater.from(mContext).inflate(R.layout.personal_fragment_header, mRvMyComments, false);
         ButterKnife.bind(this, mView);
         mMAdapter = new MyCommentAdapter(mContext, mComments, "", "", this);
+        mMAdapter.setOnItemClickListener(new MultiItemTypeAdapter.OnItemClickListener() {
+            @Override
+            public void onItemClick(View view, RecyclerView.ViewHolder holder, int position) {
+                Intent intent = new Intent(mContext, CommentsActivity.class);
+                intent.putExtra("comment_id", mComments.get(position - 1).getComment_id());  //因为有头部的原因，所以-1
+                PersonalFragment.this.startActivityForResult(intent, PF);
+            }
+
+            @Override
+            public boolean onItemLongClick(View view, RecyclerView.ViewHolder holder, int position) {
+                return false;
+            }
+        });
         mMHeaderAndFooterWrapper = new HeaderAndFooterWrapper(mMAdapter);
 
         AutoUtils.auto(mView);
@@ -340,19 +357,30 @@ public class PersonalFragment extends AppBaseFragment implements MyCommentAdapte
                     @Override
                     public void onSuccee(NovateResponse<Object> response) {
                         //删除成功,更新本地数据
-                        for (int i = 0 ; i < mComments.size(); i++) {
-                            PersonnalCommentResponseBean comment = mComments.get(i);
-                            if (comment != null) {
-                                if (comment.getComment_id().equals(comment_id)) {
-                                    mPage.delete(i);
-                                    mMHeaderAndFooterWrapper.notifyDataSetChanged();
-                                    break;
-                                }
-
-                            }
-                        }
-
+                        deleteLocalComment(comment_id);
                     }
                 });
+    }
+
+    private void deleteLocalComment(String comment_id) {
+        for (int i = 0 ; i < mComments.size(); i++) {
+            PersonnalCommentResponseBean comment = mComments.get(i);
+            if (comment != null) {
+                if (comment.getComment_id().equals(comment_id)) {
+                    mPage.delete(i);
+                    mMHeaderAndFooterWrapper.notifyDataSetChanged();
+                    break;
+                }
+
+            }
+        }
+    }
+
+    @Override
+    public void onActivityResult(int requestCode, int resultCode, Intent data) {
+        if (PF == requestCode && resultCode == CommentsActivity.RESULT_DEL) {
+            String comment_id = data.getStringExtra(CommentsActivity.COMMENT_ID);
+            deleteLocalComment(comment_id);
+        }
     }
 }
