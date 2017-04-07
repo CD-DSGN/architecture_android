@@ -9,6 +9,7 @@ import android.content.Context;
 import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.graphics.Bitmap;
+import android.graphics.drawable.Drawable;
 import android.media.AudioManager;
 import android.media.Ringtone;
 import android.media.RingtoneManager;
@@ -100,7 +101,6 @@ public class IMNotifier {
         // TODO: 2017/3/2 免打扰等设置判断，暂时没处理
         Contacts mUserInfo = IMHelper.getInstance().getUserInfo(message.getFrom());
         String username = mUserInfo == null ? message.getFrom() : mUserInfo.getUser_name();
-        try {
             String notifytxt = username + "";
             switch (message.getType()) {
                 case TXT:
@@ -110,13 +110,8 @@ public class IMNotifier {
                     notifytxt += msgs[1];
                     break;
             }
-
-
             getIconBitmap(mUserInfo,notifytxt,message);
 
-        } catch (Exception e) {
-            Log.d(TAG, "sendNotification() called with: message = [" + message + "], isForeground = [" + isForeground + "], numIncrease = [" + numIncrease + "]");
-        }
     }
 
     private void getIconBitmap(final Contacts mUserInfo, final String mNotifytxt, final EMMessage mMessage) {
@@ -134,20 +129,35 @@ public class IMNotifier {
                 .subscribe(new Subscriber<BitmapTypeRequest<String>>() {
                     @Override
                     public void onCompleted() {
-
+                        Log.e(TAG, "onCompleted: " );
                     }
 
                     @Override
                     public void onError(Throwable e) {
+                        Log.e(TAG, "onError: " );
                      showNotification(mUserInfo,mNotifytxt,mMessage,null);
                     }
 
                     @Override
                     public void onNext(BitmapTypeRequest<String> mStringBitmapTypeRequest) {
+                        Log.e(TAG, "onNext: " );
                         mStringBitmapTypeRequest.into(new SimpleTarget<Bitmap>() {
                             @Override
                             public void onResourceReady(Bitmap resource, GlideAnimation<? super Bitmap> glideAnimation) {
+                                Log.e(TAG, "onResourceReady: " );
                                 showNotification(mUserInfo,mNotifytxt,mMessage,resource);
+                            }
+
+                            /**
+                             * {@inheritDoc}
+                             *
+                             * @param e
+                             * @param errorDrawable
+                             */
+                            @Override
+                            public void onLoadFailed(Exception e, Drawable errorDrawable) {
+                                super.onLoadFailed(e, errorDrawable);
+                                showNotification(mUserInfo,mNotifytxt,mMessage,null);
                             }
                         });
                     }
@@ -157,7 +167,7 @@ public class IMNotifier {
     }
 
     private void showNotification(Contacts mUserInfo, String notifytxt, EMMessage message, Bitmap mResource){
-        Log.d(TAG, "showNotification() called with: mUserInfo = [" + mUserInfo + "], notifytxt = [" + notifytxt + "], message = [" + message + "], mResource = [" + mResource + "]");
+        Log.e(TAG, "showNotification() called with: mUserInfo = [" + mUserInfo + "], notifytxt = [" + notifytxt + "], message = [" + message + "], mResource = [" + mResource + "]");
         PackageManager mPackageManager = mAppContext.getPackageManager();
         String appname = (String) mPackageManager.getApplicationLabel(mAppContext.getApplicationInfo());
 
@@ -230,10 +240,10 @@ public class IMNotifier {
             return;
         }
         lastNotifiyTime = System.currentTimeMillis();
-//        if (mAudioManager.getRingerMode() == AudioManager.RINGER_MODE_SILENT) {
-//            Log.e(TAG, "vibrateAndPlayTone: 手机静音模式不提shi");
-//            return;
-//        }
+        if (mAudioManager.getRingerMode() == AudioManager.RINGER_MODE_SILENT) {
+            Log.e(TAG, "vibrateAndPlayTone: 手机静音模式不提shi");
+            return;
+        }
         if (mMessage == null || mSettingsProvider.isMsgVibrateAllowed(mMessage)) {
             long pattern[] = new long[]{0, 180, 80, 20};
             mVibrator.vibrate(pattern, -1);
