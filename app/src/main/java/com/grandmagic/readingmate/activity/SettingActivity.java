@@ -47,7 +47,8 @@ public class SettingActivity extends AppBaseActivity {
     ImageButton mSwitchSettingPush;
     @BindView(R.id.rl_clean_cache)
     RelativeLayout mRlCleanCache;
-
+    public static final String USR_NAME = "USR_NAME";
+    private String mUserName;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -56,16 +57,18 @@ public class SettingActivity extends AppBaseActivity {
         setTranslucentStatus(true);
         AutoUtils.auto(this);
         ButterKnife.bind(this);
+        initData();
         initView();
-        loadData();
     }
 
-    //完成一些网络数据的获取及相应view的更新
-    private void loadData() {
-        //1.获取绑定手机、账号、积分
-        mTvSettingAccount.setText("多情剑客无情剑");
-        mTvSettingMobile.setText("13518143569");
+    private void initData() {
+        mUserName = getIntent().getStringExtra(USR_NAME);
+        mTvSettingAccount.setText(mUserName);
+        //从sp获取手机号
+        String tel = SPUtils.getInstance().getString(this, SPUtils.INFO_NAME);
+        mTvSettingMobile.setText(tel);
     }
+
 
     private void initView() {
         //设置版本信息

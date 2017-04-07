@@ -247,6 +247,8 @@ public class PersonalFragment extends AppBaseFragment implements MyCommentAdapte
                 break;
             case R.id.ll_setting:
                 Intent intent_setting = new Intent(mContext, SettingActivity.class);
+                String username = mUserInfoResponseBean == null ? " ": mUserInfoResponseBean.getUser_name();
+                intent_setting.putExtra(SettingActivity.USR_NAME, username);
                 startActivity(intent_setting);
                 break;
             case R.id.rela_notification:

@@ -84,6 +84,7 @@ public class CommentsActivity extends AppBaseActivity implements View.OnLayoutCh
     TextView mLikeNum;
     ImageView mApostrophe;
     ImageView mCommentGood;
+    LinearLayout mll_like_num;
 
     ImageView iv1;
     ImageView iv2;
@@ -323,6 +324,7 @@ public class CommentsActivity extends AppBaseActivity implements View.OnLayoutCh
         mApostrophe = (ImageView) mView.findViewById(R.id.iv_apostrophe);
         mCommentGood = (ImageView) mView.findViewById(R.id.iv_comment_good);
         mLikeNum = (TextView) mView.findViewById(R.id.like_num);
+        mll_like_num = (LinearLayout) mView.findViewById(R.id.ll_like_num);
         iv1 = (ImageView) mView.findViewById(R.id.iv_1);
         iv2 = (ImageView) mView.findViewById(R.id.iv_2);
         iv3 = (ImageView) mView.findViewById(R.id.iv_3);
@@ -336,7 +338,7 @@ public class CommentsActivity extends AppBaseActivity implements View.OnLayoutCh
             iv_list.add(iv4);
         }
 
-        ll_likers_info.setOnClickListener(new View.OnClickListener() {
+        mll_like_num.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 //跳转到点赞详情页
@@ -445,8 +447,8 @@ public class CommentsActivity extends AppBaseActivity implements View.OnLayoutCh
 
             //还原成评论状态
             mPosition = -1;
+            mEtComment.setText("");
             mEtComment.setHint("写评论");
-
             //            键盘收起
         }
         mEtComment.setLayoutParams(mParams);
