@@ -216,10 +216,9 @@ public class mLinkMovementMethod extends LinkMovementMethod {
                 Selection.setSelection(buffer,
                         buffer.getSpanStart(link[0]),
                         buffer.getSpanEnd(link[0]));
-                ViewUtils.showToast("别点我");
+//                ViewUtils.showToast("别点我");
             } else {
                 Selection.removeSelection(buffer);
-                ViewUtils.showToast("别点我");
                 // Your call to your layout's onTouchEvent or it's
                 //onClick listener depending on your needs
 //                context.startActivity(new Intent(context, DetailsActivity.class));

@@ -195,7 +195,8 @@
             android:layout_height="56px"
             android:layout_alignParentRight="true"
             android:gravity="center_vertical"
-            android:orientation="horizontal">
+            android:orientation="horizontal"
+            android:id="@+id/ll_like_num">
 
             <TextView
                 android:id="@+id/tv_goods_num"

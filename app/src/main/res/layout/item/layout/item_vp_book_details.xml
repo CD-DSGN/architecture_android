@@ -4,6 +4,7 @@
              android:layout_width="match_parent"
              android:layout_height="wrap_content"
              xmlns:tools="http://schemas.android.com/tools"
+             android:background="@drawable/selector_item_comment"
     >
 
     <FrameLayout
@@ -18,6 +19,7 @@
             android:layout_marginTop="22px"
             app:cardCornerRadius="5dp"
             app:cardElevation="0dp"
+
             >
 
 
@@ -211,7 +213,7 @@
         <com.grandmagic.readingmate.view.IrregularImageView
             android:id="@+id/iv_book"
             android:layout_width="310px"
-            android:layout_height="435px"
+            android:layout_height="425px"
             android:layout_marginLeft="26px"
             android:scaleType="centerCrop"
             />

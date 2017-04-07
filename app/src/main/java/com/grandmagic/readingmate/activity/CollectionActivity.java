@@ -22,10 +22,10 @@ import com.grandmagic.readingmate.utils.Page;
 import com.grandmagic.readingmate.utils.ViewUtils;
 import com.tamic.novate.NovateResponse;
 import com.tamic.novate.Throwable;
+import com.zhy.adapter.recyclerview.MultiItemTypeAdapter;
 
 import java.util.ArrayList;
 import java.util.List;
-
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
@@ -158,6 +158,21 @@ public class CollectionActivity extends AppBaseActivity {
                         goToPrePage();
                     }
                 }
+                return false;
+            }
+        });
+        mMyCollectBookAdapter.setOnItemClickListener(new MultiItemTypeAdapter.OnItemClickListener() {
+            @Override
+            public void onItemClick(View view, RecyclerView.ViewHolder holder, int position) {
+                //跳转图书详情
+                String book_id = mBookList.get(position).getBook_id();
+                Intent intent = new Intent(CollectionActivity.this, BookDetailActivity.class);
+                intent.putExtra(BookDetailActivity.BOOK_ID, book_id);
+                startActivity(intent);
+            }
+
+            @Override
+            public boolean onItemLongClick(View view, RecyclerView.ViewHolder holder, int position) {
                 return false;
             }
         });

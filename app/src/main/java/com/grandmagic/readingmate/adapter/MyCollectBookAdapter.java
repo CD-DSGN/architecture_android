@@ -58,15 +58,12 @@ public class MyCollectBookAdapter extends CommonAdapter<DisplayBook.InfoBean> {
             String str_score_num = mContext.getString(R.string.comment_num);
             if (score_num > 10000) {
                 str_score_num = String.format(str_score_num, score_num / 10000 + "万");
-//                str_score_num.append(score_num / 10000 + "万");
             }else if (score_num > 1000) {
                 str_score_num = String.format(str_score_num, score_num / 1000 + "千");
-//                str_score_num.append(score_num / 1000 + "千");
             }else{
                 str_score_num = String.format(str_score_num, score_num);
-//                str_score_num.append(score_num);
             }
-//            str_score_num.append(mContext.getString(R.string.comment_num));
+
             holder.setText(R.id.tv_comment_person_num, str_score_num);
             String str_publisher = mContext.getString(R.string.publisher) + book_info.getPublisher();
             holder.setText(R.id.tv_publisher, str_publisher);
@@ -100,8 +97,8 @@ public class MyCollectBookAdapter extends CommonAdapter<DisplayBook.InfoBean> {
             holder.setText(R.id.tv_time, str_time_scan);
 
         }
-
     }
+
 
     public List getList() {
         return mDatas;
@@ -110,5 +107,6 @@ public class MyCollectBookAdapter extends CommonAdapter<DisplayBook.InfoBean> {
     public interface OnitemDeleteListener {
         void deleteItem(String id);
     }
+
 
 }
