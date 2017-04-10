@@ -10,5 +10,13 @@
     android:layout_height="match_parent"
     android:id="@+id/iv"
     />
-
+<ImageView
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content"
+    android:src="@drawable/guide_start"
+    android:layout_gravity="center_horizontal|bottom"
+android:id="@+id/guide_start"
+    android:layout_marginBottom="198px"
+    android:visibility="gone"
+    />
 </FrameLayout>

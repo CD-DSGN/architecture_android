@@ -11,7 +11,8 @@ public class Environment {
 
 
     public static final String BASEULR_PRODUCTION = "http://192.168.1.115/reading-partner-php/api/web/";
-    public static final String BASEULR_DEVELOPMENT = "http://192.168.1.165/";
+//    public static final String BASEULR_PRODUCTION = "http://121.196.209.28/";
+    public static final String BASEULR_DEVELOPMENT = "http://121.196.209.28/";
 
 
     public static int getEnviroment() {

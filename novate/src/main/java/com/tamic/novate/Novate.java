@@ -207,12 +207,11 @@ public class Novate {
      * 用于只需要传递token的接口
      *
      * @param url
-     * @param token
      * @param callBack
      * @param <T>
      * @return
      */
-    public <T> T executeGet(final String url,  final ResponseCallBack<T> callBack) {
+    public <T> T executeGet(final String url, final ResponseCallBack<T> callBack) {
         final Type finalNeedType = getFinalNeedType(callBack);
         if (finalNeedType == null) {
             return null;
@@ -493,6 +492,20 @@ public class Novate {
         }
         String token = SPUtils.getInstance().getToken(mContext);
         return (T) apiManager.postRequestBody(Utils.getUrlWithToken(url, token), Utils.createJson(jsonStr))
+                .compose(schedulersTransformer)
+                .compose(handleErrTransformer())
+                .subscribe(new NovateSubscriber<T>(mContext, finalNeedType, callBack));
+    }
+
+    /*
+     * 这里是处理服务端不需要token的post方法
+     */
+    public <T> T executeJsonNoToken(final String url, final String jsonStr, final ResponseCallBack<T> callBack) {
+        final Type finalNeedType = getFinalNeedType(callBack);
+        if (finalNeedType == null) {
+            return null;
+        }
+        return (T) apiManager.postRequestBody(url, Utils.createJson(jsonStr))
                 .compose(schedulersTransformer)
                 .compose(handleErrTransformer())
                 .subscribe(new NovateSubscriber<T>(mContext, finalNeedType, callBack));
@@ -1365,7 +1378,7 @@ public class Novate {
                     } catch (Exception e) {
                         e.printStackTrace();
                         if (callBack != null) {
-                            callBack.onError(NovateException.handleException(new FormatException("服务端返回数据格式异常 finalNeedType="+finalNeedType+e)));
+                            callBack.onError(NovateException.handleException(new FormatException("服务端返回数据格式异常 finalNeedType=" + finalNeedType + e)));
                         }
                     }
                 }

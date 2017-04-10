@@ -1,19 +1,23 @@
 package com.grandmagic.readingmate.fragment;
 
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.webkit.WebSettings;
-import android.webkit.WebView;
+import android.widget.ImageView;
 
 import com.grandmagic.readingmate.R;
+import com.grandmagic.readingmate.activity.LoginActivity;
+import com.grandmagic.readingmate.activity.MainActivity;
+import com.grandmagic.readingmate.utils.AutoUtils;
+import com.tamic.novate.util.SPUtils;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
+import butterknife.OnClick;
 import butterknife.Unbinder;
 
 
@@ -24,8 +28,10 @@ public class GuideFragment extends Fragment {
 
 
     Unbinder unbinder;
-    @BindView(R.id.webView)
-    WebView mWebView;
+    @BindView(R.id.iv)
+    ImageView mIv;
+    @BindView(R.id.guide_start)
+    ImageView mGuideStart;
 
 
     @Override
@@ -33,58 +39,44 @@ public class GuideFragment extends Fragment {
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
         View view = inflater.inflate(R.layout.fragment_guide, container, false);
+        AutoUtils.auto(view);
         unbinder = ButterKnife.bind(this, view);
-
+        intitview(view);
         return view;
     }
 
-    private void intitview() {
-//        int mPosition = getArguments().getInt("position", -1);
-//        if (mPosition==-1)return;
-//        mAnimaview.setAnimation("guidepage"+mPosition+".json");
-//        mAnimaview.setImageAssetsFolder("guidepage"+mPosition+"/");
-//        mAnimaview.playAnimation();
-//        mWebView.loadUrl("file:///android_asset/guide1.gif");
-        mWebView.loadUrl("file:///android_asset/guide.html");
-        WebSettings mSettings = mWebView.getSettings();
-        mSettings.setJavaScriptEnabled(true);
-        mSettings.setAppCacheEnabled(false);
-        mSettings.setLayoutAlgorithm(WebSettings.LayoutAlgorithm.SINGLE_COLUMN);
+    private void intitview(View mView) {
+        int mPosition = getArguments().getInt("position", -1);
+        switch (mPosition) {
+            case 0:
 
+                mIv.setImageResource(R.drawable.guide_1);
+                break;
+            case 1:
+                mIv.setImageResource(R.drawable.guide_2);
+
+                break;
+            case 2:
+                mIv.setImageResource(R.drawable.guide_3);
+                break;
+            case 3:
+                mIv.setImageResource(R.drawable.guide_4);
+                mGuideStart.setVisibility(View.VISIBLE);
+                break;
+        }
 
     }
 
-    @Override
-    public void onResume() {
-        super.onResume();
-        intitview();
-    }
-
-    @Override
-    public void onHiddenChanged(boolean hidden) {
-        super.onHiddenChanged(hidden);
-//        if (!hidden){
-//            mWebView.loadUrl("file:///android_asset/guide.html");
-//        }
-    }
-
-    @Override
-    public void setUserVisibleHint(boolean isVisibleToUser) {
-        super.setUserVisibleHint(isVisibleToUser);
-//        if (isVisibleToUser){
-//            mWebView.loadUrl("file:///android_asset/guide.html");
-//        }
-//        if (isVisibleToUser) {
-//           mWebView.loadUrl("javascript:funFromjs()");
-//        }
-        Log.d(TAG, "setUserVisibleHint() called with: isVisibleToUser = [" + isVisibleToUser + "]");
-    }
-
-    private static final String TAG = "GuideFragment";
     @Override
     public void onDestroyView() {
         super.onDestroyView();
         unbinder.unbind();
     }
 
+    @OnClick(R.id.guide_start)
+    public void onViewClicked() {
+        Intent mIntent = new Intent(getActivity(), SPUtils.getInstance().isLogin(getActivity()) ? MainActivity.class : LoginActivity.class);
+        startActivity(mIntent);
+        getActivity().finish();
+    }
 }

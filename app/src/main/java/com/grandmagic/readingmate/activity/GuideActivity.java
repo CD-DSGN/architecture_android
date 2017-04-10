@@ -41,9 +41,6 @@ public class GuideActivity extends AppBaseActivity {
             mViews.add(mGuideFragment);
         }
     mViewpager.setAdapter(new Myadapter(getSupportFragmentManager()));
-mViewpager.setOffscreenPageLimit(4);
-
-
     }
 
 

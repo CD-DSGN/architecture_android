@@ -35,7 +35,7 @@ import rx.functions.Action1;
 //启动页面
 public class SplashActivity extends AppBaseActivity {
     private static final String TAG = "SplashActivity";
-    public static final int DEFAULT_TIME=2000;
+    public static final int DEFAULT_TIME = 2000;
     @BindView(R.id.activity_splash)
     RelativeLayout mActivitySplash;
     @BindView(R.id.logo)
@@ -47,13 +47,10 @@ public class SplashActivity extends AppBaseActivity {
         AutoUtils.setSize(this, false, 750, 1334);
         setContentView(R.layout.activity_splash);
         ButterKnife.bind(this);
-//        startActivity(new Intent(this,GuideActivity.class));
-//        finish();
         initview();
         checkfrist();
-        QueryBuilder.LOG_SQL = true;
+        QueryBuilder.LOG_SQL = true;//是否开启打印greendao的一些数据
         QueryBuilder.LOG_VALUES = true;
-//        startActivity(new Intent(SplashActivity.this,SettingActivity.class));
     }
 
     /**
@@ -62,10 +59,10 @@ public class SplashActivity extends AppBaseActivity {
     private void checkfrist() {
         boolean mFirst = SPUtils.getInstance().isFirst(this);
         if (mFirst) {
-// TODO: 2017/2/7 引导页
             Toast.makeText(this, "首次进入，后面待续", Toast.LENGTH_SHORT).show();
             SPUtils.getInstance().putBoolean(this, SPUtils.IS_FIRST, false);
-            checklogin();
+            startActivity(new Intent(SplashActivity.this, GuideActivity.class));
+            finish();
         } else {
             checklogin();
         }
@@ -105,7 +102,7 @@ public class SplashActivity extends AppBaseActivity {
                 public void onError(Throwable e) {
                     super.onError(e);
                     canDestroy = true;
-                    if (System.currentTimeMillis()-start>DEFAULT_TIME) {
+                    if (System.currentTimeMillis() - start > DEFAULT_TIME) {
                         mCountDownTimer.onFinish();
                     }
                 }
@@ -124,6 +121,7 @@ public class SplashActivity extends AppBaseActivity {
         }
         finish();
     }
+
     long start;
 
     private void initview() {

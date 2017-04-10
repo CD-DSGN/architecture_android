@@ -57,7 +57,7 @@ public class LoginModel {
 
         Novate novate = new Novate.Builder(mContext).build();
         String json_str = new Gson().toJson(mLoginRequestBean);
-        novate.executeJson(ApiInterface.LOGIN, json_str, mCallBack);
+        novate.executeJsonNoToken(ApiInterface.LOGIN, json_str, mCallBack);
     }
 
     public void logout() {
