@@ -1,5 +1,7 @@
 package com.grandmagic.readingmate.bean.response;
 
+import android.text.TextUtils;
+
 import com.google.gson.annotations.JsonAdapter;
 import com.google.gson.internal.bind.ListTypeAdapterFactory;
 import com.google.gson.internal.bind.ObjectDeserializer;
@@ -18,6 +20,19 @@ public class PersonalCommentListResponseBean {
     private ImageUrlResponseBean avatar_url;
     private String total_num;
     private String num;
+
+    public String getUnread_num() {
+        if (TextUtils.isEmpty(unread_num)) {
+            return "0";
+        }
+        return unread_num;
+    }
+
+    public void setUnread_num(String unread_num) {
+        this.unread_num = unread_num;
+    }
+
+    private String unread_num;
 
     public List<PersonnalCommentResponseBean> getComment_info() {
         return comment_info;

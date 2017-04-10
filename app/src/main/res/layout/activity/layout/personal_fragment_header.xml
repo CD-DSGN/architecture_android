@@ -234,11 +234,12 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:background="@drawable/red_point"
-                android:text="2"
+                tools:text="2"
                 android:gravity="center"
                 android:textColor="@color/white"
                 android:textSize="24px"
                 android:layout_toLeftOf="@+id/iv_rightarrow"
+                android:id="@+id/tv_unread_num"
                 />
             <ImageView
                 android:layout_width="wrap_content"

@@ -29,6 +29,7 @@ public class SharePopUpWindow extends PopupWindow {
     private Activity mActivity;
     private UMShareListener umShareListener; //默认一个回调监听
     private ShareAction mShareAction;
+    private ShareAction mShareActionDefault;
 
     public SharePopUpWindow(Context context) {
         mContext = context;
@@ -78,21 +79,25 @@ public class SharePopUpWindow extends PopupWindow {
             }
         };
 
-        final UMImage imagelocal; //测试
-        imagelocal = new UMImage(mContext, R.drawable.logo);
-        imagelocal.setThumb(new UMImage(mContext, R.drawable.logo));
-        final UMWeb web = new UMWeb("http://www.baidu.com");
-        web.setThumb(imagelocal);
+        mShareActionDefault = new ShareAction((Activity) mContext);
+        mShareActionDefault.setCallback(umShareListener);
+
+
+//        final UMImage imagelocal; //测试
+//        imagelocal = new UMImage(mContext, R.drawable.logo);
+//        imagelocal.setThumb(new UMImage(mContext, R.drawable.logo));
+//        final UMWeb web = new UMWeb("http://www.baidu.com");
+//        web.setThumb(imagelocal);
         View ll = mpopview.findViewById(R.id.ll_share_sina);
         ll.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-
-                new ShareAction(mActivity).setPlatform(SHARE_MEDIA.SINA)
-                        .withText("hello")
-                        .withMedia(web)
-                        .setCallback(umShareListener)
-                        .share();
+                mShareActionDefault.setPlatform(SHARE_MEDIA.SINA).share();
+//                new ShareAction(mActivity).setPlatform(SHARE_MEDIA.SINA)
+//                        .withText("hello")
+//                        .withMedia(web)
+//                        .setCallback(umShareListener)
+//                        .share();
             }
         });
 
@@ -101,11 +106,12 @@ public class SharePopUpWindow extends PopupWindow {
             @Override
             public void onClick(View v) {
 
-                new ShareAction(mActivity).setPlatform(SHARE_MEDIA.WEIXIN)
-                        .withText("hello")
-                        .withMedia(web)
-                        .setCallback(umShareListener)
-                        .share();
+//                new ShareAction(mActivity).setPlatform(SHARE_MEDIA.WEIXIN)
+//                        .withText("hello")
+//                        .withMedia(web)
+//                        .setCallback(umShareListener)
+//                        .share();
+                mShareActionDefault.setPlatform(SHARE_MEDIA.WEIXIN).share();
             }
         });
 
@@ -114,11 +120,12 @@ public class SharePopUpWindow extends PopupWindow {
             @Override
             public void onClick(View v) {
 
-                new ShareAction(mActivity).setPlatform(SHARE_MEDIA.WEIXIN_CIRCLE)
-                        .withText("hello")
-                        .withMedia(web)
-                        .setCallback(umShareListener)
-                        .share();
+//                new ShareAction(mActivity).setPlatform(SHARE_MEDIA.WEIXIN_CIRCLE)
+//                        .withText("hello")
+//                        .withMedia(web)
+//                        .setCallback(umShareListener)
+//                        .share();
+                mShareActionDefault.setPlatform(SHARE_MEDIA.WEIXIN_CIRCLE).share();
             }
         });
 
@@ -141,6 +148,27 @@ public class SharePopUpWindow extends PopupWindow {
 
     public void setShareAction(ShareAction shareAction) {
         mShareAction = shareAction;
+    }
+
+
+    /***
+     *
+     * @param title
+     * @param desc
+     * @param pic_id R.drawable.id
+     * @param url
+     * @return
+     */
+
+
+    public ShareAction setData(String title, String desc, int pic_id, String url, String content) {
+        UMWeb web = new UMWeb(url);
+        web.setTitle(title);
+        web.setDescription(desc);
+        UMImage image = new UMImage(mContext, pic_id);
+        web.setThumb(image);
+        mShareActionDefault.withMedia(web).withText(content);
+        return mShareActionDefault;
     }
 }
 

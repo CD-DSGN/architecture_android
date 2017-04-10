@@ -65,9 +65,13 @@ public class MyCommentAdapter extends CommonAdapter<PersonnalCommentResponseBean
 
             holder.setText(R.id.tv_likenum, like_times); //设置点赞的数目
             mLlShare = holder.getView(R.id.ll_share);
+            final PersonnalCommentResponseBean p = personnalCommentResponseBean;
             mLlShare.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
+                    mSharePopUpWindow.setData(
+                            p.getBook_name(),
+                            p.getContent(), R.drawable.logo, "http://www.huishi.com", "分享书评");
                     mSharePopUpWindow.show();
                 }
             });

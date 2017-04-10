@@ -82,6 +82,8 @@ public class PersonalFragment extends AppBaseFragment implements MyCommentAdapte
     UserInfoResponseBean mUserInfoResponseBean = new UserInfoResponseBean();
     @BindView(R.id.subscriped_book_num)
     TextView mSubscripedBookNum;
+    @BindView(R.id.tv_unread_num)
+    TextView mTvUnreadNum;
 
     private MyCommentAdapter mMAdapter;
     private HeaderAndFooterWrapper mMHeaderAndFooterWrapper;
@@ -98,7 +100,7 @@ public class PersonalFragment extends AppBaseFragment implements MyCommentAdapte
     private ArrayList<PersonnalCommentResponseBean> mComments = new ArrayList<>();
     BookModel mBookModel;
 
-    public static final int PF  = 1;
+    public static final int PF = 1;
 
     private DeleteConfirmDlg mCommentDlg;
 
@@ -219,7 +221,11 @@ public class PersonalFragment extends AppBaseFragment implements MyCommentAdapte
                     if (imageUrlResponseBean != null) {
                         url = imageUrlResponseBean.getLarge();
                     }
-//                    mMAdapter.setUsername(personalCommentListResponseBean.getUsername());
+
+                    mTvUnreadNum.setText(personalCommentListResponseBean.getUnread_num());
+
+
+                    //                    mMAdapter.setUsername(personalCommentListResponseBean.getUsername());
                     if (personalCommentListResponseBean != null) {
                         List<PersonnalCommentResponseBean> list = personalCommentListResponseBean.getComment_info();
 
@@ -257,7 +263,7 @@ public class PersonalFragment extends AppBaseFragment implements MyCommentAdapte
     }
 
 
-    @OnClick({R.id.tv_edit_personal_info, R.id.ll_collect, R.id.ll_setting,R.id.rela_notification})
+    @OnClick({R.id.tv_edit_personal_info, R.id.ll_collect, R.id.ll_setting, R.id.rela_notification})
     public void onClick(View view) {
         switch (view.getId()) {
             case R.id.tv_edit_personal_info:
@@ -272,7 +278,7 @@ public class PersonalFragment extends AppBaseFragment implements MyCommentAdapte
                 break;
             case R.id.ll_setting:
                 Intent intent_setting = new Intent(mContext, SettingActivity.class);
-                String username = mUserInfoResponseBean == null ? " ": mUserInfoResponseBean.getUser_name();
+                String username = mUserInfoResponseBean == null ? " " : mUserInfoResponseBean.getUser_name();
                 intent_setting.putExtra(SettingActivity.USR_NAME, username);
                 startActivity(intent_setting);
                 break;
@@ -287,7 +293,7 @@ public class PersonalFragment extends AppBaseFragment implements MyCommentAdapte
     @Override
     public void onResume() {
         super.onResume();
-//        setSystemBarColor(false);
+        //        setSystemBarColor(false);
         if (NEED_REFRESH) {
             mUserInfoModel.getUserInfo();
         }
@@ -379,7 +385,7 @@ public class PersonalFragment extends AppBaseFragment implements MyCommentAdapte
     }
 
     private void deleteLocalComment(String comment_id) {
-        for (int i = 0 ; i < mComments.size(); i++) {
+        for (int i = 0; i < mComments.size(); i++) {
             PersonnalCommentResponseBean comment = mComments.get(i);
             if (comment != null) {
                 if (comment.getComment_id().equals(comment_id)) {
