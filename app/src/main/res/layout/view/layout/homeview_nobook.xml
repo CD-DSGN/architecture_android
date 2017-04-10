@@ -38,7 +38,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="320px"
-                android:text="开启一本书的探阅"
+                android:text="开始你和书的故事"
                 android:textColor="#fefefe"
                 android:gravity="center_horizontal"
                 android:textSize="32px"

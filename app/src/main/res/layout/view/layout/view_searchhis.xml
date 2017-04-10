@@ -2,6 +2,7 @@
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
                 android:layout_width="720px"
                 android:layout_height="wrap_content"
+                xmlns:tools="http://schemas.android.com/tools"
                 android:layout_centerHorizontal="true">
 
 
@@ -10,20 +11,26 @@
         android:id="@+id/dashline_search"
         android:layout_width="match_parent"
         android:layout_height="3px"
-        android:layout_marginTop="80px"
+      android:layout_below="@+id/bookname"
         android:src="@drawable/shape_white_line"/>
 
 
     <TextView
         android:id="@+id/bookname"
-        android:layout_width="wrap_content"
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_alignBottom="@+id/dashline_search"
+android:layout_centerVertical="true"
         android:layout_marginBottom="22px"
         android:layout_marginLeft="14px"
         android:layout_toRightOf="@+id/iv_searchlist"
-        android:text="《C++》"
+        tools:text="《C++》《C++》《C++》《C++》《C++》《C++》
+《C++》《C++》《C++》《C++》《C++》《C++》《C++》《C++》《C++》《C++》《C++》《C++》
+《C++》《C++》《C++》《C++》《C++》《C++》《C++》《C++》
+《C++》《C++》《C++》《C++》《C++》《C++》《C++》《C++》《C++》《C++》《C++》《C++》《C++》《C++》《C++》《C++》《C++》《C++》《C++》《C++》《C++》《C++》
+《C++》《C++》《C++》《C++》《C++》《C++》《C++》《C++》《C++》《C++》《C++》
+"
         android:textColor="@color/white"
+        android:layout_toLeftOf="@+id/timeOrauthor"
         android:textSize="28px"
 
         />
@@ -32,9 +39,10 @@
         android:id="@+id/timeOrauthor"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_alignBottom="@+id/dashline_search"
         android:layout_alignParentRight="true"
         android:layout_marginBottom="22px"
+        android:maxWidth="400px"
+        android:layout_centerVertical="true"
         android:layout_marginLeft="14px"
         android:layout_toRightOf="@+id/iv_searchlist"
         android:text="2016-12-13"

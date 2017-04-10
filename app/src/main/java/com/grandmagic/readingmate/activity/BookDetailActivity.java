@@ -25,6 +25,7 @@ import com.grandmagic.readingmate.db.BookCommentDao;
 import com.grandmagic.readingmate.db.DBHelper;
 import com.grandmagic.readingmate.model.BookModel;
 import com.grandmagic.readingmate.utils.AutoUtils;
+import com.grandmagic.readingmate.utils.DateUtil;
 import com.grandmagic.readingmate.utils.DensityUtil;
 import com.grandmagic.readingmate.utils.ImageLoader;
 import com.grandmagic.readingmate.utils.InputMethodUtils;
@@ -252,7 +253,7 @@ public class BookDetailActivity extends AppBaseActivity implements View.OnLayout
         mBookname.setText(s.getBook_name());
         mAuthor.setText(s.getAuthor());
         mTvPublisher.setText(s.getPublisher());
-        mTvPublistime.setText(s.getPub_date());
+        mTvPublistime.setText(DateUtil.timeTodate("yyyy-MM-dd",s.getPub_date()));
         mAbout.setText(s.getSynopsis());
         mCollectionNum.setText(s.getCollect_count());
         ImageLoader.loadImage(this, s.getPhoto(), mIvConver);

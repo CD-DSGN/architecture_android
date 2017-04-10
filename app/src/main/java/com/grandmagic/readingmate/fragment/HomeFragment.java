@@ -112,20 +112,22 @@ public class HomeFragment extends AppBaseFragment implements HomeBookAdapter.Cli
                 Logger.e("首页加载成功");
                 if (response.getData().getNum() == 0) {
                     showEmptyView();
+                    isEmpty=true;
                     return;
                 }
                 mBookList.addAll(response.getData().getInfo());
                 pagecount = response.getData().getpage();
                 mBookAdapter.setData(mBookList);
-                showRecyclerView();
                 isEmpty = false;
+                showRecyclerView();
             }
 
             @Override
             public void onError(Throwable e) {
                 super.onError(e);
-                showEmptyView();
                 isEmpty = true;
+                showEmptyView();
+
             }
         });
     }
@@ -136,6 +138,7 @@ public class HomeFragment extends AppBaseFragment implements HomeBookAdapter.Cli
     private void showEmptyView() {
         mLayoutNobook.setVisibility(View.VISIBLE);
         mHomeviewBook.setVisibility(View.GONE);
+        setSystemBarColor(false);
     }
 
     /**
@@ -146,6 +149,7 @@ public class HomeFragment extends AppBaseFragment implements HomeBookAdapter.Cli
     private void showRecyclerView() {
         mLayoutNobook.setVisibility(View.GONE);
         mHomeviewBook.setVisibility(View.VISIBLE);
+        setSystemBarColor(false);
 
     }
 
