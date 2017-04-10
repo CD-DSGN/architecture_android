@@ -7,9 +7,11 @@ import android.content.Context;
 import android.content.Intent;
 import android.graphics.drawable.BitmapDrawable;
 import android.os.Bundle;
+import android.support.design.widget.AppBarLayout;
 import android.support.design.widget.CoordinatorLayout;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.util.Log;
 import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -71,6 +73,8 @@ public class HomeFragment extends AppBaseFragment implements HomeBookAdapter.Cli
     BGARefreshLayout mRefreshLayout;
     @BindView(R.id.homeview_book)
     CoordinatorLayout mHomeviewBook;
+    @BindView(R.id.appbarlayout)
+    AppBarLayout mAppBarLayout;
     private View rootview;
     boolean isEmpty = false;
     BGAStickinessRefreshViewHolder mRefreshViewHolder;
@@ -156,6 +160,7 @@ public class HomeFragment extends AppBaseFragment implements HomeBookAdapter.Cli
             public void onBGARefreshLayoutBeginRefreshing(BGARefreshLayout refreshLayout) {
                 currpage = 1;
                 loadBook(currpage);
+
             }
 
             @Override
@@ -168,6 +173,13 @@ public class HomeFragment extends AppBaseFragment implements HomeBookAdapter.Cli
                     Toast.makeText(mContext, "NOMORE", Toast.LENGTH_SHORT).show();
                 }
                 return false;
+            }
+        });
+        mAppBarLayout.addOnOffsetChangedListener(new AppBarLayout.OnOffsetChangedListener() {
+            @Override
+            public void onOffsetChanged(AppBarLayout appBarLayout, int verticalOffset) {
+                //随时处理refresh是否拦截下拉事件。当appbarlayout是展开的时候才允许它进行拦截
+                mRefreshLayout.setPullDownRefreshEnable(verticalOffset>=0);
             }
         });
     }

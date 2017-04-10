@@ -63,7 +63,10 @@ public class HotcommentView extends FrameLayout implements BookCommentsAdapter.A
                 pagecount = response.getData().getPageCount();
                 List<BookCommentResponse.CommentsBean> mComments = response.getData().getComments();
                 if (mComments!=null&&!mComments.isEmpty())
-                mList.addAll(mComments);
+                    for (int i = 0; i < 15; i++) {
+
+                        mList.addAll(mComments);
+                    }
                 mAdapter.refresh();
             }
         });
