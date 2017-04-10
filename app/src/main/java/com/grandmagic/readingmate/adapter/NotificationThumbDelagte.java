@@ -5,6 +5,7 @@ import android.content.Intent;
 import android.graphics.Color;
 import android.text.SpannableStringBuilder;
 import android.text.Spanned;
+import android.text.TextPaint;
 import android.text.method.LinkMovementMethod;
 import android.text.style.ClickableSpan;
 import android.text.style.ForegroundColorSpan;
@@ -81,6 +82,11 @@ public class NotificationThumbDelagte implements ItemViewDelegate<NotificationCo
                 Intent mIntent = new Intent(mContext, BookDetailActivity.class);
                 mIntent.putExtra(BookDetailActivity.BOOK_ID,mData.getBook_id()+"");
                 mContext.startActivity(mIntent);
+            }
+            @Override
+            public void updateDrawState(TextPaint ds) {
+                ds.setColor(Color.parseColor("#1cc9a2"));
+                ds.setUnderlineText(false);
             }
         }, 4, 6 + mData.getBook_name().length(), Spanned.SPAN_EXCLUSIVE_EXCLUSIVE);
         return mBuilder;
