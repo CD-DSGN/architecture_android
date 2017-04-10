@@ -62,11 +62,8 @@ public class HotcommentView extends FrameLayout implements BookCommentsAdapter.A
             public void onSuccee(NovateResponse<BookCommentResponse> response) {
                 pagecount = response.getData().getPageCount();
                 List<BookCommentResponse.CommentsBean> mComments = response.getData().getComments();
-                if (mComments!=null&&!mComments.isEmpty())
-                    for (int i = 0; i < 15; i++) {
-
-                        mList.addAll(mComments);
-                    }
+                if (mComments != null && !mComments.isEmpty())
+                    mList.addAll(mComments);
                 mAdapter.refresh();
             }
         });
@@ -77,7 +74,6 @@ public class HotcommentView extends FrameLayout implements BookCommentsAdapter.A
         mContext = context;
         initPagerview();
     }
-
 
 
     List<BookCommentResponse.CommentsBean> mList;
@@ -91,7 +87,7 @@ public class HotcommentView extends FrameLayout implements BookCommentsAdapter.A
         mList = new ArrayList<>();
         BookCommentsAdapter mInnerAdapter = new BookCommentsAdapter(mContext, mList);
         mInnerAdapter.setListener(this);
-        this.mAdapter = new DefaultEmptyAdapter(mInnerAdapter,mContext);
+        this.mAdapter = new DefaultEmptyAdapter(mInnerAdapter, mContext);
         mRecyclerview.setAdapter(this.mAdapter);
     }
 
@@ -132,7 +128,7 @@ public class HotcommentView extends FrameLayout implements BookCommentsAdapter.A
             public void onSuccee(NovateResponse response) {
                 mList.get(position).setThumb_up("1");
                 int mLike_times = mList.get(position).getLike_times();
-                mList.get(position).setLike_times(mLike_times+1);
+                mList.get(position).setLike_times(mLike_times + 1);
                 mAdapter.refresh();
             }
         });
