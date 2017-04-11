@@ -4,6 +4,7 @@ import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.pm.PackageManager;
+import android.content.pm.ResolveInfo;
 import android.net.Uri;
 import android.support.v7.app.AlertDialog;
 import android.util.Log;
@@ -27,6 +28,7 @@ import org.json.JSONObject;
 
 import java.io.File;
 import java.util.HashMap;
+import java.util.List;
 
 /**
  * Created by lps
@@ -46,22 +48,22 @@ public class UpdateManager {
 
     public void getVersionCode(final int localVersion) {
         mNovate = new Novate.Builder(mContext).build();
-        JSONObject mJSONObject=new JSONObject();
+        JSONObject mJSONObject = new JSONObject();
         try {
-            mJSONObject.put("client_type",2);
-            mJSONObject.put("version",KitUtils.getVersionName(mContext));
+            mJSONObject.put("client_type", 2);
+            mJSONObject.put("version", KitUtils.getVersionName(mContext));
         } catch (JSONException mE) {
             mE.printStackTrace();
         }
-        mNovate.executeJson(ApiInterface.UPDATE,mJSONObject.toString() ,
+        mNovate.executeJson(ApiInterface.UPDATE, mJSONObject.toString(),
                 new AppBaseResponseCallBack<NovateResponse<UpdateResponse>>(mContext) {
                     @Override
                     public void onSuccee(NovateResponse<UpdateResponse> response) {
 //                        if (localVersion != response.getData().getServersion()) {
 //                            showUpdateDialog(response.getData().getUrl());
 //                        }
-                        if (response.getData().isIs_update()){
-                         showUpdateDialog(response.getData().getDown_link(),response.getData().getUpdate_note());
+                        if (response.getData().isIs_update()) {
+                            showUpdateDialog(response.getData().getDown_link(), response.getData().getUpdate_note());
 
                         }
                     }
@@ -76,7 +78,8 @@ public class UpdateManager {
         mDialog.setNegativeButton(R.string.confirm, new DialogInterface.OnClickListener() {
             @Override
             public void onClick(DialogInterface dialog, int which) {
-                download(url);
+//                download(url);由下载更新改为打开应用市场
+                openApplicationMarket();
                 mAlertDialog.dismiss();
 
             }
@@ -89,6 +92,19 @@ public class UpdateManager {
         });
         mAlertDialog = mDialog.create();
         mAlertDialog.show();
+    }
+
+    private void openApplicationMarket() {
+        StringBuilder mBuilder = new StringBuilder("market://details?id=");
+        String pkn = mContext.getPackageName();
+        mBuilder.append(pkn);
+        Intent mIntent = new Intent("android.intent.action.VIEW", Uri.parse(mBuilder.toString()));
+        List<ResolveInfo> mResolveInfos = mContext.getPackageManager().queryIntentActivities(mIntent, PackageManager.GET_INTENT_FILTERS);
+        if (mResolveInfos != null && !mResolveInfos.isEmpty()) {
+            mContext.startActivity(mIntent);
+        } else {
+            Toast.makeText(mContext, "你的手机没有应用市场", Toast.LENGTH_SHORT).show();
+        }
     }
 
     AlertDialog progressdialog;
@@ -108,8 +124,13 @@ public class UpdateManager {
         mProgressBar.setProgress(progress);
     }
 
+    /**
+     * 根据URl去下载apk文件
+     *
+     * @param mUrl
+     */
     private void download(String mUrl) {
-        Novate mNovate1 = new Novate.Builder(mContext).baseUrl("http://alensw.com/").build();
+        Novate mNovate1 = new Novate.Builder(mContext).build();
         mNovate1.download(mUrl, new DownLoadCallBack() {
             @Override
             public void onError(Throwable e) {
