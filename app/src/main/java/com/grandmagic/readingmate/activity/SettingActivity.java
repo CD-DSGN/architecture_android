@@ -17,6 +17,7 @@ import com.grandmagic.readingmate.ui.CleanCacheDlg;
 import com.grandmagic.readingmate.utils.AutoUtils;
 import com.grandmagic.readingmate.utils.KitUtils;
 import com.grandmagic.readingmate.utils.ViewUtils;
+import com.grandmagic.readingmate.view.SharePopUpWindow;
 import com.hyphenate.chat.EMClient;
 import com.tamic.novate.NovateResponse;
 import com.tamic.novate.Throwable;
@@ -48,7 +49,13 @@ public class SettingActivity extends AppBaseActivity {
     @BindView(R.id.rl_clean_cache)
     RelativeLayout mRlCleanCache;
     public static final String USR_NAME = "USR_NAME";
+    @BindView(R.id.iv_share_app)
+    ImageView mIvShareApp;
     private String mUserName;
+
+    private SharePopUpWindow mSharePopUpWindow;
+
+    private final String APP_URL = "http://a.app.qq.com/o/simple.jsp?pkgname=com.grandmagic.edustore";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -80,6 +87,10 @@ public class SettingActivity extends AppBaseActivity {
         //1.sp没有相关信息，默认为打开状态
         boolean checked = SPUtils.getInstance().getPushSetting(SettingActivity.this);
         changeSwitch(checked);
+
+        if (mSharePopUpWindow == null) {
+            mSharePopUpWindow = new SharePopUpWindow(this);
+        }
     }
 
     private void changeSwitch(boolean checked) {
@@ -119,7 +130,7 @@ public class SettingActivity extends AppBaseActivity {
         startActivity(intent);
     }
 
-    @OnClick({R.id.logout, R.id.back, R.id.switch_setting_push,R.id.rl_clean_cache})
+    @OnClick({R.id.logout, R.id.back, R.id.switch_setting_push, R.id.rl_clean_cache, R.id.iv_share_app})
     public void onClick(View view) {
         switch (view.getId()) {
             case R.id.logout:
@@ -138,10 +149,15 @@ public class SettingActivity extends AppBaseActivity {
                 CleanCacheDlg cleanCacheDlg = new CleanCacheDlg(this);
                 cleanCacheDlg.show();
                 break;
+            case R.id.iv_share_app:
+                mSharePopUpWindow.setData("大术读家", "一款阅读交友类软件，很有趣哈", R.drawable.logo,
+                        APP_URL, "加入我们吧，等你来哦");
+                mSharePopUpWindow.show();
+                break;
+
             default:
                 break;
         }
     }
-
 
 }

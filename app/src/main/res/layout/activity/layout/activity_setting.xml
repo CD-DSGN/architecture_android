@@ -243,7 +243,9 @@
             android:layout_width="34px"
             android:layout_height="30px"
             android:layout_alignParentRight="true"
-            android:src="@drawable/ic_share"/>
+            android:src="@drawable/ic_share"
+            android:clickable="true"
+            android:id="@+id/iv_share_app"/>
 
     </RelativeLayout>
 
