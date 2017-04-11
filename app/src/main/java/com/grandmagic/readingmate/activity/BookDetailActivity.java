@@ -1,9 +1,11 @@
 package com.grandmagic.readingmate.activity;
 
+import android.annotation.TargetApi;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.v4.view.ViewPager;
 import android.text.TextUtils;
+import android.transition.Slide;
 import android.util.TypedValue;
 import android.view.View;
 import android.widget.Button;
@@ -23,6 +25,7 @@ import com.grandmagic.readingmate.bean.response.BookdetailResponse;
 import com.grandmagic.readingmate.bean.response.HistoryComment;
 import com.grandmagic.readingmate.db.BookCommentDao;
 import com.grandmagic.readingmate.db.DBHelper;
+import com.grandmagic.readingmate.event.RefreshHotCommentEvent;
 import com.grandmagic.readingmate.model.BookModel;
 import com.grandmagic.readingmate.utils.AutoUtils;
 import com.grandmagic.readingmate.utils.DateUtil;
@@ -33,6 +36,10 @@ import com.grandmagic.readingmate.view.HotcommentView;
 import com.grandmagic.readingmate.view.StarView;
 import com.tamic.novate.NovateResponse;
 import com.tamic.novate.util.Environment;
+
+import org.greenrobot.eventbus.EventBus;
+import org.greenrobot.eventbus.Subscribe;
+import org.greenrobot.eventbus.ThreadMode;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -127,6 +134,7 @@ public class BookDetailActivity extends AppBaseActivity implements View.OnLayout
         ButterKnife.bind(this);
         AutoUtils.auto(this);
         setTranslucentStatus(true);
+        EventBus.getDefault().register(this);
         initdata();
         initView();
         initlistener();
@@ -175,11 +183,13 @@ public class BookDetailActivity extends AppBaseActivity implements View.OnLayout
         mViewpager.setCurrentItem(0);
     }
 
+    View mHotView;
+
     private void initView() {
         List<View> mViews = new ArrayList<>();
 //        为了减少Activity的代码，将评论的相关功能抽离到HotcommentView了
         View mRecentView = new HotcommentView(this, HotcommentView.COMMENT_TIME, mModel, book_id);
-        View mHotView = new HotcommentView(this, HotcommentView.COMMENT_LIKE, mModel, book_id);
+        mHotView = new HotcommentView(this, HotcommentView.COMMENT_LIKE, mModel, book_id);
         mViews.add(mRecentView);
         mViews.add(mHotView);
         mViewpager.setAdapter(new CommonPagerAdapter(mViews));
@@ -253,10 +263,10 @@ public class BookDetailActivity extends AppBaseActivity implements View.OnLayout
         mBookname.setText(s.getBook_name());
         mAuthor.setText(s.getAuthor());
         mTvPublisher.setText(s.getPublisher());
-        mTvPublistime.setText(DateUtil.timeTodate("yyyy-MM-dd",s.getPub_date()));
+        mTvPublistime.setText(DateUtil.timeTodate("yyyy-MM-dd", s.getPub_date()));
         mAbout.setText(s.getSynopsis());
         mCollectionNum.setText(s.getCollect_count());
-        ImageLoader.loadImage(this, s.getPhoto(), mIvConver);
+        ImageLoader.loadImage(this, Environment.getUrl() + s.getPhoto(), mIvConver);
         setCollectView(s.getCollect_user());
         mTotalScore.setScore(Float.valueOf(s.getTotal_score()));
         mScore.setText(s.getTotal_score());
@@ -330,6 +340,11 @@ public class BookDetailActivity extends AppBaseActivity implements View.OnLayout
 
     }
 
+    @Subscribe
+    public void refreshHotcommentView(RefreshHotCommentEvent mEvent) {
+        ((HotcommentView) mHotView).loadData(1);
+    }
+
     @Override
     protected void onDestroy() {
         if (!TextUtils.isEmpty(mEtComment.getText())) {//如果有未提交的评论则保存到本地
@@ -340,6 +355,7 @@ public class BookDetailActivity extends AppBaseActivity implements View.OnLayout
             DBHelper.getBookCommentDao(this).insertOrReplace(mBookComment);
             DBHelper.close();
         }
+        EventBus.getDefault().unregister(this);
         super.onDestroy();
     }
 

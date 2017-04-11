@@ -14,8 +14,11 @@ import com.grandmagic.readingmate.adapter.BookCommentsAdapter;
 import com.grandmagic.readingmate.adapter.DefaultEmptyAdapter;
 import com.grandmagic.readingmate.base.AppBaseResponseCallBack;
 import com.grandmagic.readingmate.bean.response.BookCommentResponse;
+import com.grandmagic.readingmate.event.RefreshHotCommentEvent;
 import com.grandmagic.readingmate.model.BookModel;
 import com.tamic.novate.NovateResponse;
+
+import org.greenrobot.eventbus.EventBus;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -56,10 +59,11 @@ public class HotcommentView extends FrameLayout implements BookCommentsAdapter.A
 
     int pagecount, currpage = 1;
 
-    private void loadData(int currpage) {
+    public void loadData(final int currpage) {
         mModel.loadBookComment(mBook_id, currpage, order_way, new AppBaseResponseCallBack<NovateResponse<BookCommentResponse>>(mContext) {
             @Override
             public void onSuccee(NovateResponse<BookCommentResponse> response) {
+                if (currpage==1)mList.clear();
                 pagecount = response.getData().getPageCount();
                 List<BookCommentResponse.CommentsBean> mComments = response.getData().getComments();
                 if (mComments != null && !mComments.isEmpty())
@@ -120,7 +124,7 @@ public class HotcommentView extends FrameLayout implements BookCommentsAdapter.A
      *
      * @param commentid
      */
-    // FIXME: 2017/3/21 在最新或者最热点赞之后不好更新另一个view的点赞情况
+    //
     @Override
     public void thumb(String commentid, final int position) {
         mModel.thumbBookComment(commentid, new AppBaseResponseCallBack<NovateResponse>(mContext) {
@@ -130,6 +134,8 @@ public class HotcommentView extends FrameLayout implements BookCommentsAdapter.A
                 int mLike_times = mList.get(position).getLike_times();
                 mList.get(position).setLike_times(mLike_times + 1);
                 mAdapter.refresh();
+                if (order_way.equals(COMMENT_TIME))
+                EventBus.getDefault().post(new RefreshHotCommentEvent());
             }
         });
     }
