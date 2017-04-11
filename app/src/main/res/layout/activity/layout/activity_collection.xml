@@ -60,23 +60,25 @@
         android:layout_height="wrap_content"
         android:layout_below="@id/rv_collect_books"
         android:layout_centerHorizontal="true"
-        android:layout_marginTop="76px"
+        android:layout_marginTop="66px"
         android:gravity="center"
         android:orientation="horizontal"
         >
 
         <ImageButton
             android:id="@+id/pre_page"
-            android:layout_width="15px"
-            android:layout_height="24px"
-            android:background="@drawable/ic_pre_page"
+            android:layout_width="45px"
+            android:layout_height="54px"
+            android:src="@drawable/ic_pre_page"
+            android:padding="15px"
+            android:background="@null"
             />
 
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginLeft="55px"
-            android:layout_marginRight="55px"
+            android:layout_marginLeft="35px"
+            android:layout_marginRight="35px"
             android:text="1/1"
             android:textColor="#1cc9a2"
             android:textSize="26px"
@@ -85,9 +87,11 @@
 
         <ImageButton
             android:id="@+id/next_page"
-            android:layout_width="15px"
-            android:layout_height="24px"
-            android:background="@drawable/ic_next_page"
+            android:layout_width="45px"
+            android:layout_height="54px"
+            android:src="@drawable/ic_next_page"
+            android:padding="15px"
+            android:background="@null"
             />
     </LinearLayout>
 </RelativeLayout>
