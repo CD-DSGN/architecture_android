@@ -7,15 +7,19 @@ import android.os.Bundle;
 import android.support.v7.widget.LinearLayoutManager;
 import android.text.TextUtils;
 import android.view.View;
+import android.view.ViewGroup;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 
+import com.bumptech.glide.Glide;
 import com.github.promeg.pinyinhelper.Pinyin;
 import com.grandmagic.readingmate.R;
 import com.grandmagic.readingmate.adapter.ContactItemDelagate;
 import com.grandmagic.readingmate.adapter.ContactLetterDelagate;
 import com.grandmagic.readingmate.adapter.ContactNewFriendDelagate;
+import com.grandmagic.readingmate.adapter.DefaultEmptyAdapter;
 import com.grandmagic.readingmate.adapter.MultiItemTypeAdapter;
 import com.grandmagic.readingmate.base.AppBaseActivity;
 import com.grandmagic.readingmate.base.AppBaseResponseCallBack;
@@ -31,6 +35,7 @@ import com.grandmagic.readingmate.view.SwipRecycleView;
 import com.orhanobut.logger.Logger;
 import com.tamic.novate.NovateResponse;
 import com.tamic.novate.Throwable;
+import com.zhy.adapter.recyclerview.wrapper.HeaderAndFooterWrapper;
 
 import org.greenrobot.eventbus.EventBus;
 import org.greenrobot.eventbus.Subscribe;
@@ -64,7 +69,7 @@ public class FriendActivity extends AppBaseActivity implements ContactItemDelaga
     RelativeLayout mTitlelayout;
     private static final String TAG = "FriendActivity";
     int newFriendCOunt;//好友邀请数量
-
+    TextView unredNewfriendTextview;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -83,7 +88,8 @@ public class FriendActivity extends AppBaseActivity implements ContactItemDelaga
 
     private void initdata() {
         newFriendCOunt = getIntent().getIntExtra(NEW_FRIEND, 0);
-
+        unredNewfriendTextview.setText(newFriendCOunt + "");
+        unredNewfriendTextview.setVisibility(newFriendCOunt > 0 ? View.VISIBLE : View.GONE);
         initServerData();
     }
 
@@ -91,7 +97,7 @@ public class FriendActivity extends AppBaseActivity implements ContactItemDelaga
      * 生成adapter需要的list
      */
     private void initadapterData() {
-        mAdapterData.add(new Contacts(Contacts.TYPE.TYPE_NEWFRIEND).setGender(newFriendCOunt));//新朋友的头部
+//        mAdapterData.add(new Contacts(Contacts.TYPE.TYPE_NEWFRIEND).setGender(newFriendCOunt));//新朋友的头部
         for (int i = 0; i < mLetters.size(); i++) {
             String letter = mLetters.get(i);
             mAdapterData.get(mAdapterData.size() - 1).setNeedline(false);
@@ -105,8 +111,7 @@ public class FriendActivity extends AppBaseActivity implements ContactItemDelaga
             }
         }
         DBHelper.close();
-        Logger.e("更新好友列表");
-        mAdapter.setData(mAdapterData);
+        mEmptyAdapter.refresh();
     }
 
     /**
@@ -157,7 +162,7 @@ public class FriendActivity extends AppBaseActivity implements ContactItemDelaga
     }
 
     private void initServerData() {
-        mAdapterData.add(new Contacts(Contacts.TYPE.TYPE_NEWFRIEND, newFriendCOunt));//新朋友的头部
+//        mAdapterData.add(new Contacts(Contacts.TYPE.TYPE_NEWFRIEND, newFriendCOunt));//新朋友的头部
         mModel.getAllFriendFromServer(new AppBaseResponseCallBack<NovateResponse<List<Contacts>>>(this) {
             @Override
             public void onSuccee(NovateResponse<List<Contacts>> response) {
@@ -165,8 +170,8 @@ public class FriendActivity extends AppBaseActivity implements ContactItemDelaga
                 mAdapterData.clear();
                 mLetters.clear();//防止删除好友的时候重新加载好友列表数据重复
                 List<Contacts> mData = response.getData();
-                if (mData!=null&&!mData.isEmpty())
-                mSouseDatas.addAll(mData);
+                if (mData != null && !mData.isEmpty())
+                    mSouseDatas.addAll(mData);
                 initsouseData();
             }
 
@@ -181,28 +186,37 @@ public class FriendActivity extends AppBaseActivity implements ContactItemDelaga
         });
     }
 
-    MultiItemTypeAdapter mAdapter;
-    ContactNewFriendDelagate mContactNewFriendDelagate;
+
+    DefaultEmptyAdapter mEmptyAdapter;
 
     private void initview() {
         mContext = this;
-
         mTitle.setText(R.string.read_friend);
         mTitlelayout.setBackgroundColor(Color.parseColor("#ffffff"));
         mTitle.setTextColor(Color.parseColor("#181e1d"));
         LinearLayoutManager mLinearLayoutManager = new LinearLayoutManager(mContext);
         mRecyclerviewFriend.setLayoutManager(mLinearLayoutManager);
-        mAdapter = new MultiItemTypeAdapter(mContext, mAdapterData);
-        mContactNewFriendDelagate = new ContactNewFriendDelagate(mContext);
-        mAdapter.addItemViewDelegate(new ContactItemDelagate(mContext).setRemarkListener(this)).//好友
-                addItemViewDelegate(new ContactLetterDelagate()).//字母
-
-                addItemViewDelegate(mContactNewFriendDelagate);//新朋友的头部
-        mRecyclerviewFriend.setAdapter(mAdapter);
+        initRVadapter();
         mIndexbar.setLayoutmanager(mLinearLayoutManager).
                 setSouseData(mSouseDatas).
                 setHintTextView(mHintText);
 
+    }
+
+    private void initRVadapter() {
+        MultiItemTypeAdapter mAdapter = new MultiItemTypeAdapter(mContext, mAdapterData);
+        mAdapter.addItemViewDelegate(new ContactItemDelagate(mContext).setRemarkListener(this)).//好友
+                addItemViewDelegate(new ContactLetterDelagate());//字母
+        mEmptyAdapter = new DefaultEmptyAdapter(mAdapter, mContext);
+        HeaderAndFooterWrapper mWrapper = new HeaderAndFooterWrapper(mEmptyAdapter);
+        View mInflate = View.inflate(mContext, R.layout.new_friend_hint, null);
+        unredNewfriendTextview = (TextView) mInflate.findViewById(R.id.textView2);
+        mInflate.setLayoutParams(new RelativeLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.WRAP_CONTENT));
+        AutoUtils.auto(mInflate);
+        mWrapper.addHeaderView(mInflate);
+        mEmptyAdapter.setHeaderOrFooterAdapter(mWrapper);
+        mEmptyAdapter.setEmptyViewTextview("你暂时还没有好友哦！去添加好友或者看看附近的人吧");
+        mRecyclerviewFriend.setAdapter(mWrapper);
     }
 
     @OnClick({R.id.back, R.id.title})
@@ -221,6 +235,7 @@ public class FriendActivity extends AppBaseActivity implements ContactItemDelaga
         super.onActivityResult(requestCode, resultCode, data);
         if (requestCode == REQUEST_NEWFRIEND) {
             newFriendCOunt = 0;
+            unredNewfriendTextview.setVisibility(View.GONE);
             initServerData();
         }
     }
@@ -255,8 +270,9 @@ public class FriendActivity extends AppBaseActivity implements ContactItemDelaga
     @Subscribe(threadMode = ThreadMode.MAIN)
     public void newFriendRequestevent(NewFriendRequestEvent mEvent) {
         newFriendCOunt += 1;
-        mAdapterData.get(0).setGender(newFriendCOunt);
-        mAdapter.notifyDataSetChanged();
+        unredNewfriendTextview.setVisibility(View.VISIBLE);
+        unredNewfriendTextview.setText("" + newFriendCOunt);
+        mEmptyAdapter.refresh();
     }
 
     @Override
@@ -274,6 +290,6 @@ public class FriendActivity extends AppBaseActivity implements ContactItemDelaga
     @Override
     public void remark(String mMessage, int mRemarkPosition) {
         mAdapterData.get(mRemarkPosition).setRemark(mMessage);
-        mAdapter.setData(mAdapterData);
+        mEmptyAdapter.refresh();
     }
 }

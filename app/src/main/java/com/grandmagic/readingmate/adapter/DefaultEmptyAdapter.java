@@ -6,11 +6,13 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.LinearLayout;
+import android.widget.TextView;
 
 import com.grandmagic.readingmate.R;
 import com.grandmagic.readingmate.utils.AutoUtils;
 import com.zhy.adapter.recyclerview.base.ViewHolder;
 import com.zhy.adapter.recyclerview.wrapper.EmptyWrapper;
+import com.zhy.adapter.recyclerview.wrapper.HeaderAndFooterWrapper;
 
 /**
  * Created by lps on 2017/3/23.
@@ -29,7 +31,8 @@ public class DefaultEmptyAdapter extends EmptyWrapper {
     View mEmptyView;
     View mLoadView;
     boolean isload;
-
+    private HeaderAndFooterWrapper mHeaderOrFooterAdapter;
+private TextView emptyTextview;
     public DefaultEmptyAdapter(RecyclerView.Adapter adapter, Context mContext) {
         super(adapter);
         mLoadView = View.inflate(mContext, R.layout.view_rv_loading, null);
@@ -37,6 +40,7 @@ public class DefaultEmptyAdapter extends EmptyWrapper {
         AutoUtils.auto(mLoadView);
         isload = true;
         mEmptyView = View.inflate(mContext, R.layout.view_rv_empty, null);
+        emptyTextview= (TextView) mEmptyView.findViewById(R.id.emptytext);
         mEmptyView.setLayoutParams(new LinearLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.MATCH_PARENT));
         AutoUtils.auto(mEmptyView);
         setEmptyView(mLoadView);
@@ -47,7 +51,7 @@ public class DefaultEmptyAdapter extends EmptyWrapper {
      *
      * @see #refresh()
      * 使用这个布局，这个方法必须被调用不然会导致ItemViewType为load的时候的-1
-     * 正常显示布局的时候就会导致hoder.getview()返回null，抛出 {@link #java.lang.NullPointerException}
+     * 正常显示布局的时候就会导致hoder.getview()返回null，抛出 空指针异常
      * 所以在此项目中一般都是先初始化InnerAdapter，然后初始化 @link #DefaultEmptyAdapter，
      * 然后从网络异步加载数据，加载的回调调用一次 {@link #refresh()}方法
      */
@@ -60,7 +64,12 @@ public class DefaultEmptyAdapter extends EmptyWrapper {
 
         isload = false;
         setEmptyView(mEmptyView);
-        notifyDataSetChanged();
+/**
+ * 如果使用了{@link #com.zhy.adapter.recyclerview.wrapper.HeaderAndFooterWrapper}
+ * 需要调用最外层的adapter的notifyDataSetChanged才会刷新
+ */
+        if (this.mHeaderOrFooterAdapter != null) mHeaderOrFooterAdapter.notifyDataSetChanged();
+        else notifyDataSetChanged();
     }
 
     @Override
@@ -91,5 +100,18 @@ public class DefaultEmptyAdapter extends EmptyWrapper {
 
     public void setLoadView(View mLoadView) {
         this.mLoadView = mLoadView;
+    }
+
+    public void setHeaderOrFooterAdapter(HeaderAndFooterWrapper mHeaderOrFooterAdapter) {
+        this.mHeaderOrFooterAdapter = mHeaderOrFooterAdapter;
+    }
+
+
+    public void setEmptyViewTextview(String str) {
+      emptyTextview.setText(str);
+    }
+
+    public TextView getEmptyTextview() {
+        return emptyTextview;
     }
 }
