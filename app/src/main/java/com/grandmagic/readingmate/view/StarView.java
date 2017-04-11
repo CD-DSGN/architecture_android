@@ -123,7 +123,7 @@ public class StarView extends View {
     }
 
     private void setStarMask(float mStarMask) {
-        score =  mStarMask * total / starCount;
+        score =  (int)(mStarMask * total / starCount);
         if (mStarChangeListener != null) {
             mStarChangeListener.onChange(score);
         }
