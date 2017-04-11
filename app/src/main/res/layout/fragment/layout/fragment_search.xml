@@ -40,7 +40,7 @@
         android:layout_centerHorizontal="true"
         android:layout_marginTop="82px"
         android:background="@drawable/shape_round_white"
-        android:text="立即搜索"
+        android:text="开始探寻"
         android:textColor="#e61cc9a2"
         android:textSize="36px"
         />

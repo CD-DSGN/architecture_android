@@ -102,6 +102,7 @@
             android:layout_below="@+id/avatar"
             android:layout_marginTop="30px"
             android:text="出版商: "
+            android:visibility="gone"
             android:textColor="#b3999999"
             android:textSize="22px"
             />
@@ -112,7 +113,7 @@
             android:layout_height="wrap_content"
             android:layout_below="@+id/avatar"
             android:layout_marginTop="30px"
-            android:layout_toRightOf="@+id/t_publisher"
+     android:layout_alignLeft="@+id/author"
             android:text="电子工业出版社"
             android:textColor="#b3999999"
             android:textSize="22px"
@@ -126,6 +127,7 @@
             android:layout_below="@+id/t_publisher"
             android:layout_marginTop="24px"
             android:text="出版时间: "
+            android:visibility="gone"
             android:textColor="#b3999999"
             android:textSize="22px"
             />
@@ -138,6 +140,7 @@
             android:layout_marginTop="24px"
             android:layout_toRightOf="@+id/t_publishtime"
             android:text="2012-2-2"
+            android:visibility="gone"
             android:textColor="#b3999999"
             android:textSize="22px"
             />
@@ -151,6 +154,8 @@
             tools:text="      读过睡前故事的人都知道，这是一本纷杂凌乱的书，像朋友
 在深夜跟你叙述，叙述他走过的千山万水。那么多篇章，有温暖的，有落单的
 有疯狂的。"
+            android:maxLines="5"
+            android:ellipsize="end"
             android:textColor="#333333"
             android:textSize="26px"
             />

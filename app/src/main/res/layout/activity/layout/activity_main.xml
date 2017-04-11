@@ -69,7 +69,7 @@
                 android:layout_alignParentBottom="true"
                 android:layout_centerHorizontal="true"
                 android:button="@null"
-                android:text="读友"
+                android:text="读家"
                 android:textColor="#666666"
                 android:textSize="22px"
                 />

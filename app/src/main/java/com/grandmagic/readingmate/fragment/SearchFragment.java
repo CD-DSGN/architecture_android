@@ -108,7 +108,7 @@ public class SearchFragment extends AppBaseFragment implements SearchPersonAdapt
 
     private void initview() {
         mTitle.setTextSize(TypedValue.COMPLEX_UNIT_PX, 36);
-        mTitle.setText("定位搜索");
+        mTitle.setText("以书会友");
         mBack.setVisibility(View.GONE);
         AutoUtils.autoTextSize(mTitle);
         mTitleMore.setImageResource(R.drawable.ic_location);
@@ -204,6 +204,7 @@ public class SearchFragment extends AppBaseFragment implements SearchPersonAdapt
                 mTvStatus.setVisibility(View.GONE);
                 mTitleMore.setVisibility(View.VISIBLE);
                 mTitle.setTextColor(getResources().getColor(R.color.text_black));
+                mTitle.setText("定位搜索");
                 mRootview.setBackgroundColor(getResources().getColor(R.color.white));
                 if (response.getData().getInfo()!=null&&!response.getData().getInfo().isEmpty())
                 mPersonList.addAll(response.getData().getInfo());
@@ -259,6 +260,7 @@ public class SearchFragment extends AppBaseFragment implements SearchPersonAdapt
         mTvStatus.setVisibility(View.GONE);
         mTitleMore.setVisibility(View.GONE);
         mIvSearch.setVisibility(View.VISIBLE);
+        mTitle.setText("以书会友");
         mRootview.setBackgroundColor(getResources().getColor(R.color.search_green));
         mTitle.setTextColor(getResources().getColor(R.color.white));
         setSystemBarColor(false);

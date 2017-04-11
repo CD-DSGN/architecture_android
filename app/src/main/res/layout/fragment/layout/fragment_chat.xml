@@ -15,7 +15,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_centerInParent="true"
-            android:text="读友"
+            android:text="读家"
             android:textColor="#181e1d"
             android:textSize="36px"
             />
@@ -58,7 +58,7 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_centerInParent="true"
-                    android:text="读友录"
+                    android:text="好友录"
                     android:textColor="#1cc9a2"
                     android:textSize="40px"
                     />
