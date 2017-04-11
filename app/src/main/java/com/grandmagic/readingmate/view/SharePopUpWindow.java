@@ -62,6 +62,7 @@ public class SharePopUpWindow extends PopupWindow {
             public void onResult(SHARE_MEDIA platform) {
 
                 Toast.makeText(mContext, platform + " 分享成功啦", Toast.LENGTH_SHORT).show();
+                dismiss();
 
             }
 
@@ -70,12 +71,14 @@ public class SharePopUpWindow extends PopupWindow {
                 Toast.makeText(mContext,platform + " 分享失败啦", Toast.LENGTH_SHORT).show();
                 if(t!=null){
                     Logger.e(t.getMessage());   //输出失败错误信息
+                    dismiss();
                 }
             }
 
             @Override
             public void onCancel(SHARE_MEDIA platform) {
                 Toast.makeText(mContext,platform + " 分享取消了", Toast.LENGTH_SHORT).show();
+                dismiss();
             }
         };
 
@@ -166,6 +169,26 @@ public class SharePopUpWindow extends PopupWindow {
         web.setTitle(title);
         web.setDescription(desc);
         UMImage image = new UMImage(mContext, pic_id);
+        web.setThumb(image);
+        mShareActionDefault.withMedia(web).withText(content);
+        return mShareActionDefault;
+    }
+
+    /****
+     *
+     * @param title
+     * @param desc
+     * @param pic_url  图片网址
+     * @param url
+     * @param content
+     * @return
+     */
+
+    public ShareAction setData(String title, String desc, String pic_url, String url, String content) {
+        UMWeb web = new UMWeb(url);
+        web.setTitle(title);
+        web.setDescription(desc);
+        UMImage image = new UMImage(mContext, pic_url);
         web.setThumb(image);
         mShareActionDefault.withMedia(web).withText(content);
         return mShareActionDefault;
