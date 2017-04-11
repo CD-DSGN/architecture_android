@@ -71,7 +71,7 @@ public class MyCommentAdapter extends CommonAdapter<PersonnalCommentResponseBean
                 public void onClick(View v) {
                     mSharePopUpWindow.setData(
                             p.getBook_name(),
-                            p.getContent(), R.drawable.logo, "http://www.huishi.com", "分享书评");
+                            p.getContent(), KitUtils.getAbsoluteUrl(p.getPhoto()), "https://a.mlinks.cc/AKVC?book_id=3", "分享书评");
                     mSharePopUpWindow.show();
                 }
             });

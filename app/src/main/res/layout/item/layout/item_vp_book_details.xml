@@ -45,6 +45,8 @@
                         android:textColor="#181e1d"
                         android:textSize="32px"
                         android:layout_centerHorizontal="true"
+                        android:maxLines="1"
+                        android:ellipsize="end"
                         />
 
                     <TextView
@@ -58,6 +60,8 @@
                         android:textColor="#181e1d"
                         android:textSize="24px"
                         android:layout_centerHorizontal="true"
+                        android:maxLines="1"
+                        android:ellipsize="end"
                         />
 
                     <com.grandmagic.readingmate.view.StarView
@@ -122,7 +126,7 @@
                         android:layout_below="@+id/ll_rate"
                         android:layout_marginLeft="46px"
                         android:layout_marginTop="24px"
-                        android:text="@string/publisher"
+                        tools:text="@string/publisher"
                         android:textColor="#99999999"
                         android:textSize="24px"
                         />
@@ -134,7 +138,7 @@
                         android:layout_below="@+id/tv_publisher"
                         android:layout_marginLeft="46px"
                         android:layout_marginTop="24px"
-                        android:text="@string/publish_time"
+                        tools:text="@string/publish_time"
                         android:textColor="#99999999"
                         android:textSize="24px"
                         />

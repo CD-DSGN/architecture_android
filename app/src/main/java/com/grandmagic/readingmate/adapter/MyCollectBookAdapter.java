@@ -65,7 +65,7 @@ public class MyCollectBookAdapter extends CommonAdapter<DisplayBook.InfoBean> {
             }
 
             holder.setText(R.id.tv_comment_person_num, str_score_num);
-            String str_publisher = mContext.getString(R.string.publisher) + book_info.getPublisher();
+            String str_publisher = book_info.getPublisher();
             holder.setText(R.id.tv_publisher, str_publisher);
 
             String str_time = "";
@@ -75,7 +75,7 @@ public class MyCollectBookAdapter extends CommonAdapter<DisplayBook.InfoBean> {
                 e.printStackTrace();
             }
 
-            String str_publistime = mContext.getString(R.string.publish_time) + str_time;
+            String str_publistime = str_time;
             holder.setText(R.id.tv_publistime, str_publistime);
             holder.setText(R.id.tv_book_content, book_info.getSynopsis());
 

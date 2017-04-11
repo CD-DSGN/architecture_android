@@ -222,7 +222,13 @@ public class PersonalFragment extends AppBaseFragment implements MyCommentAdapte
                         url = imageUrlResponseBean.getLarge();
                     }
 
-                    mTvUnreadNum.setText(personalCommentListResponseBean.getUnread_num());
+                    String unread_num = personalCommentListResponseBean.getUnread_num();
+                    if (TextUtils.isEmpty(unread_num) || unread_num.equals("0")) {
+                        mTvUnreadNum.setVisibility(View.INVISIBLE);
+                    }else{
+                        mTvUnreadNum.setText(personalCommentListResponseBean.getUnread_num());
+                        mTvUnreadNum.setVisibility(View.VISIBLE);
+                    }
 
 
                     //                    mMAdapter.setUsername(personalCommentListResponseBean.getUsername());
