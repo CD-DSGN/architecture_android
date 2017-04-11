@@ -1,7 +1,6 @@
 package com.grandmagic.readingmate.adapter;
 
 import android.content.Context;
-import android.text.TextUtils;
 import android.view.View;
 import android.widget.ImageView;
 import android.widget.TextView;
@@ -33,9 +32,9 @@ public class MyCollectBookAdapter extends CommonAdapter<DisplayBook.InfoBean> {
     protected void convert(ViewHolder holder, DisplayBook.InfoBean book_info, int position) {
         if (book_info != null) {
             String url = book_info.getPhoto();
-            if (!TextUtils.isEmpty(url)) {
-                ImageLoader.loadCircleImage(mContext, KitUtils.getAbsoluteUrl(url), (ImageView) holder.getView(R.id.iv_book));
-            }
+
+            ImageLoader.loadCircleImage(mContext, KitUtils.getAbsoluteUrl(url), (ImageView) holder.getView(R.id.iv_book));
+
             holder.setText(R.id.tv_book_name, book_info.getBook_name());
             holder.setText(R.id.tv_book_author, book_info.getAuthor());
             StarView starView = holder.getView(R.id.ratingbar);
@@ -58,9 +57,9 @@ public class MyCollectBookAdapter extends CommonAdapter<DisplayBook.InfoBean> {
             String str_score_num = mContext.getString(R.string.comment_num);
             if (score_num > 10000) {
                 str_score_num = String.format(str_score_num, score_num / 10000 + "万");
-            }else if (score_num > 1000) {
+            } else if (score_num > 1000) {
                 str_score_num = String.format(str_score_num, score_num / 1000 + "千");
-            }else{
+            } else {
                 str_score_num = String.format(str_score_num, score_num);
             }
 
