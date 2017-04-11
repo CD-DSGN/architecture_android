@@ -97,10 +97,9 @@ public class FriendActivity extends AppBaseActivity implements ContactItemDelaga
      * 生成adapter需要的list
      */
     private void initadapterData() {
-//        mAdapterData.add(new Contacts(Contacts.TYPE.TYPE_NEWFRIEND).setGender(newFriendCOunt));//新朋友的头部
         for (int i = 0; i < mLetters.size(); i++) {
             String letter = mLetters.get(i);
-            mAdapterData.get(mAdapterData.size() - 1).setNeedline(false);
+//            mAdapterData.get(mAdapterData.size()).setNeedline(false);
             Contacts mContacts = new Contacts(Contacts.TYPE.TYPE_LETTER, letter);//字母
             mAdapterData.add(mContacts);
             for (int j = 0; j < mSouseDatas.size(); j++) {
