@@ -7,6 +7,7 @@ import android.app.FragmentManager;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.graphics.Color;
+import android.net.Uri;
 import android.os.Bundle;
 import android.support.v7.app.AlertDialog;
 import android.text.TextUtils;
@@ -24,6 +25,7 @@ import com.grandmagic.readingmate.base.AppBaseActivity;
 import com.grandmagic.readingmate.base.AppBaseResponseCallBack;
 import com.grandmagic.readingmate.bean.db.Contacts;
 import com.grandmagic.readingmate.bean.response.SearchUserResponse;
+import com.grandmagic.readingmate.consts.AppConsts;
 import com.grandmagic.readingmate.db.ContactsDao;
 import com.grandmagic.readingmate.db.DBHelper;
 import com.grandmagic.readingmate.event.BindDeviceTokenEvent;
@@ -117,6 +119,34 @@ public class MainActivity extends AppBaseActivity {
         initIM();
         initSelfInfo();
         setTranslucentStatus(true);
+        Intent intent = getIntent();
+        String action = intent.getAction();
+        if (Intent.ACTION_VIEW.equals(action)) {
+            Uri uri = intent.getData();
+            if (uri != null) {
+                String path = uri.getPath();
+                if (path.contains(AppConsts.BOOK_DETAIL)) {
+                    goToBookDetail(uri);
+                } else if (path.contains(AppConsts.COMMENT_DETAIL)) {
+                    goToCommentDetail(uri);
+                }
+            }
+        }
+    }
+
+
+    private void goToCommentDetail(Uri uri) {
+        String comment_id = uri.getQueryParameter(CommentsActivity.COMMENT_ID);
+        Intent intent = new Intent(this, CommentsActivity.class);
+        intent.putExtra(CommentsActivity.COMMENT_ID, comment_id);
+        startActivity(intent);
+    }
+
+    private void goToBookDetail(Uri uri) {
+        String book_id = uri.getQueryParameter(BookDetailActivity.BOOK_ID);
+        Intent intent = new Intent(this, BookDetailActivity.class);
+        intent.putExtra(BookDetailActivity.BOOK_ID, book_id);
+        startActivity(intent);
     }
 
     /**

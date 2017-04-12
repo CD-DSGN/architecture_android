@@ -101,9 +101,9 @@ public class PersonalFragment extends AppBaseFragment implements MyCommentAdapte
     BookModel mBookModel;
 
     public static final int PF = 1;
+    public static final int UNREAD = 2;
 
     private DeleteConfirmDlg mCommentDlg;
-
 
     public PersonalFragment() {
 
@@ -289,7 +289,7 @@ public class PersonalFragment extends AppBaseFragment implements MyCommentAdapte
                 startActivity(intent_setting);
                 break;
             case R.id.rela_notification:
-                startActivity(new Intent(getActivity(), MessageNotificationActivity.class));
+                startActivityForResult(new Intent(getActivity(), MessageNotificationActivity.class), UNREAD);
                 break;
             default:
                 break;
@@ -409,6 +409,8 @@ public class PersonalFragment extends AppBaseFragment implements MyCommentAdapte
         if (PF == requestCode && resultCode == CommentsActivity.RESULT_DEL) {
             String comment_id = data.getStringExtra(CommentsActivity.COMMENT_ID);
             deleteLocalComment(comment_id);
+        } else if (UNREAD == requestCode) {
+            mTvUnreadNum.setVisibility(View.INVISIBLE);
         }
     }
 }
