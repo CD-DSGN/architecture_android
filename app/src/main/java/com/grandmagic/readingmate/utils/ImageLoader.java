@@ -68,4 +68,12 @@ public class ImageLoader {
                 .error(R.drawable.logo)
                 .into(target);
     }
+
+    public static void loadImage(Context mContext, String url, ImageView target, int error_id) {
+        Glide.with(mContext).load(url).placeholder(error_id)
+                .error(error_id).into(target);
+    }
+
+
+
 }

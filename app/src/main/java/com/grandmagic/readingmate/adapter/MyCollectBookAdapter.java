@@ -33,7 +33,9 @@ public class MyCollectBookAdapter extends CommonAdapter<DisplayBook.InfoBean> {
         if (book_info != null) {
             String url = book_info.getPhoto();
 
-            ImageLoader.loadCircleImage(mContext, KitUtils.getAbsoluteUrl(url), (ImageView) holder.getView(R.id.iv_book));
+            //ImageLoader.loadCircleImage(mContext, KitUtils.getAbsoluteUrl(url), (ImageView) holder.getView(R.id.iv_book));
+            ImageLoader.loadImage(mContext, KitUtils.getAbsoluteUrl(url), (ImageView) holder.getView(R.id.iv_book), R.drawable.iv_no_book_cover);
+
 
             holder.setText(R.id.tv_book_name, book_info.getBook_name());
             holder.setText(R.id.tv_book_author, book_info.getAuthor());
