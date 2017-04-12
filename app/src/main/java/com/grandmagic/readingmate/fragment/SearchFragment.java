@@ -29,6 +29,7 @@ import com.baidu.location.LocationClient;
 import com.baidu.location.LocationClientOption;
 import com.grandmagic.readingmate.R;
 import com.grandmagic.readingmate.activity.AddFriendActivity;
+import com.grandmagic.readingmate.adapter.DefaultEmptyAdapter;
 import com.grandmagic.readingmate.adapter.SearchPersonAdapter;
 import com.grandmagic.readingmate.base.AppBaseActivity;
 import com.grandmagic.readingmate.base.AppBaseFragment;
@@ -102,8 +103,7 @@ public class SearchFragment extends AppBaseFragment implements SearchPersonAdapt
         initoption();
         return view;
     }
-
-    SearchPersonAdapter mAdapter;
+DefaultEmptyAdapter mEmptyAdapter;
     List<SearchPersonResponse.InfoBean> mPersonList = new ArrayList<>();
 
     private void initview() {
@@ -114,9 +114,10 @@ public class SearchFragment extends AppBaseFragment implements SearchPersonAdapt
         mTitleMore.setImageResource(R.drawable.ic_location);
         mAnimaview.setImageAssetsFolder("images/");//为有图片资源的动画设置路径
         mRecyclerview.setLayoutManager(new LinearLayoutManager(mContext));
-        mAdapter = new SearchPersonAdapter(mContext, mPersonList);
+        SearchPersonAdapter mAdapter = new SearchPersonAdapter(mContext, mPersonList);
         mAdapter.setListener(this);
-        mRecyclerview.setAdapter(mAdapter);
+        mEmptyAdapter=new DefaultEmptyAdapter(mAdapter,mContext);
+        mRecyclerview.setAdapter(mEmptyAdapter);
         initRefresh();
         setSystemBarColor(false);
     }
@@ -206,16 +207,18 @@ public class SearchFragment extends AppBaseFragment implements SearchPersonAdapt
                 mTitle.setTextColor(getResources().getColor(R.color.text_black));
                 mTitle.setText("定位搜索");
                 mRootview.setBackgroundColor(getResources().getColor(R.color.white));
+
                 if (response.getData().getInfo()!=null&&!response.getData().getInfo().isEmpty())
                 mPersonList.addAll(response.getData().getInfo());
-                mAdapter.refreshData(mPersonList);
+               mEmptyAdapter.refresh();
                 setSystemBarColor(false);
             }
 
             @Override
             public void onError(Throwable e) {
                 super.onError(e);
-                reset();
+                mEmptyAdapter.refresh();
+//                reset();
                 Log.e(TAG, "onError() called with: e = [" + e + "]");
             }
         });
@@ -390,7 +393,7 @@ public class SearchFragment extends AppBaseFragment implements SearchPersonAdapt
                 Toast.makeText(mContext, "" + response.getMessage(), Toast.LENGTH_SHORT).show();
                 //发送成功暂时隐藏掉添加好友的Relativelayout
                 mPersonList.get(pos).setIs_friend(1);
-                mAdapter.notifyDataSetChanged();
+             mEmptyAdapter.refresh();
             }
         });
     }
