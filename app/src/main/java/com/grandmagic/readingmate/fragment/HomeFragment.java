@@ -5,21 +5,17 @@ import android.Manifest;
 import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
-import android.graphics.drawable.BitmapDrawable;
 import android.os.Bundle;
 import android.support.design.widget.AppBarLayout;
 import android.support.design.widget.CoordinatorLayout;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
-import android.util.Log;
-import android.view.Gravity;
+import android.text.TextUtils;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.view.WindowManager;
 import android.widget.FrameLayout;
 import android.widget.ImageView;
-import android.widget.PopupWindow;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -28,12 +24,15 @@ import com.grandmagic.readingmate.activity.BookDetailActivity;
 import com.grandmagic.readingmate.activity.CaptureActivity;
 import com.grandmagic.readingmate.activity.MainActivity;
 import com.grandmagic.readingmate.activity.SearchActivity;
+import com.grandmagic.readingmate.activity.SettingActivity;
 import com.grandmagic.readingmate.adapter.HomeBookAdapter;
 import com.grandmagic.readingmate.base.AppBaseFragment;
 import com.grandmagic.readingmate.base.AppBaseResponseCallBack;
 import com.grandmagic.readingmate.bean.response.DisplayBook;
 import com.grandmagic.readingmate.model.BookModel;
 import com.grandmagic.readingmate.utils.AutoUtils;
+import com.grandmagic.readingmate.utils.KitUtils;
+import com.grandmagic.readingmate.view.SharePopUpWindow;
 import com.orhanobut.logger.Logger;
 import com.tamic.novate.NovateResponse;
 import com.tamic.novate.Throwable;
@@ -242,31 +241,28 @@ public class HomeFragment extends AppBaseFragment implements HomeBookAdapter.Cli
         });
     }
 
-    PopupWindow mPopupWindow;
+    SharePopUpWindow mPopupWindow;
 
     @Override
     public void bookShare(int position) {
         // TODO: 2017/2/16 分享
         if (mPopupWindow == null) {
-            View mpopview = LayoutInflater.from(mContext).inflate(R.layout.view_sharepop, null);
-            AutoUtils.auto(mpopview);
-            mPopupWindow = new PopupWindow(mpopview, WindowManager.LayoutParams.MATCH_PARENT, WindowManager.LayoutParams.WRAP_CONTENT, true);
-            mPopupWindow.setBackgroundDrawable(new BitmapDrawable());
-            mPopupWindow.setClippingEnabled(true);
-            mPopupWindow.setOutsideTouchable(true);
-            mPopupWindow.setOnDismissListener(new PopupWindow.OnDismissListener() {
-                @Override
-                public void onDismiss() {
-                    WindowManager.LayoutParams params = getActivity().getWindow().getAttributes();
-                    params.alpha = 1.0f;
-                    getActivity().getWindow().setAttributes(params);
-                }
-            });
+            mPopupWindow = new SharePopUpWindow(mContext);
         }
-        mPopupWindow.showAtLocation(rootview, Gravity.BOTTOM, 0, 0);
-        WindowManager.LayoutParams params = getActivity().getWindow().getAttributes();
-        params.alpha = 0.7f;
-        getActivity().getWindow().setAttributes(params);
+
+        DisplayBook.InfoBean bookInfo = mBookList.get(position);
+        if (!TextUtils.isEmpty(bookInfo.getPhoto())) {
+            mPopupWindow.setData("大术读家:" + bookInfo.getBook_name(), bookInfo.getSynopsis(),
+                    KitUtils.getAbsoluteUrl(bookInfo.getPhoto()), SettingActivity.APP_URL, "");
+        }else{
+            mPopupWindow.setData("大术读家:" + bookInfo.getBook_name(), bookInfo.getSynopsis(),
+                    R.drawable.iv_no_book, SettingActivity.APP_URL, "");
+        }
+        mPopupWindow.show();
+
+
+
+
     }
 
     @Override
