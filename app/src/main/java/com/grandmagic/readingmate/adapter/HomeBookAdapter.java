@@ -34,10 +34,10 @@ public class HomeBookAdapter extends AnimationAdapter<DisplayBook.InfoBean> {
 
     @Override
     protected void convert(ViewHolder holder, DisplayBook.InfoBean data, final int position) {
-
         ImageLoader.loadImage(mContext,  Environment.BASEULR_PRODUCTION+data.getPhoto(), (ImageView) holder.getView(R.id.iv_conver));
 
-        ImageLoader.loadCircleImage(mContext, Environment.BASEULR_PRODUCTION+data.getAuthor_photo(), (ImageView) holder.getView(R.id.avatar));
+        Glide.with(mContext).load(Environment.BASEULR_PRODUCTION+data.getAuthor_photo())
+                .into((ImageView) holder.getView(R.id.avatar));
         holder.setText(R.id.bookname, data.getBook_name());
         holder.setText(R.id.author, data.getAuthor());
         holder.setText(R.id.score,data.getTotal_score());

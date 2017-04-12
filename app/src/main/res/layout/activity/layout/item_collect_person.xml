@@ -2,9 +2,8 @@
 <RelativeLayout
     android:layout_width="710px"
     android:layout_height="152px"
-    android:background="@color/white"
-    android:paddingLeft="20px"
-    android:paddingRight="20px"
+
+    android:layout_marginLeft="20px"
     xmlns:tools="http://schemas.android.com/tools"
     xmlns:android="http://schemas.android.com/apk/res/android">
 

@@ -4,7 +4,6 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
-import android.view.View;
 import android.widget.ImageView;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
@@ -20,6 +19,7 @@ import com.grandmagic.readingmate.bean.response.PersonInfo;
 import com.grandmagic.readingmate.model.BookModel;
 import com.grandmagic.readingmate.model.SearchUserModel;
 import com.grandmagic.readingmate.ui.CustomDialog;
+import com.grandmagic.readingmate.utils.AutoUtils;
 import com.grandmagic.readingmate.utils.InputMethodUtils;
 import com.tamic.novate.NovateResponse;
 import com.tamic.novate.Throwable;
@@ -30,6 +30,9 @@ import java.util.List;
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
+import cn.bingoogolapple.refreshlayout.BGANormalRefreshViewHolder;
+import cn.bingoogolapple.refreshlayout.BGARefreshLayout;
+import cn.bingoogolapple.refreshlayout.util.SimpleRefreshListener;
 
 
 public class CollectedPersonActivity extends AppBaseActivity implements CollectionAdapter.AdapterLisenter {
@@ -45,12 +48,15 @@ public class CollectedPersonActivity extends AppBaseActivity implements Collecti
     @BindView(R.id.recyclerview)
     RecyclerView mRecyclerview;
     BookModel mModel;
+    @BindView(R.id.refreshLayout)
+    BGARefreshLayout mRefreshLayout;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_collected_person);
         ButterKnife.bind(this);
+        AutoUtils.auto(this);
         setTranslucentStatus(true);
         initview();
         initData();
@@ -69,15 +75,18 @@ public class CollectedPersonActivity extends AppBaseActivity implements Collecti
         mModel.loadAllFollower(book_id, mCpage, new AppBaseResponseCallBack<NovateResponse<BookFollowersResponse>>(this) {
             @Override
             public void onSuccee(NovateResponse<BookFollowersResponse> response) {
+                pagecount=response.getData().getPageCount();
                 if (response.getData().getInfo() != null && !response.getData().getInfo().isEmpty())
                     mList.addAll(response.getData().getInfo());
                 mAdapter.refresh();
+                mRefreshLayout.endLoadingMore();
             }
 
             @Override
             public void onError(Throwable e) {
                 super.onError(e);
                 mAdapter.refresh();
+                mRefreshLayout.endLoadingMore();
             }
         });
     }
@@ -92,8 +101,25 @@ public class CollectedPersonActivity extends AppBaseActivity implements Collecti
         mCollectionAdapter.setLisenter(this);
         mAdapter = new DefaultEmptyAdapter(mCollectionAdapter, this);
         mRecyclerview.setAdapter(mAdapter);
+        initrefresh();
     }
-
+private void initrefresh(){
+    mRefreshLayout.setRefreshViewHolder(new BGANormalRefreshViewHolder(this,true));
+    mRefreshLayout.setPullDownRefreshEnable(false);
+    mRefreshLayout.setDelegate(new SimpleRefreshListener(){
+        @Override
+        public boolean onBGARefreshLayoutBeginLoadingMore(BGARefreshLayout refreshLayout) {
+            if (cpage<pagecount){
+                cpage++;
+                loadFollower(cpage);
+            }else {
+                Toast.makeText(CollectedPersonActivity.this, "nomre", Toast.LENGTH_SHORT).show();
+                mRefreshLayout.endLoadingMore();
+            }
+            return super.onBGARefreshLayoutBeginLoadingMore(refreshLayout);
+        }
+    });
+}
     @OnClick(R.id.back)
     public void onClick() {
         finish();
@@ -102,7 +128,7 @@ public class CollectedPersonActivity extends AppBaseActivity implements Collecti
     @Override
     public void onItemClick(int position) {
         BookFollowersResponse.InfoBean mInfoBean = mList.get(position);
-        Intent mIntent = new Intent(this,FriendDetailActivity.class);
+        Intent mIntent = new Intent(this, FriendDetailActivity.class);
         Bundle mBundle = new Bundle();
         PersonInfo mInfo = new PersonInfo();
         mInfo.setUser_id(mInfoBean.getUser_id());
@@ -116,15 +142,16 @@ public class CollectedPersonActivity extends AppBaseActivity implements Collecti
     }
 
     @Override
-    public void addFriend( int position) {
-       showAddFriendDialog(position);
+    public void addFriend(int position) {
+        showAddFriendDialog(position);
     }
 
     /**
      * 显示添加好友的弹窗
+     *
      * @param position
      */
-    private void showAddFriendDialog (final int position) {
+    private void showAddFriendDialog(final int position) {
         final CustomDialog mDialog = new CustomDialog(this);
         mDialog.setMaxNum(20);
         mDialog.setYesStr("发送");
@@ -142,6 +169,7 @@ public class CollectedPersonActivity extends AppBaseActivity implements Collecti
         });
         mDialog.show();
     }
+
     /**
      * 添加好友，
      *
