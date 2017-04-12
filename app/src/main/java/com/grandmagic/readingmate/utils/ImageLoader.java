@@ -24,6 +24,16 @@ public class ImageLoader {
     }
 
     /**
+     * 专用加载图书的封面的。主要是error和placeholder区别
+     * @param mContext
+     * @param url
+     * @param target
+     */
+    public static void loadBookImg(Context mContext,String url,ImageView target){
+    Glide.with(mContext).load(url).placeholder(R.drawable.iv_no_book_cover)
+            .error(R.drawable.iv_no_book_cover).into(target);
+}
+    /**
      * 加载圆角图片（默认圆角）
      *
      * @param mContext context

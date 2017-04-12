@@ -266,7 +266,7 @@ public class BookDetailActivity extends AppBaseActivity implements View.OnLayout
         mTvPublistime.setText(DateUtil.timeTodate("yyyy-MM-dd", s.getPub_date()));
         mAbout.setText(s.getSynopsis());
         mCollectionNum.setText(s.getCollect_count());
-        ImageLoader.loadImage(this, Environment.getUrl() + s.getPhoto(), mIvConver);
+        ImageLoader.loadBookImg(this, Environment.getUrl() + s.getPhoto(), mIvConver);
         setCollectView(s.getCollect_user());
         mTotalScore.setScore(Float.valueOf(s.getTotal_score()));
         mScore.setText(s.getTotal_score());
