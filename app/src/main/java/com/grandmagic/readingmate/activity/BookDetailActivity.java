@@ -183,12 +183,14 @@ public class BookDetailActivity extends AppBaseActivity implements View.OnLayout
         mViewpager.setCurrentItem(0);
     }
 
-    View mHotView;
+    HotcommentView mHotView;
+    HotcommentView mRecentView;
 
     private void initView() {
         List<View> mViews = new ArrayList<>();
 //        为了减少Activity的代码，将评论的相关功能抽离到HotcommentView了
-        View mRecentView = new HotcommentView(this, HotcommentView.COMMENT_TIME, mModel, book_id);
+
+        mRecentView = new HotcommentView(this, HotcommentView.COMMENT_TIME, mModel, book_id);
         mHotView = new HotcommentView(this, HotcommentView.COMMENT_LIKE, mModel, book_id);
         mViews.add(mRecentView);
         mViews.add(mHotView);
@@ -318,6 +320,8 @@ public class BookDetailActivity extends AppBaseActivity implements View.OnLayout
                     DBHelper.getBookCommentDao(BookDetailActivity.this).delete(mHisComment);
                     DBHelper.close();
                 }
+                mRecentView.loadData(1);//评论成功刷新评论列表
+                mHotView.loadData(1);
             }
         });
     }

@@ -59,11 +59,12 @@ public class HotcommentView extends FrameLayout implements BookCommentsAdapter.A
 
     int pagecount, currpage = 1;
 
-    public void loadData(final int currpage) {
-        mModel.loadBookComment(mBook_id, currpage, order_way, new AppBaseResponseCallBack<NovateResponse<BookCommentResponse>>(mContext) {
+    public void loadData(final int mCurrpage) {
+        mModel.loadBookComment(mBook_id, mCurrpage, order_way, new AppBaseResponseCallBack<NovateResponse<BookCommentResponse>>(mContext) {
             @Override
             public void onSuccee(NovateResponse<BookCommentResponse> response) {
-                if (currpage==1)mList.clear();
+                currpage=mCurrpage;
+                if (mCurrpage==1)mList.clear();
                 pagecount = response.getData().getPageCount();
                 List<BookCommentResponse.CommentsBean> mComments = response.getData().getComments();
                 if (mComments != null && !mComments.isEmpty())
