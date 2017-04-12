@@ -7,6 +7,7 @@
     android:layout_toRightOf="@+id/avatar"
     android:textColor="#181e1d"
     android:textSize="28px"
+    android:text="55a65s"
     android:padding="12px"
     xmlns:android="http://schemas.android.com/apk/res/android"/>
 

@@ -3,6 +3,7 @@ package com.grandmagic.readingmate.fragment;
 
 import android.Manifest;
 import android.content.Context;
+import android.graphics.Color;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
@@ -108,6 +109,7 @@ DefaultEmptyAdapter mEmptyAdapter;
 
     private void initview() {
         mTitle.setTextSize(TypedValue.COMPLEX_UNIT_PX, 36);
+        mTitle.setTextColor(Color.WHITE);
         mTitle.setText("以书会友");
         mBack.setVisibility(View.GONE);
         AutoUtils.autoTextSize(mTitle);

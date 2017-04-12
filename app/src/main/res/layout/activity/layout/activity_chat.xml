@@ -47,7 +47,7 @@
     <RelativeLayout
         android:id="@+id/rela_input"
         android:layout_width="match_parent"
-        android:layout_height="80px"
+        android:layout_height="100px"
         android:layout_alignParentBottom="true"
         android:layout_gravity="bottom"
         android:layout_marginBottom="10px">
