@@ -42,7 +42,7 @@
         android:background="@drawable/shape_round_white"
         android:text="开始探寻"
         android:textColor="#e61cc9a2"
-        android:textSize="36px"
+        android:textSize="@dimen/textsize_36px"
         />
 
     <TextView

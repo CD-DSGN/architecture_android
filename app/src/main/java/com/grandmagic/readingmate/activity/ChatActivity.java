@@ -8,6 +8,7 @@ import android.os.Bundle;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.text.TextUtils;
+import android.util.Log;
 import android.view.KeyEvent;
 import android.view.MotionEvent;
 import android.view.View;
@@ -39,6 +40,7 @@ import com.grandmagic.readingmate.event.ContactDeletedEvent;
 import com.grandmagic.readingmate.event.FriendDeleteEvent;
 import com.grandmagic.readingmate.listener.VoicePlayClickListener;
 import com.grandmagic.readingmate.utils.AutoUtils;
+import com.grandmagic.readingmate.utils.DensityUtil;
 import com.grandmagic.readingmate.utils.IMHelper;
 import com.grandmagic.readingmate.utils.InputMethodUtils;
 import com.grandmagic.readingmate.view.VoiceRecordView;
@@ -195,6 +197,14 @@ public class ChatActivity extends AppBaseActivity implements EMMessageListener, 
                 }
             }
         });
+        mRelaInput.addOnLayoutChangeListener(new View.OnLayoutChangeListener() {
+            @Override
+            public void onLayoutChange(View v, int left, int top, int right, int bottom, int oldLeft, int oldTop, int oldRight, int oldBottom) {
+           if (Math.abs(bottom-oldBottom)> DensityUtil.getScreenHeight(ChatActivity.this)/3){
+               if (mMessageList!=null&&!mMessageList.isEmpty())mMessagerecyclerview.smoothScrollToPosition(mMessageList.size()-1);
+           }
+            }
+        });
     }
 
     private void resetUI() {
@@ -332,6 +342,8 @@ public class ChatActivity extends AppBaseActivity implements EMMessageListener, 
             mMessageList.addAll(msgs);
         }
         mAdapter.setData(mMessageList);
+        if (mMessageList!=null&&!mMessageList.isEmpty())
+        mMessagerecyclerview.smoothScrollToPosition(mMessageList.size()-1);
     }
 
 

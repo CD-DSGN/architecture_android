@@ -17,7 +17,7 @@
         android:layout_gravity="center_horizontal"
         android:textColor="@color/white"
         android:layout_marginTop="50px"
-        android:textSize="28px"
+        android:textSize="@dimen/textsize_28px"
         />
     <RelativeLayout
         android:layout_width="626px"
@@ -48,7 +48,7 @@
             android:paddingTop="20px"
             android:textColor="@color/white"
             android:textColorHint="@color/white"
-            android:textSize="28px"
+            android:textSize="@dimen/textsize_30px"
             android:theme="@style/et_pass"
             />
 
@@ -78,7 +78,7 @@
         android:background="@drawable/shape_round_white"
         android:layout_marginTop="128px"
         android:textColor="@color/text_green"
-        android:textSize="36px"
+        android:textSize="@dimen/textsize_36px"
         android:id="@+id/tv_next"
         />
     <RelativeLayout

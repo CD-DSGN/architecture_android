@@ -10,6 +10,7 @@ import android.widget.RelativeLayout;
 
 import com.grandmagic.readingmate.R;
 import com.grandmagic.readingmate.bean.db.Contacts;
+import com.grandmagic.readingmate.utils.AutoUtils;
 import com.grandmagic.readingmate.utils.DateUtil;
 import com.grandmagic.readingmate.utils.IMHelper;
 import com.grandmagic.readingmate.utils.ImageLoader;

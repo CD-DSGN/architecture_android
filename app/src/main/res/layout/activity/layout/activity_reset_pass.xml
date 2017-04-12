@@ -47,7 +47,7 @@ android:orientation="vertical"
             android:paddingTop="20px"
             android:textColor="@color/white"
             android:textColorHint="@color/white"
-            android:textSize="28px"
+            android:textSize="@dimen/textsize_30px"
             android:theme="@style/et_pass"/>
 
     </RelativeLayout>
@@ -101,7 +101,7 @@ android:orientation="vertical"
             android:paddingTop="20px"
             android:textColor="@color/white"
             android:textColorHint="@color/white"
-            android:textSize="28px"
+            android:textSize="@dimen/textsize_30px"
             />
     </RelativeLayout>
 
@@ -144,7 +144,7 @@ android:orientation="vertical"
             android:paddingTop="20px"
             android:textColor="@color/white"
             android:textColorHint="@color/white"
-            android:textSize="28px"
+            android:textSize="@dimen/textsize_30px"
             />
 
 
@@ -169,7 +169,7 @@ android:orientation="vertical"
         android:background="@drawable/shape_round_white"
         android:layout_marginTop="90px"
         android:id="@+id/reset"
-        android:textSize="36px"
+        android:textSize="@dimen/textsize_36px"
         />
     <RelativeLayout
         android:layout_width="match_parent"

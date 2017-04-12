@@ -57,7 +57,7 @@
                     android:layout_centerInParent="true"
                     android:text="首页"
                     android:textColor="@color/text_black"
-                    android:textSize="36px"
+                    android:textSize="@dimen/textsize_36px"
                     />
             </RelativeLayout>
         </android.support.design.widget.AppBarLayout>

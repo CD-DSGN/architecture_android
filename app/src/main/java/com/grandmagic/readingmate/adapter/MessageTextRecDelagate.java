@@ -11,6 +11,7 @@ import android.widget.RelativeLayout;
 import com.grandmagic.readingmate.R;
 import com.grandmagic.readingmate.activity.FriendDetailActivity;
 import com.grandmagic.readingmate.bean.response.PersonInfo;
+import com.grandmagic.readingmate.utils.AutoUtils;
 import com.grandmagic.readingmate.utils.ImageLoader;
 import com.hyphenate.chat.EMMessage;
 import com.hyphenate.chat.EMTextMessageBody;

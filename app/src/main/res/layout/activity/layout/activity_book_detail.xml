@@ -61,7 +61,7 @@
                         android:layout_toRightOf="@+id/iv_collect"
                         android:text="收藏"
                         android:textColor="#999999"
-                        android:textSize="24px"
+                        android:textSize="@dimen/textsize_24px"
                         />
 
                     <LinearLayout
@@ -124,7 +124,7 @@
                         android:layout_gravity="bottom"
                         android:text="最新评论"
                         android:textColor="@color/gray_select"
-                        android:textSize="26px"
+                      android:textSize="@dimen/textsize_28px"
                         />
 
                     <View

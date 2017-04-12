@@ -27,7 +27,7 @@
         android:layout_centerVertical="true"
         android:text="标题"
         android:textColor="#181e1d"
-        android:textSize="48px"
+        android:textSize="@dimen/textsize_36px"
         />
     <ImageView
         android:layout_width="wrap_content"

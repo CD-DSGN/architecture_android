@@ -28,7 +28,7 @@
             android:layout_height="wrap_content"
             android:text="花花"
             android:textColor="#1cc9a2"
-            android:textSize="30px"
+            android:textSize="@dimen/textsize_30px"
             />
 
         <TextView
@@ -38,7 +38,7 @@
             android:layout_marginTop="15px"
             android:text="这个可以有"
             android:textColor="#181e1d"
-            android:textSize="28px"
+            android:textSize="@dimen/textsize_28px"
             />
 
         <LinearLayout
@@ -53,7 +53,7 @@
                 android:layout_height="wrap_content"
                 android:text="2017/01/03 13:58"
                 android:textColor="#999999"
-                android:textSize="22px"
+                android:textSize="@dimen/textsize_24px"
                 />
 
             <TextView
@@ -64,7 +64,7 @@
                 android:id="@+id/reply_count"
                 android:visibility="visible"
                 android:textColor="#999999"
-                android:textSize="22px"
+                android:textSize="@dimen/textsize_24px"
                 />
         </LinearLayout>
 
@@ -94,7 +94,7 @@
             android:layout_height="wrap_content"
             android:layout_marginLeft="10px"
             android:text="@string/good"
-            android:textSize="24px"
+            android:textSize="@dimen/textsize_24px"
             />
 
     </LinearLayout>

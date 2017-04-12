@@ -38,7 +38,7 @@
             android:paddingTop="20px"
             android:textColor="@color/white"
             android:textColorHint="@color/white"
-            android:textSize="28px"
+            android:textSize="@dimen/textsize_30px"
             android:theme="@style/et_pass"/>
 
         <ImageView
@@ -92,7 +92,7 @@
             android:password="true"
             android:textColor="@color/white"
             android:textColorHint="@color/white"
-            android:textSize="28px"
+            android:textSize="@dimen/textsize_30px"
             />
 
         <ImageView
@@ -123,7 +123,7 @@
         android:background="@drawable/shape_round_white"
         android:text="@string/loginnow"
         android:textColor="@color/text_green"
-        android:textSize="36px"
+        android:textSize="@dimen/textsize_36px"
         />
 
     <TextView
@@ -134,7 +134,7 @@
         android:layout_marginTop="38px"
         android:text="@string/forget_pass"
         android:textColor="#f8f8f8"
-        android:textSize="22px"
+        android:textSize="@dimen/textsize_28px"
         />
     <RelativeLayout
         android:layout_width="match_parent"

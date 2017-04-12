@@ -6,6 +6,8 @@
     android:layout_toLeftOf="@+id/avatar"
     android:padding="12px"
     android:textColor="#181e1d"
-    android:textSize="28px"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:textSize="@dimen/textsize_15sp"
+    tools:text="hello阿斯顿"
     xmlns:android="http://schemas.android.com/apk/res/android"/>
 

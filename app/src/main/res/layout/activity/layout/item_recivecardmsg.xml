@@ -25,7 +25,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             tools:text="@string/app_name"
-            android:textSize="32px"
+            android:textSize="@dimen/textsize_32px"
             android:textColor="@color/text_black"
             android:id="@+id/cardname"
             />
@@ -36,7 +36,7 @@
             tools:text="个性签名个性签名个性签名个性签名个性签名个性签名个性签名个性签名个性签名个性签名"
             android:layout_toRightOf="@+id/cardavatar"
             android:layout_below="@id/cardname"
-            android:textSize="24px"
+            android:textSize="@dimen/textsize_24px"
             android:textColor="#999999"
             android:maxLines="1"
             android:ellipsize="end"

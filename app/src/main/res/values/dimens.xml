@@ -2,7 +2,9 @@
 <resources>
     <dimen name="textsize_24px">24px</dimen>
     <dimen name="textsize_26px">26px</dimen>
+    <dimen name="textsize_28px">28px</dimen>
     <dimen name="textsize_30px">30px</dimen>
-    <dimen name="textsize_36px">36px</dimen>
     <dimen name="textsize_32px">32px</dimen>
+    <dimen name="textsize_36px">36px</dimen>
+    <dimen name="textsize_15sp">15sp</dimen>
 </resources>
