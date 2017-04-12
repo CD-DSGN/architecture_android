@@ -56,7 +56,9 @@
             android:layout_toRightOf="@+id/draft"
             android:textColor="#80191921"
             android:textSize="28px"
-            tools:text="南侧死啊减肥呢"
+            tools:text="南侧死啊减肥呢南侧死啊减肥呢南侧死啊减肥呢"
+            android:maxLines="1"
+            android:ellipsize="end"
             />
 
         <TextView

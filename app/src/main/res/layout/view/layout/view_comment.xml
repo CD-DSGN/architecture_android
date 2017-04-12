@@ -103,7 +103,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_alignParentRight="true"
-            android:text="7.5分"
+            android:text="0分"
             android:textColor="@color/text_green"
             />
     </RelativeLayout>
