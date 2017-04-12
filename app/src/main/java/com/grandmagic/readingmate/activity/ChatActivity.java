@@ -4,6 +4,7 @@ import android.Manifest;
 import android.content.Context;
 import android.content.Intent;
 import android.graphics.Color;
+import android.graphics.drawable.Drawable;
 import android.os.Bundle;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
@@ -20,6 +21,9 @@ import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.bumptech.glide.Glide;
+import com.bumptech.glide.load.resource.drawable.GlideDrawable;
+import com.bumptech.glide.request.target.ImageViewTarget;
 import com.grandmagic.readingmate.R;
 import com.grandmagic.readingmate.adapter.ChatItemViewDelegate;
 import com.grandmagic.readingmate.adapter.MessageIMGRecDelagate;
@@ -368,8 +372,13 @@ public class ChatActivity extends AppBaseActivity implements EMMessageListener, 
     private void chooseImg() {
         ImageLoader mLoader = new ImageLoader() {
             @Override
-            public void displayImage(Context context, String path, ImageView imageView) {
-                com.grandmagic.readingmate.utils.ImageLoader.loadImage(ChatActivity.this, path, imageView);
+            public void displayImage(Context context, String path, final ImageView imageView) {
+                Glide.with(context).load(path).placeholder(R.drawable.logo).into(new ImageViewTarget<GlideDrawable>(imageView) {
+                    @Override
+                    protected void setResource(GlideDrawable resource) {
+                      imageView.setImageDrawable(resource);
+                    }
+                });
             }
         };
         ImgSelConfig mConfig = new ImgSelConfig.Builder(this, mLoader)
