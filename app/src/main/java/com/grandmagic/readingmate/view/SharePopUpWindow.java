@@ -1,6 +1,7 @@
 package com.grandmagic.readingmate.view;
 
 import android.app.Activity;
+import android.app.ProgressDialog;
 import android.content.Context;
 import android.graphics.drawable.BitmapDrawable;
 import android.view.Gravity;
@@ -13,6 +14,7 @@ import android.widget.Toast;
 
 import com.grandmagic.readingmate.R;
 import com.grandmagic.readingmate.utils.AutoUtils;
+import com.grandmagic.readingmate.utils.ViewUtils;
 import com.orhanobut.logger.Logger;
 import com.umeng.socialize.ShareAction;
 import com.umeng.socialize.UMShareListener;
@@ -30,6 +32,8 @@ public class SharePopUpWindow extends PopupWindow {
     private UMShareListener umShareListener; //默认一个回调监听
     private ShareAction mShareAction;
     private ShareAction mShareActionDefault;
+
+    ProgressDialog mProgressDialog;
 
     public SharePopUpWindow(Context context) {
         mContext = context;
@@ -53,15 +57,19 @@ public class SharePopUpWindow extends PopupWindow {
         });
         this.setFocusable(true);
 
+        mProgressDialog = new ProgressDialog(mContext);
+
         umShareListener = new UMShareListener() {
             @Override
             public void onStart(SHARE_MEDIA platform) {
                 //分享开始的回调
+                ViewUtils.safeShowDialog(mProgressDialog);
             }
             @Override
             public void onResult(SHARE_MEDIA platform) {
 
                 Toast.makeText(mContext, platform + " 分享成功啦", Toast.LENGTH_SHORT).show();
+                ViewUtils.safeCloseDialog(mProgressDialog);
                 dismiss();
 
             }
@@ -69,6 +77,7 @@ public class SharePopUpWindow extends PopupWindow {
             @Override
             public void onError(SHARE_MEDIA platform, Throwable t) {
                 Toast.makeText(mContext,platform + " 分享失败啦", Toast.LENGTH_SHORT).show();
+                ViewUtils.safeCloseDialog(mProgressDialog);
                 if(t!=null){
                     Logger.e(t.getMessage());   //输出失败错误信息
                     dismiss();
@@ -78,6 +87,7 @@ public class SharePopUpWindow extends PopupWindow {
             @Override
             public void onCancel(SHARE_MEDIA platform) {
                 Toast.makeText(mContext,platform + " 分享取消了", Toast.LENGTH_SHORT).show();
+                ViewUtils.safeCloseDialog(mProgressDialog);
                 dismiss();
             }
         };
@@ -101,6 +111,9 @@ public class SharePopUpWindow extends PopupWindow {
 //                        .withMedia(web)
 //                        .setCallback(umShareListener)
 //                        .share();
+                if (!mProgressDialog.isShowing()) {
+                    mProgressDialog.show();
+                }
             }
         });
 
@@ -115,6 +128,9 @@ public class SharePopUpWindow extends PopupWindow {
 //                        .setCallback(umShareListener)
 //                        .share();
                 mShareActionDefault.setPlatform(SHARE_MEDIA.WEIXIN).share();
+                if (!mProgressDialog.isShowing()) {
+                    mProgressDialog.show();
+                }
             }
         });
 
@@ -129,6 +145,9 @@ public class SharePopUpWindow extends PopupWindow {
 //                        .setCallback(umShareListener)
 //                        .share();
                 mShareActionDefault.setPlatform(SHARE_MEDIA.WEIXIN_CIRCLE).share();
+                if (!mProgressDialog.isShowing()) {
+                    mProgressDialog.show();
+                }
             }
         });
 
@@ -139,6 +158,7 @@ public class SharePopUpWindow extends PopupWindow {
                 SharePopUpWindow.this.dismiss();
             }
         });
+
     }
 
 
@@ -147,6 +167,7 @@ public class SharePopUpWindow extends PopupWindow {
         WindowManager.LayoutParams params = mActivity.getWindow().getAttributes();
         params.alpha = 0.7f;
         mActivity.getWindow().setAttributes(params);
+
     }
 
     public void setShareAction(ShareAction shareAction) {

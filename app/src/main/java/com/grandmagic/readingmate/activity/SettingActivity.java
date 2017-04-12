@@ -55,7 +55,7 @@ public class SettingActivity extends AppBaseActivity {
 
     private SharePopUpWindow mSharePopUpWindow;
 
-    private final String APP_URL = "http://a.app.qq.com/o/simple.jsp?pkgname=com.grandmagic.edustore";
+    public static final String APP_URL = "http://a.app.qq.com/o/simple.jsp?pkgname=com.grandmagic.edustore";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -150,7 +150,7 @@ public class SettingActivity extends AppBaseActivity {
                 cleanCacheDlg.show();
                 break;
             case R.id.iv_share_app:
-                mSharePopUpWindow.setData("大术读家", "一款阅读交友类软件，很有趣哈", R.drawable.logo,
+                mSharePopUpWindow.setData("大术读家", "一款阅读交友类软件，很有趣哈", R.drawable.iv_no_book,
                         APP_URL, "加入我们吧，等你来哦");
                 mSharePopUpWindow.show();
                 break;
