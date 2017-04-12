@@ -209,6 +209,12 @@ public class FriendActivity extends AppBaseActivity implements ContactItemDelaga
         mEmptyAdapter = new DefaultEmptyAdapter(mAdapter, mContext);
         HeaderAndFooterWrapper mWrapper = new HeaderAndFooterWrapper(mEmptyAdapter);
         View mInflate = View.inflate(mContext, R.layout.new_friend_hint, null);
+        mInflate.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                startActivity(new Intent(FriendActivity.this,FriendRequestActivity.class));
+            }
+        });
         unredNewfriendTextview = (TextView) mInflate.findViewById(R.id.textView2);
         mInflate.setLayoutParams(new RelativeLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.WRAP_CONTENT));
         AutoUtils.auto(mInflate);

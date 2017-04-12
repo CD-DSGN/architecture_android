@@ -3,7 +3,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="10px"
-                android:layout_marginLeft="94px"
+
                 android:orientation="horizontal"
     >
 <TextView
@@ -11,7 +11,11 @@
     android:layout_height="wrap_content"
    android:layout_centerHorizontal="true"
     android:id="@+id/time"
+    android:layout_marginBottom="5px"
     android:textSize="22px"
+    android:padding="5px"
+    android:textColor="@color/white"
+    android:background="@color/gray_noselect"
     />
     <TextView
         android:layout_width="wrap_content"
@@ -29,6 +33,7 @@
         android:background="@drawable/bg_chat_send"
         android:layout_below="@+id/time"
         android:layout_alignTop="@id/avatar"
+        android:layout_marginLeft="94px"
         android:padding="5dp">
 
     </RelativeLayout>

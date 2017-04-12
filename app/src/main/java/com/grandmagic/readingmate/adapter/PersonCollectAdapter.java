@@ -23,7 +23,7 @@ public class PersonCollectAdapter extends CommonAdapter<PersonCollectBookRespons
 
     @Override
     protected void convert(ViewHolder holder, PersonCollectBookResponse.InfoBean data, int position) {
-        ImageLoader.loadImage(mContext, Environment.BASEULR_PRODUCTION+data.getPhoto(), (ImageView) holder.getView(R.id.conver));
+        ImageLoader.loadBookImg(mContext, Environment.BASEULR_PRODUCTION+data.getPhoto(), (ImageView) holder.getView(R.id.conver));
         holder.setText(R.id.bookname,data.getBook_name());
     }
 }

@@ -83,7 +83,7 @@ public class RecentConversationDelagate implements ItemViewDelegate<EMConversati
                 );
                 holder.setText(R.id.name, mUserInfo.getUser_name() == null ? mUserInfo.getUser_id() + "" : mUserInfo.getUser_name());
             }
-            final String finalUsername = mUserInfo == null ? "" : mUserInfo.getUser_name();
+            final String finalUsername = mUserInfo == null ? "" : mUserInfo.getUser_id()+"";
             holder.getConvertView().setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {

@@ -40,7 +40,7 @@
         <RelativeLayout
             android:id="@+id/rela_friend"
             android:layout_width="721px"
-            android:layout_height="88px"
+            android:layout_height="95px"
             android:layout_gravity="center_horizontal"
             android:layout_marginTop="40px"
             android:background="@drawable/shape_dash_frame"
@@ -51,7 +51,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
                 android:layout_margin="3px"
-                android:background="@drawable/bg_round_white">
+                >
 
                 <TextView
                     android:id="@+id/tv_friend"

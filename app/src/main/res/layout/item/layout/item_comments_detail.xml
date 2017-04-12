@@ -105,7 +105,7 @@
     <RelativeLayout
         android:id="@+id/rl_book_comment"
         android:layout_width="618px"
-        android:layout_height="98px"
+        android:layout_height="wrap_content"
         android:layout_alignParentRight="true"
         android:layout_below="@id/tv_content"
         android:layout_marginTop="25px"

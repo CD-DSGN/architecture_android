@@ -50,8 +50,8 @@ public abstract class ChatItemViewDelegate implements ItemViewDelegate<EMMessage
     @Override
     public void convert(ViewHolder holder, final EMMessage mChatMessage, int position) {
         holder.setText(R.id.time, DateUtil.timeTodate(mChatMessage.getMsgTime() + ""));
-        //间隔小于30秒不显示时间戳
-        if (position == 0 || Math.abs(mChatMessage.getMsgTime() - premsgtime) > 30 * 1000) {
+        //间隔小于5min不显示时间戳
+        if (position == 0 || Math.abs(mChatMessage.getMsgTime() - premsgtime) > 60*5*1000) {
             holder.setVisible(R.id.time, true);
             premsgtime = mChatMessage.getMsgTime();
         } else holder.setVisible(R.id.time, false);
@@ -90,6 +90,7 @@ public abstract class ChatItemViewDelegate implements ItemViewDelegate<EMMessage
         final Handler mHandler = new Handler() {
             @Override
             public void handleMessage(Message msg) {
+                Log.e(TAG, "handleMessage() called with: msg = [" + msg + "]");
                 switch (msg.what) {
                     case 0:
                         statesView.setVisibility(View.GONE);
@@ -110,16 +111,19 @@ public abstract class ChatItemViewDelegate implements ItemViewDelegate<EMMessage
             @Override
             public void onSuccess() {
                 mHandler.hasMessages(0);
+                Log.e(TAG, "onSuccess() called");
             }
 
             @Override
             public void onError(int mI, String mS) {
                 mHandler.hasMessages(1);
+                Log.e(TAG, "onError() called with: mI = [" + mI + "], mS = [" + mS + "]");
             }
 
             @Override
             public void onProgress(int mI, String mS) {
                 mHandler.hasMessages(2);
+                Log.e(TAG, "onProgress() called with: mI = [" + mI + "], mS = [" + mS + "]");
             }
 
         });

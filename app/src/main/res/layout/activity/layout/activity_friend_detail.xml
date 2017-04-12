@@ -29,6 +29,7 @@
             android:id="@+id/appbarlayout"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            app:layout_behavior="com.grandmagic.readingmate.view.FlingBehavior"
             android:fitsSystemWindows="true">
 
             <android.support.design.widget.CollapsingToolbarLayout

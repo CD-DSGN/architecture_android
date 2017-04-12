@@ -1,6 +1,7 @@
 package com.grandmagic.readingmate.adapter;
 
 import android.content.Context;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.ImageView;
@@ -8,6 +9,7 @@ import android.widget.RelativeLayout;
 
 import com.grandmagic.readingmate.R;
 import com.grandmagic.readingmate.utils.ImageLoader;
+import com.hyphenate.EMCallBack;
 import com.hyphenate.chat.EMImageMessageBody;
 import com.hyphenate.chat.EMMessage;
 import com.zhy.adapter.recyclerview.base.ViewHolder;
@@ -27,10 +29,11 @@ public class MessageIMGRecDelagate extends ChatItemViewDelegate {
         return item.getType() == EMMessage.Type.IMAGE&&mDirect== EMMessage.Direct.RECEIVE;
     }
 
+    private static final String TAG = "MessageIMGRecDelagate";
     @Override
-    protected void childConvert(ViewHolder mHolder, EMMessage data, int mPosition) {
-        EMImageMessageBody  mBody= (EMImageMessageBody) data.getBody();
-        ImageLoader.loadRoundImage(mContext,mBody.getThumbnailUrl(), (ImageView) mHolder.getView(R.id.image));
+    protected void childConvert(final ViewHolder mHolder, EMMessage data, int mPosition) {
+         EMImageMessageBody  mBody= (EMImageMessageBody) data.getBody();
+        ImageLoader.loadImage(mContext,mBody.getRemoteUrl(),(ImageView) mHolder.getView(R.id.image));
     }
 
     @Override

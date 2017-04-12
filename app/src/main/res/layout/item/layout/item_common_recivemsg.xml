@@ -4,7 +4,7 @@
                 android:layout_height="wrap_content"
                 android:layout_marginTop="10px"
                 android:orientation="horizontal"
-                android:layout_marginRight="94px"
+
     >
 
     <TextView
@@ -12,7 +12,11 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_centerHorizontal="true"
-        android:textSize="22px"
+        android:textSize="@dimen/textsize_24px"
+        android:textColor="@color/white"
+        android:background="@color/gray_noselect"
+        android:layout_marginBottom="5px"
+        android:padding="5px"
         />
 
     <ImageView
@@ -31,6 +35,7 @@
         android:layout_alignTop="@id/avatar"
         android:layout_below="@+id/time"
         android:layout_toRightOf="@id/avatar"
+        android:layout_marginRight="94px"
         android:background="@drawable/bg_chat_reciver"
         android:padding="5dp"/>
 

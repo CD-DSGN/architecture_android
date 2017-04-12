@@ -94,8 +94,8 @@
             app:starDistance="30px"
             app:starEmpty="@drawable/star_empty"
             app:starFill="@drawable/ic_star_green"
-            app:starHeight="30px"
-            app:starWidth="32px"
+            app:starHeight="40px"
+            app:starWidth="44px"
             />
 
         <TextView

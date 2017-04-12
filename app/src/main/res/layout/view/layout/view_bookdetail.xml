@@ -62,8 +62,8 @@
                 app:isIndicator="true"
                 app:starEmpty="@drawable/star_empty"
                 app:starFill="@drawable/ic_star_green"
-                app:starHeight="20px"
-                app:starWidth="22px"
+                app:starHeight="40px"
+                app:starWidth="44px"
                 />
 
             <RelativeLayout

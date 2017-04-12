@@ -300,7 +300,7 @@ int unreadmsgCount;//未读消息
                 mLastMessage.getTo() : mLastMessage.getFrom());
         mIntent.putExtra(ChatActivity.CHAT_NAME, mFinalUsername);
         ContactsDao mContactsDao = DBHelper.getContactsDao(mContext);
-        Contacts mUnique = mContactsDao.queryBuilder().where(ContactsDao.Properties.User_name.eq(mFinalUsername)).build().unique();
+        Contacts mUnique = mContactsDao.queryBuilder().where(ContactsDao.Properties.User_id.eq(mFinalUsername)).build().unique();
         DBHelper.close();
         if (mUnique != null)
             mIntent.putExtra(ChatActivity.GENDER, mUnique.getGender());

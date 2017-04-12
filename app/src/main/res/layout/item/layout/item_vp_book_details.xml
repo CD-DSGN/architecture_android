@@ -74,8 +74,8 @@
                         app:isIndicator="true"
                         app:starEmpty="@drawable/star_empty"
                         app:starFill="@drawable/star"
-                        app:starHeight="22px"
-                        app:starWidth="24px"
+                        app:starHeight="40px"
+                        app:starWidth="44px"
                         android:layout_centerHorizontal="true"
                         />
 
