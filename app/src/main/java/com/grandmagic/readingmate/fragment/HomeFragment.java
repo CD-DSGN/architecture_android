@@ -24,11 +24,11 @@ import com.grandmagic.readingmate.activity.BookDetailActivity;
 import com.grandmagic.readingmate.activity.CaptureActivity;
 import com.grandmagic.readingmate.activity.MainActivity;
 import com.grandmagic.readingmate.activity.SearchActivity;
-import com.grandmagic.readingmate.activity.SettingActivity;
 import com.grandmagic.readingmate.adapter.HomeBookAdapter;
 import com.grandmagic.readingmate.base.AppBaseFragment;
 import com.grandmagic.readingmate.base.AppBaseResponseCallBack;
 import com.grandmagic.readingmate.bean.response.DisplayBook;
+import com.grandmagic.readingmate.consts.AppConsts;
 import com.grandmagic.readingmate.model.BookModel;
 import com.grandmagic.readingmate.utils.AutoUtils;
 import com.grandmagic.readingmate.utils.KitUtils;
@@ -253,10 +253,10 @@ public class HomeFragment extends AppBaseFragment implements HomeBookAdapter.Cli
         DisplayBook.InfoBean bookInfo = mBookList.get(position);
         if (!TextUtils.isEmpty(bookInfo.getPhoto())) {
             mPopupWindow.setData("大术读家:" + bookInfo.getBook_name(), bookInfo.getSynopsis(),
-                    KitUtils.getAbsoluteUrl(bookInfo.getPhoto()), SettingActivity.APP_URL, "");
+                    KitUtils.getAbsoluteUrl(bookInfo.getPhoto()), AppConsts.APP_URL, "");
         }else{
             mPopupWindow.setData("大术读家:" + bookInfo.getBook_name(), bookInfo.getSynopsis(),
-                    R.drawable.iv_no_book, SettingActivity.APP_URL, "");
+                    R.drawable.iv_no_book, AppConsts.APP_URL, "");
         }
         mPopupWindow.show();
 

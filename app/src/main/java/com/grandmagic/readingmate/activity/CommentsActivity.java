@@ -522,6 +522,10 @@ public class CommentsActivity extends AppBaseActivity implements View.OnLayoutCh
     }
 
     private void addReply(String pid) {
+        if (mCommentsDetailResponoseBean == null) {
+            ViewUtils.showToast("网络错误，请刷新重试");
+        }
+
         String comment_id = mCommentsDetailResponoseBean.getComment_id();
 
         AddReplyRequestBean addReplyRequestBean = new AddReplyRequestBean();
