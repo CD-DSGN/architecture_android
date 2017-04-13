@@ -1,15 +1,18 @@
 package com.grandmagic.readingmate.adapter;
 
 import android.content.Context;
+import android.text.TextUtils;
 import android.view.View;
 import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.grandmagic.readingmate.R;
 import com.grandmagic.readingmate.bean.response.DisplayBook;
+import com.grandmagic.readingmate.consts.AppConsts;
 import com.grandmagic.readingmate.utils.DateUtil;
 import com.grandmagic.readingmate.utils.ImageLoader;
 import com.grandmagic.readingmate.utils.KitUtils;
+import com.grandmagic.readingmate.view.SharePopUpWindow;
 import com.grandmagic.readingmate.view.StarView;
 import com.zhy.adapter.recyclerview.base.ViewHolder;
 
@@ -96,6 +99,26 @@ public class MyCollectBookAdapter extends CommonAdapter<DisplayBook.InfoBean> {
                 e.printStackTrace();
             }
             holder.setText(R.id.tv_time, str_time_scan);
+
+            final DisplayBook.InfoBean book = book_info;
+            holder.setOnClickListener(R.id.tv_share_book, new View.OnClickListener() {
+                private SharePopUpWindow sharePopUpWindow;
+                @Override
+                public void onClick(View v) {
+                    if (sharePopUpWindow == null) {
+                        sharePopUpWindow = new SharePopUpWindow(mContext);
+                    }
+                    if (!TextUtils.isEmpty(book.getPhoto())) {
+                        sharePopUpWindow.setData(mContext.getString(R.string.app_name)+":" + book.getBook_name(), book.getSynopsis(),
+                                KitUtils.getAbsoluteUrl(book.getPhoto()), AppConsts.APP_URL, "");
+                    }else{
+                        sharePopUpWindow.setData(mContext.getString(R.string.app_name)+":" + book.getBook_name(), book.getSynopsis(),
+                                R.drawable.iv_no_book, AppConsts.APP_URL, "");
+                    }
+                    sharePopUpWindow.show();
+                    sharePopUpWindow.show();
+                }
+            });
 
         }
     }

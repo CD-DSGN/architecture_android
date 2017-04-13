@@ -472,7 +472,13 @@ public class CommentsActivity extends AppBaseActivity implements View.OnLayoutCh
         if (mPopupWindow == null) {
             mPopupWindow = new SharePopUpWindow(this);
         }
-        mPopupWindow.show();
+
+        if (mCommentsDetailResponoseBean != null) {
+            mPopupWindow.setData(
+                    mCommentsDetailResponoseBean.getBook_name(),
+                    mCommentsDetailResponoseBean.getContent(), KitUtils.getAbsoluteUrl(mCommentsDetailResponoseBean.getPhoto()), "https://a.mlinks.cc/AKVC?book_id=3", "分享书评");
+            mPopupWindow.show();
+        }
 
     }
 
@@ -522,6 +528,10 @@ public class CommentsActivity extends AppBaseActivity implements View.OnLayoutCh
     }
 
     private void addReply(String pid) {
+        if (mCommentsDetailResponoseBean == null) {
+            ViewUtils.showToast("网络错误，请刷新重试");
+        }
+
         String comment_id = mCommentsDetailResponoseBean.getComment_id();
 
         AddReplyRequestBean addReplyRequestBean = new AddReplyRequestBean();

@@ -168,6 +168,8 @@
                             android:text="@string/share"
                             android:textColor="#e61cc9a2"
                             android:textSize="22px"
+                            android:id="@+id/tv_share_book"
+                            android:clickable="true"
                             />
 
                         <TextView

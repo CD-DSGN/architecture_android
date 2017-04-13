@@ -24,7 +24,7 @@
             android:layout_height="212px"
             android:layout_marginLeft="46px"
             android:layout_marginTop="36px"
-            tools:src="@mipmap/logo6"
+            tools:src="@drawable/logo"
             />
 
         <TextView
@@ -34,17 +34,20 @@
             android:layout_below="@id/avatar"
             android:layout_marginTop="20px"
             android:layout_toRightOf="@+id/gender"
+            android:textSize="32px"
+            android:textColor="#181e1d"
             tools:text="张山"
             />
 
         <ImageView
             android:id="@+id/gender"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
+            android:layout_width="28px"
+            android:layout_height="28px"
             android:layout_below="@+id/avatar"
-            android:layout_marginLeft="118px"
-            android:layout_marginTop="20px"
+            android:layout_marginLeft="98px"
+            android:layout_marginTop="26px"
             android:src="@drawable/iv_female"
+            android:layout_marginRight="15px"
             />
 
         <TextView
@@ -82,6 +85,8 @@
                 android:layout_marginLeft="5px"
                 android:layout_toRightOf="@+id/iv_addfriend"
                 android:text="加为读友"
+                android:textSize="24px"
+                android:textColor="#181d1b"
                 />
         </RelativeLayout>
 
