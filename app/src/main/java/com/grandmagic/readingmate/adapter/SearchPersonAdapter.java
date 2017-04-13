@@ -3,6 +3,7 @@ package com.grandmagic.readingmate.adapter;
 import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
+import android.text.TextUtils;
 import android.view.View;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
@@ -78,6 +79,8 @@ public class SearchPersonAdapter extends CommonAdapter<SearchPersonResponse.Info
                 hassamebook = true;
                 mTextView.setTextColor(mContext.getResources().getColor(R.color.text_green));
             }
+            mTextView.setSingleLine(true);
+            mTextView.setEllipsize(TextUtils.TruncateAt.END);
             mLayout.addView(mTextView);
         }
         return hassamebook;
