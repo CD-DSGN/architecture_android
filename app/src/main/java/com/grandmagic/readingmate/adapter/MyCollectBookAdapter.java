@@ -109,10 +109,10 @@ public class MyCollectBookAdapter extends CommonAdapter<DisplayBook.InfoBean> {
                         sharePopUpWindow = new SharePopUpWindow(mContext);
                     }
                     if (!TextUtils.isEmpty(book.getPhoto())) {
-                        sharePopUpWindow.setData("大术读家:" + book.getBook_name(), book.getSynopsis(),
+                        sharePopUpWindow.setData(mContext.getString(R.string.app_name)+":" + book.getBook_name(), book.getSynopsis(),
                                 KitUtils.getAbsoluteUrl(book.getPhoto()), AppConsts.APP_URL, "");
                     }else{
-                        sharePopUpWindow.setData("大术读家:" + book.getBook_name(), book.getSynopsis(),
+                        sharePopUpWindow.setData(mContext.getString(R.string.app_name)+":" + book.getBook_name(), book.getSynopsis(),
                                 R.drawable.iv_no_book, AppConsts.APP_URL, "");
                     }
                     sharePopUpWindow.show();

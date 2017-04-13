@@ -472,7 +472,13 @@ public class CommentsActivity extends AppBaseActivity implements View.OnLayoutCh
         if (mPopupWindow == null) {
             mPopupWindow = new SharePopUpWindow(this);
         }
-        mPopupWindow.show();
+
+        if (mCommentsDetailResponoseBean != null) {
+            mPopupWindow.setData(
+                    mCommentsDetailResponoseBean.getBook_name(),
+                    mCommentsDetailResponoseBean.getContent(), KitUtils.getAbsoluteUrl(mCommentsDetailResponoseBean.getPhoto()), "https://a.mlinks.cc/AKVC?book_id=3", "分享书评");
+            mPopupWindow.show();
+        }
 
     }
 

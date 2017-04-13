@@ -1,11 +1,9 @@
 package com.grandmagic.readingmate.activity;
 
-import android.annotation.TargetApi;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.v4.view.ViewPager;
 import android.text.TextUtils;
-import android.transition.Slide;
 import android.util.TypedValue;
 import android.view.View;
 import android.widget.Button;
@@ -23,6 +21,7 @@ import com.grandmagic.readingmate.base.AppBaseResponseCallBack;
 import com.grandmagic.readingmate.bean.db.BookComment;
 import com.grandmagic.readingmate.bean.response.BookdetailResponse;
 import com.grandmagic.readingmate.bean.response.HistoryComment;
+import com.grandmagic.readingmate.consts.AppConsts;
 import com.grandmagic.readingmate.db.BookCommentDao;
 import com.grandmagic.readingmate.db.DBHelper;
 import com.grandmagic.readingmate.event.RefreshHotCommentEvent;
@@ -32,14 +31,15 @@ import com.grandmagic.readingmate.utils.DateUtil;
 import com.grandmagic.readingmate.utils.DensityUtil;
 import com.grandmagic.readingmate.utils.ImageLoader;
 import com.grandmagic.readingmate.utils.InputMethodUtils;
+import com.grandmagic.readingmate.utils.KitUtils;
 import com.grandmagic.readingmate.view.HotcommentView;
+import com.grandmagic.readingmate.view.SharePopUpWindow;
 import com.grandmagic.readingmate.view.StarView;
 import com.tamic.novate.NovateResponse;
 import com.tamic.novate.util.Environment;
 
 import org.greenrobot.eventbus.EventBus;
 import org.greenrobot.eventbus.Subscribe;
-import org.greenrobot.eventbus.ThreadMode;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -68,6 +68,7 @@ public class BookDetailActivity extends AppBaseActivity implements View.OnLayout
     ImageView mIvCollect;
     @BindView(R.id.tv2)
     TextView mTv2;
+
     private String book_id;
     @BindView(R.id.back)
     ImageView mBack;
@@ -126,6 +127,8 @@ public class BookDetailActivity extends AppBaseActivity implements View.OnLayout
     @BindView(R.id.et_comment)
     EditText mEtComment;
 
+    private SharePopUpWindow mSharePopUpWindow;
+    private BookdetailResponse mBookdetailResponse;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -187,8 +190,12 @@ public class BookDetailActivity extends AppBaseActivity implements View.OnLayout
     HotcommentView mRecentView;
 
     private void initView() {
+        if (mSharePopUpWindow == null) {
+            mSharePopUpWindow = new SharePopUpWindow(this);
+        }
+
         List<View> mViews = new ArrayList<>();
-//        为了减少Activity的代码，将评论的相关功能抽离到HotcommentView了
+        //        为了减少Activity的代码，将评论的相关功能抽离到HotcommentView了
 
         mRecentView = new HotcommentView(this, HotcommentView.COMMENT_TIME, mModel, book_id);
         mHotView = new HotcommentView(this, HotcommentView.COMMENT_LIKE, mModel, book_id);
@@ -206,6 +213,7 @@ public class BookDetailActivity extends AppBaseActivity implements View.OnLayout
         mModel.getBookDetail(book_id, new AppBaseResponseCallBack<NovateResponse<BookdetailResponse>>(this) {
             @Override
             public void onSuccee(NovateResponse<BookdetailResponse> response) {
+                mBookdetailResponse = response.getData();
                 setbookView(response.getData());
             }
         });
@@ -240,7 +248,7 @@ public class BookDetailActivity extends AppBaseActivity implements View.OnLayout
         LinearLayout.LayoutParams mParams = (LinearLayout.LayoutParams) mEtComment.getLayoutParams();
 
         if (oldBottom != 0 && bottom != 0 && oldBottom - bottom > DensityUtil.getScreenHeight(this) / 3) {
-//            键盘弹出
+            //            键盘弹出
             mRelaRating.setVisibility(View.VISIBLE);
             mLinShare.setVisibility(View.GONE);
             mSubmit.setVisibility(View.VISIBLE);
@@ -251,7 +259,7 @@ public class BookDetailActivity extends AppBaseActivity implements View.OnLayout
             mLinShare.setVisibility(View.VISIBLE);
             mSubmit.setVisibility(View.GONE);
             mParams.height = mEtComment.getMeasuredHeight() / 4;
-//            键盘收起
+            //            键盘收起
         }
         mEtComment.setLayoutParams(mParams);
     }
@@ -276,7 +284,7 @@ public class BookDetailActivity extends AppBaseActivity implements View.OnLayout
         mBottomlayout.setVisibility(s.getIs_follow() == 1 ? View.VISIBLE : View.GONE);
     }
 
-    @OnClick({R.id.back, R.id.submit, R.id.tv_last, R.id.tv_hot, R.id.coll_more})
+    @OnClick({R.id.back, R.id.submit, R.id.tv_last, R.id.tv_hot, R.id.coll_more, R.id.lin_share})
     public void onClick(View view) {
         switch (view.getId()) {
             case R.id.back:
@@ -295,6 +303,18 @@ public class BookDetailActivity extends AppBaseActivity implements View.OnLayout
                 Intent mIntent = new Intent(BookDetailActivity.this, CollectedPersonActivity.class);
                 mIntent.putExtra(BOOK_ID, book_id);
                 startActivity(mIntent);
+                break;
+            case R.id.lin_share:
+                if (mBookdetailResponse != null) {
+                    if (!TextUtils.isEmpty(mBookdetailResponse.getPhoto())) {
+                        mSharePopUpWindow.setData(this.getString(R.string.app_name)+":" + mBookdetailResponse.getBook_name(), mBookdetailResponse.getSynopsis(),
+                                KitUtils.getAbsoluteUrl(mBookdetailResponse.getPhoto()), AppConsts.APP_URL, "");
+                    }else{
+                        mSharePopUpWindow.setData(this.getString(R.string.app_name)+":" + mBookdetailResponse.getBook_name(), mBookdetailResponse.getSynopsis(),
+                                R.drawable.iv_no_book, AppConsts.APP_URL, "");
+                    }
+                    mSharePopUpWindow.show();
+                }
                 break;
         }
     }
@@ -362,5 +382,6 @@ public class BookDetailActivity extends AppBaseActivity implements View.OnLayout
         EventBus.getDefault().unregister(this);
         super.onDestroy();
     }
+
 
 }

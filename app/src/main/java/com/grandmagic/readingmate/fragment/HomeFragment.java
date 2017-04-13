@@ -252,10 +252,10 @@ public class HomeFragment extends AppBaseFragment implements HomeBookAdapter.Cli
 
         DisplayBook.InfoBean bookInfo = mBookList.get(position);
         if (!TextUtils.isEmpty(bookInfo.getPhoto())) {
-            mPopupWindow.setData("大术读家:" + bookInfo.getBook_name(), bookInfo.getSynopsis(),
+            mPopupWindow.setData(mContext.getString(R.string.app_name)+":" + bookInfo.getBook_name(), bookInfo.getSynopsis(),
                     KitUtils.getAbsoluteUrl(bookInfo.getPhoto()), AppConsts.APP_URL, "");
         }else{
-            mPopupWindow.setData("大术读家:" + bookInfo.getBook_name(), bookInfo.getSynopsis(),
+            mPopupWindow.setData(mContext.getString(R.string.app_name)+":" + bookInfo.getBook_name(), bookInfo.getSynopsis(),
                     R.drawable.iv_no_book, AppConsts.APP_URL, "");
         }
         mPopupWindow.show();
