@@ -52,6 +52,7 @@ public class BookModel {
         Novate mNovate = new Novate.Builder(mContext).build();
         Map<String, Object> mStringObjectMap = new HashMap<>();
         mStringObjectMap.put("cpage", mCurrpage);
+        mStringObjectMap.put("pagesize", 2);
         mNovate.executeGet(ApiInterface.COLLECT_BOOKDISPLAY, mStringObjectMap, mBack, SPUtils.getInstance().getToken(mContext));
     }
 
