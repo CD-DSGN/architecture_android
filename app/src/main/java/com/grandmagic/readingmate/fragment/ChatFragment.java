@@ -6,6 +6,7 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v7.widget.LinearLayoutManager;
+import android.text.TextUtils;
 import android.util.Pair;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -298,15 +299,20 @@ int unreadmsgCount;//未读消息
         Intent mIntent = new Intent(mContext, ChatActivity.class);
         mIntent.putExtra(ChatActivity.CHAT_IM_NAME, mLastMessage.direct() == EMMessage.Direct.SEND ?
                 mLastMessage.getTo() : mLastMessage.getFrom());
-        mIntent.putExtra(ChatActivity.CHAT_NAME, mFinalUsername);
         ContactsDao mContactsDao = DBHelper.getContactsDao(mContext);
-        Contacts mUnique = mContactsDao.queryBuilder().where(ContactsDao.Properties.User_id.eq(mFinalUsername)).build().unique();
-        DBHelper.close();
-        if (mUnique != null)
+        Contacts mUnique=null;
+        if (!TextUtils.isEmpty(mFinalUsername)) {
+            mUnique = mContactsDao.queryBuilder().where(ContactsDao.Properties.User_id.eq(mFinalUsername)).build().unique();
+            DBHelper.close();
+        }
+        if (mUnique != null){
             mIntent.putExtra(ChatActivity.GENDER, mUnique.getGender());
-        mConversations.get(position).markAllMessagesAsRead();
+            mIntent.putExtra(ChatActivity.CHAT_NAME, mUnique.getUser_name());
+            mConversations.get(position).markAllMessagesAsRead();
         onrefreshConversation();
-        ((MainActivity) mContext).startActivityForResult(mIntent, REQUEST_READMSG);
+        ((MainActivity) mContext).startActivityForResult(mIntent, REQUEST_READMSG);}else {
+            Toast.makeText(mContext, "没有获取到该用户的信息，暂不能跳转", Toast.LENGTH_SHORT).show();
+        }
     }
 
     @Override

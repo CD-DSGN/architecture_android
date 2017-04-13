@@ -146,6 +146,7 @@ public class ChatActivity extends AppBaseActivity implements EMMessageListener, 
     ChatDraftBox mChatDraftBox;
 
     private void loadDraftFromDB() {
+        if (TextUtils.isEmpty(toChatUserName))return;
         mChatDraftBox = DBHelper.getChatDraftBoxDao(this).queryBuilder().
                 where(ChatDraftBoxDao.Properties.Tochatuserid.eq(toChatUserName), ChatDraftBoxDao.Properties.MType.eq(mChatType))
                 .build().unique();
