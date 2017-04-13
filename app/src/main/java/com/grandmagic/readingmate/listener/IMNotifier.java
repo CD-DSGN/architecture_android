@@ -99,23 +99,23 @@ public class IMNotifier {
         // TODO: 2017/3/2 免打扰等设置判断，暂时没处理
         Contacts mUserInfo = IMHelper.getInstance().getUserInfo(message.getFrom());
         String username = mUserInfo == null ? message.getFrom() : mUserInfo.getUser_name();
-            String notifytxt = username + "";
-            switch (message.getType()) {
-                case TXT:
-                    notifytxt += msgs[0];
-                    break;
-                case IMAGE:
-                    notifytxt += msgs[1];
-                    break;
-            }
-            getIconBitmap(mUserInfo,notifytxt,message);
+        String notifytxt = username + "";
+        switch (message.getType()) {
+            case TXT:
+                notifytxt += msgs[0];
+                break;
+            case IMAGE:
+                notifytxt += msgs[1];
+                break;
+        }
+        getIconBitmap(mUserInfo, notifytxt, message);
 
     }
 
     private void getIconBitmap(final Contacts mUserInfo, final String mNotifytxt, final EMMessage mMessage) {
 
         Observable
-                .just(Environment.BASEULR_PRODUCTION+mUserInfo.getAvatar_url().getLarge())
+                .just(Environment.BASEULR_PRODUCTION + mUserInfo.getAvatar_url().getLarge())
                 .flatMap(new Func1<String, Observable<BitmapRequestBuilder<String, Bitmap>>>() {
                     @Override
                     public Observable<BitmapRequestBuilder<String, Bitmap>> call(String mS) {
@@ -127,23 +127,23 @@ public class IMNotifier {
                 .subscribe(new Subscriber<BitmapRequestBuilder<String, Bitmap>>() {
                     @Override
                     public void onCompleted() {
-                        Log.e(TAG, "onCompleted: " );
+                        Log.e(TAG, "onCompleted: ");
                     }
 
                     @Override
                     public void onError(Throwable e) {
-                        Log.e(TAG, "onError: " );
-                     showNotification(mUserInfo,mNotifytxt,mMessage,null);
+                        Log.e(TAG, "onError: ");
+                        showNotification(mUserInfo, mNotifytxt, mMessage, null);
                     }
 
                     @Override
                     public void onNext(BitmapRequestBuilder<String, Bitmap> mStringBitmapTypeRequest) {
-                        Log.e(TAG, "onNext: " );
+                        Log.e(TAG, "onNext: ");
                         mStringBitmapTypeRequest.into(new SimpleTarget<Bitmap>() {
                             @Override
                             public void onResourceReady(Bitmap resource, GlideAnimation<? super Bitmap> glideAnimation) {
-                                Log.e(TAG, "onResourceReady: " );
-                                showNotification(mUserInfo,mNotifytxt,mMessage,resource);
+                                Log.e(TAG, "onResourceReady: ");
+                                showNotification(mUserInfo, mNotifytxt, mMessage, resource);
                             }
 
                             /**
@@ -155,7 +155,7 @@ public class IMNotifier {
                             @Override
                             public void onLoadFailed(Exception e, Drawable errorDrawable) {
                                 super.onLoadFailed(e, errorDrawable);
-                                showNotification(mUserInfo,mNotifytxt,mMessage,null);
+                                showNotification(mUserInfo, mNotifytxt, mMessage, null);
                             }
                         });
                     }
@@ -164,47 +164,38 @@ public class IMNotifier {
 
     }
 
-    private void showNotification(Contacts mUserInfo, String notifytxt, EMMessage message, Bitmap mResource){
+    private void showNotification(Contacts mUserInfo, String notifytxt, EMMessage message, Bitmap mResource) {
         Log.e(TAG, "showNotification() called with: mUserInfo = [" + mUserInfo + "], notifytxt = [" + notifytxt + "], message = [" + message + "], mResource = [" + mResource + "]");
         PackageManager mPackageManager = mAppContext.getPackageManager();
         String appname = (String) mPackageManager.getApplicationLabel(mAppContext.getApplicationInfo());
-
         String contenttitle = mUserInfo == null ? appname : mUserInfo.getUser_name();
-        RemoteViews mRemoteViews = new RemoteViews(mAppContext.getPackageName(), R.layout.notification_view);
-        mRemoteViews.setTextViewText(R.id.time, DateUtil.getNowTime());
-        mRemoteViews.setTextViewText(R.id.notification_title, contenttitle);
-        if (mResource!=null){
-            mRemoteViews.setImageViewBitmap(R.id.notification_large_icon,mResource);
-        }else {
-            mRemoteViews.setImageViewResource(R.id.notification_large_icon,R.mipmap.logo6);
-        }
         NotificationCompat.Builder mBuilder = new NotificationCompat.Builder(mAppContext)
                 .setWhen(System.currentTimeMillis())
-                .setContentText("xxx")
-.setSmallIcon(R.mipmap.logo6)
+                .setColor(mAppContext.getResources().getColor(R.color.text_green))
+                .setSmallIcon(R.drawable.logo)
+                .setLargeIcon(mResource)
                 .setAutoCancel(true);
-//            Intent msgIntent = mAppContext.getPackageManager().getLaunchIntentForPackage(packName);
         Intent msgIntent = new Intent(mAppContext, MainActivity.class);
         msgIntent.putExtra(IMMessageListenerApp.FLAG_NEWMESSAGE, IMMessageListenerApp.FLAG_NEWMESSAGE);
         PendingIntent mPendingIntent = PendingIntent.getActivity(mAppContext, notifyID, msgIntent, PendingIntent.FLAG_UPDATE_CURRENT);
         mBuilder.setContentTitle(contenttitle);
         mBuilder.setTicker(notifytxt);
         if (message.getType() == EMMessage.Type.TXT) {
-            mRemoteViews.setTextViewText(R.id.notgification_content, ((EMTextMessageBody) message.getBody()).getMessage());
+            mBuilder.setContentText( ((EMTextMessageBody) message.getBody()).getMessage());
         } else if (message.getType() == EMMessage.Type.IMAGE) {
-            mRemoteViews.setTextViewText(R.id.notgification_content, "[图片]");
+            mBuilder.setContentText( "[图片]");
         } else if (message.getType() == EMMessage.Type.VOICE) {
-            mRemoteViews.setTextViewText(R.id.notgification_content, "[语音]");
+            mBuilder.setContentText("[语音]");
         } else if (message.getType() == EMMessage.Type.LOCATION) {
-            mRemoteViews.setTextViewText(R.id.notgification_content, "[地理位置]");
+            mBuilder.setContentText("[地理位置]");
         } else {
-            mRemoteViews.setTextViewText(R.id.notgification_content, "有新的消息");
+            mBuilder.setContentText("有新的消息");
         }
         mBuilder.setContentIntent(mPendingIntent);
-        mBuilder.setContent(mRemoteViews);
         Notification mNotification = mBuilder.build();
         mNotificationManager.notify(foregroundNotifyID, mNotification);
     }
+
     /**
      * app是否在后台运行
      *
