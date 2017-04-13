@@ -104,7 +104,6 @@
             android:theme="@style/fullsrceen">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN"/>
-
                 <category android:name="android.intent.category.LAUNCHER"/>
             </intent-filter>
         </activity>
@@ -112,6 +111,12 @@
             android:name=".activity.MainActivity"
             android:launchMode="singleTask"
             android:theme="@style/AppTheme.NoActionBar">
+            <intent-filter>
+                <data android:scheme="dsdj"/>
+                <action android:name="android.intent.action.VIEW" />
+                <category android:name="android.intent.category.DEFAULT" />
+                <category android:name="android.intent.category.BROWSABLE" />
+            </intent-filter>
         </activity>
         <activity
             android:name=".activity.LoginActivity"
@@ -268,6 +273,9 @@
             android:theme="@style/notitle"
             >
         </activity>
+
+        <meta-data android:name="MW_APPID" android:value="VO5YQTGZW7VG0G5Q1UCLSYPATY3AY7T4" />
+        <meta-data android:name="MW_CHANNEL" android:value="umeng" />
     </application>
 
 </manifest>
