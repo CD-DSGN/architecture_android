@@ -56,6 +56,7 @@ public class HomeFragment extends AppBaseFragment implements HomeBookAdapter.Cli
 
     @BindView(R.id.recyclerview)
     RecyclerView mRecyclerview;
+
     @BindView(R.id.pop_scan)
     TextView mPopScan;
     @BindView(R.id.pop_search)
