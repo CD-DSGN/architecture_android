@@ -270,7 +270,7 @@ public class HomeFragment extends AppBaseFragment implements HomeBookAdapter.Cli
 // TODO: 2017/2/16 跳转到详情
         Intent mIntent = new Intent(getActivity(), BookDetailActivity.class);
         mIntent.putExtra(BookDetailActivity.BOOK_ID, mBookList.get(position).getBook_id());
-        startActivity(mIntent);
+        startActivityForResult(mIntent,REQUEST_BOOKDETAIL);
     }
 
     @Override
@@ -281,7 +281,7 @@ public class HomeFragment extends AppBaseFragment implements HomeBookAdapter.Cli
             Intent mIntent = new Intent(getActivity(), BookDetailActivity.class);
             mIntent.putExtra(BookDetailActivity.BOOK_ID, book_id);
             startActivityForResult(mIntent, REQUEST_BOOKDETAIL);
-        } else if (requestCode == REQUEST_BOOKDETAIL && requestCode == Activity.RESULT_OK) {
+        } else if (requestCode == REQUEST_BOOKDETAIL ) {
 //如果从图书详情页需要返回做什么处理。可以在这里处理,暂时是重新加载书籍
             mBookList.clear();
             initdata();

@@ -7,8 +7,10 @@ import android.util.Log;
 import android.view.View;
 import android.widget.ImageView;
 import android.widget.RelativeLayout;
+import android.widget.Toast;
 
 import com.grandmagic.readingmate.R;
+import com.grandmagic.readingmate.activity.ChatActivity;
 import com.grandmagic.readingmate.bean.db.Contacts;
 import com.grandmagic.readingmate.utils.AutoUtils;
 import com.grandmagic.readingmate.utils.DateUtil;
@@ -16,6 +18,7 @@ import com.grandmagic.readingmate.utils.IMHelper;
 import com.grandmagic.readingmate.utils.ImageLoader;
 import com.hyphenate.EMCallBack;
 import com.hyphenate.chat.EMMessage;
+import com.orhanobut.logger.Logger;
 import com.tamic.novate.util.Environment;
 import com.tamic.novate.util.SPUtils;
 import com.zhy.adapter.recyclerview.base.ItemViewDelegate;
@@ -112,19 +115,26 @@ public abstract class ChatItemViewDelegate implements ItemViewDelegate<EMMessage
             @Override
             public void onSuccess() {
                 mHandler.hasMessages(0);
-                Log.e(TAG, "onSuccess() called");
+                Logger.e(TAG, "onSuccess() called");
             }
 
             @Override
-            public void onError(int mI, String mS) {
+            public void onError(final int mI, final String mS) {
                 mHandler.hasMessages(1);
-                Log.e(TAG, "onError() called with: mI = [" + mI + "], mS = [" + mS + "]");
+                Logger.e(TAG,"onError() called with: mI = [" + mI + "], mS = [" + mS + "]");
+                ((ChatActivity) mContext).runOnUiThread(new Runnable() {
+                    @Override
+                    public void run() {
+                        Toast.makeText(mContext, "onError() called with: mI = [" + mI + "], mS = [" + mS + "]",Toast.LENGTH_LONG);
+                    }
+                });
+
             }
 
             @Override
             public void onProgress(int mI, String mS) {
                 mHandler.hasMessages(2);
-                Log.e(TAG, "onProgress() called with: mI = [" + mI + "], mS = [" + mS + "]");
+                Logger.e(TAG, "onProgress() called with: mI = [" + mI + "], mS = [" + mS + "]");
             }
 
         });
