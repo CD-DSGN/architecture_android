@@ -104,6 +104,7 @@ public class HomeFragment extends AppBaseFragment implements HomeBookAdapter.Cli
     BookModel mModel;
     int pagecount = 1, currpage = 1;
 
+
     private void initdata() {
         mModel.loadCollectBook(currpage, new AppBaseResponseCallBack<NovateResponse<DisplayBook>>(getActivity(), false) {
             @Override
