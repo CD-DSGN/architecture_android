@@ -12,9 +12,7 @@ import com.zhy.adapter.recyclerview.base.ViewHolder;
 
 import java.util.List;
 
-/**
- * Created by lps on 2017/3/20.
- */
+
 
 public class LikersAdapter extends CommonAdapter<LikersInfoResponseBean.InfoBean> {
 
@@ -30,7 +28,7 @@ public class LikersAdapter extends CommonAdapter<LikersInfoResponseBean.InfoBean
             url = avar.getLarge();
         }
 
-        ImageLoader.loadCircleImage(mContext, KitUtils.getAbsoluteUrl(url), (ImageView) holder.getView(R.id.avatar));
+        ImageLoader.loadRoundImage(mContext, KitUtils.getAbsoluteUrl(url), (ImageView) holder.getView(R.id.avatar));
         holder.setText(R.id.name, data.getUser_name());
         holder.setVisible(R.id.add_friend, data.getIs_friend() != 1);
         holder.setText(R.id.signature, data.getSignature());
