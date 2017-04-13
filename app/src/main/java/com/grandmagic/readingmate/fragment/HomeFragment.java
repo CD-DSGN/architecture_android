@@ -6,10 +6,11 @@ import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
+import android.os.Handler;
 import android.support.design.widget.AppBarLayout;
 import android.support.design.widget.CoordinatorLayout;
+import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.widget.LinearLayoutManager;
-import android.support.v7.widget.RecyclerView;
 import android.text.TextUtils;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -24,11 +25,13 @@ import com.grandmagic.readingmate.activity.BookDetailActivity;
 import com.grandmagic.readingmate.activity.CaptureActivity;
 import com.grandmagic.readingmate.activity.MainActivity;
 import com.grandmagic.readingmate.activity.SearchActivity;
+import com.grandmagic.readingmate.activity.SettingActivity;
 import com.grandmagic.readingmate.adapter.HomeBookAdapter;
 import com.grandmagic.readingmate.base.AppBaseFragment;
 import com.grandmagic.readingmate.base.AppBaseResponseCallBack;
 import com.grandmagic.readingmate.bean.response.DisplayBook;
-import com.grandmagic.readingmate.consts.AppConsts;
+import com.grandmagic.readingmate.labloadmore.OnLoadMoreListener;
+import com.grandmagic.readingmate.labloadmore.RecyclerViewWithFooter;
 import com.grandmagic.readingmate.model.BookModel;
 import com.grandmagic.readingmate.utils.AutoUtils;
 import com.grandmagic.readingmate.utils.KitUtils;
@@ -44,7 +47,7 @@ import java.util.List;
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
-import cn.bingoogolapple.refreshlayout.BGARefreshLayout;
+import butterknife.Unbinder;
 import cn.bingoogolapple.refreshlayout.BGAStickinessRefreshViewHolder;
 import rx.functions.Action1;
 
@@ -55,7 +58,7 @@ public class HomeFragment extends AppBaseFragment implements HomeBookAdapter.Cli
     public static final int REQUEST_BOOKDETAIL = 102;
 
     @BindView(R.id.recyclerview)
-    RecyclerView mRecyclerview;
+    RecyclerViewWithFooter mRecyclerview;
     @BindView(R.id.pop_scan)
     TextView mPopScan;
     @BindView(R.id.pop_search)
@@ -68,16 +71,17 @@ public class HomeFragment extends AppBaseFragment implements HomeBookAdapter.Cli
     ImageView mIvSearch;
     @BindView(R.id.iv_camera)
     ImageView mIvCamera;
-    @BindView(R.id.refreshLayout)
-    BGARefreshLayout mRefreshLayout;
     @BindView(R.id.homeview_book)
     CoordinatorLayout mHomeviewBook;
     @BindView(R.id.appbarlayout)
     AppBarLayout mAppBarLayout;
+    @BindView(R.id.swiprefreshlayout)
+    SwipeRefreshLayout mSwiprefreshlayout;
     private View rootview;
     boolean isEmpty = false;
     BGAStickinessRefreshViewHolder mRefreshViewHolder;
     List<DisplayBook.InfoBean> mBookList = new ArrayList<>();
+    Unbinder mBind;
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
@@ -85,7 +89,7 @@ public class HomeFragment extends AppBaseFragment implements HomeBookAdapter.Cli
         // Inflate the layout for this fragment
         rootview = inflater.inflate(R.layout.fragment_home, container, false);
         AutoUtils.auto(rootview);
-        ButterKnife.bind(this, rootview);
+        mBind = ButterKnife.bind(this, rootview);
         mContext = getActivity();
         mModel = new BookModel(getActivity());
         initview();
@@ -112,11 +116,12 @@ public class HomeFragment extends AppBaseFragment implements HomeBookAdapter.Cli
                 Logger.e("首页加载成功");
                 if (response.getData().getNum() == 0) {
                     showEmptyView();
-                    isEmpty=true;
+                    isEmpty = true;
                     return;
                 }
                 mBookList.addAll(response.getData().getInfo());
                 pagecount = response.getData().getpage();
+                if (pagecount < 2) mRecyclerview.setEnd("--END--");
                 mBookAdapter.setData(mBookList);
                 isEmpty = false;
                 showRecyclerView();
@@ -154,58 +159,90 @@ public class HomeFragment extends AppBaseFragment implements HomeBookAdapter.Cli
     }
 
     private void initRefresh() {
-        mRefreshViewHolder = new BGAStickinessRefreshViewHolder(mContext, true);
-        mRefreshViewHolder.setStickinessColor(R.color.colorAccent);
-        mRefreshViewHolder.setRotateImage(R.drawable.bga_refresh_stickiness);
-//        mRefreshLayout.offsetTopAndBottom(88);
-        mRefreshLayout.setRefreshViewHolder(mRefreshViewHolder);
-        mRefreshLayout.setDelegate(new BGARefreshLayout.BGARefreshLayoutDelegate() {
+        mRecyclerview.setOnLoadMoreListener(new OnLoadMoreListener() {
             @Override
-            public void onBGARefreshLayoutBeginRefreshing(BGARefreshLayout refreshLayout) {
-                currpage = 1;
-                loadBook(currpage);
-
-            }
-
-            @Override
-            public boolean onBGARefreshLayoutBeginLoadingMore(BGARefreshLayout refreshLayout) {
+            public void onLoadMore() {
+                if (mSwiprefreshlayout.isRefreshing()) {
+                    return;
+                }
                 if (currpage < pagecount) {
                     currpage++;
                     loadBook(currpage);
-                    return true;
                 } else {
-                    Toast.makeText(mContext, "NOMORE", Toast.LENGTH_SHORT).show();
+                    mRecyclerview.setEnd("--END--");
                 }
-                return false;
             }
         });
-        mAppBarLayout.addOnOffsetChangedListener(new AppBarLayout.OnOffsetChangedListener() {
+        mSwiprefreshlayout.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
             @Override
-            public void onOffsetChanged(AppBarLayout appBarLayout, int verticalOffset) {
-                //随时处理refresh是否拦截下拉事件。当appbarlayout是展开的时候才允许它进行拦截
-                mRefreshLayout.setPullDownRefreshEnable(verticalOffset>=0);
+            public void onRefresh() {
+                if (mRecyclerview.isLoading()) {
+                    mSwiprefreshlayout.setRefreshing(false);
+                    return;
+                }
+                currpage = 1;
+                loadBook(currpage);
+                mRecyclerview.reset();
             }
         });
+        mSwiprefreshlayout.setColorSchemeColors(getResources().getColor(R.color.text_green));
+//        mRefreshViewHolder = new BGAStickinessRefreshViewHolder(mContext, true);
+//        mRefreshViewHolder.setStickinessColor(R.color.colorAccent);
+//        mRefreshViewHolder.setRotateImage(R.drawable.bga_refresh_stickiness);
+////        mRefreshLayout.offsetTopAndBottom(88);
+//        mRefreshLayout.setRefreshViewHolder(mRefreshViewHolder);
+//        mRefreshLayout.setDelegate(new BGARefreshLayout.BGARefreshLayoutDelegate() {
+//            @Override
+//            public void onBGARefreshLayoutBeginRefreshing(BGARefreshLayout refreshLayout) {
+//                currpage = 1;
+//                loadBook(currpage);
+//
+//            }
+//
+//            @Override
+//            public boolean onBGARefreshLayoutBeginLoadingMore(BGARefreshLayout refreshLayout) {
+//                if (currpage < pagecount) {
+//                    currpage++;
+//                    loadBook(currpage);
+//                    return true;
+//                } else {
+//                    Toast.makeText(mContext, "NOMORE", Toast.LENGTH_SHORT).show();
+//                }
+//                return false;
+//            }
+//        });
+//        mAppBarLayout.addOnOffsetChangedListener(new AppBarLayout.OnOffsetChangedListener() {
+//            @Override
+//            public void onOffsetChanged(AppBarLayout appBarLayout, int verticalOffset) {
+//                //随时处理refresh是否拦截下拉事件。当appbarlayout是展开的时候才允许它进行拦截
+//                mRefreshLayout.setPullDownRefreshEnable(verticalOffset>=0);
+//            }
+//        });
     }
 
     private void loadBook(final int mCurrpage) {
-        mModel.loadCollectBook(mCurrpage,new AppBaseResponseCallBack<NovateResponse<DisplayBook>>(getActivity(), false) {
+        mModel.loadCollectBook(mCurrpage, new AppBaseResponseCallBack<NovateResponse<DisplayBook>>(getActivity(), false) {
 
             @Override
             public void onSuccee(NovateResponse<DisplayBook> response) {
-                if (mCurrpage==1)mBookList.clear();
-                mRefreshLayout.endLoadingMore();
-                mRefreshLayout.endRefreshing();
+                if (mCurrpage == 1) mBookList.clear();
+//                mRefreshLayout.endLoadingMore();
+//                mRefreshLayout.endRefreshing();
+                mRecyclerview.reset();
+                mSwiprefreshlayout.setRefreshing(false);
                 mBookList.addAll(response.getData().getInfo());
-                mBookAdapter.setData(mBookList);
+                mRecyclerview.getAdapter().notifyDataSetChanged();
             }
 
             @Override
             public void onError(Throwable e) {
                 super.onError(e);
                 currpage--;//如果加载失败将页码还原
-                mRefreshLayout.endLoadingMore();
-                mRefreshLayout.endRefreshing();
+                mSwiprefreshlayout.setRefreshing(false);
+                mRecyclerview.reset();
+                mRecyclerview.getAdapter().notifyDataSetChanged();
+//                mRefreshLayout.endLoadingMore();
+//                mRefreshLayout.endRefreshing();
             }
         });
     }
@@ -253,15 +290,13 @@ public class HomeFragment extends AppBaseFragment implements HomeBookAdapter.Cli
 
         DisplayBook.InfoBean bookInfo = mBookList.get(position);
         if (!TextUtils.isEmpty(bookInfo.getPhoto())) {
-            mPopupWindow.setData(mContext.getString(R.string.app_name)+":" + bookInfo.getBook_name(), bookInfo.getSynopsis(),
-                    KitUtils.getAbsoluteUrl(bookInfo.getPhoto()), AppConsts.APP_URL, "");
-        }else{
-            mPopupWindow.setData(mContext.getString(R.string.app_name)+":" + bookInfo.getBook_name(), bookInfo.getSynopsis(),
-                    R.drawable.iv_no_book, AppConsts.APP_URL, "");
+            mPopupWindow.setData("大术读家:" + bookInfo.getBook_name(), bookInfo.getSynopsis(),
+                    KitUtils.getAbsoluteUrl(bookInfo.getPhoto()), SettingActivity.APP_URL, "");
+        } else {
+            mPopupWindow.setData("大术读家:" + bookInfo.getBook_name(), bookInfo.getSynopsis(),
+                    R.drawable.iv_no_book, SettingActivity.APP_URL, "");
         }
         mPopupWindow.show();
-
-
 
 
     }
@@ -271,7 +306,7 @@ public class HomeFragment extends AppBaseFragment implements HomeBookAdapter.Cli
 // TODO: 2017/2/16 跳转到详情
         Intent mIntent = new Intent(getActivity(), BookDetailActivity.class);
         mIntent.putExtra(BookDetailActivity.BOOK_ID, mBookList.get(position).getBook_id());
-        startActivityForResult(mIntent,REQUEST_BOOKDETAIL);
+        startActivityForResult(mIntent, REQUEST_BOOKDETAIL);
     }
 
     @Override
@@ -282,7 +317,7 @@ public class HomeFragment extends AppBaseFragment implements HomeBookAdapter.Cli
             Intent mIntent = new Intent(getActivity(), BookDetailActivity.class);
             mIntent.putExtra(BookDetailActivity.BOOK_ID, book_id);
             startActivityForResult(mIntent, REQUEST_BOOKDETAIL);
-        } else if (requestCode == REQUEST_BOOKDETAIL ) {
+        } else if (requestCode == REQUEST_BOOKDETAIL) {
 //如果从图书详情页需要返回做什么处理。可以在这里处理,暂时是重新加载书籍
             mBookList.clear();
             initdata();
@@ -303,5 +338,11 @@ public class HomeFragment extends AppBaseFragment implements HomeBookAdapter.Cli
     private void setSystemBarColor(boolean hidden) {
         if (!hidden)
             ((MainActivity) mContext).setSystemBarColor(isEmpty ? R.color.text_green : android.R.color.white);
+    }
+
+    @Override
+    public void onDestroyView() {
+        super.onDestroyView();
+        mBind.unbind();
     }
 }
