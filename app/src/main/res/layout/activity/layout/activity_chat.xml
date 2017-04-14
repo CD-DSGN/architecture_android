@@ -83,7 +83,7 @@
             android:layout_toRightOf="@id/iv_select_img"
             android:background="@drawable/chat_edit"
             android:text="正在语音..."
-            android:textSize="24px"
+            android:textSize="@dimen/textsize_28px"
             android:textColor="@color/text_green"
             android:visibility="gone"
        />

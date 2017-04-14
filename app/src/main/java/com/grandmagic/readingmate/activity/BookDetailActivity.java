@@ -24,6 +24,7 @@ import com.grandmagic.readingmate.bean.response.HistoryComment;
 import com.grandmagic.readingmate.consts.AppConsts;
 import com.grandmagic.readingmate.db.BookCommentDao;
 import com.grandmagic.readingmate.db.DBHelper;
+import com.grandmagic.readingmate.event.BookStateEvent;
 import com.grandmagic.readingmate.event.RefreshHotCommentEvent;
 import com.grandmagic.readingmate.model.BookModel;
 import com.grandmagic.readingmate.utils.AutoUtils;
@@ -342,6 +343,7 @@ public class BookDetailActivity extends AppBaseActivity implements View.OnLayout
                 }
                 mRecentView.loadData(1);//评论成功刷新评论列表
                 mHotView.loadData(1);
+                EventBus.getDefault().post(new BookStateEvent(BookStateEvent.STATE_MOVE,book_id));
             }
         });
     }

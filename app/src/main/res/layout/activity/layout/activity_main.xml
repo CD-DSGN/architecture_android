@@ -19,7 +19,7 @@
     <LinearLayout
         android:id="@+id/bottomlayout"
         android:layout_width="match_parent"
-        android:layout_height="88px"
+        android:layout_height="110px"
         android:layout_alignParentBottom="true"
         android:background="@color/white"
         android:elevation="5dp"
@@ -29,25 +29,25 @@
             android:id="@+id/layout_home"
             android:layout_width="0dp"
             android:layout_height="match_parent"
+            android:gravity="center"
             android:layout_weight="1">
 
             <TextView
                 android:id="@+id/text_home"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_alignParentBottom="true"
+               android:layout_below="@+id/iv_home"
                 android:layout_centerHorizontal="true"
-                android:button="@null"
                 android:text="@string/home"
                 android:textColor="#666666"
-                android:textSize="22px"
+                android:textSize="@dimen/textsize_28px"
                 />
 
             <ImageView
                 android:id="@+id/iv_home"
-                android:layout_width="34px"
-                android:layout_height="34px"
-                android:layout_above="@+id/text_home"
+                android:layout_width="40px"
+                android:layout_height="40px"
+
                 android:layout_centerHorizontal="true"
                 android:layout_marginBottom="8px"
                 android:layout_marginTop="6px"
@@ -60,19 +60,21 @@
             android:layout_width="0dp"
             android:layout_height="match_parent"
             android:layout_weight="1"
+            android:gravity="center"
             >
 
             <TextView
                 android:id="@+id/text_chat"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_alignParentBottom="true"
-                android:layout_centerHorizontal="true"
                 android:button="@null"
                 android:text="读家"
                 android:textColor="#666666"
-                android:textSize="22px"
-                />
+                android:layout_below="@+id/iv_chat"
+                android:textSize="@dimen/textsize_28px"
+
+                android:layout_alignRight="@+id/iv_chat"
+                android:layout_alignEnd="@+id/iv_chat"/>
 
             <TextView
                 android:id="@+id/unredmsg"
@@ -93,9 +95,8 @@
 
             <ImageView
                 android:id="@+id/iv_chat"
-                android:layout_width="34px"
-                android:layout_height="34px"
-                android:layout_above="@+id/text_chat"
+                android:layout_width="40px"
+                android:layout_height="40px"
                 android:layout_centerHorizontal="true"
                 android:layout_marginBottom="8px"
                 android:layout_marginTop="6px"
@@ -108,25 +109,24 @@
             android:layout_width="0dp"
             android:layout_height="match_parent"
             android:layout_weight="1"
+            android:gravity="center"
             >
 
             <TextView
                 android:id="@+id/text_search"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_alignParentBottom="true"
                 android:layout_centerHorizontal="true"
-                android:button="@null"
+            android:layout_below="@+id/iv_search"
                 android:text="@string/search"
                 android:textColor="#666666"
-                android:textSize="22px"
+                android:textSize="@dimen/textsize_28px"
                 />
 
             <ImageView
                 android:id="@+id/iv_search"
-                android:layout_width="34px"
-                android:layout_height="34px"
-                android:layout_above="@+id/text_search"
+                android:layout_width="40px"
+                android:layout_height="40px"
                 android:layout_centerHorizontal="true"
                 android:layout_marginBottom="8px"
                 android:layout_marginTop="6px"
@@ -139,25 +139,24 @@
             android:layout_width="0dp"
             android:layout_height="match_parent"
             android:layout_weight="1"
+            android:gravity="center"
             >
 
             <TextView
                 android:id="@+id/text_person"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_alignParentBottom="true"
                 android:layout_centerHorizontal="true"
-                android:button="@null"
                 android:text="@string/mine"
                 android:textColor="#666666"
-                android:textSize="22px"
+                android:layout_below="@+id/iv_person"
+                android:textSize="@dimen/textsize_28px"
                 />
 
             <ImageView
                 android:id="@+id/iv_person"
-                android:layout_width="34px"
-                android:layout_height="34px"
-                android:layout_above="@id/text_person"
+                android:layout_width="40px"
+                android:layout_height="40px"
                 android:layout_centerHorizontal="true"
                 android:layout_marginBottom="8px"
                 android:layout_marginTop="6px"

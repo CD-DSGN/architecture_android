@@ -14,6 +14,7 @@ import com.grandmagic.readingmate.adapter.BookCommentsAdapter;
 import com.grandmagic.readingmate.adapter.DefaultEmptyAdapter;
 import com.grandmagic.readingmate.base.AppBaseResponseCallBack;
 import com.grandmagic.readingmate.bean.response.BookCommentResponse;
+import com.grandmagic.readingmate.event.BookStateEvent;
 import com.grandmagic.readingmate.event.RefreshHotCommentEvent;
 import com.grandmagic.readingmate.model.BookModel;
 import com.tamic.novate.NovateResponse;
@@ -137,6 +138,8 @@ public class HotcommentView extends FrameLayout implements BookCommentsAdapter.A
                 mAdapter.refresh();
                 if (order_way.equals(COMMENT_TIME))
                 EventBus.getDefault().post(new RefreshHotCommentEvent());
+                EventBus.getDefault().post(new BookStateEvent(BookStateEvent.STATE_MOVE,mBook_id));
+
             }
         });
     }
