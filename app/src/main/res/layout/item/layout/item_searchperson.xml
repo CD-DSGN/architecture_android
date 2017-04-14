@@ -34,7 +34,7 @@
             android:layout_below="@id/avatar"
             android:layout_marginTop="20px"
             android:layout_toRightOf="@+id/gender"
-            android:textSize="32px"
+            android:textSize="@dimen/textsize_32px"
             android:textColor="#181e1d"
             tools:text="张山"
             />
@@ -85,7 +85,7 @@
                 android:layout_marginLeft="5px"
                 android:layout_toRightOf="@+id/iv_addfriend"
                 android:text="加为读友"
-                android:textSize="24px"
+                android:textSize="@dimen/textsize_24px"
                 android:textColor="#181d1b"
                 />
         </RelativeLayout>
@@ -128,7 +128,7 @@
                 android:layout_toRightOf="@+id/iv1"
                 android:text="有共同书趣"
                 android:textColor="#1cc9a2"
-                android:textSize="24px"
+                android:textSize="@dimen/textsize_24px"
                 />
 
         </RelativeLayout>

@@ -39,7 +39,7 @@
         android:text="2"
         android:visibility="gone"
         android:textColor="@color/white"
-        android:textSize="22px"/>
+        android:textSize="@dimen/textsize_24px"/>
 
     <TextView
         android:id="@+id/textView3"
@@ -50,5 +50,5 @@
         android:layout_toRightOf="@+id/iv_newmessage"
         android:text="新的好友"
         android:textColor="#181e1d"
-        android:textSize="32px"/>
+        android:textSize="@dimen/textsize_32px"/>
 </RelativeLayout>

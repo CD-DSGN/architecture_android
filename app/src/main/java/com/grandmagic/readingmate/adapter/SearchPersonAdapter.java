@@ -4,6 +4,7 @@ import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
 import android.text.TextUtils;
+import android.util.TypedValue;
 import android.view.View;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
@@ -13,6 +14,7 @@ import com.grandmagic.readingmate.R;
 import com.grandmagic.readingmate.activity.FriendDetailActivity;
 import com.grandmagic.readingmate.bean.response.PersonInfo;
 import com.grandmagic.readingmate.bean.response.SearchPersonResponse;
+import com.grandmagic.readingmate.utils.AutoUtils;
 import com.grandmagic.readingmate.utils.ImageLoader;
 import com.tamic.novate.util.Environment;
 import com.zhy.adapter.recyclerview.base.ViewHolder;
@@ -75,12 +77,14 @@ public class SearchPersonAdapter extends CommonAdapter<SearchPersonResponse.Info
         for (SearchPersonResponse.InfoBean.CollectionBean coll : data.getCollection()) {
             TextView mTextView = new TextView(mContext);
             mTextView.setText(coll.getBook_name());
+            mTextView.setTextSize(TypedValue.COMPLEX_UNIT_PX,R.dimen.textsize_28px);
             if (coll.getIs_both_enjoy() == 1) {
                 hassamebook = true;
                 mTextView.setTextColor(mContext.getResources().getColor(R.color.text_green));
             }
             mTextView.setSingleLine(true);
             mTextView.setEllipsize(TextUtils.TruncateAt.END);
+            AutoUtils.auto(mTextView);
             mLayout.addView(mTextView);
         }
         return hassamebook;

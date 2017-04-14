@@ -28,7 +28,7 @@
             android:layout_height="wrap_content"
             android:text="花花"
             android:textColor="#1cc9a2"
-            android:textSize="@dimen/textsize_30px"
+            android:textSize="@dimen/textsize_32px"
             />
 
         <TextView

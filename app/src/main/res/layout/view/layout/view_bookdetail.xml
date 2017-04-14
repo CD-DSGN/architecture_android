@@ -83,7 +83,7 @@
 
                     android:layout_marginTop="16px"
                     tool:text="9"
-                    android:textColor="#1c99a2"
+                    android:textColor="@color/text_green"
                     android:textSize="@dimen/textsize_24px"
                     />
 
@@ -160,7 +160,7 @@
 有疯狂的。"
                 android:lineSpacingMultiplier="1.5"
                 tool:textColor="#333333"
-                android:textSize="@dimen/textsize_26px"
+                android:textSize="@dimen/textsize_28px"
                 />
 
 

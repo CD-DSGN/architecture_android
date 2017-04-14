@@ -3,6 +3,7 @@
     xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="156px"
+    xmlns:tools="http://schemas.android.com/tools"
     android:background="@color/white"
     >
 
@@ -29,6 +30,7 @@
             android:layout_height="100px"
             android:layout_centerVertical="true"
             android:layout_marginLeft="20px"
+            tools:src="@color/bottom_bg"
             android:background="@drawable/shape_round_imageview"
             />
 
@@ -40,7 +42,8 @@
             android:layout_marginLeft="26px"
             android:layout_toRightOf="@+id/avatar"
             android:textColor="#181e1d"
-            android:textSize="32px"
+            tools:text="name"
+            android:textSize="@dimen/textsize_32px"
             />
 
         <View

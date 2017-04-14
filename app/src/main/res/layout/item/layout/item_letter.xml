@@ -13,7 +13,7 @@
         android:layout_height="wrap_content"
         android:text="a"
         android:textColor="#1cc9a2"
-        android:textSize="28px"
+        android:textSize="@dimen/textsize_36px"
         android:layout_gravity="center_vertical"
         />
 </FrameLayout>

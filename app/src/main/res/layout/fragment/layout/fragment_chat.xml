@@ -60,7 +60,7 @@
                     android:layout_centerInParent="true"
                     android:text="好友录"
                     android:textColor="#1cc9a2"
-                    android:textSize="40px"
+                    android:textSize="@dimen/textsize_36px"
                     />
 
                 <ImageView

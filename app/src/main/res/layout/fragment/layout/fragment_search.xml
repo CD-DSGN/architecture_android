@@ -40,7 +40,7 @@
         android:layout_centerHorizontal="true"
         android:layout_marginTop="82px"
         android:background="@drawable/shape_round_white"
-        android:text="开始探寻"
+        android:text="附近的人"
         android:textColor="#e61cc9a2"
         android:textSize="@dimen/textsize_36px"
         />
@@ -53,7 +53,7 @@
         android:background="#1a8068"
         android:gravity="center_vertical"
         android:paddingLeft="20px"
-        android:text="正在为您搜索附近的读友"
+        android:text="正在为您搜索附近的人..."
         android:textColor="@color/white"
         android:textSize="24px"
         android:visibility="gone"

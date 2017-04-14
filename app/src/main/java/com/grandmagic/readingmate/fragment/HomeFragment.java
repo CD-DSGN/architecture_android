@@ -128,8 +128,10 @@ public class HomeFragment extends AppBaseFragment implements HomeBookAdapter.Cli
                     isEmpty = true;
                     return;
                 }
-                mBookList.addAll(response.getData().getInfo());
                 pagecount = response.getData().getpage();
+                mBookList.clear();
+                if (response.getData().getInfo()!=null&&!response.getData().getInfo().isEmpty())
+                mBookList.addAll(response.getData().getInfo());
                 mBookAdapter.setData(mBookList);
                 isEmpty = false;
                 showRecyclerView();

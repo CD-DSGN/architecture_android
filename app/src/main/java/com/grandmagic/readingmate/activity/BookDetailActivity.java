@@ -176,10 +176,10 @@ public class BookDetailActivity extends AppBaseActivity implements View.OnLayout
     }
 
     private void lastSelected() {
-        mTvLast.setTextSize(TypedValue.COMPLEX_UNIT_PX, 28);
+        mTvLast.setTextSize(TypedValue.COMPLEX_UNIT_PX, 32);
         mTvLast.setTextColor(getResources().getColor(R.color.gray_select));
         mDashlineTvlast.setVisibility(View.VISIBLE);
-        mTvHot.setTextSize(TypedValue.COMPLEX_UNIT_PX, 24);
+        mTvHot.setTextSize(TypedValue.COMPLEX_UNIT_PX, 28);
         mTvHot.setTextColor(getResources().getColor(R.color.gray_noselect));
         mDashlineTvhot.setVisibility(View.GONE);
         AutoUtils.autoTextSize(mTvLast);
