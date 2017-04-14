@@ -56,9 +56,9 @@
             android:layout_height="wrap_content"
             android:layout_centerHorizontal="true"
             android:layout_marginTop="36px"
-            android:text="收藏书籍"
+            android:text="收藏"
             android:textColor="#181d1b"
-            android:textSize="28px"
+            android:textSize="@dimen/textsize_30px"
 
             />
 

@@ -74,7 +74,7 @@ public class SearchPersonAdapter extends CommonAdapter<SearchPersonResponse.Info
         mLayout.removeAllViews();
         for (SearchPersonResponse.InfoBean.CollectionBean coll : data.getCollection()) {
             TextView mTextView = new TextView(mContext);
-            mTextView.setText("《" + coll.getBook_name() + "》");
+            mTextView.setText(coll.getBook_name());
             if (coll.getIs_both_enjoy() == 1) {
                 hassamebook = true;
                 mTextView.setTextColor(mContext.getResources().getColor(R.color.text_green));

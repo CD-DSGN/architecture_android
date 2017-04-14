@@ -202,6 +202,7 @@ public class BookDetailActivity extends AppBaseActivity implements View.OnLayout
         mHotView = new HotcommentView(this, HotcommentView.COMMENT_LIKE, mModel, book_id);
         mViews.add(mRecentView);
         mViews.add(mHotView);
+        mTitle.setText("图书详情");
         mViewpager.setAdapter(new CommonPagerAdapter(mViews));
     }
 
@@ -277,6 +278,11 @@ public class BookDetailActivity extends AppBaseActivity implements View.OnLayout
         mTvPublistime.setText(DateUtil.timeTodate("yyyy-MM-dd", s.getPub_date()));
         mAbout.setText(s.getSynopsis());
         mCollectionNum.setText(s.getCollect_count());
+        try {
+            mCollMore.setVisibility(Integer.valueOf(s.getCollect_count())  > 4 ? View.VISIBLE : View.GONE);
+        } catch (NumberFormatException mE) {
+            mE.printStackTrace();
+        }
         ImageLoader.loadBookImg(this, Environment.getUrl() + s.getPhoto(), mIvConver);
         setCollectView(s.getCollect_user());
         mTotalScore.setScore(Float.valueOf(s.getTotal_score()));
@@ -308,10 +314,10 @@ public class BookDetailActivity extends AppBaseActivity implements View.OnLayout
             case R.id.lin_share:
                 if (mBookdetailResponse != null) {
                     if (!TextUtils.isEmpty(mBookdetailResponse.getPhoto())) {
-                        mSharePopUpWindow.setData(this.getString(R.string.app_name)+":" + mBookdetailResponse.getBook_name(), mBookdetailResponse.getSynopsis(),
+                        mSharePopUpWindow.setData(this.getString(R.string.app_name) + ":" + mBookdetailResponse.getBook_name(), mBookdetailResponse.getSynopsis(),
                                 KitUtils.getAbsoluteUrl(mBookdetailResponse.getPhoto()), AppConsts.APP_URL, "");
-                    }else{
-                        mSharePopUpWindow.setData(this.getString(R.string.app_name)+":" + mBookdetailResponse.getBook_name(), mBookdetailResponse.getSynopsis(),
+                    } else {
+                        mSharePopUpWindow.setData(this.getString(R.string.app_name) + ":" + mBookdetailResponse.getBook_name(), mBookdetailResponse.getSynopsis(),
                                 R.drawable.iv_no_book, AppConsts.APP_URL, "");
                     }
                     mSharePopUpWindow.show();
@@ -343,7 +349,7 @@ public class BookDetailActivity extends AppBaseActivity implements View.OnLayout
                 }
                 mRecentView.loadData(1);//评论成功刷新评论列表
                 mHotView.loadData(1);
-                EventBus.getDefault().post(new BookStateEvent(BookStateEvent.STATE_MOVE,book_id));
+                EventBus.getDefault().post(new BookStateEvent(BookStateEvent.STATE_MOVE, book_id));
             }
         });
     }
@@ -363,8 +369,7 @@ public class BookDetailActivity extends AppBaseActivity implements View.OnLayout
             ImageLoader.loadRoundImage(this, Environment.BASEULR_PRODUCTION + user.getAvatar_url().getMid(), mView);
             mLinCollection.addView(mView);
         }
-
-    }
+}
 
     @Subscribe
     public void refreshHotcommentView(RefreshHotCommentEvent mEvent) {

@@ -104,6 +104,7 @@
             android:background="@drawable/red_point"
             android:gravity="center"
             android:text="6"
+            android:layout_marginRight="20px"
             android:textColor="@color/white"
             />
     </RelativeLayout>

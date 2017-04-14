@@ -99,8 +99,10 @@ public class SearchActivity extends AppBaseActivity {
         for (final String s : mHotword) {
             TextView mTextView = new TextView(this);
             mTextView.setText(s);
-            mTextView.setTextColor(Color.parseColor("#e6ffff"));
+//            mTextView.setTextColor(Color.parseColor("#e6ffff"));
             mTextView.setTextSize(TypedValue.COMPLEX_UNIT_PX, 28);
+            mTextView.setPadding(10,10,10,10);
+            mTextView.setBackgroundResource(R.drawable.shape_round_white);
             LinearLayout.LayoutParams mParams = new LinearLayout.LayoutParams(ViewGroup.LayoutParams.WRAP_CONTENT, ViewGroup.LayoutParams.WRAP_CONTENT);
             mParams.setMargins(20, 20, 20, 20);
             mTextView.setLayoutParams(mParams);

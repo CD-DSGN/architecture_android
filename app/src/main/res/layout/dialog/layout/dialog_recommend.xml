@@ -18,7 +18,7 @@
             android:layout_height="wrap_content"
             android:text="推荐给:"
             android:textColor="@color/text_black"
-            android:textSize="36px"
+            android:textSize="@dimen/textsize_36px"
             />
 
         <TextView
@@ -29,7 +29,7 @@
             android:id="@+id/user"
             android:text="阿林,积分...(3人)"
             android:textColor="@color/text_green"
-            android:textSize="30px"
+            android:textSize="@dimen/textsize_30px"
             />
     </LinearLayout>
 
@@ -45,7 +45,7 @@
         android:text="[个人书签] lps"
         android:id="@+id/name"
         android:textColor="@color/text_gray"
-        android:textSize="28px"
+        android:textSize="@dimen/textsize_28px"
         />
 
     <EditText
@@ -57,6 +57,7 @@
         android:background="@drawable/shape_round_white"
         android:hint="给朋友留言"
         android:padding="20px"
+        android:textSize="@dimen/textsize_28px"
         />
 
     <View
@@ -81,7 +82,7 @@
             android:gravity="center"
             android:text="@string/cancel"
             android:textColor="#999999"
-            android:textSize="16sp"/>
+            android:textSize="@dimen/textsize_28px"/>
 
         <View
             android:layout_width="2px"
@@ -98,6 +99,6 @@
             android:gravity="center"
             android:text="发送"
             android:textColor="#1cc9a2"
-            android:textSize="16sp"/>
+            android:textSize="@dimen/textsize_28px"/>
     </LinearLayout>
 </LinearLayout>

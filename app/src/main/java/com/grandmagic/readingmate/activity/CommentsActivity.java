@@ -207,7 +207,7 @@ public class CommentsActivity extends AppBaseActivity implements View.OnLayoutCh
         mReplyNum.setText(mCommentsDetailResponoseBean.getReply_count() + "人回复");
         mContent.setText(mCommentsDetailResponoseBean.getContent());
         String cover_url = mCommentsDetailResponoseBean.getPhoto();
-        ImageLoader.loadCircleImage(this, KitUtils.getAbsoluteUrl(cover_url), mCover);
+        ImageLoader.loadImage(this, KitUtils.getAbsoluteUrl(cover_url), mCover);
         mLike_num = mCommentsDetailResponoseBean.getLike_times();
         mGoodsNum.setText(mLike_num + "人赞过");
         if (mLike_num > 4) {   //显示省略号
