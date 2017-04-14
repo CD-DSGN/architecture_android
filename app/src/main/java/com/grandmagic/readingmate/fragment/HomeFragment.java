@@ -34,6 +34,7 @@ import com.grandmagic.readingmate.utils.AutoUtils;
 import com.grandmagic.readingmate.utils.KitUtils;
 import com.grandmagic.readingmate.view.SharePopUpWindow;
 import com.orhanobut.logger.Logger;
+import com.refreshlab.PullLoadMoreRecyclerView;
 import com.tamic.novate.NovateResponse;
 import com.tamic.novate.Throwable;
 import com.tbruyelle.rxpermissions.RxPermissions;
@@ -55,7 +56,7 @@ public class HomeFragment extends AppBaseFragment implements HomeBookAdapter.Cli
     public static final int REQUEST_BOOKDETAIL = 102;
 
     @BindView(R.id.recyclerview)
-    RecyclerView mRecyclerview;
+    PullLoadMoreRecyclerView mRecyclerview;
 
     @BindView(R.id.pop_scan)
     TextView mPopScan;
@@ -69,15 +70,12 @@ public class HomeFragment extends AppBaseFragment implements HomeBookAdapter.Cli
     ImageView mIvSearch;
     @BindView(R.id.iv_camera)
     ImageView mIvCamera;
-    @BindView(R.id.refreshLayout)
-    BGARefreshLayout mRefreshLayout;
     @BindView(R.id.homeview_book)
     CoordinatorLayout mHomeviewBook;
     @BindView(R.id.appbarlayout)
     AppBarLayout mAppBarLayout;
     private View rootview;
     boolean isEmpty = false;
-    BGAStickinessRefreshViewHolder mRefreshViewHolder;
     List<DisplayBook.InfoBean> mBookList = new ArrayList<>();
 
     @Override
@@ -95,8 +93,8 @@ public class HomeFragment extends AppBaseFragment implements HomeBookAdapter.Cli
     }
 
     private void initview() {
-        mRecyclerview.setLayoutManager(new LinearLayoutManager(mContext));
-        mBookAdapter = new HomeBookAdapter(mContext, mBookList, mRecyclerview);
+   mRecyclerview.setLinearLayout();
+        mBookAdapter = new HomeBookAdapter(mContext, mBookList, mRecyclerview.getRecyclerView());
         mBookAdapter.setClickListener(this);
         mRecyclerview.setAdapter(mBookAdapter);
         initRefresh();
@@ -154,36 +152,22 @@ public class HomeFragment extends AppBaseFragment implements HomeBookAdapter.Cli
     }
 
     private void initRefresh() {
-        mRefreshViewHolder = new BGAStickinessRefreshViewHolder(mContext, true);
-        mRefreshViewHolder.setStickinessColor(R.color.colorAccent);
-        mRefreshViewHolder.setRotateImage(R.drawable.bga_refresh_stickiness);
-//        mRefreshLayout.offsetTopAndBottom(88);
-        mRefreshLayout.setRefreshViewHolder(mRefreshViewHolder);
-        mRefreshLayout.setDelegate(new BGARefreshLayout.BGARefreshLayoutDelegate() {
+        mRecyclerview.setOnPullLoadMoreListener(new PullLoadMoreRecyclerView.PullLoadMoreListener() {
             @Override
-            public void onBGARefreshLayoutBeginRefreshing(BGARefreshLayout refreshLayout) {
+            public void onRefresh() {
                 currpage = 1;
                 loadBook(currpage);
-
             }
 
             @Override
-            public boolean onBGARefreshLayoutBeginLoadingMore(BGARefreshLayout refreshLayout) {
+            public void onLoadMore() {
                 if (currpage < pagecount) {
                     currpage++;
                     loadBook(currpage);
-                    return true;
                 } else {
                     Toast.makeText(mContext, "NOMORE", Toast.LENGTH_SHORT).show();
+                    mRecyclerview.setPullLoadMoreCompleted();
                 }
-                return false;
-            }
-        });
-        mAppBarLayout.addOnOffsetChangedListener(new AppBarLayout.OnOffsetChangedListener() {
-            @Override
-            public void onOffsetChanged(AppBarLayout appBarLayout, int verticalOffset) {
-                //随时处理refresh是否拦截下拉事件。当appbarlayout是展开的时候才允许它进行拦截
-                mRefreshLayout.setPullDownRefreshEnable(verticalOffset>=0);
             }
         });
     }
@@ -194,18 +178,17 @@ public class HomeFragment extends AppBaseFragment implements HomeBookAdapter.Cli
             @Override
             public void onSuccee(NovateResponse<DisplayBook> response) {
                 if (mCurrpage==1)mBookList.clear();
-                mRefreshLayout.endLoadingMore();
-                mRefreshLayout.endRefreshing();
                 mBookList.addAll(response.getData().getInfo());
                 mBookAdapter.setData(mBookList);
+                mRecyclerview.setPullLoadMoreCompleted();
+
             }
 
             @Override
             public void onError(Throwable e) {
                 super.onError(e);
                 currpage--;//如果加载失败将页码还原
-                mRefreshLayout.endLoadingMore();
-                mRefreshLayout.endRefreshing();
+                mRecyclerview.setPullLoadMoreCompleted();
             }
         });
     }

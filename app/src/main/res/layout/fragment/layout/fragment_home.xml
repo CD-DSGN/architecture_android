@@ -62,22 +62,13 @@
             </RelativeLayout>
         </android.support.design.widget.AppBarLayout>
 
-        <cn.bingoogolapple.refreshlayout.BGARefreshLayout
-            android:id="@+id/refreshLayout"
+        <com.refreshlab.PullLoadMoreRecyclerView
+            android:id="@+id/recyclerview"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             app:layout_behavior="@string/appbar_scrolling_view_behavior">
 
-
-            <android.support.v7.widget.RecyclerView
-                android:id="@+id/recyclerview"
-                android:layout_width="match_parent"
-                android:layout_height="0dp"
-                android:layout_weight="1"
-                android:visibility="visible"
-                >
-            </android.support.v7.widget.RecyclerView>
-        </cn.bingoogolapple.refreshlayout.BGARefreshLayout>
+        </com.refreshlab.PullLoadMoreRecyclerView>
     </android.support.design.widget.CoordinatorLayout>
 
     <include

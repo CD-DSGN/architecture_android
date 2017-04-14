@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <dimen name="activity_horizontal_margin">16dp</dimen>
+    <dimen name="activity_vertical_margin">16dp</dimen>
+    <string name="load_more_text">正在加载...</string>
+    <style name="LoadmorePro">
+
+        <item name="android:indeterminateTint">#1cc9a2</item>
+        <item name="android:indeterminateTintMode">src_atop</item>
+    </style>
+</resources>
