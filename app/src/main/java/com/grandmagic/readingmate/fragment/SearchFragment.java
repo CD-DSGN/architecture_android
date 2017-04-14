@@ -29,7 +29,6 @@ import com.baidu.location.BDLocationListener;
 import com.baidu.location.LocationClient;
 import com.baidu.location.LocationClientOption;
 import com.grandmagic.readingmate.R;
-import com.grandmagic.readingmate.activity.AddFriendActivity;
 import com.grandmagic.readingmate.adapter.DefaultEmptyAdapter;
 import com.grandmagic.readingmate.adapter.SearchPersonAdapter;
 import com.grandmagic.readingmate.base.AppBaseActivity;
@@ -41,7 +40,6 @@ import com.grandmagic.readingmate.model.SearchModel;
 import com.grandmagic.readingmate.model.SearchUserModel;
 import com.grandmagic.readingmate.ui.CustomDialog;
 import com.grandmagic.readingmate.utils.AutoUtils;
-import com.grandmagic.readingmate.utils.InputMethodUtils;
 import com.tamic.novate.NovateResponse;
 import com.tamic.novate.Throwable;
 import com.tbruyelle.rxpermissions.RxPermissions;
@@ -364,6 +362,7 @@ DefaultEmptyAdapter mEmptyAdapter;
         final CustomDialog mDialog = new CustomDialog(mContext);
         mDialog.setMaxNum(20);
         mDialog.setYesStr("发送");
+        mDialog.setTitle(getString(R.string.add_friend_request));
         mDialog.setOnBtnOnclickListener(new CustomDialog.BtnOnclickListener() {
             @Override
             public void onYesClick() {

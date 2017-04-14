@@ -22,8 +22,6 @@ import com.grandmagic.readingmate.ui.CustomDialog;
 import com.grandmagic.readingmate.utils.AutoUtils;
 import com.grandmagic.readingmate.utils.ImageLoader;
 import com.grandmagic.readingmate.utils.InputMethodUtils;
-import com.hyphenate.chat.EMClient;
-import com.hyphenate.exceptions.HyphenateException;
 import com.tamic.novate.NovateResponse;
 import com.tamic.novate.util.Environment;
 
@@ -170,6 +168,7 @@ public class AddFriendActivity extends AppBaseActivity {
         final CustomDialog mDialog = new CustomDialog(this);
         mDialog.setMaxNum(20);
         mDialog.setYesStr("发送");
+        mDialog.setTitle(getString(R.string.add_friend_request));
         mDialog.setOnBtnOnclickListener(new CustomDialog.BtnOnclickListener() {
             @Override
             public void onYesClick() {
