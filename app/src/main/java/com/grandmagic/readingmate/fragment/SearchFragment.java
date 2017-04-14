@@ -392,6 +392,7 @@ public class SearchFragment extends AppBaseFragment implements SearchPersonAdapt
         final CustomDialog mDialog = new CustomDialog(mContext);
         mDialog.setMaxNum(20);
         mDialog.setYesStr("发送");
+        mDialog.setTitle(getString(R.string.add_friend_request));
         mDialog.setOnBtnOnclickListener(new CustomDialog.BtnOnclickListener() {
             @Override
             public void onYesClick() {
