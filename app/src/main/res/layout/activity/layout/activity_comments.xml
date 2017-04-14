@@ -30,7 +30,8 @@
             android:textColor="#e73636"
             android:textSize="28px"
             android:id="@+id/tv_delete_comment"
-            android:clickable="true"/>
+            android:clickable="true"
+            android:visibility="invisible"/>
     </RelativeLayout>
 
 

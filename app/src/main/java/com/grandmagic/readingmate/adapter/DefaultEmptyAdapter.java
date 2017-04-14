@@ -2,7 +2,6 @@ package com.grandmagic.readingmate.adapter;
 
 import android.content.Context;
 import android.support.v7.widget.RecyclerView;
-import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.LinearLayout;
@@ -32,9 +31,21 @@ public class DefaultEmptyAdapter extends EmptyWrapper {
     View mLoadView;
     boolean isload;
     private HeaderAndFooterWrapper mHeaderOrFooterAdapter;
+    boolean need_show_loading = true; //需不需要展示loading
+
 private TextView emptyTextview;
     public DefaultEmptyAdapter(RecyclerView.Adapter adapter, Context mContext) {
         super(adapter);
+        initView(mContext);
+    }
+
+    public DefaultEmptyAdapter(RecyclerView.Adapter adapter, Context mContext, boolean need_show_loading) {
+        super(adapter);
+        this.need_show_loading = need_show_loading;
+        initView(mContext);
+    }
+
+    private void initView(Context mContext) {
         mLoadView = View.inflate(mContext, R.layout.view_rv_loading, null);
         mLoadView.setLayoutParams(new LinearLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.MATCH_PARENT));
         AutoUtils.auto(mLoadView);
@@ -43,7 +54,9 @@ private TextView emptyTextview;
         emptyTextview= (TextView) mEmptyView.findViewById(R.id.emptytext);
         mEmptyView.setLayoutParams(new LinearLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.MATCH_PARENT));
         AutoUtils.auto(mEmptyView);
-        setEmptyView(mLoadView);
+        if (need_show_loading == true) {
+            setEmptyView(mLoadView);
+        }
     }
 
     /**
@@ -68,6 +81,15 @@ private TextView emptyTextview;
  * 如果使用了{@link #com.zhy.adapter.recyclerview.wrapper.HeaderAndFooterWrapper}
  * 需要调用最外层的adapter的notifyDataSetChanged才会刷新
  */
+        if (this.mHeaderOrFooterAdapter != null) mHeaderOrFooterAdapter.notifyDataSetChanged();
+        else notifyDataSetChanged();
+    }
+
+
+    public void onError() {
+        isload = false;
+        //setEmptyView(mEmptyView);
+        //判断有无数据，无数据显示错误界面，有数据简单提示一下就行
         if (this.mHeaderOrFooterAdapter != null) mHeaderOrFooterAdapter.notifyDataSetChanged();
         else notifyDataSetChanged();
     }

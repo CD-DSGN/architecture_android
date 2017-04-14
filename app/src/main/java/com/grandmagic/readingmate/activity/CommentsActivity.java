@@ -15,6 +15,7 @@ import android.widget.TextView;
 
 import com.grandmagic.readingmate.R;
 import com.grandmagic.readingmate.adapter.CommentDetailAdapter;
+import com.grandmagic.readingmate.adapter.DefaultEmptyAdapter;
 import com.grandmagic.readingmate.base.AppBaseActivity;
 import com.grandmagic.readingmate.base.AppBaseResponseCallBack;
 import com.grandmagic.readingmate.bean.request.AddReplyRequestBean;
@@ -113,6 +114,7 @@ public class CommentsActivity extends AppBaseActivity implements View.OnLayoutCh
     private BookModel mBookModel;
     private DeleteConfirmDlg mDelComment;
     private DeleteConfirmDlg mDelReply;
+    private DefaultEmptyAdapter mDefaultEmptyAdapter;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -153,6 +155,11 @@ public class CommentsActivity extends AppBaseActivity implements View.OnLayoutCh
                         } else {
                             mPage.more(list);
                         }
+
+//                        if (mPage.list == null || mPage.list.isEmpty()) {
+//                            mDefaultEmptyAdapter.refresh();
+//                        }
+                        mDefaultEmptyAdapter.refresh();
                         mMHeaderAndFooterWrapper.notifyDataSetChanged();
                     }
                 }
@@ -160,6 +167,7 @@ public class CommentsActivity extends AppBaseActivity implements View.OnLayoutCh
                 @Override
                 public void onError(Throwable e) {
                     super.onError(e);
+                    mDefaultEmptyAdapter.refresh();
                     mRefreshLayout.endRefreshing();
                     mRefreshLayout.endLoadingMore();
                 }
@@ -190,6 +198,10 @@ public class CommentsActivity extends AppBaseActivity implements View.OnLayoutCh
     }
 
     private void setHeaderView() {
+        if (mCommentsDetailResponoseBean == null) {
+            return;
+        }
+
         String url = "";
         CommentsDetailResponoseBean.AvatarUrlBean avatarUrlBean = mCommentsDetailResponoseBean.getAvatar_url();
         if (avatarUrlBean != null) {
@@ -231,6 +243,13 @@ public class CommentsActivity extends AppBaseActivity implements View.OnLayoutCh
         }
         mIsThumb = mCommentsDetailResponoseBean.getIs_thumb();
         setCommentThumb();
+
+        String id = mCommentsDetailResponoseBean.getIs_self_comment();
+        if (id != null && id.equals("1")) {
+            mTvDeleteComment.setVisibility(View.VISIBLE);
+        } else {
+            mTvDeleteComment.setVisibility(View.INVISIBLE);
+        }
     }
 
     private void hideLikers() {
@@ -297,8 +316,10 @@ public class CommentsActivity extends AppBaseActivity implements View.OnLayoutCh
             mDelReply = new DeleteConfirmDlg(this);
         }
 
-        mMHeaderAndFooterWrapper = new HeaderAndFooterWrapper(mMAdapter);
-
+        if (mDefaultEmptyAdapter == null) {
+            mDefaultEmptyAdapter = new DefaultEmptyAdapter(mMAdapter, this, false);
+        }
+        mMHeaderAndFooterWrapper = new HeaderAndFooterWrapper(mDefaultEmptyAdapter);
         mMHeaderAndFooterWrapper.addHeaderView(mView);
         mRvCommentsDetail.setAdapter(mMHeaderAndFooterWrapper);
         mMHeaderAndFooterWrapper.notifyDataSetChanged();

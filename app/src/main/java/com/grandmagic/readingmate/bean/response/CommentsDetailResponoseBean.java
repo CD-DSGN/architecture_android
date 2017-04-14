@@ -41,6 +41,16 @@ public class CommentsDetailResponoseBean {
     private int book_id;
     private String photo;
 
+    public String getIs_self_comment() {
+        return is_self_comment;
+    }
+
+    public void setIs_self_comment(String is_self_comment) {
+        this.is_self_comment = is_self_comment;
+    }
+
+    private String is_self_comment;
+
     @JsonAdapter(ListTypeAdapterFactory.class)
     private List<ThumbUserAvatarBean> thumb_user_avatar;
 

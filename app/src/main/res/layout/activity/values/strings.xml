@@ -108,5 +108,6 @@
     <string name="delect_suc">删除成功</string>
     <string name="confirm_delete">是否删除该内容</string>
     <string name="add_friend_request">好友申请</string>
+    <string name="no_reply_yet">还没有人回复过，抢沙发吧</string>
 
 </resources>

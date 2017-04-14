@@ -196,6 +196,7 @@ public class LikersInfoActivity extends AppBaseActivity implements LikersAdapter
         final CustomDialog mDialog = new CustomDialog(this);
         mDialog.setMaxNum(20);
         mDialog.setYesStr("发送");
+        mDialog.setTitle(getString(R.string.add_friend_request));
         mDialog.setOnBtnOnclickListener(new CustomDialog.BtnOnclickListener() {
             @Override
             public void onYesClick() {
