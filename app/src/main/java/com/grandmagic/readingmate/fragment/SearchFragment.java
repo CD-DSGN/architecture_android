@@ -81,14 +81,12 @@ public class SearchFragment extends AppBaseFragment implements SearchPersonAdapt
     @BindView(R.id.tv_status)
     TextView mTvStatus;
     @BindView(R.id.recyclerview)
-    RecyclerView mRecyclerview;
-    @BindView(R.id.refreshLayout)
-    BGARefreshLayout mRefreshLayout;
+    PullLoadMoreRecyclerView mRecyclerview;
     SearchModel mModel;
     Context mContext;
     @BindView(R.id.rootview)
     RelativeLayout mRootview;
-    int currpage = 1;
+    int currpage = 1, pagecount = 1;
     @BindView(R.id.iv_search)
     ImageView mIvSearch;
     private double mLongitude;
@@ -105,7 +103,8 @@ public class SearchFragment extends AppBaseFragment implements SearchPersonAdapt
         initoption();
         return view;
     }
-DefaultEmptyAdapter mEmptyAdapter;
+
+    DefaultEmptyAdapter mEmptyAdapter;
     List<SearchPersonResponse.InfoBean> mPersonList = new ArrayList<>();
 
     private void initview() {
@@ -116,10 +115,10 @@ DefaultEmptyAdapter mEmptyAdapter;
         AutoUtils.autoTextSize(mTitle);
         mTitleMore.setImageResource(R.drawable.ic_location);
         mAnimaview.setImageAssetsFolder("images/");//为有图片资源的动画设置路径
-        mRecyclerview.setLayoutManager(new LinearLayoutManager(mContext));
+        mRecyclerview.setLinearLayout();
         SearchPersonAdapter mAdapter = new SearchPersonAdapter(mContext, mPersonList);
         mAdapter.setListener(this);
-        mEmptyAdapter=new DefaultEmptyAdapter(mAdapter,mContext);
+        mEmptyAdapter = new DefaultEmptyAdapter(mAdapter, mContext);
         mRecyclerview.setAdapter(mEmptyAdapter);
         initRefresh();
         setSystemBarColor(false);
@@ -146,7 +145,7 @@ DefaultEmptyAdapter mEmptyAdapter;
      * 开始定位并且播放动画
      */
     private void startLocationAndPlayAnimation() {
-        systembarColor=R.color.text_black;
+        systembarColor = R.color.text_black;
         mAnimaview.playAnimation();
         mAnimaview.setVisibility(View.VISIBLE);
         mIvSearch.setVisibility(View.GONE);
@@ -172,11 +171,13 @@ DefaultEmptyAdapter mEmptyAdapter;
         String mDistrict = mAddress.district;
         String mStreet = mAddress.street;
         mLocationClient.stop();
-        if (TextUtils.isEmpty(mCity)){
+        if (TextUtils.isEmpty(mCity)) {
             Log.e(TAG, "updateLocation() called with: mLocation = [" + mLocation + "]");
-            Toast.makeText(mContext, "定位失败"+mLocation.getLocType(), Toast.LENGTH_SHORT).show();
-            reset();return;}
-        mModel.stepLocation(mLatitude, mLongitude,mProvince,mCity,mDistrict,mStreet, new AppBaseResponseCallBack<NovateResponse>(mContext) {
+            Toast.makeText(mContext, "定位失败" + mLocation.getLocType(), Toast.LENGTH_SHORT).show();
+            reset();
+            return;
+        }
+        mModel.stepLocation(mLatitude, mLongitude, mProvince, mCity, mDistrict, mStreet, new AppBaseResponseCallBack<NovateResponse>(mContext) {
             @Override
             public void onSuccee(NovateResponse response) {
                 getLocationPerson();
@@ -196,23 +197,25 @@ DefaultEmptyAdapter mEmptyAdapter;
      * 获取附近的人
      */
     public void getLocationPerson() {
+        currpage = 1;
         mModel.getLocationPerson(currpage, new AppBaseResponseCallBack<NovateResponse<SearchPersonResponse>>(mContext) {
             @Override
             public void onSuccee(NovateResponse<SearchPersonResponse> response) {
                 mAnimaview.cancelAnimation();
                 isPlay = false;
-                systembarColor=R.color.white;
-                mRefreshLayout.setVisibility(View.VISIBLE);
+                systembarColor = R.color.white;
+                mRecyclerview.setVisibility(View.GONE);
                 mAnimaview.setVisibility(View.GONE);
                 mBtnLocation.setVisibility(View.GONE);
                 mTvStatus.setVisibility(View.GONE);
                 mTitleMore.setVisibility(View.VISIBLE);
                 mTitle.setTextColor(getResources().getColor(R.color.text_black));
                 mRootview.setBackgroundColor(getResources().getColor(R.color.white));
-
-                if (response.getData().getInfo()!=null&&!response.getData().getInfo().isEmpty())
-                mPersonList.addAll(response.getData().getInfo());
-               mEmptyAdapter.refresh();
+                // TODO: 2017/4/14 计算页码
+//pagecount=response.getData().getInfo()
+                if (response.getData().getInfo() != null && !response.getData().getInfo().isEmpty())
+                    mPersonList.addAll(response.getData().getInfo());
+                mEmptyAdapter.refresh();
                 setSystemBarColor(false);
             }
 
@@ -256,10 +259,11 @@ DefaultEmptyAdapter mEmptyAdapter;
      * 恢复默认状态
      */
     private static final String TAG = "SearchFragment";
+
     private void reset() {
         Log.e(TAG, "reset() called");
-        systembarColor= R.color.bg_search;
-        mRefreshLayout.setVisibility(View.GONE);
+        systembarColor = R.color.bg_search;
+        mRecyclerview.setVisibility(View.GONE);
         mAnimaview.setVisibility(View.GONE);
         mBtnLocation.setVisibility(View.VISIBLE);
         mTvStatus.setVisibility(View.GONE);
@@ -305,24 +309,46 @@ DefaultEmptyAdapter mEmptyAdapter;
      * 初始化上啦加载更多
      */
     private void initRefresh() {
-        BGAStickinessRefreshViewHolder mRefreshViewHolder = new BGAStickinessRefreshViewHolder(mContext, true);
-        mRefreshViewHolder.setStickinessColor(R.color.colorAccent);
-        mRefreshViewHolder.setRotateImage(R.drawable.bga_refresh_stickiness);
-//        mRefreshLayout.offsetTopAndBottom(88);
-        mRefreshLayout.setRefreshViewHolder(mRefreshViewHolder);
-        mRefreshLayout.setPullDownRefreshEnable(false);
-        mRefreshLayout.setDelegate(new SimpleRefreshListener() {
+        mRecyclerview.setOnPullLoadMoreListener(new PullLoadMoreRecyclerView.PullLoadMoreListener() {
             @Override
-            public boolean onBGARefreshLayoutBeginLoadingMore(BGARefreshLayout refreshLayout) {
-                new Handler().postDelayed(new Runnable() {
-                    @Override
-                    public void run() {
-                        mRefreshLayout.endLoadingMore();
-                    }
-                }, 2000);
-                return true;
+            public void onRefresh() {
+                currpage = 1;
+                loadPerson(currpage);
+            }
+
+            @Override
+            public void onLoadMore() {
+                if (currpage < pagecount) {
+                    currpage++;
+                    loadPerson(currpage);
+                } else {
+                    mRecyclerview.setPullLoadMoreCompleted();
+                }
             }
         });
+    }
+
+    private void loadPerson(final int mCurrpage) {
+        mModel.getLocationPerson(mCurrpage, new AppBaseResponseCallBack<NovateResponse<SearchPersonResponse>>(mContext) {
+            @Override
+            public void onSuccee(NovateResponse<SearchPersonResponse> response) {
+                mRecyclerview.setPullLoadMoreCompleted();
+                if (mCurrpage == 1) {
+                    mPersonList.clear();
+                }
+                if (response.getData().getInfo() != null && !response.getData().getInfo().isEmpty())
+                    mPersonList.addAll(response.getData().getInfo());
+                mEmptyAdapter.refresh();
+            }
+
+            @Override
+            public void onError(Throwable e) {
+                super.onError(e);
+                mRecyclerview.setPullLoadMoreCompleted();
+                mEmptyAdapter.refresh();
+            }
+        });
+
     }
 
     /**
@@ -358,9 +384,10 @@ DefaultEmptyAdapter mEmptyAdapter;
     }
 
     @Override
-    public void addfriend(int userid,int pos) {
-        showAddFriendDialog(userid+"", pos);
+    public void addfriend(int userid, int pos) {
+        showAddFriendDialog(userid + "", pos);
     }
+
     private void showAddFriendDialog(final String mUserid, final int pos) {
         final CustomDialog mDialog = new CustomDialog(mContext);
         mDialog.setMaxNum(20);
@@ -368,7 +395,7 @@ DefaultEmptyAdapter mEmptyAdapter;
         mDialog.setOnBtnOnclickListener(new CustomDialog.BtnOnclickListener() {
             @Override
             public void onYesClick() {
-                addContact(mDialog.getMessage(),mUserid,pos);
+                addContact(mDialog.getMessage(), mUserid, pos);
                 mDialog.dismiss();
             }
 
@@ -394,7 +421,7 @@ DefaultEmptyAdapter mEmptyAdapter;
                 Toast.makeText(mContext, "" + response.getMessage(), Toast.LENGTH_SHORT).show();
                 //发送成功暂时隐藏掉添加好友的Relativelayout
                 mPersonList.get(pos).setIs_friend(1);
-             mEmptyAdapter.refresh();
+                mEmptyAdapter.refresh();
             }
         });
     }
