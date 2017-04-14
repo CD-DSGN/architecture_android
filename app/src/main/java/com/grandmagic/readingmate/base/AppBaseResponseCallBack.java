@@ -7,12 +7,16 @@ import android.content.Intent;
 
 import com.grandmagic.readingmate.activity.LoginActivity;
 import com.grandmagic.readingmate.consts.ApiErrorConsts;
+import com.grandmagic.readingmate.event.ConnectStateEvent;
 import com.grandmagic.readingmate.utils.ViewUtils;
+import com.hyphenate.EMError;
 import com.hyphenate.chat.EMClient;
 import com.orhanobut.logger.Logger;
 import com.tamic.novate.Novate;
 import com.tamic.novate.Throwable;
 import com.tamic.novate.exception.NovateException;
+
+import org.greenrobot.eventbus.EventBus;
 
 /**
  * Created by zhangmengqi on 2017/2/9.
@@ -74,10 +78,7 @@ public abstract class AppBaseResponseCallBack<T> implements Novate.ResponseCallB
                 ViewUtils.showToast(e.getMessage() + "");
                 Logger.e(e.getMessage());
             } else {
-                EMClient.getInstance().logout(true);//环信的退出
-                Intent intent = new Intent(mContext, LoginActivity.class);
-                Logger.e(e.getMessage()+mContext);
-                mContext.startActivity(intent);
+                EventBus.getDefault().post(new ConnectStateEvent(EMError.USER_LOGIN_ANOTHER_DEVICE));
             }
 
         }
