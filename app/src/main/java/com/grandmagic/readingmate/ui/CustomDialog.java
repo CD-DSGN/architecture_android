@@ -38,8 +38,8 @@ public class CustomDialog extends Dialog {
     @BindView(R.id.num_hint)
     TextView mNumHint;
 
-    private String titleStr;//从外界设置的title文本
-    private String messageStr;//从外界设置的消息文本
+    private String titleStr = "";//从外界设置的title文本
+    private String messageStr = "";//从外界设置的消息文本
 
     private BtnOnclickListener mBtnOnclickListener;
     private String yesStr;
@@ -57,7 +57,7 @@ public class CustomDialog extends Dialog {
 
 
     public CustomDialog(Context context) {
-        super(context, R.style.CustomDialog);
+        super(context, R.style.CustomDialog_bgdim);
         yesStr = context.getString(R.string.confirm);
         noStr = context.getString(R.string.cancel);
     }
@@ -104,7 +104,7 @@ public class CustomDialog extends Dialog {
             @Override
             public void afterTextChanged(Editable s) {
                 int number = max_num - s.length();
-                mNumHint.setText("" + number + "/" + max_num);
+                mNumHint.setText("" + s.length() + "/" + max_num);
                 selectionStart = messageEt.getSelectionStart();
                 selectionEnd = messageEt.getSelectionEnd();
                 if (temp.length() > max_num) {
@@ -130,10 +130,10 @@ public class CustomDialog extends Dialog {
      */
     private void initData() {
         //如果用户自定了title和message
-        if (titleStr != null) {
+        if (!TextUtils.isEmpty(titleStr)) {
             titleTv.setText(titleStr);
         }
-        if (messageStr != null) {
+        if (!TextUtils.isEmpty(messageStr)) {
             messageEt.setText(messageStr);
         }
         //如果设置按钮的文字
