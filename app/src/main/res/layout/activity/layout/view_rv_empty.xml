@@ -21,7 +21,7 @@
             android:layout_height="wrap_content"
             android:id="@+id/emptytext"
             android:text="这里空空的什么都没有呢"
-            android:textSize="24px"
+            android:textSize="@dimen/textsize_28px"
 
             />
     </LinearLayout>

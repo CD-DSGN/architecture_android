@@ -34,6 +34,7 @@ import com.grandmagic.readingmate.utils.ImageLoader;
 import com.grandmagic.readingmate.utils.InputMethodUtils;
 import com.grandmagic.readingmate.utils.KitUtils;
 import com.grandmagic.readingmate.view.HotcommentView;
+import com.grandmagic.readingmate.view.IrregularImageView;
 import com.grandmagic.readingmate.view.SharePopUpWindow;
 import com.grandmagic.readingmate.view.StarView;
 import com.tamic.novate.NovateResponse;
@@ -51,26 +52,6 @@ import butterknife.OnClick;
 
 public class BookDetailActivity extends AppBaseActivity implements View.OnLayoutChangeListener {
     public static final String BOOK_ID = "book_id";
-    @BindView(R.id.rela_score)
-    RelativeLayout mRelaScore;
-    @BindView(R.id.tv_last)
-    TextView mTvLast;
-    @BindView(R.id.dashline_tvlast)
-    View mDashlineTvlast;
-    @BindView(R.id.tv_hot)
-    TextView mTvHot;
-    @BindView(R.id.dashline_tvhot)
-    View mDashlineTvhot;
-    @BindView(R.id.his_score)
-    TextView mHisScore;
-    @BindView(R.id.total_score)
-    StarView mTotalScore;
-    @BindView(R.id.iv_collect)
-    ImageView mIvCollect;
-    @BindView(R.id.tv2)
-    TextView mTv2;
-
-    private String book_id;
     @BindView(R.id.back)
     ImageView mBack;
     @BindView(R.id.title)
@@ -79,55 +60,69 @@ public class BookDetailActivity extends AppBaseActivity implements View.OnLayout
     ImageView mTitleMore;
     @BindView(R.id.titlelayout)
     RelativeLayout mTitlelayout;
+    @BindView(R.id.iv1)
+    ImageView mIv1;
+    @BindView(R.id.et_comment)
+    EditText mEtComment;
+    @BindView(R.id.lin_share)
+    LinearLayout mLinShare;
+    @BindView(R.id.tv1)
+    TextView mTv1;
+    @BindView(R.id.ratingbar)
+    StarView mRatingbar;
+    @BindView(R.id.his_score)
+    TextView mHisScore;
+    @BindView(R.id.submit)
+    Button mSubmit;
+    @BindView(R.id.bottomlayout)
+    LinearLayout mBottomlayout;
     @BindView(R.id.bookname)
     TextView mBookname;
+    @BindView(R.id.iv_conver)
+    IrregularImageView mIvConver;
     @BindView(R.id.avatar)
     ImageView mAvatar;
     @BindView(R.id.author)
     TextView mAuthor;
-    @BindView(R.id.ratingbar)
-    StarView mRatingbar;
+    @BindView(R.id.tv_publisher)
+    TextView mTvPublisher;
+    @BindView(R.id.tv_publistime)
+    TextView mTvPublistime;
+    @BindView(R.id.total_score)
+    StarView mTotalScore;
     @BindView(R.id.score)
     TextView mScore;
     @BindView(R.id.num_people)
     TextView mNumPeople;
-    @BindView(R.id.t_publisher)
-    TextView mTPublisher;
-    @BindView(R.id.tv_publisher)
-    TextView mTvPublisher;
-    @BindView(R.id.t_publishtime)
-    TextView mTPublishtime;
-    @BindView(R.id.tv_publistime)
-    TextView mTvPublistime;
-    @BindView(R.id.about)
-    TextView mAbout;
-    @BindView(R.id.iv_conver)
-    ImageView mIvConver;
-    @BindView(R.id.coll_more)
-    ImageView mCollMore;
-    @BindView(R.id.lin_collection)
-    LinearLayout mLinCollection;
-    @BindView(R.id.collectionNum)
-    TextView mCollectionNum;
-    @BindView(R.id.viewpager)
-    ViewPager mViewpager;
-    @BindView(R.id.iv1)
-    ImageView mIv1;
-    @BindView(R.id.bottomlayout)
-    LinearLayout mBottomlayout;
-    @BindView(R.id.tv1)
-    TextView mTv1;
     @BindView(R.id.rela_rating)
     RelativeLayout mRelaRating;
-    @BindView(R.id.submit)
-    Button mSubmit;
+    @BindView(R.id.about)
+    TextView mAbout;
+    @BindView(R.id.iv_collect)
+    ImageView mIvCollect;
+    @BindView(R.id.tv2)
+    TextView mTv2;
+    @BindView(R.id.lin_collection)
+    LinearLayout mLinCollection;
+    @BindView(R.id.coll_more)
+    ImageView mCollMore;
+    @BindView(R.id.collectionNum)
+    TextView mCollectionNum;
+    @BindView(R.id.tv_last)
+    TextView mTvLast;
+    @BindView(R.id.dashline_tvlast)
+    View mDashlineTvlast;
+    @BindView(R.id.tv_hot)
+    TextView mTvHot;
+    @BindView(R.id.dashline_tvhot)
+    View mDashlineTvhot;
+    @BindView(R.id.viewpager)
+    ViewPager mViewpager;
     @BindView(R.id.activityView)
     RelativeLayout mActivityView;
-    @BindView(R.id.lin_share)
-    LinearLayout mLinShare;
-    @BindView(R.id.et_comment)
-    EditText mEtComment;
 
+
+    private String book_id;
     private SharePopUpWindow mSharePopUpWindow;
     private BookdetailResponse mBookdetailResponse;
 
@@ -273,13 +268,17 @@ public class BookDetailActivity extends AppBaseActivity implements View.OnLayout
      */
     public void setbookView(BookdetailResponse s) {
         mBookname.setText(s.getBook_name());
-        mAuthor.setText(s.getAuthor());
-        mTvPublisher.setText(s.getPublisher());
-        mTvPublistime.setText(DateUtil.timeTodate("yyyy-MM-dd", s.getPub_date()));
+
+        mAuthor.setText("作者" + s.getAuthor());
+        mAuthor.setVisibility(TextUtils.isEmpty(s.getAuthor()) ? View.GONE : View.VISIBLE);
+        mTvPublisher.setText("出版社" + s.getPublisher());
+        mTvPublisher.setVisibility(TextUtils.isEmpty(s.getPublisher()) ? View.GONE : View.VISIBLE);
+        mTvPublistime.setText("出版时间" + DateUtil.timeTodate("yyyy-MM-dd", s.getPub_date()));
+        mTvPublistime.setVisibility(TextUtils.isEmpty(s.getPub_date()) ? View.GONE : View.VISIBLE);
         mAbout.setText(s.getSynopsis());
         mCollectionNum.setText(s.getCollect_count());
         try {
-            mCollMore.setVisibility(Integer.valueOf(s.getCollect_count())  > 4 ? View.VISIBLE : View.GONE);
+            mCollMore.setVisibility(Integer.valueOf(s.getCollect_count()) > 4 ? View.VISIBLE : View.GONE);
         } catch (NumberFormatException mE) {
             mE.printStackTrace();
         }
@@ -287,7 +286,7 @@ public class BookDetailActivity extends AppBaseActivity implements View.OnLayout
         setCollectView(s.getCollect_user());
         mTotalScore.setScore(Float.valueOf(s.getTotal_score()));
         mScore.setText(s.getTotal_score());
-        mNumPeople.setText("分(" + s.getScore_times() + "人评)");
+        mNumPeople.setText("(" + s.getScore_times() + "人评)");
         mBottomlayout.setVisibility(s.getIs_follow() == 1 ? View.VISIBLE : View.GONE);
     }
 
@@ -369,7 +368,7 @@ public class BookDetailActivity extends AppBaseActivity implements View.OnLayout
             ImageLoader.loadRoundImage(this, Environment.BASEULR_PRODUCTION + user.getAvatar_url().getMid(), mView);
             mLinCollection.addView(mView);
         }
-}
+    }
 
     @Subscribe
     public void refreshHotcommentView(RefreshHotCommentEvent mEvent) {
