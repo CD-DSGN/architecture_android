@@ -60,8 +60,13 @@ public class SearchModel {
      */
     public void getLocationPerson(int mCurrpage, AppBaseResponseCallBack mBack) {
         Novate mNovate=new Novate.Builder(mContext).build();
-        Map<String,Object> mStringObjectMap=new HashMap<>();
-        mStringObjectMap.put("page",mCurrpage);
-mNovate.executeGet(ApiInterface.GET_LOCATION_PERSON,mStringObjectMap,mBack, SPUtils.getInstance().getToken(mContext));
+      JSONObject mJSONObject=new JSONObject();
+        try {
+            mJSONObject.put("cpage",mCurrpage);
+            mJSONObject.put("pagesize",20);
+        } catch (JSONException mE) {
+            mE.printStackTrace();
+        }
+        mNovate.executeJson(ApiInterface.GET_LOCATION_PERSON,mJSONObject.toString(),mBack);
     }
 }

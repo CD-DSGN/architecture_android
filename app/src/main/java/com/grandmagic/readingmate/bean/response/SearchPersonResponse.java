@@ -16,10 +16,16 @@ public class SearchPersonResponse {
      * num : 2
      * info : [{"user_id":5,"user_name":"小紫","gender":1,"signature":"啦啦啦2","avatar_url":{"large":"","mid":""},"is_friend":2,"collection":[{"book_id":"8","book_name":"代码大全","is_both_enjoy":2},{"book_id":"1","book_name":"唐诗三百首精选","is_both_enjoy":1},{"book_id":"9","book_name":"Introduction to Algorithms","is_both_enjoy":1}],"distance":1.1},{"user_id":6,"user_name":"小青","gender":1,"signature":"啦啦啦","avatar_url":{"large":"","mid":""},"is_friend":1,"collection":"","distance":4.5}]
      */
-
+    @JsonAdapter(ObjectDeserializer.class)
     private int num;
+
     @JsonAdapter(ListTypeAdapterFactory.class)
     private List<InfoBean> info;
+    /**
+     * total_num : 3
+     */
+@JsonAdapter(ObjectDeserializer.class)
+    private int total_num;
 
     public int getNum() {
         return num;
@@ -35,6 +41,14 @@ public class SearchPersonResponse {
 
     public void setInfo(List<InfoBean> info) {
         this.info = info;
+    }
+
+    public int getTotal_num() {
+        return total_num;
+    }
+
+    public void setTotal_num(int total_num) {
+        this.total_num = total_num;
     }
 
     public static class InfoBean {
@@ -193,6 +207,14 @@ public class SearchPersonResponse {
             public void setIs_both_enjoy(int is_both_enjoy) {
                 this.is_both_enjoy = is_both_enjoy;
             }
+        }
+    }
+    public int  getPage(){
+        try {
+            return (int) Math.ceil(total_num/num);
+        } catch (Exception mE) {
+            mE.printStackTrace();
+            return 0;
         }
     }
 }

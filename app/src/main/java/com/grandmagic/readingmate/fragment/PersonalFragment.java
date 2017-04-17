@@ -309,7 +309,7 @@ public class PersonalFragment extends AppBaseFragment implements MyCommentAdapte
     @Override
     public void onResume() {
         super.onResume();
-        //        setSystemBarColor(false);
+                setSystemBarColor(false);
         if (NEED_REFRESH) {
             mUserInfoModel.getUserInfo();
         }
