@@ -15,6 +15,7 @@ import com.orhanobut.logger.Logger;
 import com.tamic.novate.Novate;
 import com.tamic.novate.Throwable;
 import com.tamic.novate.exception.NovateException;
+import com.tamic.novate.util.SPUtils;
 
 import org.greenrobot.eventbus.EventBus;
 
@@ -78,6 +79,7 @@ public abstract class AppBaseResponseCallBack<T> implements Novate.ResponseCallB
                 ViewUtils.showToast(e.getMessage() + "");
                 Logger.e(e.getMessage());
             } else {
+                SPUtils.getInstance().putString(mContext,SPUtils.IM_STATE,EMError.USER_LOGIN_ANOTHER_DEVICE+"");
                 EventBus.getDefault().post(new ConnectStateEvent(EMError.USER_LOGIN_ANOTHER_DEVICE));
             }
 

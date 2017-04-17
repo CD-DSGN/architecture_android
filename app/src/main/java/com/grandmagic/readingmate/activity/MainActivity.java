@@ -409,25 +409,26 @@ public class MainActivity extends AppBaseActivity {
     public void onMessageEvent(ConnectStateEvent mEvent) {
         String state = SPUtils.getInstance().getString(this, SPUtils.IM_STATE);
         if (Integer.valueOf(state) == (EMError.USER_LOGIN_ANOTHER_DEVICE)) {
-            AlertDialog.Builder mBuilder = new AlertDialog.Builder(this);
-            mBuilder.setNegativeButton("取消", new DialogInterface.OnClickListener() {
-                @Override
-                public void onClick(DialogInterface dialog, int which) {
-                    mDialog.dismiss();
-                }
-            });
-            mBuilder.setPositiveButton("重新登陆", new DialogInterface.OnClickListener() {
-                @Override
-                public void onClick(DialogInterface dialog, int which) {
-                    mDialog.dismiss();
-                    SPUtils.getInstance().clearToken(MainActivity.this);
-                    EMClient.getInstance().logout(true);//环信的退出
-                    startActivity(new Intent(MainActivity.this, LoginActivity.class));
-                    finish();
-                }
-            });
-            mDialog = mBuilder.create();
-
+            if (mDialog==null) {
+                AlertDialog.Builder mBuilder = new AlertDialog.Builder(this);
+                mBuilder.setNegativeButton("取消", new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+                        mDialog.dismiss();
+                    }
+                });
+                mBuilder.setPositiveButton("重新登陆", new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+                        mDialog.dismiss();
+                        SPUtils.getInstance().clearToken(MainActivity.this);
+                        EMClient.getInstance().logout(true);//环信的退出
+                        startActivity(new Intent(MainActivity.this, LoginActivity.class));
+                        finish();
+                    }
+                });
+                mDialog = mBuilder.create();
+            }
             mDialog.setTitle("下线通知");
             mDialog.setMessage("账号已在其他设备登陆，您被迫下线");
             mDialog.show();
