@@ -21,6 +21,7 @@ import com.grandmagic.readingmate.activity.CommentsActivity;
 import com.grandmagic.readingmate.activity.MessageNotificationActivity;
 import com.grandmagic.readingmate.activity.PersonalInfoEditActivity;
 import com.grandmagic.readingmate.activity.SettingActivity;
+import com.grandmagic.readingmate.adapter.DefaultEmptyAdapter;
 import com.grandmagic.readingmate.adapter.MyCommentAdapter;
 import com.grandmagic.readingmate.base.AppBaseActivity;
 import com.grandmagic.readingmate.base.AppBaseFragment;
@@ -105,6 +106,8 @@ public class PersonalFragment extends AppBaseFragment implements MyCommentAdapte
 
     private DeleteConfirmDlg mCommentDlg;
 
+    private DefaultEmptyAdapter mDefaultEmptyAdapter;
+
     public PersonalFragment() {
 
     }
@@ -158,7 +161,6 @@ public class PersonalFragment extends AppBaseFragment implements MyCommentAdapte
     }
 
     private void initView() {
-
         if (mBookModel == null) {
             mBookModel = new BookModel(mContext);
         }
@@ -180,10 +182,14 @@ public class PersonalFragment extends AppBaseFragment implements MyCommentAdapte
                 return false;
             }
         });
-        mMHeaderAndFooterWrapper = new HeaderAndFooterWrapper(mMAdapter);
+
+        if (mDefaultEmptyAdapter == null) {
+            mDefaultEmptyAdapter = new DefaultEmptyAdapter(mMAdapter, mContext);
+            mDefaultEmptyAdapter.setEmptyViewTextview(mContext.getString(R.string.no_reply_yet));
+        }
 
         AutoUtils.auto(mView);
-
+        mMHeaderAndFooterWrapper = new HeaderAndFooterWrapper(mDefaultEmptyAdapter);
         mMHeaderAndFooterWrapper.addHeaderView(mView);
         mRvMyComments.setAdapter(mMHeaderAndFooterWrapper);
         mMHeaderAndFooterWrapper.notifyDataSetChanged();
@@ -246,8 +252,10 @@ public class PersonalFragment extends AppBaseFragment implements MyCommentAdapte
                         } catch (NumberFormatException e) {
                             e.printStackTrace();
                         }
-                        mMHeaderAndFooterWrapper.notifyDataSetChanged();
+
                     }
+                    mDefaultEmptyAdapter.refresh();
+                    mMHeaderAndFooterWrapper.notifyDataSetChanged();
                 }
 
                 @Override
@@ -255,6 +263,8 @@ public class PersonalFragment extends AppBaseFragment implements MyCommentAdapte
                     super.onError(e);
                     mRefreshLayout.endLoadingMore();
                     mRefreshLayout.endRefreshing();
+                    mDefaultEmptyAdapter.refresh();
+                    mMHeaderAndFooterWrapper.notifyDataSetChanged();
                     //展示出错界面
                 }
             };
@@ -350,6 +360,7 @@ public class PersonalFragment extends AppBaseFragment implements MyCommentAdapte
             public void onBGARefreshLayoutBeginRefreshing(BGARefreshLayout refreshLayout) {
                 mMyCommentsModel.getMyComment(1);
                 mcallback.isRefresh = true;
+
             }
 
             @Override

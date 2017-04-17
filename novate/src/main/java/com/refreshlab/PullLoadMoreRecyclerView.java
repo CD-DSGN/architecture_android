@@ -263,7 +263,7 @@ public class PullLoadMoreRecyclerView extends LinearLayout {
         mFooterView.animate()
                 .translationY(mFooterView.getHeight())
                 .setDuration(300)
-                .setInterpolator(new AccelerateDecelerateInterpolator()).setStartDelay(500)
+                .setInterpolator(new AccelerateDecelerateInterpolator())
                 .start();
         Log.e("zhang:", "setPullLoadMoreCompleted");
 
