@@ -5,19 +5,14 @@
               android:orientation="vertical"
               tools:context="com.grandmagic.readingmate.fragment.PersonalFragment">
 
-    <cn.bingoogolapple.refreshlayout.BGARefreshLayout
-        xmlns:android="http://schemas.android.com/apk/res/android"
+
+    <com.refreshlab.PullLoadMoreRecyclerView
+        android:id="@+id/rv_my_comments"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:id="@+id/BGARefreshLayout">
+        android:layout_height="0dp"
+        android:layout_weight="1"
+        >
 
-        <android.support.v7.widget.RecyclerView
-            android:id="@+id/rv_my_comments"
-            android:layout_width="match_parent"
-            android:layout_height="0dp"
-            android:layout_weight="1"
-            >
+    </com.refreshlab.PullLoadMoreRecyclerView>
 
-        </android.support.v7.widget.RecyclerView>
-    </cn.bingoogolapple.refreshlayout.BGARefreshLayout>
 </LinearLayout>

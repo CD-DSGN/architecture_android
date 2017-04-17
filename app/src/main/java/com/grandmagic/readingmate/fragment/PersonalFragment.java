@@ -5,7 +5,6 @@ import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
-import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.text.TextUtils;
 import android.view.LayoutInflater;
@@ -21,6 +20,7 @@ import com.grandmagic.readingmate.activity.CommentsActivity;
 import com.grandmagic.readingmate.activity.MessageNotificationActivity;
 import com.grandmagic.readingmate.activity.PersonalInfoEditActivity;
 import com.grandmagic.readingmate.activity.SettingActivity;
+import com.grandmagic.readingmate.adapter.DefaultEmptyAdapter;
 import com.grandmagic.readingmate.adapter.MyCommentAdapter;
 import com.grandmagic.readingmate.base.AppBaseActivity;
 import com.grandmagic.readingmate.base.AppBaseFragment;
@@ -38,6 +38,7 @@ import com.grandmagic.readingmate.utils.ImageLoader;
 import com.grandmagic.readingmate.utils.KitUtils;
 import com.grandmagic.readingmate.utils.Page;
 import com.grandmagic.readingmate.utils.ViewUtils;
+import com.refreshlab.PullLoadMoreRecyclerView;
 import com.tamic.novate.NovateResponse;
 import com.tamic.novate.Throwable;
 import com.zhy.adapter.recyclerview.MultiItemTypeAdapter;
@@ -49,8 +50,6 @@ import java.util.List;
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
-import cn.bingoogolapple.refreshlayout.BGARefreshLayout;
-import cn.bingoogolapple.refreshlayout.BGAStickinessRefreshViewHolder;
 
 /**
  * A simple {@link Fragment} subclass.
@@ -58,7 +57,7 @@ import cn.bingoogolapple.refreshlayout.BGAStickinessRefreshViewHolder;
 public class PersonalFragment extends AppBaseFragment implements MyCommentAdapter.OnitemDeleteListener {
     Context mContext;
 
-    RecyclerView mRvMyComments;
+    PullLoadMoreRecyclerView mRvMyComments;
     @BindView(R.id.tv_edit_personal_info)
     TextView mTvEditPersonalInfo;
     @BindView(R.id.ll_collect)
@@ -92,9 +91,6 @@ public class PersonalFragment extends AppBaseFragment implements MyCommentAdapte
     MyCommentsModel mMyCommentsModel;
     public static boolean NEED_REFRESH = false;
 
-    BGAStickinessRefreshViewHolder mRefreshViewHolder;
-    BGARefreshLayout mRefreshLayout;
-
     Page mPage;
 
     private ArrayList<PersonnalCommentResponseBean> mComments = new ArrayList<>();
@@ -105,6 +101,8 @@ public class PersonalFragment extends AppBaseFragment implements MyCommentAdapte
 
     private DeleteConfirmDlg mCommentDlg;
 
+    private DefaultEmptyAdapter mDefaultEmptyAdapter;
+
     public PersonalFragment() {
 
     }
@@ -114,9 +112,8 @@ public class PersonalFragment extends AppBaseFragment implements MyCommentAdapte
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_personal, container, false);
-        mRefreshLayout = (BGARefreshLayout) view.findViewById(R.id.BGARefreshLayout);
         AutoUtils.auto(view);
-        mRvMyComments = (RecyclerView) view.findViewById(R.id.rv_my_comments);
+        mRvMyComments = (PullLoadMoreRecyclerView) view.findViewById(R.id.rv_my_comments);
         mContext = getActivity();
         ButterKnife.bind(view);
         mPage = new Page(mComments, MyCommentsModel.PAGE_SIZE);
@@ -158,12 +155,10 @@ public class PersonalFragment extends AppBaseFragment implements MyCommentAdapte
     }
 
     private void initView() {
-
         if (mBookModel == null) {
             mBookModel = new BookModel(mContext);
         }
 
-        mRvMyComments.setLayoutManager(new LinearLayoutManager(mContext));
         mView = LayoutInflater.from(mContext).inflate(R.layout.personal_fragment_header, mRvMyComments, false);
         ButterKnife.bind(this, mView);
         mMAdapter = new MyCommentAdapter(mContext, mComments, "", "", this);
@@ -180,10 +175,14 @@ public class PersonalFragment extends AppBaseFragment implements MyCommentAdapte
                 return false;
             }
         });
-        mMHeaderAndFooterWrapper = new HeaderAndFooterWrapper(mMAdapter);
+
+        if (mDefaultEmptyAdapter == null) {
+            mDefaultEmptyAdapter = new DefaultEmptyAdapter(mMAdapter, mContext);
+            mDefaultEmptyAdapter.setEmptyViewTextview(mContext.getString(R.string.no_reply_yet));
+        }
 
         AutoUtils.auto(mView);
-
+        mMHeaderAndFooterWrapper = new HeaderAndFooterWrapper(mDefaultEmptyAdapter);
         mMHeaderAndFooterWrapper.addHeaderView(mView);
         mRvMyComments.setAdapter(mMHeaderAndFooterWrapper);
         mMHeaderAndFooterWrapper.notifyDataSetChanged();
@@ -213,8 +212,7 @@ public class PersonalFragment extends AppBaseFragment implements MyCommentAdapte
 
                 @Override
                 public void onSuccee(NovateResponse<PersonalCommentListResponseBean> response) {
-                    mRefreshLayout.endLoadingMore();
-                    mRefreshLayout.endRefreshing();
+
                     PersonalCommentListResponseBean personalCommentListResponseBean = response.getData();
                     ImageUrlResponseBean imageUrlResponseBean = personalCommentListResponseBean.getAvatar_url();
                     String url = "";
@@ -246,15 +244,20 @@ public class PersonalFragment extends AppBaseFragment implements MyCommentAdapte
                         } catch (NumberFormatException e) {
                             e.printStackTrace();
                         }
-                        mMHeaderAndFooterWrapper.notifyDataSetChanged();
+
                     }
+                    mDefaultEmptyAdapter.refresh();
+                    mMHeaderAndFooterWrapper.notifyDataSetChanged();
+                    mRvMyComments.setPullLoadMoreCompleted();
                 }
 
                 @Override
                 public void onError(Throwable e) {
                     super.onError(e);
-                    mRefreshLayout.endLoadingMore();
-                    mRefreshLayout.endRefreshing();
+
+                    mDefaultEmptyAdapter.refresh();
+                    mMHeaderAndFooterWrapper.notifyDataSetChanged();
+                    mRvMyComments.setPullLoadMoreCompleted();
                     //展示出错界面
                 }
             };
@@ -340,28 +343,23 @@ public class PersonalFragment extends AppBaseFragment implements MyCommentAdapte
     }
 
     private void initRefresh() {
-        mRefreshViewHolder = new BGAStickinessRefreshViewHolder(mContext, true);
-        mRefreshViewHolder.setStickinessColor(R.color.colorAccent);
-        mRefreshViewHolder.setRotateImage(R.drawable.bga_refresh_stickiness);
-
-        mRefreshLayout.setRefreshViewHolder(mRefreshViewHolder);
-        mRefreshLayout.setDelegate(new BGARefreshLayout.BGARefreshLayoutDelegate() {
+        mRvMyComments.setLinearLayout();
+        mRvMyComments.setOnPullLoadMoreListener(new PullLoadMoreRecyclerView.PullLoadMoreListener() {
             @Override
-            public void onBGARefreshLayoutBeginRefreshing(BGARefreshLayout refreshLayout) {
+            public void onRefresh() {
                 mMyCommentsModel.getMyComment(1);
                 mcallback.isRefresh = true;
             }
 
             @Override
-            public boolean onBGARefreshLayoutBeginLoadingMore(BGARefreshLayout refreshLayout) {
+            public void onLoadMore() {
                 if (mPage.hasMore()) {
                     mMyCommentsModel.getMyComment(mPage.cur_page);
                     mcallback.isRefresh = false;
                 } else {
                     ViewUtils.showToast("暂无更多数据");
-                    return false;
+                    mRvMyComments.setPullLoadMoreCompleted();
                 }
-                return true;
             }
         });
     }

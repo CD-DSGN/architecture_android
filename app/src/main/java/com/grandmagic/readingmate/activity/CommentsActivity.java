@@ -4,7 +4,6 @@ import android.content.Intent;
 import android.graphics.Color;
 import android.os.Bundle;
 import android.support.v7.widget.LinearLayoutManager;
-import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.Button;
@@ -33,6 +32,7 @@ import com.grandmagic.readingmate.utils.KitUtils;
 import com.grandmagic.readingmate.utils.Page;
 import com.grandmagic.readingmate.utils.ViewUtils;
 import com.grandmagic.readingmate.view.SharePopUpWindow;
+import com.refreshlab.PullLoadMoreRecyclerView;
 import com.tamic.novate.NovateResponse;
 import com.tamic.novate.Throwable;
 import com.umeng.socialize.UMShareAPI;
@@ -44,7 +44,6 @@ import java.util.List;
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
-import cn.bingoogolapple.refreshlayout.BGARefreshLayout;
 import cn.bingoogolapple.refreshlayout.BGAStickinessRefreshViewHolder;
 
 import static com.taobao.accs.ACCSManager.mContext;
@@ -56,11 +55,10 @@ public class CommentsActivity extends AppBaseActivity implements View.OnLayoutCh
     @BindView(R.id.title)
     TextView mTitle;
     @BindView(R.id.rv_comments_detail)
-    RecyclerView mRvCommentsDetail;
+    PullLoadMoreRecyclerView mRvCommentsDetail;
     @BindView(R.id.lin_share)
     LinearLayout mLinShare;
-    @BindView(R.id.BGARefreshLayout)
-    BGARefreshLayout mRefreshLayout;
+
     @BindView(R.id.et_comment)
     EditText mEtComment;
     @BindView(R.id.submit)
@@ -140,8 +138,6 @@ public class CommentsActivity extends AppBaseActivity implements View.OnLayoutCh
             mReplyCallBack = new AppBaseResponseCallBack<NovateResponse<ReplyInfoResponseBean>>(CommentsActivity.this, true) {
                 @Override
                 public void onSuccee(NovateResponse<ReplyInfoResponseBean> response) {
-                    mRefreshLayout.endRefreshing();
-                    mRefreshLayout.endLoadingMore();
                     ReplyInfoResponseBean replyInfoResponseBean = response.getData();
                     try {
                         mPage.total_num = Integer.parseInt(replyInfoResponseBean.getTotal_num());
@@ -159,17 +155,20 @@ public class CommentsActivity extends AppBaseActivity implements View.OnLayoutCh
 //                        if (mPage.list == null || mPage.list.isEmpty()) {
 //                            mDefaultEmptyAdapter.refresh();
 //                        }
-                        mDefaultEmptyAdapter.refresh();
-                        mMHeaderAndFooterWrapper.notifyDataSetChanged();
+
                     }
+
+                    mRvCommentsDetail.setPullLoadMoreCompleted();
+                    mDefaultEmptyAdapter.refresh();
+                    mMHeaderAndFooterWrapper.notifyDataSetChanged();
                 }
 
                 @Override
                 public void onError(Throwable e) {
                     super.onError(e);
                     mDefaultEmptyAdapter.refresh();
-                    mRefreshLayout.endRefreshing();
-                    mRefreshLayout.endLoadingMore();
+                    mRvCommentsDetail.setPullLoadMoreCompleted();
+                    mMHeaderAndFooterWrapper.notifyDataSetChanged();
                 }
             };
         }
@@ -261,7 +260,7 @@ public class CommentsActivity extends AppBaseActivity implements View.OnLayoutCh
     private void initView() {
         mTitle.setText(R.string.comment_detail);
         final LinearLayoutManager linearLayoutManager = new LinearLayoutManager(this);
-        mRvCommentsDetail.setLayoutManager(linearLayoutManager);
+        mRvCommentsDetail.setLinearLayout();
         mView = LayoutInflater.from(this).inflate(R.layout.item_comments_detail, mRvCommentsDetail, false);
         initHeaderView();
         AutoUtils.auto(mView);
@@ -332,28 +331,23 @@ public class CommentsActivity extends AppBaseActivity implements View.OnLayoutCh
 
 
     private void initRefresh() {
-        mRefreshViewHolder = new BGAStickinessRefreshViewHolder(this, true);
-        mRefreshViewHolder.setStickinessColor(R.color.colorAccent);
-        mRefreshViewHolder.setRotateImage(R.drawable.bga_refresh_stickiness);
-
-        mRefreshLayout.setRefreshViewHolder(mRefreshViewHolder);
-        mRefreshLayout.setDelegate(new BGARefreshLayout.BGARefreshLayoutDelegate() {
+        mRvCommentsDetail.setOnPullLoadMoreListener(new PullLoadMoreRecyclerView.PullLoadMoreListener() {
             @Override
-            public void onBGARefreshLayoutBeginRefreshing(BGARefreshLayout refreshLayout) {
+            public void onRefresh() {
                 mCommentDetailModel.getAllReplys(mCommentID, mReplyCallBack, 1);
                 mReplyCallBack.isRefresh = true;
             }
 
             @Override
-            public boolean onBGARefreshLayoutBeginLoadingMore(BGARefreshLayout refreshLayout) {
+            public void onLoadMore() {
                 if (mPage.hasMore()) {
                     mCommentDetailModel.getAllReplys(mCommentID, mReplyCallBack, mPage.cur_page);
                     mReplyCallBack.isRefresh = false;
                 } else {
                     ViewUtils.showToast(getString(R.string.no_more));
-                    return false;
+                    mRvCommentsDetail.setPullLoadMoreCompleted();
                 }
-                return true;
+
             }
         });
     }
