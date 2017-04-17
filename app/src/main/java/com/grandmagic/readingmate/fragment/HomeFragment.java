@@ -128,10 +128,13 @@ public class HomeFragment extends AppBaseFragment implements HomeBookAdapter.Cli
                     isEmpty = true;
                     return;
                 }
+
+                mTotal_num = response.getData().getTotal_num();
+                pagenum = response.getData().getNum();
                 pagecount = response.getData().getpage();
                 mBookList.clear();
-                if (response.getData().getInfo()!=null&&!response.getData().getInfo().isEmpty())
-                mBookList.addAll(response.getData().getInfo());
+                if (response.getData().getInfo() != null && !response.getData().getInfo().isEmpty())
+                    mBookList.addAll(response.getData().getInfo());
                 mBookAdapter.setData(mBookList);
                 isEmpty = false;
                 showRecyclerView();
@@ -190,6 +193,8 @@ public class HomeFragment extends AppBaseFragment implements HomeBookAdapter.Cli
         });
     }
 
+    int mTotal_num, pagenum;//#mTotal_num 书的总数，#pagenum第一页的条数
+
     private void loadBook(final int mCurrpage) {
         mModel.loadCollectBook(mCurrpage, new AppBaseResponseCallBack<NovateResponse<DisplayBook>>(getActivity(), false) {
 
@@ -199,6 +204,7 @@ public class HomeFragment extends AppBaseFragment implements HomeBookAdapter.Cli
                 mBookList.addAll(response.getData().getInfo());
                 mBookAdapter.setData(mBookList);
                 mRecyclerview.setPullLoadMoreCompleted();
+
 
             }
 
@@ -306,6 +312,11 @@ public class HomeFragment extends AppBaseFragment implements HomeBookAdapter.Cli
             pagecount = 1;
             initdata();
         } else if (mStateEvent.getState() == BookStateEvent.STATE_DELETE) {
+            try {
+                pagecount = (int) Math.ceil(mTotal_num / pagenum);//被删除书籍的时候重新计算页码
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
             for (DisplayBook.InfoBean mBook : mBookList) {
                 if (mStateEvent.getBookid().equals(mBook.getBook_id())) {
                     mBookList.remove(mBook);
