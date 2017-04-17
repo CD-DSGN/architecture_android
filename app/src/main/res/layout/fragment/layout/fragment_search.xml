@@ -2,8 +2,8 @@
     xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
-    android:layout_width="match_parent"
     android:id="@+id/rootview"
+    android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="@color/search_green"
     android:gravity="center_horizontal"
@@ -19,19 +19,21 @@
         android:layout_below="@+id/titlelayout"
         android:layout_centerHorizontal="true"
         android:layout_marginTop="72px"
+        android:visibility="gone"
         app:lottie_fileName="data.json"
         app:lottie_loop="true"
-        android:visibility="gone"
         />
-<ImageView
-    android:layout_width="710px"
-    android:layout_height="662px"
-    android:src="@drawable/iv_search"
-    android:layout_below="@+id/titlelayout"
-    android:layout_centerHorizontal="true"
-    android:layout_marginTop="72px"
-    android:id="@+id/iv_search"
-    />
+
+    <ImageView
+        android:id="@+id/iv_search"
+        android:layout_width="710px"
+        android:layout_height="662px"
+        android:layout_below="@+id/titlelayout"
+        android:layout_centerHorizontal="true"
+        android:layout_marginTop="72px"
+        android:src="@drawable/iv_search"
+        />
+
     <Button
         android:id="@+id/btn_location"
         android:layout_width="342px"
@@ -60,15 +62,14 @@
         />
 
 
-
-        <com.refreshlab.PullLoadMoreRecyclerView
-            android:id="@+id/recyclerview"
-            android:layout_below="@id/titlelayout"
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-
-            >
-        </com.refreshlab.PullLoadMoreRecyclerView>
+    <com.refreshlab.PullLoadMoreRecyclerView
+        android:id="@+id/recyclerview"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_below="@id/titlelayout"
+        android:visibility="gone"
+        >
+    </com.refreshlab.PullLoadMoreRecyclerView>
 
 
 </RelativeLayout>

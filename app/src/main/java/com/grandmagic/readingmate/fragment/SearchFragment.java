@@ -204,15 +204,14 @@ public class SearchFragment extends AppBaseFragment implements SearchPersonAdapt
                 mAnimaview.cancelAnimation();
                 isPlay = false;
                 systembarColor = R.color.white;
-                mRecyclerview.setVisibility(View.GONE);
+                mRecyclerview.setVisibility(View.VISIBLE);
                 mAnimaview.setVisibility(View.GONE);
                 mBtnLocation.setVisibility(View.GONE);
                 mTvStatus.setVisibility(View.GONE);
                 mTitleMore.setVisibility(View.VISIBLE);
                 mTitle.setTextColor(getResources().getColor(R.color.text_black));
                 mRootview.setBackgroundColor(getResources().getColor(R.color.white));
-                // TODO: 2017/4/14 计算页码
-//pagecount=response.getData().getInfo()
+                pagecount = response.getData().getPage();
                 if (response.getData().getInfo() != null && !response.getData().getInfo().isEmpty())
                     mPersonList.addAll(response.getData().getInfo());
                 mEmptyAdapter.refresh();
@@ -223,7 +222,7 @@ public class SearchFragment extends AppBaseFragment implements SearchPersonAdapt
             public void onError(Throwable e) {
                 super.onError(e);
                 mEmptyAdapter.refresh();
-//                reset();
+                reset();
                 Log.e(TAG, "onError() called with: e = [" + e + "]");
             }
         });
@@ -262,6 +261,7 @@ public class SearchFragment extends AppBaseFragment implements SearchPersonAdapt
 
     private void reset() {
         Log.e(TAG, "reset() called");
+        currpage=1;pagecount=1;
         systembarColor = R.color.bg_search;
         mRecyclerview.setVisibility(View.GONE);
         mAnimaview.setVisibility(View.GONE);
@@ -323,6 +323,7 @@ public class SearchFragment extends AppBaseFragment implements SearchPersonAdapt
                     loadPerson(currpage);
                 } else {
                     mRecyclerview.setPullLoadMoreCompleted();
+                    Toast.makeText(mContext, "NOMORE", Toast.LENGTH_SHORT).show();
                 }
             }
         });
