@@ -2,7 +2,7 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
               android:layout_width="match_parent"
               android:layout_height="wrap_content"
-              android:gravity="center_horizontal"
+android:layout_marginTop="10px"
               android:orientation="vertical"
               xmlns:tools="http://schemas.android.com/tools">
 
@@ -14,6 +14,7 @@
             android:id="@+id/avatar"
             android:layout_width="72px"
             android:layout_height="72px"
+            tools:src="@color/bottom_bg"
             />
 
         <TextView
@@ -24,7 +25,7 @@
             android:layout_toRightOf="@+id/avatar"
             android:text="花花"
             android:textColor="@color/text_black"
-            android:textSize="28px"
+            android:textSize="@dimen/textsize_28px"
             />
 
         <TextView
@@ -35,7 +36,7 @@
             android:layout_below="@+id/nickname"
             android:layout_marginLeft="20px"
             android:layout_toRightOf="@+id/avatar"
-            android:text="2017.2.28"
+            tools:text="2017.2.28"
             android:textColor="@color/text_lightgray"
             android:textSize="20px"
             />
@@ -48,7 +49,7 @@
             android:layout_below="@+id/nickname"
             android:layout_marginLeft="36px"
             android:layout_toRightOf="@+id/time"
-            android:text="4回复"
+            tools:text="4回复"
             android:textColor="@color/text_lightgray"
             android:textSize="20px"
             />
@@ -60,7 +61,8 @@
             android:layout_height="wrap_content"
             android:layout_alignParentRight="true"
             android:layout_centerVertical="true"
-            android:text="26"
+            tools:text="26"
+            android:textSize="@dimen/textsize_24px"
             android:textColor="@color/text_lightgreen"
             />
 
@@ -78,9 +80,12 @@
         android:id="@+id/content"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="随便写吧。"
+        tools:text="随便写吧。"
+        android:layout_marginLeft="75px"
+        android:layout_marginTop="10px"
+        android:layout_marginBottom="10px"
         android:textColor="@color/text_black"
-        android:textSize="28px"
+        android:textSize="@dimen/textsize_28px"
         />
 
     <RelativeLayout
@@ -93,6 +98,7 @@
             android:layout_width="80px"
             android:layout_height="80px"
             android:layout_marginLeft="24px"
+            tools:src="@color/bottom_bg"
             />
 
         <TextView
@@ -100,7 +106,7 @@
             android:layout_height="wrap_content"
             tools:text="《从你的全世界路过》"
             android:textColor="@color/text_black"
-            android:textSize="32px"
+            android:textSize="@dimen/textsize_28px"
             android:layout_toRightOf="@+id/cover"
             android:id="@+id/bookname"
             android:gravity="center"

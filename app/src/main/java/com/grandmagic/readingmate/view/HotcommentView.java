@@ -18,6 +18,7 @@ import com.grandmagic.readingmate.event.BookStateEvent;
 import com.grandmagic.readingmate.event.RefreshHotCommentEvent;
 import com.grandmagic.readingmate.model.BookModel;
 import com.tamic.novate.NovateResponse;
+import com.tamic.novate.Throwable;
 
 import org.greenrobot.eventbus.EventBus;
 
@@ -71,6 +72,13 @@ public class HotcommentView extends FrameLayout implements BookCommentsAdapter.A
                 if (mComments != null && !mComments.isEmpty())
                     mList.addAll(mComments);
                 mAdapter.refresh();
+                mRefreshLayout.endLoadingMore();
+            }
+
+            @Override
+            public void onError(Throwable e) {
+                super.onError(e);
+                mRefreshLayout.endLoadingMore();
             }
         });
     }
@@ -114,6 +122,7 @@ public class HotcommentView extends FrameLayout implements BookCommentsAdapter.A
                     loadData(currpage);
                     return true;
                 } else {
+                    mRefreshLayout.endLoadingMore();
                     Toast.makeText(mContext, "NOMORE", Toast.LENGTH_SHORT).show();
                 }
                 return false;

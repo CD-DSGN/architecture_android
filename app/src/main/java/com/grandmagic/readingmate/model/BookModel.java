@@ -189,6 +189,7 @@ public class BookModel {
         mHashMap.put("book_id", mBook_id);
         mHashMap.put("cpage", mCurrpage);
         mHashMap.put("order_way", mOrder_way);
+        mHashMap.put("pagesize", 20);
         mNovate.executeGet(ApiInterface.BOOK_COMMENT_DETAIL, mHashMap, mBack, SPUtils.getInstance().getToken(mContext));
     }
 

@@ -1,5 +1,9 @@
 package com.grandmagic.readingmate.bean.response;
 
+import com.google.gson.annotations.JsonAdapter;
+import com.google.gson.internal.bind.ListTypeAdapterFactory;
+import com.google.gson.internal.bind.ObjectDeserializer;
+
 import java.util.List;
 
 /**
@@ -21,11 +25,13 @@ public class PersonCommentResponse {
      * user_name : 哈哈
      * avatar_url : {"large":"/images/18161239627/be2ca648986a448f99fdf2b6eae09959.jpg","mid":"/images/18161239627/thumb_be2ca648986a448f99fdf2b6eae09959.jpg"}
      */
-
+    @JsonAdapter(ObjectDeserializer.class)
     private int total_num;
+    @JsonAdapter(ObjectDeserializer.class)
     private int num;
     private String user_name;
     private AvatarUrlBean avatar_url;
+    @JsonAdapter(ListTypeAdapterFactory.class)
     private List<CommentInfoBean> comment_info;
 
     public int getTotal_num() {
@@ -114,7 +120,7 @@ public class PersonCommentResponse {
         private String book_id;
         private String book_name;
         private String photo;
-private int is_thumb;
+        private int is_thumb;
 
         public int getIs_thumb() {
             return is_thumb;
@@ -188,9 +194,10 @@ private int is_thumb;
             this.photo = photo;
         }
     }
-    public int getPageCount(){
+
+    public int getPageCount() {
         try {
-            return (int) Math.ceil(total_num*1f/num);
+            return (int) Math.ceil(total_num * 1f / num);
         } catch (Exception mE) {
             mE.printStackTrace();
         }

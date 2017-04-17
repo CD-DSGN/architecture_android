@@ -54,11 +54,10 @@ import butterknife.ButterKnife;
 import butterknife.OnClick;
 import cn.bingoogolapple.refreshlayout.BGARefreshLayout;
 import cn.bingoogolapple.refreshlayout.BGAStickinessRefreshViewHolder;
+import cn.bingoogolapple.refreshlayout.util.SimpleRefreshListener;
 
 /**
- * @see  #mPersonInfo 此页面进入时必传
- *
- *
+ * @see #mPersonInfo 此页面进入时必传
  */
 public class FriendDetailActivity extends AppBaseActivity {
     ContactModel mModel;
@@ -197,31 +196,19 @@ public class FriendDetailActivity extends AppBaseActivity {
         BGAStickinessRefreshViewHolder mRefreshViewHolder = new BGAStickinessRefreshViewHolder(this, true);
         mRefreshViewHolder.setStickinessColor(R.color.colorAccent);
         mRefreshViewHolder.setRotateImage(R.drawable.bga_refresh_stickiness);
-//        mRefreshLayout.offsetTopAndBottom(88);
         mRefreshLayout.setPullDownRefreshEnable(false);
         mRefreshLayout.setRefreshViewHolder(mRefreshViewHolder);
-        mRefreshLayout.setDelegate(new BGARefreshLayout.BGARefreshLayoutDelegate() {
-            @Override
-            public void onBGARefreshLayoutBeginRefreshing(BGARefreshLayout refreshLayout) {
-
-                new Handler().postDelayed(new Runnable() {
-                    @Override
-                    public void run() {
-                        mRefreshLayout.endRefreshing();
-                    }
-                }, 2000);
-
-            }
+        mRefreshLayout.setDelegate(new SimpleRefreshListener(){
 
             @Override
             public boolean onBGARefreshLayoutBeginLoadingMore(BGARefreshLayout refreshLayout) {
-
-                new Handler().postDelayed(new Runnable() {
-                    @Override
-                    public void run() {
-                        mRefreshLayout.endLoadingMore();
-                    }
-                }, 2000);
+                if (commentcurrpage < comentpagecount) {
+                    commentcurrpage++;
+                    loadComment(commentcurrpage);
+                } else {
+                    mRefreshLayout.endLoadingMore();
+                    Toast.makeText(FriendDetailActivity.this, "NOMORE", Toast.LENGTH_SHORT).show();
+                }
                 return true;
             }
         });
@@ -260,6 +247,7 @@ public class FriendDetailActivity extends AppBaseActivity {
                 mCommentsAdapter.setAvatar(response.getData().getAvatar_url());
                 mCommentsAdapter.setusername(response.getData().getUser_name());
                 mCommentDefaultAdapter.refresh();
+                mRefreshLayout.endLoadingMore();
             }
 
             @Override

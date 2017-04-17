@@ -6,6 +6,7 @@ import android.content.Intent;
 import android.graphics.Color;
 import android.graphics.drawable.Drawable;
 import android.os.Bundle;
+import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.text.TextUtils;
@@ -85,7 +86,7 @@ public class ChatActivity extends AppBaseActivity implements EMMessageListener, 
     public static final int REQUEST_DETAIL = 101;
     private static final int REQUEST_SELIMG = 102;
     @BindView(R.id.refreshLayout)
-    BGARefreshLayout mRefreshLayout;
+    SwipeRefreshLayout mRefreshLayout;
     @BindView(R.id.title_more)
     ImageView mTitleMore;
     @BindView(R.id.voicerecordview)
@@ -145,8 +146,11 @@ public class ChatActivity extends AppBaseActivity implements EMMessageListener, 
 
     ChatDraftBox mChatDraftBox;
 
+    /**
+     * 查看本地有没有草稿，如果有给他显示出来
+     */
     private void loadDraftFromDB() {
-        if (TextUtils.isEmpty(toChatUserName))return;
+        if (TextUtils.isEmpty(toChatUserName)) return;
         mChatDraftBox = DBHelper.getChatDraftBoxDao(this).queryBuilder().
                 where(ChatDraftBoxDao.Properties.Tochatuserid.eq(toChatUserName), ChatDraftBoxDao.Properties.MType.eq(mChatType))
                 .build().unique();
@@ -205,9 +209,10 @@ public class ChatActivity extends AppBaseActivity implements EMMessageListener, 
         mRelaInput.addOnLayoutChangeListener(new View.OnLayoutChangeListener() {
             @Override
             public void onLayoutChange(View v, int left, int top, int right, int bottom, int oldLeft, int oldTop, int oldRight, int oldBottom) {
-           if (Math.abs(bottom-oldBottom)> DensityUtil.getScreenHeight(ChatActivity.this)/3){
-               if (mMessageList!=null&&!mMessageList.isEmpty())mMessagerecyclerview.smoothScrollToPosition(mMessageList.size()-1);
-           }
+                if (Math.abs(bottom - oldBottom) > DensityUtil.getScreenHeight(ChatActivity.this) / 3) {
+                    if (mMessageList != null && !mMessageList.isEmpty())
+                        mMessagerecyclerview.smoothScrollToPosition(mMessageList.size() - 1);
+                }
             }
         });
     }
@@ -218,18 +223,15 @@ public class ChatActivity extends AppBaseActivity implements EMMessageListener, 
     }
 
     private void initrefreshlayout() {
-        BGAStickinessRefreshViewHolder mRefreshViewHolder = new BGAStickinessRefreshViewHolder(this, false);
-        mRefreshViewHolder.setStickinessColor(R.color.colorAccent);
-        mRefreshViewHolder.setRotateImage(R.drawable.bga_refresh_stickiness);
-//        mRefreshLayout.offsetTopAndBottom(88);
-        mRefreshLayout.setRefreshViewHolder(mRefreshViewHolder);
-        mRefreshLayout.setDelegate(new SimpleRefreshListener() {
+
+        mRefreshLayout.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
             @Override
-            public void onBGARefreshLayoutBeginRefreshing(BGARefreshLayout refreshLayout) {
+            public void onRefresh() {
                 loadMoreMsg();
-                mRefreshLayout.endRefreshing();
+                mRefreshLayout.setRefreshing(false);
             }
         });
+        mRefreshLayout.setColorSchemeColors(getResources().getColor(R.color.text_green));
     }
 
     /**
@@ -242,9 +244,6 @@ public class ChatActivity extends AppBaseActivity implements EMMessageListener, 
             List<EMMessage> mEMMessages = mConversation.loadMoreMsgFromDB(mMessageList.get(0).getMsgId(), DEFAULT_PAGESIZE);
             mMessageList.addAll(0, mEMMessages);
             mAdapter.setData(mMessageList);
-            mRefreshLayout.endRefreshing();
-        } else {
-            mRefreshLayout.endRefreshing();
         }
     }
 
@@ -347,8 +346,8 @@ public class ChatActivity extends AppBaseActivity implements EMMessageListener, 
             mMessageList.addAll(msgs);
         }
         mAdapter.setData(mMessageList);
-        if (mMessageList!=null&&!mMessageList.isEmpty())
-        mMessagerecyclerview.smoothScrollToPosition(mMessageList.size()-1);
+        if (mMessageList != null && !mMessageList.isEmpty())
+            mMessagerecyclerview.scrollToPosition(mMessageList.size() - 1);
     }
 
 
@@ -377,7 +376,7 @@ public class ChatActivity extends AppBaseActivity implements EMMessageListener, 
                 Glide.with(context).load(path).placeholder(R.drawable.logo).into(new ImageViewTarget<GlideDrawable>(imageView) {
                     @Override
                     protected void setResource(GlideDrawable resource) {
-                      imageView.setImageDrawable(resource);
+                        imageView.setImageDrawable(resource);
                     }
                 });
             }

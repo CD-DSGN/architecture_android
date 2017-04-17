@@ -42,6 +42,7 @@ public class SearchPersonAdapter extends CommonAdapter<SearchPersonResponse.Info
         holder.setVisible(R.id.rela_addfriend, data.getIs_friend() != 1);
         boolean hassamebook = isHassamebook(holder, data);
         holder.setVisible(R.id.rela_sameInterest, hassamebook);
+        holder.setVisible(R.id.text1, false);
         holder.setImageResource(R.id.gender,data.getGender()==1?R.drawable.iv_male:R.drawable.iv_female);
         holder.setOnClickListener(R.id.rela_addfriend, new View.OnClickListener() {
             @Override
