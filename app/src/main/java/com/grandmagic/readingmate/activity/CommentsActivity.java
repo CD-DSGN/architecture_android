@@ -318,6 +318,7 @@ public class CommentsActivity extends AppBaseActivity implements View.OnLayoutCh
 
         if (mDefaultEmptyAdapter == null) {
             mDefaultEmptyAdapter = new DefaultEmptyAdapter(mMAdapter, this, false);
+            mDefaultEmptyAdapter.setEmptyViewTextview(getString(R.string.no_reply_yet));
         }
         mMHeaderAndFooterWrapper = new HeaderAndFooterWrapper(mDefaultEmptyAdapter);
         mMHeaderAndFooterWrapper.addHeaderView(mView);

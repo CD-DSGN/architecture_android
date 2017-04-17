@@ -11,6 +11,7 @@ import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.StaggeredGridLayoutManager;
 import android.util.AttributeSet;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.MotionEvent;
 import android.view.View;
@@ -228,6 +229,7 @@ public class PullLoadMoreRecyclerView extends LinearLayout {
     }
 
     public void loadMore() {
+        Log.d("zhang:","loadmore deep");
         if (mPullLoadMoreListener != null && hasMore) {
             mFooterView.animate()
                     .translationY(0)
@@ -236,7 +238,13 @@ public class PullLoadMoreRecyclerView extends LinearLayout {
                     .setListener(new AnimatorListenerAdapter() {
                         @Override
                         public void onAnimationStart(Animator animation) {
-                            mFooterView.setVisibility(View.VISIBLE);
+                            if (isLoadMore) {
+                                mFooterView.setVisibility(View.VISIBLE);
+                                Log.e("zhang:", "loadmore visible");
+                            }else{
+                                mFooterView.setVisibility(View.GONE);
+                                Log.e("zhang:", "loadmore gone");
+                            }
                         }
                     })
                     .start();
@@ -255,8 +263,9 @@ public class PullLoadMoreRecyclerView extends LinearLayout {
         mFooterView.animate()
                 .translationY(mFooterView.getHeight())
                 .setDuration(300)
-                .setInterpolator(new AccelerateDecelerateInterpolator())
+                .setInterpolator(new AccelerateDecelerateInterpolator()).setStartDelay(500)
                 .start();
+        Log.e("zhang:", "setPullLoadMoreCompleted");
 
     }
 
