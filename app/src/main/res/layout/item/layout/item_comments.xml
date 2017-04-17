@@ -4,10 +4,12 @@
               android:layout_height="wrap_content"
 android:layout_marginTop="10px"
               android:orientation="vertical"
+              android:layout_marginLeft="60px"
+              android:layout_marginRight="60px"
               xmlns:tools="http://schemas.android.com/tools">
 
     <RelativeLayout
-        android:layout_width="618px"
+        android:layout_width="match_parent"
         android:layout_height="wrap_content">
 
         <ImageView
@@ -89,7 +91,7 @@ android:layout_marginTop="10px"
         />
 
     <RelativeLayout
-        android:layout_width="618px"
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:background="@drawable/bg_white_irr">
 
