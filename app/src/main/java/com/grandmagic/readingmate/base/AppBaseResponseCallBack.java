@@ -3,14 +3,11 @@ package com.grandmagic.readingmate.base;
 import android.app.Activity;
 import android.app.ProgressDialog;
 import android.content.Context;
-import android.content.Intent;
 
-import com.grandmagic.readingmate.activity.LoginActivity;
 import com.grandmagic.readingmate.consts.ApiErrorConsts;
 import com.grandmagic.readingmate.event.ConnectStateEvent;
 import com.grandmagic.readingmate.utils.ViewUtils;
 import com.hyphenate.EMError;
-import com.hyphenate.chat.EMClient;
 import com.orhanobut.logger.Logger;
 import com.tamic.novate.Novate;
 import com.tamic.novate.Throwable;
@@ -39,7 +36,10 @@ public abstract class AppBaseResponseCallBack<T> implements Novate.ResponseCallB
         mContext = context;
         mNeedLoading = needLoading;
 
+//        ProgressDialog pd = new ProgressDialog(context);
+//        pd.setProgressStyle(R.style.loading); 准备修改样式
         mLoadingView = (Object) new ProgressDialog(context);
+
     }
 
     public AppBaseResponseCallBack(Context context, boolean needLoading, boolean loadingOnce) {

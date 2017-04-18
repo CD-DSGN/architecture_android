@@ -26,4 +26,12 @@
         <item name="android:textSize">22px</item>
         <item name="android:textColor">#80999999</item>
     </style>
+
+    <style name="loading">loading
+        <item name="android:color">#ffaaee</item>
+
+
+
+
+    </style>
 </resources>
