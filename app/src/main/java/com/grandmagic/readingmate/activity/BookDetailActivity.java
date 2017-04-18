@@ -288,7 +288,7 @@ public class BookDetailActivity extends AppBaseActivity implements View.OnLayout
         mBottomlayout.setVisibility(s.getIs_follow() == 1 ? View.VISIBLE : View.GONE);
     }
 
-    @OnClick({R.id.back, R.id.submit, R.id.tv_last, R.id.tv_hot, R.id.coll_more, R.id.lin_share})
+    @OnClick({R.id.back, R.id.submit, R.id.tv_last, R.id.tv_hot, R.id.coll_more, R.id.lin_share,R.id.lin_collection})
     public void onClick(View view) {
         switch (view.getId()) {
             case R.id.back:
@@ -304,6 +304,7 @@ public class BookDetailActivity extends AppBaseActivity implements View.OnLayout
                 hotSelected();
                 break;
             case R.id.coll_more:
+            case R.id.lin_collection:
                 Intent mIntent = new Intent(BookDetailActivity.this, CollectedPersonActivity.class);
                 mIntent.putExtra(BOOK_ID, book_id);
                 startActivity(mIntent);
