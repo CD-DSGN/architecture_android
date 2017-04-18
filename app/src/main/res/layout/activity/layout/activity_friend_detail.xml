@@ -117,7 +117,7 @@
                         <TextView
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
-                            android:text="读家账号"
+                            tools:text="签名:"
                             android:textColor="#999999"
                             android:textSize="24px"
                             />

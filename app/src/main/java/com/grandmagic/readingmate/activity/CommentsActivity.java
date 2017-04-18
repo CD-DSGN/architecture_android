@@ -490,9 +490,14 @@ public class CommentsActivity extends AppBaseActivity implements View.OnLayoutCh
         }
 
         if (mCommentsDetailResponoseBean != null) {
-            mPopupWindow.setData(
-                    mCommentsDetailResponoseBean.getBook_name(),
-                    mCommentsDetailResponoseBean.getContent(), KitUtils.getAbsoluteUrl(mCommentsDetailResponoseBean.getPhoto()), "https://a.mlinks.cc/AKVC?book_id=3", "分享书评");
+//            mPopupWindow.setData(
+//                    mCommentsDetailResponoseBean.getBook_name(),
+//                    mCommentsDetailResponoseBean.getContent(), KitUtils.getAbsoluteUrl(mCommentsDetailResponoseBean.getPhoto()), "https://a.mlinks.cc/AKVC?book_id=3", "分享书评");
+
+            mPopupWindow.setCommentData(mCommentsDetailResponoseBean.getBook_name(),
+                    mCommentsDetailResponoseBean.getComment_id(),
+                    mCommentsDetailResponoseBean.getContent(), mCommentsDetailResponoseBean.getPhoto(),
+                    "7.5");              //缺图书评分字段
             mPopupWindow.show();
         }
 

@@ -3,7 +3,6 @@ package com.grandmagic.readingmate.activity;
 import android.content.Intent;
 import android.graphics.drawable.BitmapDrawable;
 import android.os.Bundle;
-import android.os.Handler;
 import android.support.design.widget.AppBarLayout;
 import android.support.design.widget.CollapsingToolbarLayout;
 import android.support.design.widget.CoordinatorLayout;
@@ -172,7 +171,8 @@ public class FriendDetailActivity extends AppBaseActivity {
     private void initSimplePersonInfo(PersonInfo mPersonInfo) {
         ImageLoader.loadCircleImage(this, Environment.BASEULR_PRODUCTION + mPersonInfo.getAvatar(), mAvatar);
         mName.setText(mPersonInfo.getNickname());
-        mClientid.setText(mPersonInfo.getClientid());
+//        mClientid.setText(mPersonInfo.getClientid());
+        mClientid.setText(mPersonInfo.getSignature());
         isFriend = ContactModel.isFriend(this, mPersonInfo.getUser_id());
         if (isFriend) {//是否已经是好友关系
             mFab.hide();
@@ -285,6 +285,7 @@ public class FriendDetailActivity extends AppBaseActivity {
         final CustomDialog mDialog = new CustomDialog(this);
         mDialog.setMaxNum(20);
         mDialog.setYesStr("发送");
+        mDialog.setTitle(R.string.add_friend_request);
         mDialog.setOnBtnOnclickListener(new CustomDialog.BtnOnclickListener() {
             @Override
             public void onYesClick() {
