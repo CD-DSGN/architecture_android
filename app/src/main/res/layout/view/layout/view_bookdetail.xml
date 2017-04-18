@@ -28,16 +28,7 @@
         android:layout_height="wrap_content">
 
 
-    <!--封面-->
-    <com.grandmagic.readingmate.view.IrregularImageView
-        android:id="@+id/iv_conver"
-        android:layout_width="556px"
-        android:layout_height="742px"
-        android:elevation="5dp"
-       android:layout_centerHorizontal="true"
-        android:layout_marginRight="20px"
-        android:scaleType="centerCrop"
-        />
+
         <LinearLayout
             android:layout_marginTop="40px"
             android:paddingTop="702px"
@@ -179,5 +170,16 @@
 
 
     </LinearLayout>
+        <!--封面-->
+        <com.grandmagic.readingmate.view.IrregularImageView
+            android:id="@+id/iv_conver"
+            android:layout_width="556px"
+            android:layout_height="742px"
+            android:elevation="5dp"
+            android:layout_centerHorizontal="true"
+            android:layout_marginRight="20px"
+            android:scaleType="centerCrop"
+
+            />
     </RelativeLayout>
     </LinearLayout>
