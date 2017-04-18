@@ -171,7 +171,7 @@
 
     </LinearLayout>
         <!--封面-->
-        <com.grandmagic.readingmate.view.IrregularImageView
+        <ImageView
             android:id="@+id/iv_conver"
             android:layout_width="556px"
             android:layout_height="742px"

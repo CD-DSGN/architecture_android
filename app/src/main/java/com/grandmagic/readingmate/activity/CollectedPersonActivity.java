@@ -2,8 +2,6 @@ package com.grandmagic.readingmate.activity;
 
 import android.content.Intent;
 import android.os.Bundle;
-import android.support.v7.widget.LinearLayoutManager;
-import android.support.v7.widget.RecyclerView;
 import android.widget.ImageView;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
@@ -161,6 +159,7 @@ public class CollectedPersonActivity extends AppBaseActivity implements Collecti
         final CustomDialog mDialog = new CustomDialog(this);
         mDialog.setMaxNum(20);
         mDialog.setYesStr("发送");
+        mDialog.setTitle(R.string.add_friend_request);
         mDialog.setOnBtnOnclickListener(new CustomDialog.BtnOnclickListener() {
             @Override
             public void onYesClick() {

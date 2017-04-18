@@ -8,7 +8,6 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.support.design.widget.AppBarLayout;
 import android.support.design.widget.CoordinatorLayout;
-import android.text.TextUtils;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -26,11 +25,9 @@ import com.grandmagic.readingmate.adapter.HomeBookAdapter;
 import com.grandmagic.readingmate.base.AppBaseFragment;
 import com.grandmagic.readingmate.base.AppBaseResponseCallBack;
 import com.grandmagic.readingmate.bean.response.DisplayBook;
-import com.grandmagic.readingmate.consts.AppConsts;
 import com.grandmagic.readingmate.event.BookStateEvent;
 import com.grandmagic.readingmate.model.BookModel;
 import com.grandmagic.readingmate.utils.AutoUtils;
-import com.grandmagic.readingmate.utils.KitUtils;
 import com.grandmagic.readingmate.view.SharePopUpWindow;
 import com.orhanobut.logger.Logger;
 import com.refreshlab.PullLoadMoreRecyclerView;
@@ -259,13 +256,9 @@ public class HomeFragment extends AppBaseFragment implements HomeBookAdapter.Cli
         }
 
         DisplayBook.InfoBean bookInfo = mBookList.get(position);
-        if (!TextUtils.isEmpty(bookInfo.getPhoto())) {
-            mPopupWindow.setData(mContext.getString(R.string.app_name) + ":" + bookInfo.getBook_name(), bookInfo.getSynopsis(),
-                    KitUtils.getAbsoluteUrl(bookInfo.getPhoto()), AppConsts.APP_URL, "");
-        } else {
-            mPopupWindow.setData(mContext.getString(R.string.app_name) + ":" + bookInfo.getBook_name(), bookInfo.getSynopsis(),
-                    R.drawable.iv_no_book, AppConsts.APP_URL, "");
-        }
+        mPopupWindow.setBookData(bookInfo.getBook_name(), bookInfo.getBook_id(),
+                bookInfo.getSynopsis(), bookInfo.getPhoto(), bookInfo.getTotal_score());
+
         mPopupWindow.show();
 
 

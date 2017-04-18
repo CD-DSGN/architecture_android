@@ -21,7 +21,6 @@ import com.grandmagic.readingmate.base.AppBaseResponseCallBack;
 import com.grandmagic.readingmate.bean.db.BookComment;
 import com.grandmagic.readingmate.bean.response.BookdetailResponse;
 import com.grandmagic.readingmate.bean.response.HistoryComment;
-import com.grandmagic.readingmate.consts.AppConsts;
 import com.grandmagic.readingmate.db.BookCommentDao;
 import com.grandmagic.readingmate.db.DBHelper;
 import com.grandmagic.readingmate.event.BookStateEvent;
@@ -32,9 +31,7 @@ import com.grandmagic.readingmate.utils.DateUtil;
 import com.grandmagic.readingmate.utils.DensityUtil;
 import com.grandmagic.readingmate.utils.ImageLoader;
 import com.grandmagic.readingmate.utils.InputMethodUtils;
-import com.grandmagic.readingmate.utils.KitUtils;
 import com.grandmagic.readingmate.view.HotcommentView;
-import com.grandmagic.readingmate.view.IrregularImageView;
 import com.grandmagic.readingmate.view.SharePopUpWindow;
 import com.grandmagic.readingmate.view.StarView;
 import com.tamic.novate.NovateResponse;
@@ -79,7 +76,7 @@ public class BookDetailActivity extends AppBaseActivity implements View.OnLayout
     @BindView(R.id.bookname)
     TextView mBookname;
     @BindView(R.id.iv_conver)
-    IrregularImageView mIvConver;
+    ImageView mIvConver;
     @BindView(R.id.avatar)
     ImageView mAvatar;
     @BindView(R.id.author)
@@ -267,11 +264,11 @@ public class BookDetailActivity extends AppBaseActivity implements View.OnLayout
     public void setbookView(BookdetailResponse s) {
         mBookname.setText(s.getBook_name());
 
-        mAuthor.setText("作者" + s.getAuthor());
+        mAuthor.setText("" + s.getAuthor());
         mAuthor.setVisibility(TextUtils.isEmpty(s.getAuthor()) ? View.GONE : View.VISIBLE);
-        mTvPublisher.setText("出版社" + s.getPublisher());
+        mTvPublisher.setText("" + s.getPublisher());
         mTvPublisher.setVisibility(TextUtils.isEmpty(s.getPublisher()) ? View.GONE : View.VISIBLE);
-        mTvPublistime.setText("出版时间" + DateUtil.timeTodate("yyyy-MM-dd", s.getPub_date()));
+        mTvPublistime.setText("" + DateUtil.timeTodate("yyyy-MM-dd", s.getPub_date()));
         mTvPublistime.setVisibility(TextUtils.isEmpty(s.getPub_date()) ? View.GONE : View.VISIBLE);
         mAbout.setText(s.getSynopsis());
         mCollectionNum.setText(s.getCollect_count());
@@ -310,13 +307,9 @@ public class BookDetailActivity extends AppBaseActivity implements View.OnLayout
                 break;
             case R.id.lin_share:
                 if (mBookdetailResponse != null) {
-                    if (!TextUtils.isEmpty(mBookdetailResponse.getPhoto())) {
-                        mSharePopUpWindow.setData(this.getString(R.string.app_name) + ":" + mBookdetailResponse.getBook_name(), mBookdetailResponse.getSynopsis(),
-                                KitUtils.getAbsoluteUrl(mBookdetailResponse.getPhoto()), AppConsts.APP_URL, "");
-                    } else {
-                        mSharePopUpWindow.setData(this.getString(R.string.app_name) + ":" + mBookdetailResponse.getBook_name(), mBookdetailResponse.getSynopsis(),
-                                R.drawable.iv_no_book, AppConsts.APP_URL, "");
-                    }
+                    mSharePopUpWindow.setBookData(mBookdetailResponse.getBook_name(), book_id,
+                            mBookdetailResponse.getSynopsis(), mBookdetailResponse.getPhoto(),
+                            mBookdetailResponse.getTotal_score());
                     mSharePopUpWindow.show();
                 }
                 break;

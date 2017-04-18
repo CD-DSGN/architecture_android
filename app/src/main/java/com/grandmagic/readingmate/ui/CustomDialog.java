@@ -15,6 +15,7 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.grandmagic.readingmate.R;
+import com.grandmagic.readingmate.base.AppBaseApplication;
 import com.grandmagic.readingmate.utils.AutoUtils;
 
 import butterknife.BindView;
@@ -154,6 +155,11 @@ public class CustomDialog extends Dialog {
     public void setTitle(String title) {
         titleStr = title;
     }
+
+    public void setTitle(int id) {
+        titleStr = AppBaseApplication.ctx.getString(id);
+    }
+
 
     public void setYesStr(String mYesStr) {
         yesStr = mYesStr;

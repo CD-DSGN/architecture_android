@@ -4,6 +4,7 @@ import android.app.Activity;
 import android.app.ProgressDialog;
 import android.content.Context;
 import android.graphics.drawable.BitmapDrawable;
+import android.text.TextUtils;
 import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -13,7 +14,9 @@ import android.widget.PopupWindow;
 import android.widget.Toast;
 
 import com.grandmagic.readingmate.R;
+import com.grandmagic.readingmate.consts.AppConsts;
 import com.grandmagic.readingmate.utils.AutoUtils;
+import com.grandmagic.readingmate.utils.KitUtils;
 import com.grandmagic.readingmate.utils.ViewUtils;
 import com.orhanobut.logger.Logger;
 import com.umeng.socialize.ShareAction;
@@ -214,6 +217,25 @@ public class SharePopUpWindow extends PopupWindow {
         mShareActionDefault.withMedia(web).withText(content);
         return mShareActionDefault;
     }
+
+    //分享图书
+    public ShareAction setBookData(String book_name, String book_id, String book_cotent, String book_cover, String rate) {
+        if (!TextUtils.isEmpty(book_cover)) {
+            return setData(book_name, "读家评分:"+ rate + "\n" + book_cotent, KitUtils.getAbsoluteUrl(book_cover), AppConsts.APP_URL, "#大术读家#");              //地址肯定还要改
+        }else{
+            return setData(book_name, "读家评分:"+ rate + "\n" + book_cotent, R.drawable.iv_no_book, AppConsts.APP_URL, "#大术读家#");
+        }
+    }
+
+    //分享评论
+    public ShareAction setCommentData(String book_name, String comment_id, String comment_cotent, String book_cover, String rate) {
+        if (!TextUtils.isEmpty(book_cover)) {
+            return setData(book_name, "读家评分:"+ rate + "\n" + comment_cotent, KitUtils.getAbsoluteUrl(book_cover), AppConsts.APP_URL, "#读家评论#");              //地址肯定还要改
+        }else{
+            return setData(book_name, "读家评分:"+ rate + "\n" + comment_cotent, R.drawable.iv_no_book, AppConsts.APP_URL, "#读家评论#");
+        }
+    }
+
 }
 
 

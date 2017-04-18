@@ -1,14 +1,12 @@
 package com.grandmagic.readingmate.adapter;
 
 import android.content.Context;
-import android.text.TextUtils;
 import android.view.View;
 import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.grandmagic.readingmate.R;
 import com.grandmagic.readingmate.bean.response.DisplayBook;
-import com.grandmagic.readingmate.consts.AppConsts;
 import com.grandmagic.readingmate.utils.DateUtil;
 import com.grandmagic.readingmate.utils.ImageLoader;
 import com.grandmagic.readingmate.utils.KitUtils;
@@ -108,14 +106,9 @@ public class MyCollectBookAdapter extends CommonAdapter<DisplayBook.InfoBean> {
                     if (sharePopUpWindow == null) {
                         sharePopUpWindow = new SharePopUpWindow(mContext);
                     }
-                    if (!TextUtils.isEmpty(book.getPhoto())) {
-                        sharePopUpWindow.setData(mContext.getString(R.string.app_name)+":" + book.getBook_name(), book.getSynopsis(),
-                                KitUtils.getAbsoluteUrl(book.getPhoto()), AppConsts.APP_URL, "");
-                    }else{
-                        sharePopUpWindow.setData(mContext.getString(R.string.app_name)+":" + book.getBook_name(), book.getSynopsis(),
-                                R.drawable.iv_no_book, AppConsts.APP_URL, "");
-                    }
-                    sharePopUpWindow.show();
+
+                    sharePopUpWindow.setBookData(book.getBook_name(), book.getBook_id(),
+                            book.getSynopsis(), book.getPhoto(), book.getTotal_score());
                     sharePopUpWindow.show();
                 }
             });
