@@ -6,6 +6,7 @@ import android.content.Intent;
 import android.graphics.Color;
 import android.graphics.drawable.Drawable;
 import android.os.Bundle;
+import android.os.Handler;
 import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
@@ -343,8 +344,14 @@ public class ChatActivity extends AppBaseActivity implements EMMessageListener, 
             mMessageList.addAll(msgs);
         }
         mAdapter.setData(mMessageList);
-        if (mMessageList != null && !mMessageList.isEmpty())
-            mMessagerecyclerview.scrollToPosition(mMessageList.size() - 1);
+        new Handler().postDelayed(new Runnable() {//加一个延迟。防止界面没绘制完成就要滚动导致不能滚动到最下边
+            @Override
+            public void run() {
+                if (mMessageList != null && !mMessageList.isEmpty())
+                    mMessagerecyclerview.smoothScrollToPosition(mMessageList.size() - 1);
+            }
+        },500);
+
     }
 
 

@@ -24,6 +24,7 @@ import com.tamic.novate.Throwable;
 import com.tamic.novate.util.SPUtils;
 import com.tbruyelle.rxpermissions.RxPermissions;
 
+import org.greenrobot.eventbus.EventBus;
 import org.greenrobot.greendao.query.QueryBuilder;
 
 import java.util.List;
@@ -145,4 +146,10 @@ public class SplashActivity extends AppBaseActivity {
             if (canDestroy) toMain();
         }
     };
+
+    @Override
+    protected void onResume() {
+        super.onResume();
+        EventBus.getDefault().unregister(this);
+    }
 }

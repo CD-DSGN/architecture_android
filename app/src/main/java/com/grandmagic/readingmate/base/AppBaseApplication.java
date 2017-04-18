@@ -54,9 +54,9 @@ public class AppBaseApplication extends Application {
         //友盟分享配置
         Config.DEBUG = true;
         UMShareAPI.get(this);
-        initUPush();
         CrashReport.setIsDevelopmentDevice(this, true);
         CrashReport.initCrashReport(getApplicationContext());
+        initUPush();
     }
 
     private void initUPush() {
