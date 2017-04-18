@@ -189,7 +189,7 @@ public class PersonalFragment extends AppBaseFragment implements MyCommentAdapte
 
         //获取个人信息
         if (mUserInfoModel == null) {
-            mUserInfoModel = new UserInfoModel(mContext, new AppBaseResponseCallBack<NovateResponse<UserInfoResponseBean>>(mContext, true) {
+            mUserInfoModel = new UserInfoModel(mContext, new AppBaseResponseCallBack<NovateResponse<UserInfoResponseBean>>(mContext, false) {
                 @Override
                 public void onSuccee(NovateResponse<UserInfoResponseBean> response) {
                     if (response != null && response.getData() != null) {

@@ -1,6 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <RelativeLayout
     xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/activity_capture"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
@@ -11,47 +12,51 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent"/>
 
+
+
     <RelativeLayout
         android:id="@+id/capture_container"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:layout_alignParentTop="true"
         android:layout_alignParentLeft="true"
         android:layout_alignParentStart="true"
-       >
+        android:layout_alignParentTop="true"
+        >
 
         <RelativeLayout
+            android:id="@+id/rl_capture_title"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginTop="64px"
-            android:id="@+id/rl_capture_title">
+            android:layout_marginTop="64px">
+
             <ImageView
+                android:id="@+id/iv_capture_left_arrow"
                 android:layout_width="32px"
                 android:layout_height="22px"
-                android:src="@drawable/ic_left_arrow"
-                android:layout_marginLeft="20px"
                 android:layout_centerVertical="true"
-                android:id="@+id/iv_capture_left_arrow"/>
+                android:layout_marginLeft="20px"
+                android:src="@drawable/ic_left_arrow"/>
 
             <TextView
                 android:layout_width="244px"
                 android:layout_height="wrap_content"
-                android:textColor="#ffffff"
-                android:text="@string/scan_bar"
-                android:layout_toRightOf="@id/iv_capture_left_arrow"
+                android:layout_centerHorizontal="true"
                 android:layout_marginLeft="208px"
+                android:layout_toRightOf="@id/iv_capture_left_arrow"
                 android:gravity="center"
-                android:textSize="48px"
-                android:layout_centerHorizontal="true"/>
+                android:text="@string/scan_bar"
+                android:textColor="#ffffff"
+                android:textSize="48px"/>
         </RelativeLayout>
+
 
         <RelativeLayout
             android:id="@+id/capture_crop_view"
-            android:layout_marginTop="244px"
             android:layout_width="506px"
             android:layout_height="506px"
             android:layout_below="@id/rl_capture_title"
             android:layout_centerHorizontal="true"
+            android:layout_marginTop="244px"
             android:background="@drawable/ic_scan_scope">
 
             <ImageView
@@ -64,35 +69,66 @@
                 android:src="@drawable/ic_scan_line"
                 />
 
+            <TextView
+                android:id="@+id/tv_error_msg"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_centerInParent="true"
+                android:text="@string/no_book_we_will_try"
+                android:textColor="@color/white"
+                android:visibility="invisible"
+                android:textSize="@dimen/textsize_28px"
+                android:gravity="center_horizontal"
+                android:lineSpacingExtra="10px"
+                android:textAlignment="center"
+                />
+
+            <TextView
+                android:id="@+id/tv_scan_again"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_below="@+id/tv_error_msg"
+                android:text="点此再次扫码"
+                android:textColor="@color/white"
+                android:layout_centerHorizontal="true"
+                android:layout_marginTop="40px"
+                android:visibility="invisible"
+                android:clickable="true"
+                android:textSize="@dimen/textsize_24px"
+                />
+
         </RelativeLayout>
 
         <RelativeLayout
+            android:id="@+id/rl_capture_hint"
             android:layout_width="wrap_content"
             android:layout_height="66px"
-            android:layout_marginTop="56px"
-            android:layout_centerHorizontal="true"
-            android:id="@+id/rl_capture_hint"
             android:layout_below="@id/capture_crop_view"
+            android:layout_centerHorizontal="true"
+            android:layout_marginTop="56px"
 
             >
+
             <TextView
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
+                android:layout_alignParentTop="true"
+                android:gravity="center"
+                android:text="@string/put_bar_into_scan_scope"
                 android:textColor="#999999"
                 android:textSize="24px"
-                android:text="@string/put_bar_into_scan_scope"
-                android:gravity="center"
-                android:layout_alignParentTop="true"
+                android:id="@+id/hint1"
                 />
 
             <TextView
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
+                android:layout_alignParentBottom="true"
+                android:gravity="center"
+                android:text="@string/scan_immediately"
                 android:textColor="#999999"
                 android:textSize="24px"
-                android:text="@string/scan_immediately"
-                android:gravity="center"
-                android:layout_alignParentBottom="true"/>
+                android:id="@+id/hint2"/>
         </RelativeLayout>
 
     </RelativeLayout>

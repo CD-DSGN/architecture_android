@@ -47,12 +47,12 @@ private TextView emptyTextview;
 
     private void initView(Context mContext) {
         mLoadView = View.inflate(mContext, R.layout.view_rv_loading, null);
-        mLoadView.setLayoutParams(new LinearLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.MATCH_PARENT));
+        mLoadView.setLayoutParams(new LinearLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.WRAP_CONTENT));
         AutoUtils.auto(mLoadView);
         isload = true;
         mEmptyView = View.inflate(mContext, R.layout.view_rv_empty, null);
         emptyTextview= (TextView) mEmptyView.findViewById(R.id.emptytext);
-        mEmptyView.setLayoutParams(new LinearLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.MATCH_PARENT));
+        mEmptyView.setLayoutParams(new LinearLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.WRAP_CONTENT));
         AutoUtils.auto(mEmptyView);
         if (need_show_loading == true) {
             setEmptyView(mLoadView);

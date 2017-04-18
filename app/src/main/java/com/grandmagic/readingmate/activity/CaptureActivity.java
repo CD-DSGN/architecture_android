@@ -1,6 +1,5 @@
 package com.grandmagic.readingmate.activity;
 
-import android.Manifest;
 import android.annotation.TargetApi;
 import android.app.AlertDialog;
 import android.content.DialogInterface;
@@ -11,22 +10,24 @@ import android.os.Handler;
 import android.util.Log;
 import android.view.SurfaceHolder;
 import android.view.SurfaceView;
+import android.view.View;
 import android.view.Window;
 import android.view.WindowManager;
 import android.view.animation.Animation;
 import android.view.animation.TranslateAnimation;
 import android.widget.ImageView;
 import android.widget.RelativeLayout;
+import android.widget.TextView;
 
 import com.google.zxing.Result;
 import com.grandmagic.readingmate.R;
 import com.grandmagic.readingmate.base.AppBaseResponseCallBack;
 import com.grandmagic.readingmate.bean.response.ScanBookResponse;
+import com.grandmagic.readingmate.consts.ApiErrorConsts;
 import com.grandmagic.readingmate.model.BookModel;
-import com.grandmagic.readingmate.permission.CameraPermission;
 import com.grandmagic.readingmate.utils.AutoUtils;
 import com.tamic.novate.NovateResponse;
-import com.tbruyelle.rxpermissions.RxPermissions;
+import com.tamic.novate.Throwable;
 import com.xys.libzxing.zxing.camera.CameraManager;
 import com.xys.libzxing.zxing.decode.DecodeThread;
 import com.xys.libzxing.zxing.utils.BeepManager;
@@ -38,6 +39,7 @@ import java.lang.reflect.Field;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
+import butterknife.OnClick;
 
 public class CaptureActivity extends com.xys.libzxing.zxing.activity.CaptureActivity implements SurfaceHolder.Callback {
 
@@ -50,12 +52,25 @@ public class CaptureActivity extends com.xys.libzxing.zxing.activity.CaptureActi
     RelativeLayout mCaptureCropView;
     @BindView(R.id.capture_container)
     RelativeLayout mCaptureContainer;
+    @BindView(R.id.tv_error_msg)
+    TextView mTvErrorMsg;
+    @BindView(R.id.tv_scan_again)
+    TextView mTvScanAgain;
+    @BindView(R.id.rl_capture_hint)
+    RelativeLayout mRlCaptureHint;
+    @BindView(R.id.activity_capture)
+    RelativeLayout mActivityCapture;
+
+    @BindView(R.id.hint1)
+    TextView mHint1;
+    @BindView(R.id.hint2)
+    TextView mHint2;
 
     private CameraManager cameraManager;
     private CaptureActivityHandler handler;
     private InactivityTimer inactivityTimer;
     private BeepManager beepManager;
-
+    TranslateAnimation animation;
     private Rect mCropRect = null;
     private boolean isHasSurface = false;
 
@@ -90,13 +105,13 @@ public class CaptureActivity extends com.xys.libzxing.zxing.activity.CaptureActi
         super.onCreate(savedInstanceState);
         Window window = getWindow();
         window.addFlags(WindowManager.LayoutParams.FLAG_KEEP_SCREEN_ON);
-        setContentView(R.layout.activity_capture);
+        setContentView(R.layout.activity_capture1);
         ButterKnife.bind(this);
         AutoUtils.auto(this);
         setTranslucentStatus(true);//状态栏透明（APi19+）
         inactivityTimer = new InactivityTimer(this);
         beepManager = new BeepManager(this);
-        TranslateAnimation animation = new TranslateAnimation(Animation.RELATIVE_TO_PARENT, 0.0f, Animation
+        animation = new TranslateAnimation(Animation.RELATIVE_TO_PARENT, 0.0f, Animation
                 .RELATIVE_TO_PARENT, 0.0f, Animation.RELATIVE_TO_PARENT, 0.0f, Animation.RELATIVE_TO_PARENT,
                 0.9f);
         animation.setDuration(4500);
@@ -116,6 +131,10 @@ public class CaptureActivity extends com.xys.libzxing.zxing.activity.CaptureActi
         // first launch. That led to bugs where the scanning rectangle was the
         // wrong size and partially
         // off screen.
+        startScan();
+    }
+
+    private void startScan() {
         cameraManager = new CameraManager(getApplication());
 
         handler = null;
@@ -136,6 +155,11 @@ public class CaptureActivity extends com.xys.libzxing.zxing.activity.CaptureActi
 
     @Override
     protected void onPause() {
+        stopScan();
+        super.onPause();
+    }
+
+    private void stopScan() {
         if (handler != null) {
             handler.quitSynchronously();
             handler = null;
@@ -146,7 +170,6 @@ public class CaptureActivity extends com.xys.libzxing.zxing.activity.CaptureActi
         if (!isHasSurface) {
             mCapturePreview.getHolder().removeCallback(this);
         }
-        super.onPause();
     }
 
     @Override
@@ -195,10 +218,34 @@ public class CaptureActivity extends com.xys.libzxing.zxing.activity.CaptureActi
                 Intent resultIntent = new Intent();
                 bundle.putInt("width", mCropRect.width());
                 bundle.putInt("height", mCropRect.height());
-                bundle.putString("result",response.getData().getBook_id());
+                bundle.putString("result", response.getData().getBook_id());
                 resultIntent.putExtras(bundle);
                 CaptureActivity.this.setResult(RESULT_OK, resultIntent);
                 CaptureActivity.this.finish();
+            }
+
+            @Override
+            public void onError(Throwable e) {
+                super.onError(e);
+                //停止动画
+
+                if (e.getCode() == ApiErrorConsts.SCAN_NO_BOOK) {  //
+                    mCaptureScanLine.clearAnimation();
+                    //显示提示信息
+                    mTvErrorMsg.setVisibility(View.VISIBLE);
+                    mTvScanAgain.setVisibility(View.VISIBLE);
+                    //隐藏扫描线
+                    mCaptureScanLine.setVisibility(View.INVISIBLE);
+
+                    mCaptureContainer.setBackgroundResource(R.drawable.bg_main_black);
+                    mHint1.setVisibility(View.INVISIBLE);
+                    mHint2.setVisibility(View.INVISIBLE);
+                    stopScan();
+                }else if(e.getCode() == ApiErrorConsts.SUBSCRIBE_ALREADY){  //这本书已经关注过了,跳转到图书详情页面,要改错误处理方式,// TODO: 2017/4/18  
+                    restartPreviewAfterDelay(10);
+                }else{   //其他情况，toast简单提示一下，继续开始扫描
+                    restartPreviewAfterDelay(10);
+                }
             }
         });
 
@@ -311,5 +358,20 @@ public class CaptureActivity extends com.xys.libzxing.zxing.activity.CaptureActi
             e.printStackTrace();
         }
         return 0;
+    }
+
+    @OnClick(R.id.tv_scan_again)
+    public void onClick() {
+        mCaptureContainer.setBackgroundResource(0);
+        mTvScanAgain.setVisibility(View.INVISIBLE);
+        mTvErrorMsg.setVisibility(View.INVISIBLE);
+        mHint1.setVisibility(View.VISIBLE);
+        mHint2.setVisibility(View.VISIBLE);
+        mCaptureScanLine.startAnimation(animation);
+        mCaptureScanLine.setVisibility(View.VISIBLE);
+        startScan();
+        restartPreviewAfterDelay(10);
+
+
     }
 }

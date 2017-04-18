@@ -135,7 +135,7 @@ public class CommentsActivity extends AppBaseActivity implements View.OnLayoutCh
         mPage = new Page(mReplys, CommentDetailModel.PAGE_COUNT_REPLYS);
 
         if (mReplyCallBack == null) {
-            mReplyCallBack = new AppBaseResponseCallBack<NovateResponse<ReplyInfoResponseBean>>(CommentsActivity.this, true) {
+            mReplyCallBack = new AppBaseResponseCallBack<NovateResponse<ReplyInfoResponseBean>>(CommentsActivity.this, true, true) {
                 @Override
                 public void onSuccee(NovateResponse<ReplyInfoResponseBean> response) {
                     ReplyInfoResponseBean replyInfoResponseBean = response.getData();

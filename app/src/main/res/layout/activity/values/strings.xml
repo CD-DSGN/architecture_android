@@ -109,5 +109,6 @@
     <string name="confirm_delete">是否删除该内容</string>
     <string name="add_friend_request">好友申请</string>
     <string name="no_reply_yet">还没有人回复过，抢沙发吧</string>
+    <string name="no_book_we_will_try">暂未发现此书资源\n(后台会努力争取该资源的)</string>
 
 </resources>
