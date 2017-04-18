@@ -44,7 +44,7 @@ import java.util.List;
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
-import cn.bingoogolapple.refreshlayout.BGAStickinessRefreshViewHolder;
+
 
 import static com.taobao.accs.ACCSManager.mContext;
 
@@ -100,7 +100,7 @@ public class CommentsActivity extends AppBaseActivity implements View.OnLayoutCh
     AppBaseResponseCallBack mReplyCallBack;
     Page mPage;
 
-    BGAStickinessRefreshViewHolder mRefreshViewHolder;
+
 
     List<ReplyInfoResponseBean.InfoBean> mReplys = new ArrayList<>();
 

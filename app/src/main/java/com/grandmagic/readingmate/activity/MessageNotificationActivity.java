@@ -18,6 +18,7 @@ import com.grandmagic.readingmate.base.AppBaseResponseCallBack;
 import com.grandmagic.readingmate.bean.response.NotificationCommentResponse;
 import com.grandmagic.readingmate.model.CommentRecordModel;
 import com.grandmagic.readingmate.utils.AutoUtils;
+import com.refreshlab.PullLoadMoreRecyclerView;
 import com.tamic.novate.NovateResponse;
 import com.tamic.novate.Throwable;
 
@@ -27,8 +28,7 @@ import java.util.List;
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
-import cn.bingoogolapple.refreshlayout.BGARefreshLayout;
-import cn.bingoogolapple.refreshlayout.BGAStickinessRefreshViewHolder;
+
 
 public class MessageNotificationActivity extends AppBaseActivity {
 
@@ -41,9 +41,8 @@ public class MessageNotificationActivity extends AppBaseActivity {
     @BindView(R.id.titlelayout)
     RelativeLayout mTitlelayout;
     @BindView(R.id.recyclerview)
-    RecyclerView mRecyclerview;
-    @BindView(R.id.refreshLayout)
-    BGARefreshLayout mRefreshLayout;
+    PullLoadMoreRecyclerView mRecyclerview;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -62,7 +61,7 @@ public class MessageNotificationActivity extends AppBaseActivity {
     private void initview() {
         mTitle.setText("评论记录");
         initRefresh();
-        mRecyclerview.setLayoutManager(new LinearLayoutManager(this));
+        mRecyclerview.setLinearLayout();
         MultiItemTypeAdapter mInnerAdapter = new MultiItemTypeAdapter(this, mStrings);
         mInnerAdapter.addItemViewDelegate(new NotificationCommentDelagte(this))
                 .addItemViewDelegate(new NotificationThumbDelagte(this));
@@ -87,50 +86,39 @@ public class MessageNotificationActivity extends AppBaseActivity {
                 if (response.getData().getInfo() != null && !response.getData().getInfo().isEmpty())
                     mStrings.addAll(response.getData().getInfo());
                 mAdapter.refresh();
-                mRefreshLayout.endLoadingMore();
-                mRefreshLayout.endRefreshing();
+           mRecyclerview.setPullLoadMoreCompleted();
             }
 
             @Override
             public void onError(Throwable e) {
                 super.onError(e);
                 mAdapter.refresh();
-                mRefreshLayout.endLoadingMore();
-                mRefreshLayout.endRefreshing();
+                mRecyclerview.setPullLoadMoreCompleted();
             }
         });
     }
 
 
     private void initRefresh() {
-        BGAStickinessRefreshViewHolder mRefreshViewHolder;
-        mRefreshViewHolder = new BGAStickinessRefreshViewHolder(this, true);
-        mRefreshViewHolder.setStickinessColor(R.color.colorAccent);
-        mRefreshViewHolder.setRotateImage(R.drawable.bga_refresh_stickiness);
-
-        mRefreshLayout.setRefreshViewHolder(mRefreshViewHolder);
-        mRefreshLayout.setDelegate(new BGARefreshLayout.BGARefreshLayoutDelegate() {
-            @Override
-            public void onBGARefreshLayoutBeginRefreshing(BGARefreshLayout refreshLayout) {
-                currpage = 1;
-                mStrings.clear();
+    mRecyclerview.setOnPullLoadMoreListener(new PullLoadMoreRecyclerView.PullLoadMoreListener() {
+        @Override
+        public void onRefresh() {
+            currpage = 1;
+            mStrings.clear();
+            loadAllReply(currpage);
+        }
+        @Override
+        public void onLoadMore() {
+            if (currpage < pagecount) {
+                currpage++;
                 loadAllReply(currpage);
-            }
 
-            @Override
-            public boolean onBGARefreshLayoutBeginLoadingMore(BGARefreshLayout refreshLayout) {
-                if (currpage < pagecount) {
-                    currpage++;
-                    loadAllReply(currpage);
-                    return true;
-                } else {
-                    Toast.makeText(MessageNotificationActivity.this, "NOMORE", Toast.LENGTH_SHORT).show();
-                    mRefreshLayout.endLoadingMore();
-                    mRefreshLayout.endRefreshing();
-                    return false;
-                }
+            } else {
+                Toast.makeText(MessageNotificationActivity.this, "NOMORE", Toast.LENGTH_SHORT).show();
+           mRecyclerview.setPullLoadMoreCompleted();
             }
-        });
+        }
+    });
     }
 
     @OnClick(R.id.back)

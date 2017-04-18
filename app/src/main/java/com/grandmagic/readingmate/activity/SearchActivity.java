@@ -28,16 +28,16 @@ import com.grandmagic.readingmate.bean.response.HotWordResponse;
 import com.grandmagic.readingmate.model.BookModel;
 import com.grandmagic.readingmate.utils.AutoUtils;
 import com.grandmagic.readingmate.view.FlowLayout;
+import com.refreshlab.PullLoadMoreRecyclerView;
 import com.tamic.novate.NovateResponse;
+import com.tamic.novate.Throwable;
 
 import java.util.ArrayList;
 import java.util.List;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
-import cn.bingoogolapple.refreshlayout.BGARefreshLayout;
-import cn.bingoogolapple.refreshlayout.BGAStickinessRefreshViewHolder;
-import cn.bingoogolapple.refreshlayout.util.SimpleRefreshListener;
+
 
 //搜索页面
 public class SearchActivity extends AppBaseActivity {
@@ -53,15 +53,14 @@ public class SearchActivity extends AppBaseActivity {
     ImageView mIvScanlist;
     BookModel mModel;
     @BindView(R.id.recyclerview_book)
-    RecyclerView mRecyclerviewBook;
+    PullLoadMoreRecyclerView mRecyclerviewBook;
     @BindView(R.id.view_search)
     LinearLayout mViewSearch;
     @BindView(R.id.view_hotSearch)
     LinearLayout mViewHotSearch;
     @BindView(R.id.lin_scanhis)
     LinearLayout mLinScanhis;
-    @BindView(R.id.refreshLayout)
-    BGARefreshLayout mRefreshLayout;
+
     private List<BookSearchResponse.SearchResultBean> bookListData = new ArrayList<>();
     private String keyword;//输入的搜索关键词
 
@@ -123,28 +122,27 @@ public class SearchActivity extends AppBaseActivity {
 
     private void initview() {
         mAdapter = new SearchBookAdapter(this, bookListData);
-        mRecyclerviewBook.setLayoutManager(new LinearLayoutManager(this));
+        mRecyclerviewBook.setLinearLayout();
         mRecyclerviewBook.setAdapter(mAdapter);
         initRefresh();
     }
     private void initRefresh() {
-        BGAStickinessRefreshViewHolder mRefreshViewHolder = new BGAStickinessRefreshViewHolder(this, true);
-        mRefreshViewHolder.setStickinessColor(R.color.colorAccent);
-        mRefreshViewHolder.setRotateImage(R.drawable.bga_refresh_stickiness);
-//        mRefreshLayout.offsetTopAndBottom(88);
-        mRefreshLayout.setRefreshViewHolder(mRefreshViewHolder);
-        mRefreshLayout.setPullDownRefreshEnable(false);
-        mRefreshLayout.setDelegate(new SimpleRefreshListener() {
+      mRecyclerviewBook.setPullRefreshEnable(false);
+        mRecyclerviewBook.setOnPullLoadMoreListener(new PullLoadMoreRecyclerView.PullLoadMoreListener() {
             @Override
-            public boolean onBGARefreshLayoutBeginLoadingMore(BGARefreshLayout refreshLayout) {
+            public void onRefresh() {
+
+            }
+
+            @Override
+            public void onLoadMore() {
                 if (currpage < pagecount) {
                     currpage++;
                     search(currpage);
-                    return true;
                 } else {
+                    mRecyclerviewBook.setPullLoadMoreCompleted();
                     Toast.makeText(SearchActivity.this, "NOMORE", Toast.LENGTH_SHORT).show();
                 }
-                return false;
             }
         });
     }
@@ -195,8 +193,16 @@ public class SearchActivity extends AppBaseActivity {
                 mAdapter.refreshData(bookListData);
                 List<BookSearchResponse.ScanRecordBean> mScanList = response.getData().getScan_record();
                 setScanList(mScanList);
+                mRecyclerviewBook.setPullLoadMoreCompleted();
+            }
+
+            @Override
+            public void onError(Throwable e) {
+                super.onError(e);
+                mRecyclerviewBook.setPullLoadMoreCompleted();
             }
         });
+
     }
 
     /**

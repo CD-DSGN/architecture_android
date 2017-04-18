@@ -11,19 +11,14 @@
 
     <include layout="@layout/title_layout"/>
 
-    <cn.bingoogolapple.refreshlayout.BGARefreshLayout
-        xmlns:android="http://schemas.android.com/apk/res/android"
-        android:id="@+id/BGARefreshLayout"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content">
 
-        <android.support.v7.widget.RecyclerView
+        <com.refreshlab.PullLoadMoreRecyclerView
             android:id="@+id/rv_likers"
             android:layout_width="match_parent"
-            android:layout_height="0dp"
+            android:layout_height="match_parent"
             android:layout_marginTop="50px"
-            android:layout_weight="1"
+
             />
-    </cn.bingoogolapple.refreshlayout.BGARefreshLayout>
+
 
 </LinearLayout>

@@ -88,19 +88,14 @@
 
         <include layout="@layout/view_imerror"/>
 
-        <cn.bingoogolapple.refreshlayout.BGARefreshLayout
-            android:id="@+id/refreshLayout"
-            android:layout_width="match_parent"
-            android:layout_height="match_parent">
 
-            <com.grandmagic.readingmate.view.SwipRecycleView
+
+            <com.refreshlab.PullLoadMoreRecyclerView
                 android:id="@+id/recyclerview"
                 android:layout_width="match_parent"
-                android:layout_height="0dp"
-                android:layout_weight="1"
+                android:layout_height="match_parent"
                 >
 
-            </com.grandmagic.readingmate.view.SwipRecycleView>
-        </cn.bingoogolapple.refreshlayout.BGARefreshLayout>
+            </com.refreshlab.PullLoadMoreRecyclerView>
     </LinearLayout>
 </LinearLayout>

@@ -40,6 +40,7 @@ import com.grandmagic.readingmate.ui.CustomDialog;
 import com.grandmagic.readingmate.utils.AutoUtils;
 import com.grandmagic.readingmate.utils.ImageLoader;
 import com.grandmagic.readingmate.utils.InputMethodUtils;
+import com.refreshlab.PullLoadMoreRecyclerView;
 import com.tamic.novate.NovateResponse;
 import com.tamic.novate.Throwable;
 import com.tamic.novate.util.Environment;
@@ -52,9 +53,7 @@ import java.util.List;
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
-import cn.bingoogolapple.refreshlayout.BGARefreshLayout;
-import cn.bingoogolapple.refreshlayout.BGAStickinessRefreshViewHolder;
-import cn.bingoogolapple.refreshlayout.util.SimpleRefreshListener;
+
 
 /**
  * @see #mPersonInfo 此页面进入时必传
@@ -79,7 +78,7 @@ public class FriendDetailActivity extends AppBaseActivity {
     @BindView(R.id.title_more)
     ImageView mTitleMore;
     @BindView(R.id.recyclerview)
-    RecyclerView mRecyclerview;
+    PullLoadMoreRecyclerView mRecyclerview;
     @BindView(R.id.collapsingtoolbarlayout)
     CollapsingToolbarLayout mCollapsingtoolbarlayout;
     @BindView(R.id.appbarlayout)
@@ -89,8 +88,7 @@ public class FriendDetailActivity extends AppBaseActivity {
     @BindView(R.id.coordinatorlayout)
     CoordinatorLayout mCoordinatorlayout;
     private static final String TAG = "FriendDetailActivity";
-    @BindView(R.id.refreshLayout)
-    BGARefreshLayout mRefreshLayout;
+
     @BindView(R.id.rootview)
     LinearLayout mRootview;
     String userid;
@@ -140,7 +138,7 @@ public class FriendDetailActivity extends AppBaseActivity {
     private void initview() {
         mTitleMore.setVisibility(View.VISIBLE);
         mTitle.setText("详细信息");
-        mRecyclerview.setLayoutManager(new LinearLayoutManager(this));
+        mRecyclerview.setLinearLayout();
         mCommentsAdapter = new CommentsAdapter(this, mCommentInfoBeanList);
         mCommentDefaultAdapter = new DefaultEmptyAdapter(mCommentsAdapter, this);
         mRecyclerview.setAdapter(mCommentDefaultAdapter);
@@ -193,23 +191,23 @@ public class FriendDetailActivity extends AppBaseActivity {
      * 刷新相关
      */
     private void initrefreshLayout() {
-        BGAStickinessRefreshViewHolder mRefreshViewHolder = new BGAStickinessRefreshViewHolder(this, true);
-        mRefreshViewHolder.setStickinessColor(R.color.colorAccent);
-        mRefreshViewHolder.setRotateImage(R.drawable.bga_refresh_stickiness);
-        mRefreshLayout.setPullDownRefreshEnable(false);
-        mRefreshLayout.setRefreshViewHolder(mRefreshViewHolder);
-        mRefreshLayout.setDelegate(new SimpleRefreshListener(){
+        mRecyclerview.setPullRefreshEnable(false);
+        mRecyclerview.setOnPullLoadMoreListener(new PullLoadMoreRecyclerView.PullLoadMoreListener() {
+            @Override
+            public void onRefresh() {
+
+            }
 
             @Override
-            public boolean onBGARefreshLayoutBeginLoadingMore(BGARefreshLayout refreshLayout) {
+            public void onLoadMore() {
                 if (commentcurrpage < comentpagecount) {
                     commentcurrpage++;
                     loadComment(commentcurrpage);
                 } else {
-                    mRefreshLayout.endLoadingMore();
+
                     Toast.makeText(FriendDetailActivity.this, "NOMORE", Toast.LENGTH_SHORT).show();
+                    mRecyclerview.setPullLoadMoreCompleted();
                 }
-                return true;
             }
         });
     }
@@ -247,13 +245,14 @@ public class FriendDetailActivity extends AppBaseActivity {
                 mCommentsAdapter.setAvatar(response.getData().getAvatar_url());
                 mCommentsAdapter.setusername(response.getData().getUser_name());
                 mCommentDefaultAdapter.refresh();
-                mRefreshLayout.endLoadingMore();
+                mRecyclerview.setPullLoadMoreCompleted();
             }
 
             @Override
             public void onError(Throwable e) {
                 super.onError(e);
                 mCommentDefaultAdapter.refresh();
+                mRecyclerview.setPullLoadMoreCompleted();
             }
         });
     }

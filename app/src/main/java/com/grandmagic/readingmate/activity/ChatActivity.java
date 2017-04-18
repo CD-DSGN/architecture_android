@@ -69,9 +69,7 @@ import java.util.List;
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
-import cn.bingoogolapple.refreshlayout.BGARefreshLayout;
-import cn.bingoogolapple.refreshlayout.BGAStickinessRefreshViewHolder;
-import cn.bingoogolapple.refreshlayout.util.SimpleRefreshListener;
+
 import rx.functions.Action1;
 
 /**

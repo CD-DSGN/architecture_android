@@ -21,6 +21,7 @@ import com.grandmagic.readingmate.model.SearchUserModel;
 import com.grandmagic.readingmate.ui.CustomDialog;
 import com.grandmagic.readingmate.utils.AutoUtils;
 import com.grandmagic.readingmate.utils.InputMethodUtils;
+import com.refreshlab.PullLoadMoreRecyclerView;
 import com.tamic.novate.NovateResponse;
 import com.tamic.novate.Throwable;
 
@@ -30,9 +31,7 @@ import java.util.List;
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
-import cn.bingoogolapple.refreshlayout.BGANormalRefreshViewHolder;
-import cn.bingoogolapple.refreshlayout.BGARefreshLayout;
-import cn.bingoogolapple.refreshlayout.util.SimpleRefreshListener;
+
 
 
 public class CollectedPersonActivity extends AppBaseActivity implements CollectionAdapter.AdapterLisenter {
@@ -46,10 +45,9 @@ public class CollectedPersonActivity extends AppBaseActivity implements Collecti
     @BindView(R.id.titlelayout)
     RelativeLayout mTitlelayout;
     @BindView(R.id.recyclerview)
-    RecyclerView mRecyclerview;
+    PullLoadMoreRecyclerView mRecyclerview;
     BookModel mModel;
-    @BindView(R.id.refreshLayout)
-    BGARefreshLayout mRefreshLayout;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -71,22 +69,24 @@ public class CollectedPersonActivity extends AppBaseActivity implements Collecti
         loadFollower(cpage);
     }
 
-    private void loadFollower(int mCpage) {
+    private void loadFollower(final int mCpage) {
         mModel.loadAllFollower(book_id, mCpage, new AppBaseResponseCallBack<NovateResponse<BookFollowersResponse>>(this) {
             @Override
             public void onSuccee(NovateResponse<BookFollowersResponse> response) {
-                pagecount=response.getData().getPageCount();
+                if (mCpage==1) {
+                    pagecount = response.getData().getPageCount();
+                }
                 if (response.getData().getInfo() != null && !response.getData().getInfo().isEmpty())
                     mList.addAll(response.getData().getInfo());
                 mAdapter.refresh();
-                mRefreshLayout.endLoadingMore();
+                mRecyclerview.setPullLoadMoreCompleted();
             }
 
             @Override
             public void onError(Throwable e) {
                 super.onError(e);
                 mAdapter.refresh();
-                mRefreshLayout.endLoadingMore();
+                mRecyclerview.setPullLoadMoreCompleted();
             }
         });
     }
@@ -96,30 +96,36 @@ public class CollectedPersonActivity extends AppBaseActivity implements Collecti
 
     private void initview() {
         mTitle.setText("收藏过的用户");
-        mRecyclerview.setLayoutManager(new LinearLayoutManager(this));
+        mRecyclerview.setLinearLayout();
         CollectionAdapter mCollectionAdapter = new CollectionAdapter(this, mList);
         mCollectionAdapter.setLisenter(this);
         mAdapter = new DefaultEmptyAdapter(mCollectionAdapter, this);
         mRecyclerview.setAdapter(mAdapter);
         initrefresh();
     }
-private void initrefresh(){
-    mRefreshLayout.setRefreshViewHolder(new BGANormalRefreshViewHolder(this,true));
-    mRefreshLayout.setPullDownRefreshEnable(false);
-    mRefreshLayout.setDelegate(new SimpleRefreshListener(){
-        @Override
-        public boolean onBGARefreshLayoutBeginLoadingMore(BGARefreshLayout refreshLayout) {
-            if (cpage<pagecount){
-                cpage++;
+
+    private void initrefresh() {
+        mRecyclerview.setOnPullLoadMoreListener(new PullLoadMoreRecyclerView.PullLoadMoreListener() {
+            @Override
+            public void onRefresh() {
+                cpage = 1;
+                mList.clear();
                 loadFollower(cpage);
-            }else {
-                Toast.makeText(CollectedPersonActivity.this, "nomre", Toast.LENGTH_SHORT).show();
-                mRefreshLayout.endLoadingMore();
             }
-            return super.onBGARefreshLayoutBeginLoadingMore(refreshLayout);
-        }
-    });
-}
+
+            @Override
+            public void onLoadMore() {
+                if (cpage < pagecount) {
+                    cpage++;
+                    loadFollower(cpage);
+                } else {
+                    Toast.makeText(CollectedPersonActivity.this, "nomre", Toast.LENGTH_SHORT).show();
+                    mRecyclerview.setPullLoadMoreCompleted();
+                }
+            }
+        });
+    }
+
     @OnClick(R.id.back)
     public void onClick() {
         finish();

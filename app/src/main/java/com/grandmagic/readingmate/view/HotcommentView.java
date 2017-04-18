@@ -17,6 +17,7 @@ import com.grandmagic.readingmate.bean.response.BookCommentResponse;
 import com.grandmagic.readingmate.event.BookStateEvent;
 import com.grandmagic.readingmate.event.RefreshHotCommentEvent;
 import com.grandmagic.readingmate.model.BookModel;
+import com.refreshlab.PullLoadMoreRecyclerView;
 import com.tamic.novate.NovateResponse;
 import com.tamic.novate.Throwable;
 
@@ -27,9 +28,7 @@ import java.util.List;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
-import cn.bingoogolapple.refreshlayout.BGARefreshLayout;
-import cn.bingoogolapple.refreshlayout.BGAStickinessRefreshViewHolder;
-import cn.bingoogolapple.refreshlayout.util.SimpleRefreshListener;
+
 
 /**
  * Created by lps on 2017/3/14.
@@ -43,11 +42,10 @@ public class HotcommentView extends FrameLayout implements BookCommentsAdapter.A
     public static final String COMMENT_TIME = "pub_time";
     public static final String COMMENT_LIKE = "like_times";
     @BindView(R.id.recyclerview)
-    RecyclerView mRecyclerview;
-    @BindView(R.id.refreshLayout)
-    BGARefreshLayout mRefreshLayout;
+    PullLoadMoreRecyclerView mRecyclerview;
+
     private Context mContext;
-    private BGAStickinessRefreshViewHolder mRefreshViewHolder;
+
 
     public HotcommentView(Context context, String flag, BookModel mModel, String mBook_id) {
         super(context);
@@ -72,13 +70,13 @@ public class HotcommentView extends FrameLayout implements BookCommentsAdapter.A
                 if (mComments != null && !mComments.isEmpty())
                     mList.addAll(mComments);
                 mAdapter.refresh();
-                mRefreshLayout.endLoadingMore();
+              mRecyclerview.setPullLoadMoreCompleted();
             }
 
             @Override
             public void onError(Throwable e) {
                 super.onError(e);
-                mRefreshLayout.endLoadingMore();
+              mRecyclerview.setPullLoadMoreCompleted();
             }
         });
     }
@@ -97,7 +95,7 @@ public class HotcommentView extends FrameLayout implements BookCommentsAdapter.A
         View mInflate = LayoutInflater.from(mContext).inflate(R.layout.view_hotcomment, this);
         ButterKnife.bind(this, mInflate);
         initRefresh();
-        mRecyclerview.setLayoutManager(new LinearLayoutManager(mContext));
+        mRecyclerview.setLinearLayout();
         mList = new ArrayList<>();
         BookCommentsAdapter mInnerAdapter = new BookCommentsAdapter(mContext, mList);
         mInnerAdapter.setListener(this);
@@ -107,25 +105,22 @@ public class HotcommentView extends FrameLayout implements BookCommentsAdapter.A
 
 
     private void initRefresh() {
-        mRefreshViewHolder = new BGAStickinessRefreshViewHolder(mContext, true);
-        mRefreshViewHolder.setStickinessColor(R.color.colorAccent);
-        mRefreshViewHolder.setRotateImage(R.drawable.bga_refresh_stickiness);
-//        mRefreshLayout.offsetTopAndBottom(88);
-        mRefreshLayout.setPullDownRefreshEnable(false);
-        mRefreshLayout.setRefreshViewHolder(mRefreshViewHolder);
-        mRefreshLayout.setDelegate(new SimpleRefreshListener() {
+     mRecyclerview.setPullRefreshEnable(false);
+        mRecyclerview.setOnPullLoadMoreListener(new PullLoadMoreRecyclerView.PullLoadMoreListener() {
+            @Override
+            public void onRefresh() {
+
+            }
 
             @Override
-            public boolean onBGARefreshLayoutBeginLoadingMore(BGARefreshLayout refreshLayout) {
+            public void onLoadMore() {
                 if (currpage < pagecount) {
                     currpage++;
                     loadData(currpage);
-                    return true;
                 } else {
-                    mRefreshLayout.endLoadingMore();
+                   mRecyclerview.setPullLoadMoreCompleted();
                     Toast.makeText(mContext, "NOMORE", Toast.LENGTH_SHORT).show();
                 }
-                return false;
             }
         });
     }

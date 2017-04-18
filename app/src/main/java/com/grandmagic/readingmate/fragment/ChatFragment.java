@@ -43,6 +43,7 @@ import com.hyphenate.chat.EMClient;
 import com.hyphenate.chat.EMConversation;
 import com.hyphenate.chat.EMMessage;
 import com.orhanobut.logger.Logger;
+import com.refreshlab.PullLoadMoreRecyclerView;
 import com.tamic.novate.util.SPUtils;
 
 import org.greenrobot.eventbus.EventBus;
@@ -60,9 +61,7 @@ import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
 import butterknife.Unbinder;
-import cn.bingoogolapple.refreshlayout.BGARefreshLayout;
-import cn.bingoogolapple.refreshlayout.BGAStickinessRefreshViewHolder;
-import cn.bingoogolapple.refreshlayout.util.SimpleRefreshListener;
+
 
 /**
  * A simple {@link Fragment} subclass.
@@ -77,9 +76,8 @@ public class ChatFragment extends AppBaseFragment implements RecentConversationD
     @BindView(R.id.rela_friend)
     RelativeLayout mRelaFriend;
     @BindView(R.id.recyclerview)
-    SwipRecycleView mRecyclerview;//最近会话列表
-    @BindView(R.id.refreshLayout)
-    BGARefreshLayout mRefreshLayout;
+    PullLoadMoreRecyclerView mRecyclerview;//最近会话列表
+
     @BindView(R.id.tv_connect_errormsg)
     TextView mTvConnectErrormsg;
     @BindView(R.id.view_error)
@@ -120,7 +118,7 @@ public class ChatFragment extends AppBaseFragment implements RecentConversationD
     private void initview() {
         setstate();
         mContext = getActivity();
-        mRecyclerview.setLayoutManager(new LinearLayoutManager(mContext));
+        mRecyclerview.setLinearLayout();
         //为了以后也许会加入群组会话等，使用MultiItemTypeAdapter，便于扩展
         MultiItemTypeAdapter minnerAdapter = new MultiItemTypeAdapter(mContext, mConversations);
         RecentConversationDelagate mRecentConversationDelagate = new RecentConversationDelagate(mContext);
@@ -163,16 +161,17 @@ public class ChatFragment extends AppBaseFragment implements RecentConversationD
     }
 
     private void initrefreshlayout() {
-        BGAStickinessRefreshViewHolder mRefreshViewHolder = new BGAStickinessRefreshViewHolder(mContext, false);
-        mRefreshViewHolder.setStickinessColor(R.color.colorAccent);
-        mRefreshViewHolder.setRotateImage(R.drawable.bga_refresh_stickiness);
-//        mRefreshLayout.offsetTopAndBottom(88);
-        mRefreshLayout.setRefreshViewHolder(mRefreshViewHolder);
-        mRefreshLayout.setDelegate(new SimpleRefreshListener() {
+        mRecyclerview.setPushRefreshEnable(false);
+        mRecyclerview.setOnPullLoadMoreListener(new PullLoadMoreRecyclerView.PullLoadMoreListener() {
             @Override
-            public void onBGARefreshLayoutBeginRefreshing(BGARefreshLayout refreshLayout) {
+            public void onRefresh() {
                 onrefreshConversation();
-                mRefreshLayout.endRefreshing();
+                mRecyclerview.setPullLoadMoreCompleted();
+            }
+
+            @Override
+            public void onLoadMore() {
+
             }
         });
     }

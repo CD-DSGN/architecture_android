@@ -21,6 +21,7 @@ import com.grandmagic.readingmate.utils.AutoUtils;
 import com.grandmagic.readingmate.utils.InputMethodUtils;
 import com.grandmagic.readingmate.utils.Page;
 import com.grandmagic.readingmate.utils.ViewUtils;
+import com.refreshlab.PullLoadMoreRecyclerView;
 import com.tamic.novate.NovateResponse;
 import com.tamic.novate.Throwable;
 
@@ -30,8 +31,7 @@ import java.util.List;
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
-import cn.bingoogolapple.refreshlayout.BGARefreshLayout;
-import cn.bingoogolapple.refreshlayout.BGAStickinessRefreshViewHolder;
+
 
 public class LikersInfoActivity extends AppBaseActivity implements LikersAdapter.AdapterLisenter {
 
@@ -40,16 +40,15 @@ public class LikersInfoActivity extends AppBaseActivity implements LikersAdapter
     @BindView(R.id.title)
     TextView mTitle;
     @BindView(R.id.rv_likers)
-    RecyclerView mRvLikers;
+    PullLoadMoreRecyclerView mRvLikers;
 
     Page mPage;
-    @BindView(R.id.BGARefreshLayout)
-    BGARefreshLayout mRefreshLayout;
+
     private List<LikersInfoResponseBean.InfoBean> mLikers = new ArrayList<>();
     CommentDetailModel mCommentDetailModel;
     String mCommentID;
 
-    BGAStickinessRefreshViewHolder mRefreshViewHolder;
+
 
 
     AppBaseResponseCallBack mCallBack;
@@ -84,13 +83,11 @@ public class LikersInfoActivity extends AppBaseActivity implements LikersAdapter
         }
 
 
-
         if (mCallBack == null) {
             mCallBack = new AppBaseResponseCallBack<NovateResponse<LikersInfoResponseBean>>(LikersInfoActivity.this) {
                 @Override
                 public void onSuccee(NovateResponse<LikersInfoResponseBean> response) {
-                    mRefreshLayout.endLoadingMore();
-                    mRefreshLayout.endRefreshing();
+                    mRvLikers.setPullLoadMoreCompleted();
                     LikersInfoResponseBean likersInfoResponseBean = response.getData();
                     try {
                         mPage.total_num = Integer.parseInt(likersInfoResponseBean.getTotal_num());
@@ -109,8 +106,7 @@ public class LikersInfoActivity extends AppBaseActivity implements LikersAdapter
                 @Override
                 public void onError(Throwable e) {
                     super.onError(e);
-                    mRefreshLayout.endLoadingMore();
-                    mRefreshLayout.endRefreshing();
+                    mRvLikers.setPullLoadMoreCompleted();
                 }
             };
         }
@@ -127,35 +123,29 @@ public class LikersInfoActivity extends AppBaseActivity implements LikersAdapter
     private void initView() {
         mTitle.setText(R.string.likes_info);
 
-        mRvLikers.setLayoutManager(new LinearLayoutManager(this));
+        mRvLikers.setLinearLayout();
         mRvLikers.setAdapter(mLikersAdapter);
         initRefresh();
 
     }
 
     private void initRefresh() {
-        mRefreshViewHolder = new BGAStickinessRefreshViewHolder(this, true);
-        mRefreshViewHolder.setStickinessColor(R.color.colorAccent);
-        mRefreshViewHolder.setRotateImage(R.drawable.bga_refresh_stickiness);
-
-        mRefreshLayout.setRefreshViewHolder(mRefreshViewHolder);
-        mRefreshLayout.setDelegate(new BGARefreshLayout.BGARefreshLayoutDelegate() {
+        mRvLikers.setOnPullLoadMoreListener(new PullLoadMoreRecyclerView.PullLoadMoreListener() {
             @Override
-            public void onBGARefreshLayoutBeginRefreshing(BGARefreshLayout refreshLayout) {
+            public void onRefresh() {
                 mCommentDetailModel.getAllLikes(mCommentID, mCallBack, 1);
                 mCallBack.isRefresh = true;
             }
 
             @Override
-            public boolean onBGARefreshLayoutBeginLoadingMore(BGARefreshLayout refreshLayout) {
+            public void onLoadMore() {
                 if (mPage.hasMore()) {
                     mCommentDetailModel.getAllLikes(mCommentID, mCallBack, mPage.cur_page);
                     mCallBack.isRefresh = false;
                 } else {
                     ViewUtils.showToast("暂无更多数据");
-                    return false;
+                    mRvLikers.setPullLoadMoreCompleted();
                 }
-                return true;
             }
         });
     }
@@ -227,6 +217,4 @@ public class LikersInfoActivity extends AppBaseActivity implements LikersAdapter
             }
         });
     }
-
-
 }

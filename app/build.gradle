@@ -87,7 +87,6 @@ dependencies {
     compile 'com.android.support:design:25.1.0'
     //权限请求库
     compile 'com.tbruyelle.rxpermissions:rxpermissions:0.9.1@aar'
-    compile project(':library_refresh')
     //loading图，先加上，到时候设计图处理啊再改
     compile 'com.daimajia.numberprogressbar:library:1.2@aar'
     //    通用adapter
