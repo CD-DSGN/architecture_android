@@ -78,7 +78,6 @@ public class FriendActivity extends AppBaseActivity implements ContactItemDelaga
         ButterKnife.bind(this);
         AutoUtils.auto(this);
         setTranslucentStatus(true);
-        EventBus.getDefault().register(this);
         initview();
         initdata();
     }
@@ -280,11 +279,7 @@ public class FriendActivity extends AppBaseActivity implements ContactItemDelaga
         mEmptyAdapter.refresh();
     }
 
-    @Override
-    protected void onDestroy() {
-        super.onDestroy();
-        EventBus.getDefault().unregister(this);
-    }
+
 
     /**
      * 设置备注

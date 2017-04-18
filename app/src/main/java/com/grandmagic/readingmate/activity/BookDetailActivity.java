@@ -133,7 +133,6 @@ public class BookDetailActivity extends AppBaseActivity implements View.OnLayout
         ButterKnife.bind(this);
         AutoUtils.auto(this);
         setTranslucentStatus(true);
-        EventBus.getDefault().register(this);
         initdata();
         initView();
         initlistener();
@@ -385,7 +384,6 @@ public class BookDetailActivity extends AppBaseActivity implements View.OnLayout
             DBHelper.getBookCommentDao(this).insertOrReplace(mBookComment);
             DBHelper.close();
         }
-        EventBus.getDefault().unregister(this);
         super.onDestroy();
     }
 

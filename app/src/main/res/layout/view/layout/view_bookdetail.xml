@@ -171,6 +171,8 @@
 在深夜跟你叙述，叙述他走过的千山万水。那么多篇章，有温暖的，有落单的
 有疯狂的。"
         tool:textColor="#333333"
+        android:layout_marginLeft="@dimen/textsize_26px"
+        android:layout_marginRight="@dimen/textsize_26px"
         />
 
 

@@ -130,7 +130,6 @@ public class ChatActivity extends AppBaseActivity implements EMMessageListener, 
         ButterKnife.bind(this);
         AutoUtils.auto(this);
         setTranslucentStatus(true);
-        EventBus.getDefault().register(this);
         initData();
         initview();
         initlistener();
@@ -540,7 +539,6 @@ public class ChatActivity extends AppBaseActivity implements EMMessageListener, 
 
     @Override
     protected void onDestroy() {
-        EventBus.getDefault().unregister(this);
         if (VoicePlayClickListener.isPlaying) {//activity destroy的时候如果还在播放音频，停止播放
             VoicePlayClickListener.currentPlayListener.stopPlayVoice();
         }

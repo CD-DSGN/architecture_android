@@ -108,7 +108,7 @@ public class MainActivity extends AppBaseActivity {
         setContentView(R.layout.activity_main);
         ButterKnife.bind(this);
         AutoUtils.auto(this);
-        EventBus.getDefault().register(this);
+
         initdata();
         new RxPermissions(this).request(Manifest.permission.WRITE_EXTERNAL_STORAGE).subscribe(new Action1<Boolean>() {
             @Override
@@ -403,37 +403,7 @@ public class MainActivity extends AppBaseActivity {
         EMClient.getInstance().chatManager().removeMessageListener(mIMMessageListenerMain);
     }
 
-    AlertDialog mDialog;
 
-    @Subscribe(threadMode = ThreadMode.MAIN)
-    public void onMessageEvent(ConnectStateEvent mEvent) {
-        String state = SPUtils.getInstance().getString(this, SPUtils.IM_STATE);
-        if (Integer.valueOf(state) == (EMError.USER_LOGIN_ANOTHER_DEVICE)) {
-            if (mDialog==null) {
-                AlertDialog.Builder mBuilder = new AlertDialog.Builder(this);
-                mBuilder.setNegativeButton("取消", new DialogInterface.OnClickListener() {
-                    @Override
-                    public void onClick(DialogInterface dialog, int which) {
-                        mDialog.dismiss();
-                    }
-                });
-                mBuilder.setPositiveButton("重新登陆", new DialogInterface.OnClickListener() {
-                    @Override
-                    public void onClick(DialogInterface dialog, int which) {
-                        mDialog.dismiss();
-                        SPUtils.getInstance().clearToken(MainActivity.this);
-                        EMClient.getInstance().logout(true);//环信的退出
-                        startActivity(new Intent(MainActivity.this, LoginActivity.class));
-                        finish();
-                    }
-                });
-                mDialog = mBuilder.create();
-            }
-            mDialog.setTitle("下线通知");
-            mDialog.setMessage("账号已在其他设备登陆，您被迫下线");
-            mDialog.show();
-        }
-    }
 
     @Subscribe(threadMode = ThreadMode.MAIN)
     public void bindDeviceToken(BindDeviceTokenEvent mEvent) {
@@ -453,7 +423,5 @@ public class MainActivity extends AppBaseActivity {
     @Override
     protected void onDestroy() {
         super.onDestroy();
-        EventBus.getDefault().unregister(this);
-
     }
 }
