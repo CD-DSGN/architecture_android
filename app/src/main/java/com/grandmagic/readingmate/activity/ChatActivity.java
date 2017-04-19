@@ -44,12 +44,15 @@ import com.grandmagic.readingmate.db.ChatDraftBoxDao;
 import com.grandmagic.readingmate.db.DBHelper;
 import com.grandmagic.readingmate.event.ContactDeletedEvent;
 import com.grandmagic.readingmate.event.FriendDeleteEvent;
+import com.grandmagic.readingmate.event.RefreshHotCommentEvent;
+import com.grandmagic.readingmate.event.RefreshMsgAdapterEvent;
 import com.grandmagic.readingmate.listener.VoicePlayClickListener;
 import com.grandmagic.readingmate.utils.AutoUtils;
 import com.grandmagic.readingmate.utils.DensityUtil;
 import com.grandmagic.readingmate.utils.IMHelper;
 import com.grandmagic.readingmate.utils.InputMethodUtils;
 import com.grandmagic.readingmate.view.VoiceRecordView;
+import com.hyphenate.EMCallBack;
 import com.hyphenate.EMMessageListener;
 import com.hyphenate.chat.EMClient;
 import com.hyphenate.chat.EMConversation;
@@ -273,6 +276,26 @@ public class ChatActivity extends AppBaseActivity implements EMMessageListener, 
             return;
         }
         EMClient.getInstance().chatManager().sendMessage(mMessage);
+        mMessage.setMessageStatusCallback(new EMCallBack() {
+            @Override
+            public void onSuccess() {
+                EventBus.getDefault().post(new RefreshMsgAdapterEvent());
+                Log.e(TAG, "onSuccess() called");
+            }
+
+            @Override
+            public void onError(int mI, String mS) {
+                EventBus.getDefault().post(new RefreshMsgAdapterEvent());
+                Log.e(TAG, "onError() called with: mI = [" + mI + "], mS = [" + mS + "]");
+
+            }
+
+            @Override
+            public void onProgress(int mI, String mS) {
+            EventBus.getDefault().post(new RefreshMsgAdapterEvent());
+                Log.e(TAG, "onProgress() called with: mI = [" + mI + "], mS = [" + mS + "]");
+            }
+        });
         mMessageList.add(mMessage);
         mAdapter.setData(mMessageList);
         mEtInput.setText("");
@@ -431,6 +454,7 @@ public class ChatActivity extends AppBaseActivity implements EMMessageListener, 
             //判断是否就是当前会话
             if (toChatUserName.equals(username)) {
                 mMessageList.add(msg);
+                mConversation.markMessageAsRead(msg.getMsgId());//标记为已读
                 runOnUiThread(new Runnable() {
                     @Override
                     public void run() {
@@ -541,6 +565,11 @@ public class ChatActivity extends AppBaseActivity implements EMMessageListener, 
     @Subscribe(threadMode = ThreadMode.MAIN)
     public void contactDeleted(ContactDeletedEvent mEvent) {
         isfriend = false;
+    }
+    @Subscribe(threadMode = ThreadMode.MAIN)
+    public void refreshAdapter(RefreshMsgAdapterEvent mEvent) {
+        mAdapter.notifyDataSetChanged();
+        Log.e(TAG, "refreshAdapter() called with: mEvent = [" + mEvent + "]");
     }
 
     @Override

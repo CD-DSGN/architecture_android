@@ -1,68 +1,83 @@
 <?xml version="1.0" encoding="utf-8"?>
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+                xmlns:tools="http://schemas.android.com/tools"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
+                android:layout_marginLeft="94px"
                 android:layout_marginTop="60px"
-
                 android:orientation="horizontal"
     >
-<TextView
-    android:layout_width="wrap_content"
-    android:layout_height="wrap_content"
-   android:layout_centerHorizontal="true"
-    android:id="@+id/time"
-    android:layout_marginBottom="40px"
-    android:textSize="22px"
-    android:padding="5px"
-    android:textColor="@color/white"
-    android:background="@color/gray_noselect"
-    />
+
     <TextView
+        android:id="@+id/time"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:id="@+id/name"
-        android:visibility="gone"
-        android:layout_below="@+id/time"
-        android:layout_alignRight="@+id/avatar"
+        android:layout_centerHorizontal="true"
+        android:layout_marginBottom="40px"
+        android:background="@color/gray_noselect"
+        android:padding="5px"
+        android:textColor="@color/white"
+        android:textSize="22px"
+        tools:text="2012-12-12-5231"
         />
+
+    <TextView
+        android:id="@+id/name"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignRight="@+id/avatar"
+        android:layout_below="@+id/time"
+        android:visibility="gone"
+        tools:text="啊发发发放"
+        tools:visibility="visible"
+        />
+
     <RelativeLayout
         android:id="@+id/contentView"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:layout_alignTop="@id/avatar"
+        android:layout_below="@+id/time"
         android:layout_toLeftOf="@+id/avatar"
         android:background="@drawable/bg_chat_send"
-        android:layout_below="@+id/time"
-        android:layout_alignTop="@id/avatar"
-        android:layout_marginLeft="94px"
+
         android:padding="5dp">
 
     </RelativeLayout>
 
     <ImageView
-        android:layout_below="@+id/name"
         android:id="@+id/avatar"
         android:layout_width="100px"
         android:layout_height="100px"
         android:layout_alignParentRight="true"
+        android:layout_below="@+id/name"
         android:layout_marginLeft="10px"
         android:layout_marginRight="20px"
+        tools:src="@color/bottom_bg"
         />
 
     <ImageView
+        android:id="@+id/send_status"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:id="@+id/send_status"
         android:layout_below="@+id/time"
+        android:layout_marginRight="10px"
+        android:layout_marginTop="20dp"
         android:layout_toLeftOf="@+id/contentView"
         android:src="@drawable/em_login_error_icon"
         android:visibility="gone"
+        tools:visibility="visible"
+
         />
+
     <ProgressBar
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
         android:id="@+id/status_prgress"
+        android:layout_width="30px"
+        android:layout_height="30px"
         android:layout_below="@+id/time"
+        android:layout_marginTop="30dp"
         android:layout_toLeftOf="@+id/contentView"
         android:visibility="gone"
+        tools:visibility="visible"
         />
 </RelativeLayout>
