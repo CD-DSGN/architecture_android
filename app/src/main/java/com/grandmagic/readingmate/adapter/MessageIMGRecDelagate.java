@@ -1,6 +1,7 @@
 package com.grandmagic.readingmate.adapter;
 
 import android.content.Context;
+import android.content.Intent;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -8,6 +9,7 @@ import android.widget.ImageView;
 import android.widget.RelativeLayout;
 
 import com.grandmagic.readingmate.R;
+import com.grandmagic.readingmate.activity.BigImageActivity;
 import com.grandmagic.readingmate.utils.ImageLoader;
 import com.hyphenate.EMCallBack;
 import com.hyphenate.chat.EMImageMessageBody;
@@ -32,8 +34,16 @@ public class MessageIMGRecDelagate extends ChatItemViewDelegate {
     private static final String TAG = "MessageIMGRecDelagate";
     @Override
     protected void childConvert(final ViewHolder mHolder, EMMessage data, int mPosition) {
-         EMImageMessageBody  mBody= (EMImageMessageBody) data.getBody();
+         final EMImageMessageBody  mBody= (EMImageMessageBody) data.getBody();
         ImageLoader.loadImage(mContext,mBody.getRemoteUrl(),(ImageView) mHolder.getView(R.id.image));
+        mHolder.getView(R.id.image).setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent mIntent = new Intent(mContext,BigImageActivity.class);
+                mIntent.putExtra(BigImageActivity.IMG_URL, mBody.getRemoteUrl());
+                mContext.startActivity(mIntent);
+            }
+        });
     }
 
     @Override

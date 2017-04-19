@@ -36,7 +36,7 @@
     <uses-permission android:name="android.permission.RECORD_AUDIO"/>
     <uses-permission android:name="android.permission.CAMERA"/>
     <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE"/>
-    <!--<uses-permission android:name="android.permission.ACCESS_MOCK_LOCATION"/>-->
+    <!-- <uses-permission android:name="android.permission.ACCESS_MOCK_LOCATION"/> -->
     <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE"/>
     <uses-permission android:name="android.permission.MOUNT_UNMOUNT_FILESYSTEMS"/>
     <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION"/>
@@ -104,6 +104,7 @@
             android:theme="@style/fullsrceen">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN"/>
+
                 <category android:name="android.intent.category.LAUNCHER"/>
             </intent-filter>
         </activity>
@@ -113,9 +114,11 @@
             android:theme="@style/AppTheme.NoActionBar">
             <intent-filter>
                 <data android:scheme="dsdj"/>
-                <action android:name="android.intent.action.VIEW" />
-                <category android:name="android.intent.category.DEFAULT" />
-                <category android:name="android.intent.category.BROWSABLE" />
+
+                <action android:name="android.intent.action.VIEW"/>
+
+                <category android:name="android.intent.category.DEFAULT"/>
+                <category android:name="android.intent.category.BROWSABLE"/>
             </intent-filter>
         </activity>
         <activity
@@ -269,13 +272,22 @@
             android:name=".activity.CollectBookSearchActivity"
             android:theme="@style/notitle">
         </activity>
-        <activity android:name=".activity.MessageNotificationActivity"
-            android:theme="@style/notitle"
-            >
+        <activity
+            android:name=".activity.MessageNotificationActivity"
+            android:theme="@style/notitle">
         </activity>
 
-        <meta-data android:name="MW_APPID" android:value="VO5YQTGZW7VG0G5Q1UCLSYPATY3AY7T4" />
-        <meta-data android:name="MW_CHANNEL" android:value="umeng" />
+        <meta-data
+            android:name="MW_APPID"
+            android:value="VO5YQTGZW7VG0G5Q1UCLSYPATY3AY7T4"/>
+        <meta-data
+            android:name="MW_CHANNEL"
+            android:value="umeng"/>
+
+        <activity android:name=".activity.BigImageActivity"
+            android:theme="@style/fullsrceen"
+            >
+        </activity>
     </application>
 
 </manifest>

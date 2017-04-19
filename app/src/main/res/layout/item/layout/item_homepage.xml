@@ -38,6 +38,7 @@
             android:layout_alignLeft="@+id/bookname"
             android:layout_alignStart="@+id/bookname"
             android:layout_below="@+id/bookname"
+            android:visibility="gone"
             android:layout_marginTop="10px"/>
 
         <TextView
@@ -47,7 +48,7 @@
             android:layout_below="@+id/bookname"
             android:layout_marginTop="20px"
             android:layout_toLeftOf="@+id/rela_score"
-            android:layout_toRightOf="@+id/avatar"
+            android:layout_alignLeft="@id/bookname"
             android:ellipsize="end"
             android:maxLines="2"
             android:text="张嘉jia.张嘉jia.张嘉jia.张嘉jia."
