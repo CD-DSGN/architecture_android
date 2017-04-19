@@ -13,7 +13,7 @@
     <LinearLayout
         android:layout_width="628px"
         android:layout_height="wrap_content"
-        android:background="@drawable/bg_dlg"
+        android:background="@drawable/bg_white_round"
         android:orientation="vertical">
 
         <TextView
@@ -31,6 +31,7 @@
             android:layout_width="match_parent"
             android:layout_height="1px"
             android:background="@drawable/dashline"
+            android:id="@+id/top_dash_line"
             />
 
 
@@ -40,9 +41,11 @@
             android:layout_height="138px"
             android:layout_gravity="center"
             android:layout_marginTop="26px"
-            android:textColor="#000000"
-            android:textSize="30px"
-            tools:text="消息"/>
+            android:textColor="#999999"
+            android:textSize="28px"
+            tools:text="消息"
+            android:textAlignment="center"
+            android:gravity="center"/>
 
         <View
             android:layout_width="match_parent"
@@ -53,46 +56,40 @@
 
         <LinearLayout
             android:layout_width="match_parent"
-            android:layout_height="wrap_content">
+            android:layout_height="110px"
+            android:orientation="horizontal"
+            android:gravity="center_vertical">
 
             <Button
                 android:id="@+id/no"
                 android:layout_width="0dp"
-                android:layout_height="65px"
-                android:layout_marginBottom="20px"
-                android:layout_marginLeft="60px"
-                android:layout_marginRight="60px"
-                android:layout_marginTop="26px"
+                android:layout_height="wrap_content"
                 android:layout_weight="1"
-                android:background="@drawable/bg_dlg_btn"
+                android:background="@null"
                 android:gravity="center"
-                android:text="NO"
-                android:textColor="#ffffff"
-                android:textSize="26px"/>
+                android:singleLine="true"
+                android:text="No"
+                android:textColor="#999999"
+                android:textSize="32px"/>
 
-
-            <ImageView
+            <View
                 android:layout_width="1px"
                 android:layout_height="match_parent"
-                android:layout_marginTop="5px"
-                android:layout_marginBottom="5px"
-                android:src="@drawable/ic_green_vertical_line"
-                />
+                android:background="@drawable/ic_main_bar_two"
+                android:layout_marginTop="2px"
+                android:layout_marginBottom="2px"/>
 
             <Button
                 android:id="@+id/yes"
                 android:layout_width="0dp"
-                android:layout_height="65px"
-                android:layout_marginBottom="20px"
-                android:layout_marginLeft="60px"
-                android:layout_marginRight="60px"
-                android:layout_marginTop="26px"
+                android:layout_height="wrap_content"
                 android:layout_weight="1"
-                android:background="@drawable/bg_dlg_btn"
+                android:background="@null"
                 android:gravity="center"
+                android:singleLine="true"
                 android:text="Yes"
-                android:textColor="#ffffff"
-                android:textSize="26px"/>
+                android:textColor="#1cc9a2"
+                android:textSize="32px"/>
 
         </LinearLayout>
     </LinearLayout>
