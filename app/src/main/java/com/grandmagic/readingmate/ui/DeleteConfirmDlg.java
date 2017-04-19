@@ -20,7 +20,7 @@ public class DeleteConfirmDlg extends TextDlg implements TextDlg.BtnOnclickListe
     private OnClickYes mOnClickYes;
 
     public DeleteConfirmDlg(Context context) {
-        super(context);
+        super(context,false);
         mContext = context;
     }
 

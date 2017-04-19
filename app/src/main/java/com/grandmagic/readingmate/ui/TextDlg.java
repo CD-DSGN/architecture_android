@@ -31,12 +31,15 @@ public class TextDlg extends Dialog {
     Button mNo;
     @BindView(R.id.yes)
     Button mYes;
+    @BindView(R.id.top_dash_line)
+    View mTopDashLine;
     private String titleStr;//从外界设置的title文本
     private String messageStr;//从外界设置的消息文本
 
     private BtnOnclickListener mBtnOnclickListener;
     private String yesStr;
     private String noStr;
+    public boolean mNeedTitle = true;
 
     /**
      * 设置取消按钮的显示内容和监听
@@ -50,6 +53,13 @@ public class TextDlg extends Dialog {
         super(context, R.style.CustomDialog_bgdim);
         yesStr = context.getString(R.string.confirm);
         noStr = context.getString(R.string.cancel);
+    }
+
+    public TextDlg(Context context, boolean needTitle) {
+        super(context, R.style.CustomDialog_bgdim);
+        yesStr = context.getString(R.string.confirm);
+        noStr = context.getString(R.string.cancel);
+        mNeedTitle = needTitle;
     }
 
     public TextDlg(Context context, @StyleRes int style) {
@@ -74,7 +84,13 @@ public class TextDlg extends Dialog {
     }
 
     private void initView() {
-
+        if (mNeedTitle) {
+            mTitle.setVisibility(View.VISIBLE);
+            mTopDashLine.setVisibility(View.VISIBLE);
+        } else {
+            mTitle.setVisibility(View.GONE);
+            mTopDashLine.setVisibility(View.INVISIBLE);
+        }
     }
 
 
@@ -145,6 +161,7 @@ public class TextDlg extends Dialog {
                 break;
         }
     }
+
 
     /**
      * 设置确定按钮和取消被点击的接口

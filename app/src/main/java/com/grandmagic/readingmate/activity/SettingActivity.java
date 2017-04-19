@@ -146,12 +146,12 @@ public class SettingActivity extends AppBaseActivity {
                 SPUtils.getInstance().setPushSetting(this, !checked);
                 break;
             case R.id.rl_clean_cache:
-                CleanCacheDlg cleanCacheDlg = new CleanCacheDlg(this);
+                CleanCacheDlg cleanCacheDlg = new CleanCacheDlg(this, false);
                 cleanCacheDlg.show();
                 break;
             case R.id.iv_share_app:
-                mSharePopUpWindow.setData("大术读家", "一款阅读交友类软件，很有趣哈", R.drawable.iv_no_book,
-                        APP_URL, "加入我们吧，等你来哦");
+                mSharePopUpWindow.setData("大术读家", "分享阅读。获取海量图书资源，打造阅读圈子，纸书阅读新体验", R.drawable.iv_no_book,
+                        APP_URL, "#大术读家#一款阅读交友软件，寻找和你兴趣一致的好友，一起读书吧！");
                 mSharePopUpWindow.show();
                 break;
 

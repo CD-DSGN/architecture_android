@@ -25,6 +25,11 @@ public class CleanCacheDlg extends TextDlg implements TextDlg.BtnOnclickListener
         mContext = context;
     }
 
+    public CleanCacheDlg(Context context, boolean needTitle) {
+        super(context, needTitle);
+        mContext = context;
+    }
+
 
     public CleanCacheDlg(Context context, int style) {
         super(context, style);
