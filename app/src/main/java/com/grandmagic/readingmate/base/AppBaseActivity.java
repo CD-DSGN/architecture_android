@@ -126,14 +126,17 @@ public class AppBaseActivity extends AppCompatActivity {
         }
     }
 
-    private void showLoginAnotherDevice() {
+    protected void showLoginAnotherDevice() {
         String state = SPUtils.getInstance().getString(this, SPUtils.IM_STATE);
         if (Integer.valueOf(state) == (EMError.USER_LOGIN_ANOTHER_DEVICE)) {
             if (mDialog==null) {
                 AlertDialog.Builder mBuilder = new AlertDialog.Builder(this);
                 mBuilder.setNegativeButton("取消", new DialogInterface.OnClickListener() {
                     @Override
-                    public void onClick(DialogInterface dialog, int which) {
+                    public void onClick(DialogInterface dialog, int which) {//点了取消也清理token信息和环信退出
+                        mDialog.dismiss();
+                        SPUtils.getInstance().clearToken(AppBaseActivity.this);
+                        EMClient.getInstance().logout(true);//环信的退出
                         mDialog.dismiss();
                     }
                 });
@@ -143,7 +146,9 @@ public class AppBaseActivity extends AppCompatActivity {
                         mDialog.dismiss();
                         SPUtils.getInstance().clearToken(AppBaseActivity.this);
                         EMClient.getInstance().logout(true);//环信的退出
-                        startActivity(new Intent(AppBaseActivity.this, LoginActivity.class));
+                        Intent mIntent = new Intent(AppBaseActivity.this, LoginActivity.class);
+                        mIntent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK | Intent.FLAG_ACTIVITY_NEW_TASK);
+                        startActivity(mIntent);
                         finish();
                     }
                 });

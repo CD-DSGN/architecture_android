@@ -409,6 +409,7 @@ public class ChatActivity extends AppBaseActivity implements EMMessageListener, 
                 .build();
         // 跳转到图片选择器
         ImgSelActivity.startActivity(this, mConfig, REQUEST_SELIMG);
+        mConfig=null;
     }
 
     /**

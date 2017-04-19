@@ -238,7 +238,7 @@ public class MainActivity extends AppBaseActivity {
      * 检测版本
      */
     private void checkVersion() {
-// TODO: 2017/2/10 从服务端获取版本号
+
         int localVerionCode = KitUtils.getVersionCode(this);
         UpdateManager mUpdateManager = new UpdateManager(this);
         mUpdateManager.getVersionCode(localVerionCode);

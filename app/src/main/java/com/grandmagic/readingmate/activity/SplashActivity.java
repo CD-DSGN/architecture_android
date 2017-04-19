@@ -60,7 +60,6 @@ public class SplashActivity extends AppBaseActivity {
     private void checkfrist() {
         boolean mFirst = SPUtils.getInstance().isFirst(this);
         if (mFirst) {
-            Toast.makeText(this, "首次进入，后面待续", Toast.LENGTH_SHORT).show();
             SPUtils.getInstance().putBoolean(this, SPUtils.IS_FIRST, false);
             startActivity(new Intent(SplashActivity.this, GuideActivity.class));
             finish();
@@ -143,7 +142,9 @@ public class SplashActivity extends AppBaseActivity {
 
         @Override
         public void onFinish() {
-            if (canDestroy) toMain();
+            if (canDestroy) toMain();else {
+                Toast.makeText(SplashActivity.this, "卡住了？", Toast.LENGTH_SHORT).show();
+            }
         }
     };
 
