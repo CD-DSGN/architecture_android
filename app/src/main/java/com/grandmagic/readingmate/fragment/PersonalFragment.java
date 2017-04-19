@@ -357,7 +357,7 @@ public class PersonalFragment extends AppBaseFragment implements MyCommentAdapte
                     mMyCommentsModel.getMyComment(mPage.cur_page);
                     mcallback.isRefresh = false;
                 } else {
-                    ViewUtils.showToast("暂无更多数据");
+//                    ViewUtils.showToast("暂无更多数据");
                     mRvMyComments.setPullLoadMoreCompleted();
                 }
             }

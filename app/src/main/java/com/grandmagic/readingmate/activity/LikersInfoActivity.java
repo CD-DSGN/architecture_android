@@ -143,7 +143,7 @@ public class LikersInfoActivity extends AppBaseActivity implements LikersAdapter
                     mCommentDetailModel.getAllLikes(mCommentID, mCallBack, mPage.cur_page);
                     mCallBack.isRefresh = false;
                 } else {
-                    ViewUtils.showToast("暂无更多数据");
+//                    ViewUtils.showToast("暂无更多数据");
                     mRvLikers.setPullLoadMoreCompleted();
                 }
             }

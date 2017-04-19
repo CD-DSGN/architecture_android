@@ -344,7 +344,7 @@ public class CommentsActivity extends AppBaseActivity implements View.OnLayoutCh
                     mCommentDetailModel.getAllReplys(mCommentID, mReplyCallBack, mPage.cur_page);
                     mReplyCallBack.isRefresh = false;
                 } else {
-                    ViewUtils.showToast(getString(R.string.no_more));
+//                    ViewUtils.showToast(getString(R.string.no_more));
                     mRvCommentsDetail.setPullLoadMoreCompleted();
                 }
 

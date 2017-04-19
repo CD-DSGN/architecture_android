@@ -1372,7 +1372,7 @@ public class Novate {
                             baseResponse = new Gson().fromJson(jsStr, new TypeToken<NovateResponse>() {
                             }.getType());
                             String msg = baseResponse.getMessage() != null ? baseResponse.getMessage() : "api未知异常";
-                            ServerException serverException = new com.tamic.novate.exception.ServerException(baseResponse.getCode(), msg);
+                            ServerException serverException = new com.tamic.novate.exception.ServerException(baseResponse.getCode(), msg, jsStr);
                             callBack.onError(NovateException.handleException(serverException));
                         }
                     } catch (Exception e) {
