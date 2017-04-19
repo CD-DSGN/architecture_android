@@ -69,7 +69,7 @@ public class NovateException {
             return ex;
         } else if (e instanceof ServerException) {
             ServerException resultException = (ServerException) e;
-            ex = new Throwable(resultException, resultException.code);
+            ex = new Throwable(resultException, resultException.code, resultException.json);
             ex.setMessage(resultException.getMessage());
             return ex;
         } else if (e instanceof JsonParseException

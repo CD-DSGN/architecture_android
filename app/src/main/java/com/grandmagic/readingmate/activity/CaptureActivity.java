@@ -19,6 +19,7 @@ import android.widget.ImageView;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 
+import com.google.gson.Gson;
 import com.google.zxing.Result;
 import com.grandmagic.readingmate.R;
 import com.grandmagic.readingmate.base.AppBaseResponseCallBack;
@@ -33,6 +34,8 @@ import com.xys.libzxing.zxing.decode.DecodeThread;
 import com.xys.libzxing.zxing.utils.BeepManager;
 import com.xys.libzxing.zxing.utils.CaptureActivityHandler;
 import com.xys.libzxing.zxing.utils.InactivityTimer;
+
+import org.json.JSONObject;
 
 import java.io.IOException;
 import java.lang.reflect.Field;
@@ -241,8 +244,26 @@ public class CaptureActivity extends com.xys.libzxing.zxing.activity.CaptureActi
                     mHint1.setVisibility(View.INVISIBLE);
                     mHint2.setVisibility(View.INVISIBLE);
                     stopScan();
-                }else if(e.getCode() == ApiErrorConsts.SUBSCRIBE_ALREADY){  //这本书已经关注过了,跳转到图书详情页面,要改错误处理方式,// TODO: 2017/4/18  
-                    restartPreviewAfterDelay(10);
+                }else if(e.getCode() == ApiErrorConsts.SUBSCRIBE_ALREADY){  //这本书已经关注过了,跳转到图书详情页面,要改错误处理方式,// TODO: 2017/4/18
+                    int book_id = -1;
+                    try {
+                        String json_str = e.getJson();   //原始json串
+                        NovateResponse response = new Gson().fromJson(json_str, NovateResponse.class);
+                        String data = (String) response.getData().toString();
+                        JSONObject jsonObject = new JSONObject(data);
+                        book_id = jsonObject.optInt("book_id");
+                    } catch (Exception e1) {
+                        e1.printStackTrace();
+                    } finally {
+                        if (book_id == -1) {
+                            restartPreviewAfterDelay(10);
+                        }else{
+                            Intent intent = new Intent();
+                            intent.putExtra("result", book_id + "");
+                            CaptureActivity.this.setResult(RESULT_OK, intent);
+                            finish();
+                        }
+                    }
                 }else{   //其他情况，toast简单提示一下，继续开始扫描
                     restartPreviewAfterDelay(10);
                 }
