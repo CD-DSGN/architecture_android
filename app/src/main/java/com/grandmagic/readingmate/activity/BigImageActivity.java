@@ -3,6 +3,7 @@ package com.grandmagic.readingmate.activity;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 
+import com.bumptech.glide.Glide;
 import com.github.chrisbanes.photoview.PhotoView;
 import com.grandmagic.readingmate.R;
 import com.grandmagic.readingmate.utils.ImageLoader;
@@ -25,6 +26,6 @@ public static final String IMG_URL="img_url";
 
     private void initdata() {
         String url = getIntent().getStringExtra(IMG_URL);
-        ImageLoader.loadImage(this,url,mPhotoView);
+        Glide.with(this).load(url).into(mPhotoView);
     }
 }

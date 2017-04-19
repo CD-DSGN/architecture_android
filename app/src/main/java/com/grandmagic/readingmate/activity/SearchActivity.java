@@ -141,7 +141,6 @@ public class SearchActivity extends AppBaseActivity {
                     search(currpage);
                 } else {
                     mRecyclerviewBook.setPullLoadMoreCompleted();
-                    Toast.makeText(SearchActivity.this, "NOMORE", Toast.LENGTH_SHORT).show();
                 }
             }
         });

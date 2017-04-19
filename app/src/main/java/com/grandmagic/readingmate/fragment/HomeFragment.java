@@ -183,7 +183,6 @@ public class HomeFragment extends AppBaseFragment implements HomeBookAdapter.Cli
                     currpage++;
                     loadBook(currpage);
                 } else {
-                    Toast.makeText(mContext, "NOMORE", Toast.LENGTH_SHORT).show();
                     mRecyclerview.setPullLoadMoreCompleted();
                 }
             }

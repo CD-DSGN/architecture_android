@@ -8,6 +8,7 @@ import android.view.View;
 import android.widget.ImageView;
 import android.widget.RelativeLayout;
 
+import com.bumptech.glide.Glide;
 import com.grandmagic.readingmate.R;
 import com.grandmagic.readingmate.activity.BigImageActivity;
 import com.grandmagic.readingmate.utils.ImageLoader;
@@ -35,7 +36,7 @@ public class MessageIMGRecDelagate extends ChatItemViewDelegate {
     @Override
     protected void childConvert(final ViewHolder mHolder, EMMessage data, int mPosition) {
          final EMImageMessageBody  mBody= (EMImageMessageBody) data.getBody();
-        ImageLoader.loadImage(mContext,mBody.getRemoteUrl(),(ImageView) mHolder.getView(R.id.image));
+        Glide.with(mContext).load(mBody.getRemoteUrl()).error(R.drawable.img_load_err).into((ImageView) mHolder.getView(R.id.image));
         mHolder.getView(R.id.image).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {

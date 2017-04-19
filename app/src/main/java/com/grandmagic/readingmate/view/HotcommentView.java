@@ -119,7 +119,6 @@ public class HotcommentView extends FrameLayout implements BookCommentsAdapter.A
                     loadData(currpage);
                 } else {
                    mRecyclerview.setPullLoadMoreCompleted();
-                    Toast.makeText(mContext, "NOMORE", Toast.LENGTH_SHORT).show();
                 }
             }
         });

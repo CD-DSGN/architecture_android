@@ -321,7 +321,6 @@ public class SearchFragment extends AppBaseFragment implements SearchPersonAdapt
                     loadPerson(currpage);
                 } else {
                     mRecyclerview.setPullLoadMoreCompleted();
-                    Toast.makeText(mContext, "NOMORE", Toast.LENGTH_SHORT).show();
                 }
             }
         });

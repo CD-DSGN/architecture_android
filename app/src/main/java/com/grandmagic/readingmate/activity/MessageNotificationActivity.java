@@ -114,7 +114,6 @@ public class MessageNotificationActivity extends AppBaseActivity {
                 loadAllReply(currpage);
 
             } else {
-                Toast.makeText(MessageNotificationActivity.this, "NOMORE", Toast.LENGTH_SHORT).show();
            mRecyclerview.setPullLoadMoreCompleted();
             }
         }

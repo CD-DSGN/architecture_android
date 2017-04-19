@@ -37,7 +37,7 @@ public class MessageIMGSendDelagate extends ChatItemViewDelegate {
             @Override
             public void onClick(View v) {
                 Intent mIntent = new Intent(mContext,BigImageActivity.class);
-                mIntent.putExtra(BigImageActivity.IMG_URL, mBody.getRemoteUrl());
+                mIntent.putExtra(BigImageActivity.IMG_URL, mBody.getLocalUrl());
                 mContext.startActivity(mIntent);
             }
         });
