@@ -221,7 +221,7 @@ public class SharePopUpWindow extends PopupWindow {
     //分享图书
     public ShareAction setBookData(String book_name, String book_id, String book_cotent, String book_cover, String rate) {
         if (!TextUtils.isEmpty(book_cover)) {
-            return setData(book_name, "读家评分:"+ rate + "\n" + book_cotent, KitUtils.getAbsoluteUrl(book_cover), AppConsts.APP_URL, "#大术读家#");              //地址肯定还要改
+            return setData(book_name, "读家评分:"+ rate + "\n" + book_cotent, KitUtils.getAbsoluteUrl(book_cover), AppConsts.APP_URL, "#大术读家#");
         }else{
             return setData(book_name, "读家评分:"+ rate + "\n" + book_cotent, R.drawable.iv_no_book, AppConsts.APP_URL, "#大术读家#");
         }
@@ -230,7 +230,7 @@ public class SharePopUpWindow extends PopupWindow {
     //分享评论
     public ShareAction setCommentData(String book_name, String comment_id, String comment_cotent, String book_cover, String rate) {
         if (!TextUtils.isEmpty(book_cover)) {
-            return setData(book_name, "读家评分:"+ rate + "\n" + comment_cotent, KitUtils.getAbsoluteUrl(book_cover), AppConsts.APP_URL, "#读家评论#");              //地址肯定还要改
+            return setData(book_name, "读家评分:"+ rate + "\n" + comment_cotent, KitUtils.getAbsoluteUrl(book_cover), AppConsts.APP_URL, "#读家评论#");
         }else{
             return setData(book_name, "读家评分:"+ rate + "\n" + comment_cotent, R.drawable.iv_no_book, AppConsts.APP_URL, "#读家评论#");
         }

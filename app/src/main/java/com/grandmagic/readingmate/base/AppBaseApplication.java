@@ -8,14 +8,12 @@ import android.os.StrictMode;
 import android.support.multidex.MultiDex;
 import android.util.Log;
 
-import com.facebook.stetho.Stetho;
 import com.grandmagic.readingmate.event.BindDeviceTokenEvent;
 import com.grandmagic.readingmate.push.IUmengMessageHandler;
 import com.grandmagic.readingmate.push.IUmengNotificationClickHandler;
 import com.grandmagic.readingmate.utils.IMHelper;
 import com.hyphenate.chat.EMClient;
 import com.hyphenate.chat.EMOptions;
-import com.orhanobut.logger.Logger;
 import com.squareup.leakcanary.LeakCanary;
 import com.tamic.novate.util.SPUtils;
 import com.tencent.bugly.crashreport.CrashReport;
@@ -44,7 +42,7 @@ public class AppBaseApplication extends Application {
         super.onCreate();
         MultiDex.install(this);
         ctx = this;
-        Stetho.initializeWithDefaults(this);  //初始化facebook调试工具stetho
+
         LeakCanary.install(this);    //内存泄漏检测
         MobclickAgent.setCatchUncaughtExceptions(true); //友盟异常捕捉
         //友盟场景设置(普通)
@@ -88,7 +86,8 @@ public class AppBaseApplication extends Application {
 
     {
         //微信和新浪分享配置
-        PlatformConfig.setWeixin("wxdc1e388c3822c80b", "3baf1193c85774b3fd9d18447d76cab0");
+//        PlatformConfig.setWeixin("wxdc1e388c3822c80b", "3baf1193c85774b3fd9d18447d76cab0");
+        PlatformConfig.setWeixin("wxe528ef4ed89d4c2d", "232ccd13a9e581b6c744286f31390140");
         PlatformConfig.setSinaWeibo("3921700954", "04b48b094faeb16683c32669824ebdad", "http://sns.whalecloud.com");
     }
 
