@@ -6,7 +6,6 @@
     android:layout_height="wrap_content"
     android:adjustViewBounds="true"
     android:scaleType="fitCenter"
-    android:maxHeight="324px"
     android:maxWidth="302px"
     />
 

@@ -541,7 +541,7 @@ public class ChatActivity extends AppBaseActivity implements EMMessageListener, 
      */
     private void sendImgMessage(String path) {
         //imagePath为图片本地路径，false为不发送原图（默认超过100k的图片会压缩后发给对方），需要发送原图传true
-        EMMessage mMessage = EMMessage.createImageSendMessage(path, false, toChatUserName);
+        EMMessage mMessage = EMMessage.createImageSendMessage(path, true, toChatUserName);
 //如果是群聊，设置chattype，默认是单聊
         sendMessage(mMessage);
     }

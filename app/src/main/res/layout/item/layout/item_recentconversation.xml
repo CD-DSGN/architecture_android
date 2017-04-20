@@ -33,6 +33,7 @@
             android:layout_height="100px"
             android:layout_centerVertical="true"
             android:layout_marginLeft="20px"
+            android:layout_marginRight="20px"
             tools:src="@mipmap/logo6"
             />
 
