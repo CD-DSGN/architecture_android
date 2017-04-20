@@ -4,7 +4,6 @@
     android:layout_height="wrap_content"
     android:layout_centerVertical="true"
     android:layout_toLeftOf="@+id/avatar"
-    android:padding="12px"
     android:textColor="#181e1d"
     xmlns:tools="http://schemas.android.com/tools"
     android:textSize="@dimen/textsize_15sp"

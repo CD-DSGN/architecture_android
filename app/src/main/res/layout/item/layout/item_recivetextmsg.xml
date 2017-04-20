@@ -7,7 +7,7 @@
     android:layout_toRightOf="@+id/avatar"
     android:textColor="#181e1d"
     android:textSize="@dimen/textsize_15sp"
-    android:text="55a65s"
-    android:padding="12px"
+    xmlns:tools="http://schemas.android.com/tools"
+    tools:text="55a65s"
     xmlns:android="http://schemas.android.com/apk/res/android"/>
 

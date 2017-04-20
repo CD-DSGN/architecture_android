@@ -357,7 +357,7 @@ public class BookDetailActivity extends AppBaseActivity implements View.OnLayout
             mParams.setMargins(10, 10, 10, 10);
             mView.setLayoutParams(mParams);
             AutoUtils.auto(mView);
-            ImageLoader.loadRoundImage(this, Environment.BASEULR_PRODUCTION + user.getAvatar_url().getMid(), mView);
+            ImageLoader.loadCircleImage(this, Environment.BASEULR_PRODUCTION + user.getAvatar_url().getMid(), mView);
             mLinCollection.addView(mView);
         }
     }

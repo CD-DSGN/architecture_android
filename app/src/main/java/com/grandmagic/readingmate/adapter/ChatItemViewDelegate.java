@@ -100,7 +100,7 @@ public abstract class ChatItemViewDelegate implements ItemViewDelegate<EMMessage
 
         if (mUserInfo != null) {
             holder.setText(R.id.name, mUserInfo.getUser_name());
-            ImageLoader.loadRoundImage(mContext,
+            ImageLoader.loadCircleImage(mContext,
                     Environment.BASEULR_PRODUCTION + mUserInfo.getAvatar_url().getLarge(),
                     (ImageView) holder.getView(R.id.avatar)
             );
