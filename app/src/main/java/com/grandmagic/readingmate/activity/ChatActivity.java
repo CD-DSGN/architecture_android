@@ -142,6 +142,7 @@ public class ChatActivity extends AppBaseActivity implements EMMessageListener, 
         chat_name = getIntent().getStringExtra(CHAT_NAME);
         toChatUserName = getIntent().getStringExtra(CHAT_IM_NAME);
         gender = getIntent().getIntExtra(GENDER, 3);
+        conversationInit();
         loadDraftFromDB();
     }
 
@@ -212,7 +213,7 @@ public class ChatActivity extends AppBaseActivity implements EMMessageListener, 
             public void onLayoutChange(View v, int left, int top, int right, int bottom, int oldLeft, int oldTop, int oldRight, int oldBottom) {
                 if (Math.abs(bottom - oldBottom) > DensityUtil.getScreenHeight(ChatActivity.this) / 3) {
                     if (mMessageList != null && !mMessageList.isEmpty())
-                        mMessagerecyclerview.smoothScrollToPosition(mMessageList.size() - 1);
+                        mMessagerecyclerview.scrollToPosition(mMessageList.size() - 1);
                 }
             }
         });
@@ -299,7 +300,7 @@ public class ChatActivity extends AppBaseActivity implements EMMessageListener, 
         mMessageList.add(mMessage);
         mAdapter.setData(mMessageList);
         mEtInput.setText("");
-        mMessagerecyclerview.smoothScrollToPosition(mMessageList.size() - 1);
+        mMessagerecyclerview.scrollToPosition(mMessageList.size() - 1);
         //发送语音之后切换会输入框
         mEtInput.setVisibility(View.VISIBLE);
         mSpeak.setVisibility(View.GONE);
@@ -322,8 +323,15 @@ public class ChatActivity extends AppBaseActivity implements EMMessageListener, 
         mAdapter.addItemViewDelegate(new MessageVoiceSendDelagate(this).setChatClickListener(this));
         mAdapter.addItemViewDelegate(new MessageLocationDelagate(this).setChatClickListener(this));
         mMessagerecyclerview.setAdapter(mAdapter);
+        new Handler().postDelayed(new Runnable() {
+            @Override
+            public void run() {
+                if (mMessageList!=null&&mMessageList.size()>0)
+                mMessagerecyclerview.scrollToPosition(mMessageList.size() - 1);
+
+            }
+        },100);
         initrefreshlayout();
-        conversationInit();
     }
 
     /**
@@ -353,7 +361,7 @@ public class ChatActivity extends AppBaseActivity implements EMMessageListener, 
         mConversation = EMClient.getInstance().chatManager().getConversation(toChatUserName, EMConversation.EMConversationType.Chat, true);
         if (mConversation == null) return;
         mConversation.markAllMessagesAsRead();
-        final List<EMMessage> msgs = mConversation.getAllMessages();
+         List<EMMessage> msgs = mConversation.getAllMessages();
         int msgCount = msgs != null ? msgs.size() : 0;
         int pagesize = DEFAULT_PAGESIZE;//默认最左加载最近的20条。其他通过用户下拉刷新获取
         if (msgCount < mConversation.getAllMsgCount() && msgCount < pagesize) {
@@ -366,15 +374,6 @@ public class ChatActivity extends AppBaseActivity implements EMMessageListener, 
         } else if (msgs != null) {
             mMessageList.addAll(msgs);
         }
-        mAdapter.setData(mMessageList);
-        new Handler().postDelayed(new Runnable() {//加一个延迟。防止界面没绘制完成就要滚动导致不能滚动到最下边
-            @Override
-            public void run() {
-                if (mMessageList != null && !mMessageList.isEmpty())
-                    mMessagerecyclerview.smoothScrollToPosition(mMessageList.size() - 1);
-            }
-        },500);
-
     }
 
 
@@ -459,7 +458,7 @@ public class ChatActivity extends AppBaseActivity implements EMMessageListener, 
                     @Override
                     public void run() {
                         mAdapter.setData(mMessageList);
-                        mMessagerecyclerview.smoothScrollToPosition(mMessageList.size() - 1);
+                        mMessagerecyclerview.scrollToPosition(mMessageList.size() - 1);
                     }
                 });
 

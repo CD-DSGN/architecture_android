@@ -4,6 +4,7 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.view.KeyEvent;
 import android.view.View;
+import android.view.ViewGroup;
 import android.view.inputmethod.EditorInfo;
 import android.widget.EditText;
 import android.widget.ImageView;
@@ -23,6 +24,7 @@ import com.grandmagic.readingmate.utils.AutoUtils;
 import com.grandmagic.readingmate.utils.ImageLoader;
 import com.grandmagic.readingmate.utils.InputMethodUtils;
 import com.tamic.novate.NovateResponse;
+import com.tamic.novate.Throwable;
 import com.tamic.novate.util.Environment;
 
 import java.util.List;
@@ -65,6 +67,12 @@ public class AddFriendActivity extends AppBaseActivity {
     @BindView(R.id.rela_addfriend)
     RelativeLayout mRelaAddfriend;
     SearchUserResponse responseData;
+    @BindView(R.id.title_more)
+    ImageView mTitleMore;
+    @BindView(R.id.emptytext)
+    TextView mEmptytext;
+    @BindView(R.id.empty_view)
+    LinearLayout mEmptyView;
 
 
     @Override
@@ -108,6 +116,14 @@ public class AddFriendActivity extends AppBaseActivity {
             public void onSuccee(NovateResponse<SearchUserResponse> response) {
                 responseData = response.getData();
                 setUserView(responseData);
+                mEmptyView.setVisibility(View.GONE);
+            }
+            @Override
+            public void onError(Throwable e) {
+                super.onError(e);
+                mEmptyView.setVisibility(View.VISIBLE);
+                mEmptytext.setText(e.getMessage());
+                mRelaFriend.setVisibility(View.GONE);
             }
         });
     }
@@ -151,15 +167,15 @@ public class AddFriendActivity extends AppBaseActivity {
 
     private void intoDetailActivity() {
         Intent mIntent = new Intent(AddFriendActivity.this, FriendDetailActivity.class);
-        Bundle mBundle=new Bundle();
-        PersonInfo mInfo=new PersonInfo();
+        Bundle mBundle = new Bundle();
+        PersonInfo mInfo = new PersonInfo();
         mInfo.setAvatar(responseData.getAvatar_url().getLarge());
         mInfo.setClientid(responseData.getClientid());
         mInfo.setUser_id(responseData.getUser_id());
-        mInfo.setFriend(responseData.getIs_friend()==1);
+        mInfo.setFriend(responseData.getIs_friend() == 1);
         mInfo.setNickname(responseData.getUser_name());
         mInfo.setSignature(responseData.getSignature());
-        mBundle.putParcelable(FriendDetailActivity.PERSON_INFO,mInfo);
+        mBundle.putParcelable(FriendDetailActivity.PERSON_INFO, mInfo);
         mIntent.putExtras(mBundle);
         startActivity(mIntent);
     }
@@ -205,7 +221,11 @@ public class AddFriendActivity extends AppBaseActivity {
     public void setCollectionbook(List<SearchUserResponse.CollectionBean> mCollectionbook) {
         for (SearchUserResponse.CollectionBean coll : mCollectionbook) {
             TextView mTextView = new TextView(this);
-            mTextView.setText("《" + coll.getBook_name() + "》");
+            mTextView.setText(coll.getBook_name());
+            mTextView.setMaxLines(2);
+            LinearLayout.LayoutParams mParams = new LinearLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.WRAP_CONTENT);
+            mParams.setMargins(0,20,0,20);
+            mTextView.setLayoutParams(mParams);
             if (coll.getIs_both_enjoy() == ISBOTHENJOY) {
                 hassamebook = true;
                 mTextView.setTextColor(getResources().getColor(R.color.text_green));

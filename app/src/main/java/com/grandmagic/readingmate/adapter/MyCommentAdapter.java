@@ -83,7 +83,7 @@ public class MyCommentAdapter extends CommonAdapter<PersonnalCommentResponseBean
             holder.setText(R.id.tv_book_name, personnalCommentResponseBean.getBook_name());
             String book_cover = personnalCommentResponseBean.getPhoto();
             if (!TextUtils.isEmpty(book_cover)) {
-                ImageLoader.loadCircleImage(mContext, KitUtils.getAbsoluteUrl(book_cover), (ImageView) holder.getView(R.id.cover));
+                ImageLoader.loadImage(mContext, KitUtils.getAbsoluteUrl(book_cover), (ImageView) holder.getView(R.id.cover));
             }
 
             holder.setText(R.id.content, personnalCommentResponseBean.getContent());

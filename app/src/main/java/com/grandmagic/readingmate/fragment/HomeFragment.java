@@ -275,8 +275,8 @@ public class HomeFragment extends AppBaseFragment implements HomeBookAdapter.Cli
         }
         else if (requestCode == REQUEST_BOOKDETAIL) {
 //如果从图书详情页需要返回做什么处理。可以在这里处理,暂时是重新加载书籍
-//            mBookList.clear();
-//            initdata();
+            mBookList.clear();
+            initdata();
         }
     }
 
