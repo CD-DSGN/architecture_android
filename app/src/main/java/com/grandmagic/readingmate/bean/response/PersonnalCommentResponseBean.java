@@ -13,6 +13,15 @@ public class PersonnalCommentResponseBean {
     private String photo;
     private String comment_id;
     private String reply_count;
+    private String average_score;
+
+    public String getAverage_score() {
+        return average_score;
+    }
+
+    public void setAverage_score(String average_score) {
+        this.average_score = average_score;
+    }
 
     public String getComment_id() {
         return comment_id;
