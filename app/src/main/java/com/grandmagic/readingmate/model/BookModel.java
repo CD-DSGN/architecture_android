@@ -76,7 +76,7 @@ public class BookModel {
         try {
             mJSONObject.put("keyword", keyword);
             mJSONObject.put("cpage", mCurrpage);
-            mJSONObject.put("pagesize", 10);
+            mJSONObject.put("pagesize", 20);
         } catch (JSONException mE) {
             mE.printStackTrace();
         }

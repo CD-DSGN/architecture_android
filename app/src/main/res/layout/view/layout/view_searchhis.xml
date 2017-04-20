@@ -1,39 +1,38 @@
 <?xml version="1.0" encoding="utf-8"?>
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
-                android:layout_width="720px"
-                android:layout_height="wrap_content"
                 xmlns:tools="http://schemas.android.com/tools"
-                android:layout_centerHorizontal="true">
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_centerHorizontal="true"
+                android:layout_marginLeft="20px"
+                android:layout_marginRight="20px"
+                tools:background="@color/bottom_bg">
 
 
     <View
-        android:layerType="software"
         android:id="@+id/dashline_search"
         android:layout_width="match_parent"
-        android:layout_height="3px"
-      android:layout_below="@+id/bookname"
-        android:src="@drawable/shape_white_line"/>
+        android:layout_height="2px"
+        android:layout_marginBottom="20px"
+
+        android:layerType="software"
+        android:background="@drawable/shape_white_line"/>
 
 
     <TextView
         android:id="@+id/bookname"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-android:layout_centerVertical="true"
+        android:layout_centerVertical="true"
         android:layout_marginBottom="22px"
         android:layout_marginLeft="14px"
-        android:maxLines="1"
-        android:layout_toRightOf="@+id/iv_searchlist"
-        tools:text="《C++》《C++》《C++》《C++》《C++》《C++》
-《C++》《C++》《C++》《C++》《C++》《C++》《C++》《C++》《C++》《C++》《C++》《C++》
-《C++》《C++》《C++》《C++》《C++》《C++》《C++》《C++》
-《C++》《C++》《C++》《C++》《C++》《C++》《C++》《C++》《C++》《C++》《C++》《C++》《C++》《C++》《C++》《C++》《C++》《C++》《C++》《C++》《C++》《C++》
-《C++》《C++》《C++》《C++》《C++》《C++》《C++》《C++》《C++》《C++》《C++》
-"
-        android:gravity="center"
-        android:textColor="@color/white"
         android:layout_toLeftOf="@+id/timeOrauthor"
+        android:layout_toRightOf="@+id/iv_searchlist"
+        android:maxLines="1"
+        android:textColor="@color/white"
         android:textSize="28px"
+        android:layout_below="@id/dashline_search"
+        tools:text="《C+"
 
         />
 
@@ -42,14 +41,16 @@ android:layout_centerVertical="true"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_alignParentRight="true"
-        android:layout_marginBottom="22px"
-        android:maxWidth="300px"
-        android:maxLines="1"
-        android:ellipsize="end"
         android:layout_centerVertical="true"
+        android:layout_marginBottom="22px"
         android:layout_marginLeft="14px"
         android:layout_toRightOf="@+id/iv_searchlist"
+        android:ellipsize="end"
+        android:gravity="right"
+        android:maxLines="1"
+        android:maxWidth="300px"
         android:text="2016-12-13"
+        android:layout_below="@id/dashline_search"
         android:textColor="#e6ffff"
         android:textSize="24px"
         />

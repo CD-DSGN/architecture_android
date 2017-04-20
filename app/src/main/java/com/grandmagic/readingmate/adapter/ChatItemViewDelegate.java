@@ -69,10 +69,13 @@ public abstract class ChatItemViewDelegate implements ItemViewDelegate<EMMessage
         Contacts mUserInfo;
         if (mDirect == EMMessage.Direct.SEND) {
             mUserInfo = IMHelper.getInstance().getUserInfo(SPUtils.getInstance().getString(mContext, SPUtils.IM_NAME));
+            Log.e(TAG, "convert: "+mChatMessage.status() );
             switch (mChatMessage.status()) {
+
                 case CREATE:
                     progress.setVisibility(View.GONE);
                     statesView.setVisibility(View.VISIBLE);
+
                     break;
                 case SUCCESS:
                     progress.setVisibility(View.GONE);
