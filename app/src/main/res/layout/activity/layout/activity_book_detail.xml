@@ -126,13 +126,13 @@
                         android:text="最新评论"
                         android:textColor="@color/gray_select"
                       android:textSize="@dimen/textsize_28px"
-                        android:layout_marginRight="10dp"
+                        android:layout_marginRight="15px"
                         />
 
                     <View
                         android:id="@+id/dashline_tvlast"
                         android:layout_width="match_parent"
-                        android:layout_height="1dp"
+                        android:layout_height="1px"
                         android:background="@color/text_green"
                         />
                 </LinearLayout>
@@ -151,7 +151,7 @@
                     android:orientation="vertical">
 
                     <TextView
-                        android:layout_marginLeft="10dp"
+                        android:layout_marginLeft="15px"
                         android:id="@+id/tv_hot"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
@@ -163,7 +163,8 @@
                     <View
                         android:id="@+id/dashline_tvhot"
                         android:layout_width="match_parent"
-                        android:layout_height="1dp"
+                        android:layout_height="1px"
+                        android:visibility="gone"
                         android:background="@color/text_green"
                         />
                 </LinearLayout>
