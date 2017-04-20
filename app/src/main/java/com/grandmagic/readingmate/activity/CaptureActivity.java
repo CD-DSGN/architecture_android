@@ -25,6 +25,7 @@ import com.grandmagic.readingmate.R;
 import com.grandmagic.readingmate.base.AppBaseResponseCallBack;
 import com.grandmagic.readingmate.bean.response.ScanBookResponse;
 import com.grandmagic.readingmate.consts.ApiErrorConsts;
+import com.grandmagic.readingmate.event.BookStateEvent;
 import com.grandmagic.readingmate.model.BookModel;
 import com.grandmagic.readingmate.utils.AutoUtils;
 import com.tamic.novate.NovateResponse;
@@ -35,6 +36,7 @@ import com.xys.libzxing.zxing.utils.BeepManager;
 import com.xys.libzxing.zxing.utils.CaptureActivityHandler;
 import com.xys.libzxing.zxing.utils.InactivityTimer;
 
+import org.greenrobot.eventbus.EventBus;
 import org.json.JSONObject;
 
 import java.io.IOException;
@@ -223,6 +225,7 @@ public class CaptureActivity extends com.xys.libzxing.zxing.activity.CaptureActi
                 bundle.putInt("height", mCropRect.height());
                 bundle.putString("result", response.getData().getBook_id());
                 resultIntent.putExtras(bundle);
+                EventBus.getDefault().post(new BookStateEvent(BookStateEvent.STATE_MOVE,""));
                 CaptureActivity.this.setResult(RESULT_OK, resultIntent);
                 CaptureActivity.this.finish();
             }

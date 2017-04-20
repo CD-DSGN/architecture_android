@@ -32,7 +32,7 @@ public class CommentsAdapter extends CommonAdapter<PersonCommentResponse.Comment
         ImageLoader.loadRoundImage(mContext, Environment.BASEULR_PRODUCTION + this.mAvatar.getMid(), (ImageView) holder.getView(R.id.avatar));
         ImageLoader.loadRoundImage(mContext, Environment.BASEULR_PRODUCTION + data.getPhoto(), (ImageView) holder.getView(R.id.cover));
         holder.setText(R.id.nickname, this.mUsername);
-        holder.setText(R.id.bookname, "《"+data.getBook_name()+"》");
+        holder.setText(R.id.bookname,data.getBook_name());
         holder.setText(R.id.time, DateUtil.timeTodate(data.getPub_time()));
         holder.setText(R.id.replynum, data.getReply_count() + "回复");
         holder.setText(R.id.content, data.getContent());
