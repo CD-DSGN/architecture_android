@@ -8,7 +8,6 @@ import android.os.Bundle;
 import android.os.CountDownTimer;
 import android.widget.ImageView;
 import android.widget.RelativeLayout;
-import android.widget.Toast;
 
 import com.grandmagic.readingmate.R;
 import com.grandmagic.readingmate.base.AppBaseActivity;
@@ -143,7 +142,7 @@ public class SplashActivity extends AppBaseActivity {
         @Override
         public void onFinish() {
             if (canDestroy) toMain();else {
-                Toast.makeText(SplashActivity.this, "卡住了？", Toast.LENGTH_SHORT).show();
+//                Toast.makeText(SplashActivity.this, "卡住了？", Toast.LENGTH_SHORT).show();
             }
         }
     };

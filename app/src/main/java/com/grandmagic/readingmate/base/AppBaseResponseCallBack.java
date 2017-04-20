@@ -12,10 +12,15 @@ import com.orhanobut.logger.Logger;
 import com.tamic.novate.Novate;
 import com.tamic.novate.Throwable;
 import com.tamic.novate.exception.NovateException;
+import com.tamic.novate.exception.ServerException;
 import com.tamic.novate.util.Environment;
 import com.tamic.novate.util.SPUtils;
 
 import org.greenrobot.eventbus.EventBus;
+
+import java.net.ConnectException;
+
+import retrofit2.adapter.rxjava.HttpException;
 
 /**
  * Created by zhangmengqi on 2017/2/9.
@@ -75,15 +80,23 @@ public abstract class AppBaseResponseCallBack<T> implements Novate.ResponseCallB
         //        作统一错误处理
         Logger.e("Novate Error"+e.getMessage());
         dismissLoading();
+        java.lang.Throwable throwable = e.getThrowable();
         if (e != null) {
-            if (e.getCode() != ApiErrorConsts.token_invalid && e.getCode() != NovateException.UNAUTHORIZED) {
+            if (e.getCode() == ApiErrorConsts.token_invalid || e.getCode() == NovateException.UNAUTHORIZED) {
+                SPUtils.getInstance().putString(mContext,SPUtils.IM_STATE, EMError.USER_LOGIN_ANOTHER_DEVICE+"");
+                EventBus.getDefault().post(new ConnectStateEvent(EMError.USER_LOGIN_ANOTHER_DEVICE));
+            } else if (throwable instanceof HttpException
+                    || throwable instanceof java.net.SocketTimeoutException
+                    || throwable instanceof ServerException
+                    || throwable instanceof ConnectException
+                    || throwable instanceof  javax.net.ssl.SSLHandshakeException
+                    || throwable instanceof  java.security.cert.CertPathValidatorException) {
+                ViewUtils.showToast(e.getMessage() + "");
+            } else {
                 if (Environment.getEnviroment() != Environment.ENVIRONMENT_PRODUCTION) {
                     ViewUtils.showToast(e.getMessage() + "");
                     Logger.e(e.getMessage());
                 }
-            } else {
-                SPUtils.getInstance().putString(mContext,SPUtils.IM_STATE,EMError.USER_LOGIN_ANOTHER_DEVICE+"");
-                EventBus.getDefault().post(new ConnectStateEvent(EMError.USER_LOGIN_ANOTHER_DEVICE));
             }
 
         }
@@ -110,8 +123,5 @@ public abstract class AppBaseResponseCallBack<T> implements Novate.ResponseCallB
                 }
             }
         }
-
     }
-
-
 }
