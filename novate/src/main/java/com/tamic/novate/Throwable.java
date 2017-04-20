@@ -9,9 +9,11 @@ public class Throwable extends Exception {
     private int code;
     private String message;
     private String json;
+    private java.lang.Throwable mThrowable;
 
     public Throwable(java.lang.Throwable throwable, int code) {
         super(throwable);
+        mThrowable = throwable;
         this.code = code;
     }
 
@@ -19,6 +21,7 @@ public class Throwable extends Exception {
         super(throwable);
         this.code = code;
         this.json = json;
+        mThrowable = throwable;
     }
 
     public void setCode(int code) {
@@ -44,5 +47,9 @@ public class Throwable extends Exception {
 
     public void setJson(String json) {
         this.json = json;
+    }
+
+    public java.lang.Throwable getThrowable() {
+        return mThrowable;
     }
 }

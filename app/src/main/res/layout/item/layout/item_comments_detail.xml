@@ -118,6 +118,7 @@
             android:layout_centerVertical="true"
             android:layout_marginLeft="24px"
             tools:src="@drawable/logo"
+            android:scaleType="centerInside"
             />
 
         <TextView

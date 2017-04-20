@@ -65,6 +65,13 @@
 -keepclassmembers class **.R$* {
     public static <fields>;
 }
+
+
+
+
+
+
+
 #百度地图
 -dontwarn com.baidu.**
 -keep class com.baidu.**{*;}
@@ -274,3 +281,7 @@ public static java.lang.String TABLENAME;
 #databinding
 -dontwarn android.databinding.**
 -keep class android.databinding.** { *; }
+
+-keep class com.grandmagic.readingmate.bean.** { *; }
+-keep class com.tamic.** {*;}
+-keep class com.refreshlab.** {*;}
