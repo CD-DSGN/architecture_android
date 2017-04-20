@@ -250,7 +250,7 @@ public class BookDetailActivity extends AppBaseActivity implements View.OnLayout
             mRelaRating.setVisibility(View.GONE);
             mLinShare.setVisibility(View.VISIBLE);
             mSubmit.setVisibility(View.GONE);
-            mParams.height = mEtComment.getMeasuredHeight() / 4;
+            mParams.height = mEtComment.getMeasuredHeight() / 3;
             //            键盘收起
         }
         mEtComment.setLayoutParams(mParams);
