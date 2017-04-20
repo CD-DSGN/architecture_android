@@ -27,7 +27,7 @@
         android:layout_marginLeft="26px"
         android:layout_marginTop="40px"
         android:layout_toRightOf="@+id/avatar"
-        android:text="张三"
+        tools:text="张三"
         android:textColor="#191921"
         android:textSize="36px"
 

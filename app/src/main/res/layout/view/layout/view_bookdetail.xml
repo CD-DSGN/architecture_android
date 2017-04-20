@@ -125,7 +125,6 @@
             android:textColor="@color/text_green"
             android:textSize="@dimen/textsize_24px"
             tool:text="9"
-            android:text="9"
             android:layout_toRightOf="@+id/total_score"
             />
         <TextView

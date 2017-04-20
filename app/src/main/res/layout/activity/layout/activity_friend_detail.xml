@@ -101,7 +101,7 @@
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:layout_marginLeft="10px"
-                            android:text="张山"
+                            tools:text="张山"
                             android:textColor="#181e1d"
                             android:textSize="38px"
                             />
@@ -127,7 +127,7 @@
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:layout_marginLeft="10px"
-                            android:text="1324567"
+                            tools:text="1324567"
                             android:textColor="#999999"
                             android:textSize="24px"
                             />
@@ -145,7 +145,7 @@
                         <TextView
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
-                            android:text="昵称"
+                            tools:text="昵称"
                             android:textColor="#999999"
                             android:textSize="24px"
                             />
@@ -154,7 +154,7 @@
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:layout_marginLeft="10px"
-                            android:text="花花"
+                            tools:text="花花"
                             android:textColor="#999999"
                             android:textSize="24px"
                             />

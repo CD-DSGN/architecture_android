@@ -79,7 +79,7 @@
             android:layout_height="wrap_content"
             android:layout_marginLeft="35px"
             android:layout_marginRight="35px"
-            android:text="1/1"
+            tools:text="1/1"
             android:textColor="#1cc9a2"
             android:textSize="26px"
             android:id="@+id/tv_page_info"

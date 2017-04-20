@@ -166,7 +166,7 @@
                 android:layout_centerVertical="true"
                 android:layout_marginLeft="10px"
                 android:layout_marginRight="66px"
-                android:text="女"
+                tools:text="女"
                 android:textColor="#999999"
                 android:textSize="30px"
                 />
