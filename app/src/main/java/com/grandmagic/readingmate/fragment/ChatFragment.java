@@ -7,6 +7,7 @@ import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v7.widget.LinearLayoutManager;
 import android.text.TextUtils;
+import android.util.Log;
 import android.util.Pair;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -100,7 +101,7 @@ public class ChatFragment extends AppBaseFragment implements RecentConversationD
     @Override
     public void onResume() {
         super.onResume();
-//        setSystemBarColor(false);
+
         onrefreshConversation();
     }
 
@@ -318,8 +319,8 @@ int unreadmsgCount;//未读消息
     public void onHiddenChanged(boolean hidden) {
         setSystemBarColor(hidden);
     }
-
-    private void setSystemBarColor(boolean hidden) {
+@Override
+    public void setSystemBarColor(boolean hidden) {
         if (!hidden) ((AppBaseActivity) (mContext)).setSystemBarColor(R.color.white);
     }
 

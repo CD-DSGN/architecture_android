@@ -22,6 +22,7 @@ import android.widget.Toast;
 
 import com.grandmagic.readingmate.R;
 import com.grandmagic.readingmate.base.AppBaseActivity;
+import com.grandmagic.readingmate.base.AppBaseFragment;
 import com.grandmagic.readingmate.base.AppBaseResponseCallBack;
 import com.grandmagic.readingmate.bean.db.Contacts;
 import com.grandmagic.readingmate.bean.response.SearchUserResponse;
@@ -78,10 +79,10 @@ public class MainActivity extends AppBaseActivity {
     LinearLayout mBottomlayout;
 
     FragmentManager mFragmentManager;
-    Fragment mcurrentFragment;
+    AppBaseFragment mcurrentFragment;
     ImageView mcurrentIV;
     TextView mcurrentTV;
-    Map<String, Fragment> mFragments;//存放fragment，如果以创建就从里面加载，不重复创建
+    Map<String, AppBaseFragment> mFragments;//存放fragment，如果以创建就从里面加载，不重复创建
     @BindView(R.id.iv_home)
     ImageView mIvHome;
     @BindView(R.id.iv_chat)
@@ -208,10 +209,10 @@ public class MainActivity extends AppBaseActivity {
         bindDeviceToken(SPUtils.getInstance().getString(this, SPUtils.DEVICE_TOKEN));
         mFragmentManager = getFragmentManager();
         mFragments = new HashMap<>();
-        mcurrentFragment = mFragmentManager.findFragmentById(R.id.contentframe);
+        mcurrentFragment = (AppBaseFragment) mFragmentManager.findFragmentById(R.id.contentframe);
         //初始化homefragment
-        Fragment mHomeFragment = createFragment(HomeFragment.class);
-        Fragment mchatfragment = createFragment(ChatFragment.class);//初始化的时候吧聊天页也初始化了，可能需要调用他的消息方法
+        AppBaseFragment mHomeFragment = createFragment(HomeFragment.class);
+        AppBaseFragment mchatfragment = createFragment(ChatFragment.class);//初始化的时候吧聊天页也初始化了，可能需要调用他的消息方法
         mFragmentManager.beginTransaction().add(R.id.contentframe, mchatfragment).show(mchatfragment).hide(mchatfragment).commit();
         mFragmentManager.beginTransaction().add(R.id.contentframe, mHomeFragment).show(mHomeFragment).commit();
         mcurrentFragment = mHomeFragment;
@@ -273,7 +274,7 @@ public class MainActivity extends AppBaseActivity {
      */
     private void switchFragment(Class<?> mClass) {
         if (mClass == null) return;
-        Fragment to = createFragment(mClass);
+        AppBaseFragment to = createFragment(mClass);
         if (to.isAdded()) {
             mFragmentManager.beginTransaction().hide(mcurrentFragment).show(to).commit();
         } else {
@@ -351,14 +352,14 @@ public class MainActivity extends AppBaseActivity {
      * @param mClass
      * @return
      */
-    private Fragment createFragment(Class<?> mClass) {
+    private AppBaseFragment createFragment(Class<?> mClass) {
         String mName = mClass.getName();
-        Fragment mInstance = null;
+        AppBaseFragment mInstance = null;
         if (mFragments.containsKey(mName)) {
             mInstance = mFragments.get(mName);
         } else {
             try {
-                mInstance = (Fragment) Class.forName(mName).newInstance();
+                mInstance = (AppBaseFragment) Class.forName(mName).newInstance();
             } catch (Exception mE) {
                 mE.printStackTrace();
             }
@@ -394,7 +395,11 @@ public class MainActivity extends AppBaseActivity {
         super.onResume();
         IMHelper.getInstance().pushActivity(this);
         EMClient.getInstance().chatManager().addMessageListener(mIMMessageListenerMain);
+        mcurrentFragment.setSystemBarColor(false);
+        Log.e(TAG, "onResume() called+fragment="+mcurrentFragment);
     }
+
+    private static final String TAG = "MainActivity";
 
     @Override
     protected void onStop() {

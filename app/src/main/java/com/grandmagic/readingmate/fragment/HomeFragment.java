@@ -92,12 +92,6 @@ public class HomeFragment extends AppBaseFragment implements HomeBookAdapter.Cli
     }
 
     @Override
-    public void onResume() {
-        super.onResume();
-//        setSystemBarColor(false);
-    }
-
-    @Override
     public void onDestroyView() {
         super.onDestroyView();
         EventBus.getDefault().unregister(this);
@@ -122,7 +116,6 @@ public class HomeFragment extends AppBaseFragment implements HomeBookAdapter.Cli
                 Logger.e("首页加载成功");
                 if (response.getData().getNum() == 0) {
                     showEmptyView();
-                    isEmpty = true;
                     return;
                 }
 
@@ -141,7 +134,6 @@ public class HomeFragment extends AppBaseFragment implements HomeBookAdapter.Cli
             @Override
             public void onError(Throwable e) {
                 super.onError(e);
-                isEmpty = true;
                 showEmptyView();
                 mRecyclerview.setRefreshing(false);
             }
@@ -152,6 +144,7 @@ public class HomeFragment extends AppBaseFragment implements HomeBookAdapter.Cli
      * 显示没有书的时候的页面
      */
     private void showEmptyView() {
+        isEmpty=true;
         mLayoutNobook.setVisibility(View.VISIBLE);
         mHomeviewBook.setVisibility(View.GONE);
         setSystemBarColor(false);
@@ -291,12 +284,13 @@ public class HomeFragment extends AppBaseFragment implements HomeBookAdapter.Cli
     public void onHiddenChanged(boolean hidden) {
         setSystemBarColor(hidden);
     }
-
-    private void setSystemBarColor(boolean hidden) {
+@Override
+    public void setSystemBarColor(boolean hidden) {
         if (!hidden)
             ((MainActivity) mContext).setSystemBarColor(isEmpty ? R.color.text_green : android.R.color.white);
     }
 
+    private static final String TAG = "HomeFragment";
     @Subscribe(threadMode = ThreadMode.MAIN)
     public void BookStateCHange(BookStateEvent mStateEvent) {
         // TODO: 2017/4/14

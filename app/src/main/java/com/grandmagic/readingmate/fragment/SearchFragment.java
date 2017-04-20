@@ -272,11 +272,6 @@ public class SearchFragment extends AppBaseFragment implements SearchPersonAdapt
         setSystemBarColor(false);
     }
 
-    @Override
-    public void onResume() {
-        super.onResume();
-//        setSystemBarColor(false);
-    }
 
     @Override
     public void onHiddenChanged(boolean hidden) {
@@ -290,8 +285,8 @@ public class SearchFragment extends AppBaseFragment implements SearchPersonAdapt
     }
 
     int systembarColor = R.color.bg_search;
-
-    private void setSystemBarColor(boolean hidden) {
+@Override
+   public   void setSystemBarColor(boolean hidden) {
         if (!hidden) {
             ((AppBaseActivity) getActivity()).setSystemBarColor(systembarColor);
         }

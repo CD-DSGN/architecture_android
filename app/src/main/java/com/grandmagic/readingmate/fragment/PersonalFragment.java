@@ -7,6 +7,7 @@ import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v7.widget.RecyclerView;
 import android.text.TextUtils;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -223,7 +224,7 @@ public class PersonalFragment extends AppBaseFragment implements MyCommentAdapte
                     String unread_num = personalCommentListResponseBean.getUnread_num();
                     if (TextUtils.isEmpty(unread_num) || unread_num.equals("0")) {
                         mTvUnreadNum.setVisibility(View.INVISIBLE);
-                    }else{
+                    } else {
                         mTvUnreadNum.setText(personalCommentListResponseBean.getUnread_num());
                         mTvUnreadNum.setVisibility(View.VISIBLE);
                     }
@@ -267,7 +268,7 @@ public class PersonalFragment extends AppBaseFragment implements MyCommentAdapte
         if (mCommentDlg == null) {
             mCommentDlg = new DeleteConfirmDlg(mContext);
         }
-
+        setSystemBarColor(false);
         initRefresh();
     }
 
@@ -302,7 +303,7 @@ public class PersonalFragment extends AppBaseFragment implements MyCommentAdapte
     @Override
     public void onResume() {
         super.onResume();
-                setSystemBarColor(false);
+
         if (NEED_REFRESH) {
             mUserInfoModel.getUserInfo();
         }
@@ -313,9 +314,11 @@ public class PersonalFragment extends AppBaseFragment implements MyCommentAdapte
         setSystemBarColor(hidden);
     }
 
-    private void setSystemBarColor(boolean hidden) {
+    @Override
+    public void setSystemBarColor(boolean hidden) {
         if (!hidden) ((AppBaseActivity) (mContext)).setSystemBarColor(android.R.color.white);
     }
+
 
     public void setGenderView(int genderView) {
         if (genderView == 1) {   //女
