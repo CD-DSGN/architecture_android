@@ -73,7 +73,7 @@ public class MyCommentAdapter extends CommonAdapter<PersonnalCommentResponseBean
 //                            p.getBook_name(),
 //                            p.getContent(), KitUtils.getAbsoluteUrl(p.getPhoto()), "https://a.mlinks.cc/AKVC?book_id=3", "分享书评");
 
-                    mSharePopUpWindow.setCommentData(p.getBook_name(), p.getBook_id(), p.getContent(),
+                    mSharePopUpWindow.setCommentData(p.getBook_name(), p.getComment_id(), p.getContent(),
                             p.getPhoto(), p.getAverage_score());
 
                     mSharePopUpWindow.show();

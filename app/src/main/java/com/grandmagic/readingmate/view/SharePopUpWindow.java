@@ -249,7 +249,7 @@ public class SharePopUpWindow extends PopupWindow {
             case 0:
                 return AppConsts.share_url + "bookId=" + id;
             case 1:
-                return AppConsts.share_url + "commentID" + id;
+                return AppConsts.share_url + "commentId=" + id;
             default:
                 return AppConsts.APP_URL;
         }

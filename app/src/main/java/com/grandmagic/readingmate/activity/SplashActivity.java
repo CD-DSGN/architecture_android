@@ -6,12 +6,9 @@ import android.animation.ObjectAnimator;
 import android.content.Intent;
 import android.os.Bundle;
 import android.os.CountDownTimer;
-import android.os.Handler;
-import android.support.annotation.IntDef;
 import android.util.Log;
 import android.widget.ImageView;
 import android.widget.RelativeLayout;
-import android.widget.Toast;
 
 import com.grandmagic.readingmate.R;
 import com.grandmagic.readingmate.base.AppBaseActivity;
@@ -28,10 +25,7 @@ import com.tamic.novate.util.SPUtils;
 import com.tbruyelle.rxpermissions.RxPermissions;
 
 import org.greenrobot.eventbus.EventBus;
-import org.greenrobot.greendao.query.QueryBuilder;
 
-import java.lang.annotation.Retention;
-import java.lang.annotation.RetentionPolicy;
 import java.util.List;
 
 import butterknife.BindView;
@@ -69,6 +63,7 @@ public class SplashActivity extends AppBaseActivity {
         boolean mFirst = SPUtils.getInstance().isFirst(this);
         if (mFirst) {
             mType=TYPE_TO_GUIDE;
+            canDestroy = true;
         } else {
             checklogin();
         }
