@@ -32,7 +32,7 @@ public class MessageIMGSendDelagate extends ChatItemViewDelegate {
     @Override
     protected void childConvert(ViewHolder mHolder, EMMessage data, int mPosition) {
         final EMImageMessageBody mBody = (EMImageMessageBody) data.getBody();
-        ImageLoader.loadRoundImage(mContext, mBody.thumbnailLocalPath(), (ImageView) mHolder.getView(R.id.image));
+        ImageLoader.loadImage(mContext, mBody.thumbnailLocalPath(), (ImageView) mHolder.getView(R.id.image));
         mHolder.getView(R.id.image).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
