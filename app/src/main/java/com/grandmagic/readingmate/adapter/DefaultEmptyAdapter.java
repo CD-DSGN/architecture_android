@@ -2,6 +2,7 @@ package com.grandmagic.readingmate.adapter;
 
 import android.content.Context;
 import android.support.v7.widget.RecyclerView;
+import android.util.Log;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.LinearLayout;
@@ -83,8 +84,10 @@ private TextView emptyTextview;
  */
         if (this.mHeaderOrFooterAdapter != null) mHeaderOrFooterAdapter.notifyDataSetChanged();
         else notifyDataSetChanged();
+        Log.e(TAG, "refresh() called");
     }
 
+    private static final String TAG = "DefaultEmptyAdapter";
 
     public void onError() {
         isload = false;
@@ -96,6 +99,7 @@ private TextView emptyTextview;
 
     @Override
     public int getItemViewType(int position) {
+        Log.e(TAG, "getItemViewType() called with: position = [" + position + "]  isload=" +isload());
         if (isload()) {
             return -1;
         }
@@ -104,6 +108,7 @@ private TextView emptyTextview;
 
     @Override
     public RecyclerView.ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
+        Log.e(TAG, "onCreateViewHolder() called with: parent = [" + parent + "], viewType = [" + viewType + "]");
         if (isload()) {
             return ViewHolder.createViewHolder(parent.getContext(), mLoadView);
         }

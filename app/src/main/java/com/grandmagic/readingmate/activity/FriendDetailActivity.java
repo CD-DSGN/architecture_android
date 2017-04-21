@@ -9,9 +9,11 @@ import android.support.design.widget.CoordinatorLayout;
 import android.support.design.widget.FloatingActionButton;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.util.Log;
 import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.View;
+import android.view.ViewGroup;
 import android.view.WindowManager;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
@@ -43,6 +45,7 @@ import com.refreshlab.PullLoadMoreRecyclerView;
 import com.tamic.novate.NovateResponse;
 import com.tamic.novate.Throwable;
 import com.tamic.novate.util.Environment;
+import com.zhy.adapter.recyclerview.wrapper.HeaderAndFooterWrapper;
 
 import org.greenrobot.eventbus.EventBus;
 
@@ -58,14 +61,16 @@ import butterknife.OnClick;
  * @see #mPersonInfo 此页面进入时必传
  */
 public class FriendDetailActivity extends AppBaseActivity {
-    ContactModel mModel;
+    private static final String TAG = "FriendDetailActivity";
     public static final String PERSON_INFO = "person_info";
-    @BindView(R.id.back)
+    ContactModel mModel;
+    PullLoadMoreRecyclerView mRecyclerview;
+    //title
     ImageView mBack;
-    @BindView(R.id.title)
+
     TextView mTitle;
-    @BindView(R.id.titlelayout)
-    RelativeLayout mTitlelayout;
+    ImageView mTitleMore;
+    //header
     @BindView(R.id.avatar)
     ImageView mAvatar;
     @BindView(R.id.recommend)
@@ -74,21 +79,8 @@ public class FriendDetailActivity extends AppBaseActivity {
     ImageView mGender;
     @BindView(R.id.name)
     TextView mName;
-    @BindView(R.id.title_more)
-    ImageView mTitleMore;
-    @BindView(R.id.recyclerview)
-    PullLoadMoreRecyclerView mRecyclerview;
-    @BindView(R.id.collapsingtoolbarlayout)
-    CollapsingToolbarLayout mCollapsingtoolbarlayout;
-    @BindView(R.id.appbarlayout)
-    AppBarLayout mAppbarlayout;
     @BindView(R.id.fab)
     FloatingActionButton mFab;
-    @BindView(R.id.coordinatorlayout)
-    CoordinatorLayout mCoordinatorlayout;
-    private static final String TAG = "FriendDetailActivity";
-
-    @BindView(R.id.rootview)
     LinearLayout mRootview;
     String userid;
     @BindView(R.id.clientid)
@@ -105,11 +97,16 @@ public class FriendDetailActivity extends AppBaseActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_friend_detail);
-        ButterKnife.bind(this);
         AutoUtils.auto(this);
         setTranslucentStatus(true);
         initview();
         initdata();
+    }
+
+    private void initview() {
+        inittitleLatout();
+        initrecyclerView();
+        initrefreshLayout();
     }
 
     int comentpagecount = 1, commentcurrpage = 1;
@@ -134,44 +131,61 @@ public class FriendDetailActivity extends AppBaseActivity {
 
     List<PersonCommentResponse.CommentInfoBean> mCommentInfoBeanList = new ArrayList<>();
 
-    private void initview() {
-        mTitleMore.setVisibility(View.VISIBLE);
-        mTitle.setText("详细信息");
+
+    //初始化recyclerView
+    private void initrecyclerView() {
+        View mHeaderView = initHeaderView();
+        mRecyclerview = (PullLoadMoreRecyclerView) findViewById(R.id.recyclerview);
         mRecyclerview.setLinearLayout();
         mCommentsAdapter = new CommentsAdapter(this, mCommentInfoBeanList);
         mCommentDefaultAdapter = new DefaultEmptyAdapter(mCommentsAdapter, this);
-        mRecyclerview.setAdapter(mCommentDefaultAdapter);
+        HeaderAndFooterWrapper mWrapper = new HeaderAndFooterWrapper(mCommentDefaultAdapter);
+        mCommentDefaultAdapter.setHeaderOrFooterAdapter(mWrapper);
+        mWrapper.addHeaderView(mHeaderView);
+        mRecyclerview.setAdapter(mWrapper);
 
-        mAppbarlayout.addOnOffsetChangedListener(new AppBarLayout.OnOffsetChangedListener() {
-            @Override
-            public void onOffsetChanged(AppBarLayout appBarLayout, int verticalOffset) {
-                if (verticalOffset == 0) {
-                    //完全展开
-                }
-                if (appBarLayout.getMeasuredHeight() == Math.abs(verticalOffset)) {
-                    //完全关闭
-                    if (!isFriend)
-                        mFab.hide();
-                }
-                if (appBarLayout.getMeasuredHeight() > Math.abs(verticalOffset)) {
-                    //完全关闭
-                    if (!isFriend)
-                        mFab.show();
-                }
-            }
-        });
+
         //初始化用户收藏的图书的recyclerView
         mCollectrecyclerview.setLayoutManager(new LinearLayoutManager(this, LinearLayoutManager.HORIZONTAL, false));
         PersonCollectAdapter mCollAdapter = new PersonCollectAdapter(this, mCollectList);
         mCollDefaultAdapter = new DefaultEmptyAdapter(mCollAdapter, this);
         mCollectrecyclerview.setAdapter(mCollDefaultAdapter);
-        initrefreshLayout();
+    }
+
+    //初始化顶部的title
+    private void inittitleLatout() {
+        mBack = (ImageView) findViewById(R.id.back);
+        mTitle = (TextView) findViewById(R.id.title);
+        mTitleMore = (ImageView) findViewById(R.id.title_more);
+        mRootview = (LinearLayout) findViewById(R.id.rootview);
+        mTitleMore.setVisibility(View.VISIBLE);
+        mTitle.setText("详细信息");
+        mTitleMore.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                showDeletePop();
+            }
+        });
+        mBack.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                finish();
+            }
+        });
+    }
+
+    //初始化上部分的header
+    private View initHeaderView() {
+        View mInflate = LayoutInflater.from(this).inflate(R.layout.view_friend_header, null);
+        ButterKnife.bind(this, mInflate);
+        mInflate.setLayoutParams(new LinearLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.WRAP_CONTENT));
+        AutoUtils.auto(mInflate);
+        return mInflate;
     }
 
     private void initSimplePersonInfo(PersonInfo mPersonInfo) {
         ImageLoader.loadCircleImage(this, Environment.BASEULR_PRODUCTION + mPersonInfo.getAvatar(), mAvatar);
         mName.setText(mPersonInfo.getNickname());
-//        mClientid.setText(mPersonInfo.getClientid());
         mClientid.setText(mPersonInfo.getSignature());
         isFriend = ContactModel.isFriend(this, mPersonInfo.getUser_id());
         if (isFriend) {//是否已经是好友关系
@@ -240,6 +254,7 @@ public class FriendDetailActivity extends AppBaseActivity {
         mModel.loadUserComment(userid, mCommentcurrpage, new AppBaseResponseCallBack<NovateResponse<PersonCommentResponse>>(this) {
             @Override
             public void onSuccee(NovateResponse<PersonCommentResponse> response) {
+                Log.e(TAG, "onSuccee() called with: response = [" + response + "]");
                 mCommentInfoBeanList.addAll(response.getData().getComment_info());
                 comentpagecount = response.getData().getPageCount();
                 mCommentsAdapter.setAvatar(response.getData().getAvatar_url());
@@ -257,20 +272,15 @@ public class FriendDetailActivity extends AppBaseActivity {
         });
     }
 
-    @OnClick({R.id.back, R.id.recommend, R.id.fab, R.id.title_more, R.id.iv_sendmsg})
+    @OnClick({R.id.recommend, R.id.iv_sendmsg})
     public void onClick(View view) {
         switch (view.getId()) {
-            case R.id.back:
-                finish();
-                break;
+
             case R.id.recommend:
                 toRecommend();
                 break;
             case R.id.fab:
                 showAddFriendDialog();
-                break;
-            case R.id.title_more:
-                showDeletePop();
                 break;
             case R.id.iv_sendmsg:
                 toChat();
