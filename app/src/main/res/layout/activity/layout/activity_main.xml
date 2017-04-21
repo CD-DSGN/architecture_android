@@ -30,6 +30,7 @@
             android:layout_width="0dp"
             android:layout_height="match_parent"
             android:gravity="center"
+            android:background="@drawable/defaultripple"
             android:layout_weight="1">
 
             <TextView
@@ -56,6 +57,8 @@
         </RelativeLayout>
 
         <RelativeLayout
+            android:background="@drawable/defaultripple"
+
             android:id="@+id/layout_chat"
             android:layout_width="0dp"
             android:layout_height="match_parent"
@@ -105,6 +108,8 @@
         </RelativeLayout>
 
         <RelativeLayout
+            android:background="@drawable/defaultripple"
+
             android:id="@+id/layout_search"
             android:layout_width="0dp"
             android:layout_height="match_parent"
@@ -135,6 +140,8 @@
         </RelativeLayout>
 
         <RelativeLayout
+            android:background="@drawable/defaultripple"
+
             android:id="@+id/layout_personal"
             android:layout_width="0dp"
             android:layout_height="match_parent"
