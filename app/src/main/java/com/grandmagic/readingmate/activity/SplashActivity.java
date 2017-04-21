@@ -6,8 +6,12 @@ import android.animation.ObjectAnimator;
 import android.content.Intent;
 import android.os.Bundle;
 import android.os.CountDownTimer;
+import android.os.Handler;
+import android.support.annotation.IntDef;
+import android.util.Log;
 import android.widget.ImageView;
 import android.widget.RelativeLayout;
+import android.widget.Toast;
 
 import com.grandmagic.readingmate.R;
 import com.grandmagic.readingmate.base.AppBaseActivity;
@@ -26,6 +30,8 @@ import com.tbruyelle.rxpermissions.RxPermissions;
 import org.greenrobot.eventbus.EventBus;
 import org.greenrobot.greendao.query.QueryBuilder;
 
+import java.lang.annotation.Retention;
+import java.lang.annotation.RetentionPolicy;
 import java.util.List;
 
 import butterknife.BindView;
@@ -35,11 +41,16 @@ import rx.functions.Action1;
 //启动页面
 public class SplashActivity extends AppBaseActivity {
     private static final String TAG = "SplashActivity";
+    public static final int TYPE_TO_MAIN = 1;
+    public static final int TYPE_TO_GUIDE = 2;
+    public static final int TYPE_TO_LOGIN = 3;
     public static final int DEFAULT_TIME = 2000;
     @BindView(R.id.activity_splash)
     RelativeLayout mActivitySplash;
     @BindView(R.id.logo)
     ImageView mLogo;
+    int mType;//需要跳转的类型
+    long start;//计时器的开始时间
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -49,8 +60,6 @@ public class SplashActivity extends AppBaseActivity {
         ButterKnife.bind(this);
         initview();
         checkfrist();
-        QueryBuilder.LOG_SQL = true;//是否开启打印greendao的一些数据
-        QueryBuilder.LOG_VALUES = true;
     }
 
     /**
@@ -59,9 +68,7 @@ public class SplashActivity extends AppBaseActivity {
     private void checkfrist() {
         boolean mFirst = SPUtils.getInstance().isFirst(this);
         if (mFirst) {
-            SPUtils.getInstance().putBoolean(this, SPUtils.IS_FIRST, false);
-            startActivity(new Intent(SplashActivity.this, GuideActivity.class));
-            finish();
+            mType=TYPE_TO_GUIDE;
         } else {
             checklogin();
         }
@@ -72,17 +79,27 @@ public class SplashActivity extends AppBaseActivity {
             }
         });
     }
-
+    private void initview() {
+        ObjectAnimator mScaleX = ObjectAnimator.ofFloat(mLogo, "scaleX", 0, 1f);
+        ObjectAnimator mScaleY = ObjectAnimator.ofFloat(mLogo, "scaleY", 0, 1f);
+        AnimatorSet mAnimatorSet = new AnimatorSet();
+        mAnimatorSet.setDuration(600);
+        mAnimatorSet.playTogether(mScaleX, mScaleY);
+        mAnimatorSet.start();
+        mCountDownTimer.start();
+        start = System.currentTimeMillis();
+    }
     /**
      * 检测登陆状态，未登录则进入登陆，否则进入主页
      */
     boolean canDestroy = false;
-    boolean mLogin;
+    boolean isLogin;
 
     private void checklogin() {
-        mLogin = SPUtils.getInstance().isLogin(this);
-        if (mLogin) {
+        isLogin = SPUtils.getInstance().isLogin(this);
+        if (isLogin) {
 //            保存一份联系人信息
+            mType=TYPE_TO_MAIN;
             new ContactModel(this).getAllFriendFromServer(new AppBaseResponseCallBack<NovateResponse<List<Contacts>>>(this) {
                 @Override
                 public void onSuccee(NovateResponse<List<Contacts>> response) {
@@ -95,6 +112,9 @@ public class SplashActivity extends AppBaseActivity {
                     EMClient.getInstance().chatManager().loadAllConversations();
                     EMClient.getInstance().groupManager().loadAllGroups();
                     canDestroy = true;
+                    if (System.currentTimeMillis()-start>DEFAULT_TIME){
+                        mCountDownTimer.onFinish();
+                    }
                 }
 
                 @Override
@@ -107,32 +127,30 @@ public class SplashActivity extends AppBaseActivity {
                 }
             });
         } else {
+            mType=TYPE_TO_LOGIN;
             canDestroy = true;
         }
 
     }
 
     private void toMain() {
-        if (mLogin) {
-            startActivity(new Intent(SplashActivity.this, MainActivity.class));
-        } else {
-            startActivity(new Intent(SplashActivity.this, LoginActivity.class));
+        switch (mType){
+            case TYPE_TO_GUIDE:
+                SPUtils.getInstance().putBoolean(this, SPUtils.IS_FIRST, false);
+                startActivity(new Intent(SplashActivity.this, GuideActivity.class));
+                break;
+            case TYPE_TO_LOGIN:
+                startActivity(new Intent(SplashActivity.this, LoginActivity.class));
+                break;
+            case TYPE_TO_MAIN:
+                startActivity(new Intent(SplashActivity.this, MainActivity.class));
+                break;
         }
         finish();
     }
 
-    long start;
 
-    private void initview() {
-        ObjectAnimator mScaleX = ObjectAnimator.ofFloat(mLogo, "scaleX", 0, 1f);
-        ObjectAnimator mScaleY = ObjectAnimator.ofFloat(mLogo, "scaleY", 0, 1f);
-        AnimatorSet mAnimatorSet = new AnimatorSet();
-        mAnimatorSet.setDuration(600);
-        mAnimatorSet.playTogether(mScaleX, mScaleY);
-        mAnimatorSet.start();
-        mCountDownTimer.start();
-        start = System.currentTimeMillis();
-    }
+
 
     CountDownTimer mCountDownTimer = new CountDownTimer(DEFAULT_TIME, 1000) {
         @Override
@@ -141,8 +159,10 @@ public class SplashActivity extends AppBaseActivity {
 
         @Override
         public void onFinish() {
-            if (canDestroy) toMain();else {
-//                Toast.makeText(SplashActivity.this, "卡住了？", Toast.LENGTH_SHORT).show();
+            if (canDestroy) toMain();
+            else {
+//                Toast.makeText(SplashActivity.this, "暂不跳转？", Toast.LENGTH_SHORT).show();
+                Log.e(TAG, "onFinish() called but not go Main");
             }
         }
     };
