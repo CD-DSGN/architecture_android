@@ -497,7 +497,7 @@ public class CommentsActivity extends AppBaseActivity implements View.OnLayoutCh
             mPopupWindow.setCommentData(mCommentsDetailResponoseBean.getBook_name(),
                     mCommentsDetailResponoseBean.getComment_id(),
                     mCommentsDetailResponoseBean.getContent(), mCommentsDetailResponoseBean.getPhoto(),
-                    "7.5");              //缺图书评分字段
+                    mCommentsDetailResponoseBean.getAverage_score());              
             mPopupWindow.show();
         }
 

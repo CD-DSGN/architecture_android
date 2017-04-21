@@ -165,6 +165,13 @@ public class SharePopUpWindow extends PopupWindow {
     }
 
 
+    public void dismissPorgressDlg() {
+        if (mProgressDialog != null) {
+            ViewUtils.safeCloseDialog(mProgressDialog);
+        }
+    }
+
+
     public void show() {
         this.showAtLocation(mActivity.getWindow().getDecorView(), Gravity.BOTTOM, 0, 0);
         WindowManager.LayoutParams params = mActivity.getWindow().getAttributes();
@@ -221,18 +228,30 @@ public class SharePopUpWindow extends PopupWindow {
     //分享图书
     public ShareAction setBookData(String book_name, String book_id, String book_cotent, String book_cover, String rate) {
         if (!TextUtils.isEmpty(book_cover)) {
-            return setData(book_name, "读家评分:"+ rate + "\n" + book_cotent, KitUtils.getAbsoluteUrl(book_cover), AppConsts.APP_URL, "#大术读家#");
+            return setData(book_name, "读家评分:"+ rate + "\n" + book_cotent, KitUtils.getAbsoluteUrl(book_cover), getShareUrl(book_id, 0), "#大术读家#");
         }else{
-            return setData(book_name, "读家评分:"+ rate + "\n" + book_cotent, R.drawable.iv_no_book, AppConsts.APP_URL, "#大术读家#");
+            return setData(book_name, "读家评分:"+ rate + "\n" + book_cotent, R.drawable.iv_no_book, getShareUrl(book_id, 0), "#大术读家#");
         }
     }
 
     //分享评论
     public ShareAction setCommentData(String book_name, String comment_id, String comment_cotent, String book_cover, String rate) {
         if (!TextUtils.isEmpty(book_cover)) {
-            return setData(book_name, "读家评分:"+ rate + "\n" + comment_cotent, KitUtils.getAbsoluteUrl(book_cover), AppConsts.APP_URL, "#读家评论#");
+            return setData(book_name, "读家评分:"+ rate + "\n" + comment_cotent, KitUtils.getAbsoluteUrl(book_cover), getShareUrl(comment_id, 1), "#读家评论#");
         }else{
-            return setData(book_name, "读家评分:"+ rate + "\n" + comment_cotent, R.drawable.iv_no_book, AppConsts.APP_URL, "#读家评论#");
+            return setData(book_name, "读家评分:"+ rate + "\n" + comment_cotent, R.drawable.iv_no_book, getShareUrl(comment_id, 1), "#读家评论#");
+        }
+    }
+
+
+    public String getShareUrl(String id, int type) {
+        switch (type) {
+            case 0:
+                return AppConsts.share_url + "bookId=" + id;
+            case 1:
+                return AppConsts.share_url + "commentID" + id;
+            default:
+                return AppConsts.APP_URL;
         }
     }
 

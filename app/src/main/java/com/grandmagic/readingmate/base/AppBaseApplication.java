@@ -51,6 +51,7 @@ public class AppBaseApplication extends Application {
         initIM();
         //友盟分享配置
         Config.DEBUG = true;
+        Config.isJumptoAppStore = true;
         UMShareAPI.get(this);
         CrashReport.setIsDevelopmentDevice(this, true);
         CrashReport.initCrashReport(getApplicationContext());
@@ -88,7 +89,8 @@ public class AppBaseApplication extends Application {
         //微信和新浪分享配置
 //        PlatformConfig.setWeixin("wxdc1e388c3822c80b", "3baf1193c85774b3fd9d18447d76cab0");
         PlatformConfig.setWeixin("wxe528ef4ed89d4c2d", "232ccd13a9e581b6c744286f31390140");
-        PlatformConfig.setSinaWeibo("3921700954", "04b48b094faeb16683c32669824ebdad", "http://sns.whalecloud.com");
+        PlatformConfig.setSinaWeibo("2347664760", "060602368b5f3e69871ba0e559828b40", "http://www.grandmagic.cn");
+//        PlatformConfig.setSinaWeibo("3921700954", "04b48b094faeb16683c32669824ebdad", "http://sns.whalecloud.com");
     }
 
     /**
