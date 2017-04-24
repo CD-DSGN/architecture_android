@@ -10,5 +10,6 @@ public class ApiErrorConsts {
     public static int SCAN_NO_BOOK = 2000002; //数据库没有书籍信息
     public static int SUBSCIRBE_ERROR = 2000003; //关注图书失败
     public static int SUBSCRIBE_ALREADY = 2000004; //已经关注过此书
+    public static int NO_UPDATE = 7000000; //没有更新
 
 }

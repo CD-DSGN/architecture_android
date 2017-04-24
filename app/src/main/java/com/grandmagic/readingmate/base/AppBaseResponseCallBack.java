@@ -91,7 +91,10 @@ public abstract class AppBaseResponseCallBack<T> implements Novate.ResponseCallB
                     || throwable instanceof ConnectException
                     || throwable instanceof  javax.net.ssl.SSLHandshakeException
                     || throwable instanceof  java.security.cert.CertPathValidatorException) {
-                ViewUtils.showToast(e.getMessage() + "");
+                if (e.getCode() != ApiErrorConsts.NO_UPDATE) {
+                    ViewUtils.showToast(e.getMessage() + "");
+                }
+
             } else {
                 if (Environment.getEnviroment() != Environment.ENVIRONMENT_PRODUCTION) {
                     ViewUtils.showToast(e.getMessage() + "");

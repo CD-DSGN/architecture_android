@@ -41,6 +41,16 @@ public class CommentsDetailResponoseBean {
     private int book_id;
     private String photo;
 
+    public String getAverage_score() {
+        return average_score;
+    }
+
+    public void setAverage_score(String average_score) {
+        this.average_score = average_score;
+    }
+
+    private String average_score;
+
     public String getIs_self_comment() {
         return is_self_comment;
     }

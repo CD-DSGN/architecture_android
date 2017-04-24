@@ -11,13 +11,10 @@ import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
-import android.util.Log;
 import android.view.Window;
 import android.view.WindowManager;
 
-import com.grandmagic.readingmate.R;
 import com.grandmagic.readingmate.activity.LoginActivity;
-import com.grandmagic.readingmate.activity.MainActivity;
 import com.grandmagic.readingmate.event.ConnectStateEvent;
 import com.grandmagic.readingmate.utils.SystemBarTintManager;
 import com.hyphenate.EMError;
@@ -26,6 +23,7 @@ import com.tamic.novate.RxApiManager;
 import com.tamic.novate.util.SPUtils;
 import com.umeng.analytics.MobclickAgent;
 import com.umeng.message.PushAgent;
+import com.umeng.socialize.UMShareAPI;
 
 import org.greenrobot.eventbus.EventBus;
 import org.greenrobot.eventbus.Subscribe;
@@ -69,6 +67,7 @@ public class AppBaseActivity extends AppCompatActivity {
     @Override
     protected void onDestroy() {
         super.onDestroy();
+        UMShareAPI.get(this).release();   //防止友盟分享内存泄漏
         mRxApiManager.removeAll();
         EventBus.getDefault().unregister(this);
     }

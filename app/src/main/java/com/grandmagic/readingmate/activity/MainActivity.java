@@ -2,14 +2,11 @@ package com.grandmagic.readingmate.activity;
 
 import android.Manifest;
 import android.animation.ObjectAnimator;
-import android.app.Fragment;
 import android.app.FragmentManager;
-import android.content.DialogInterface;
 import android.content.Intent;
 import android.graphics.Color;
 import android.net.Uri;
 import android.os.Bundle;
-import android.support.v7.app.AlertDialog;
 import android.text.TextUtils;
 import android.util.Log;
 import android.view.View;
@@ -30,7 +27,6 @@ import com.grandmagic.readingmate.consts.AppConsts;
 import com.grandmagic.readingmate.db.ContactsDao;
 import com.grandmagic.readingmate.db.DBHelper;
 import com.grandmagic.readingmate.event.BindDeviceTokenEvent;
-import com.grandmagic.readingmate.event.ConnectStateEvent;
 import com.grandmagic.readingmate.event.LogoutEvent;
 import com.grandmagic.readingmate.fragment.ChatFragment;
 import com.grandmagic.readingmate.fragment.HomeFragment;
@@ -45,14 +41,12 @@ import com.grandmagic.readingmate.utils.IMHelper;
 import com.grandmagic.readingmate.utils.KitUtils;
 import com.grandmagic.readingmate.utils.UpdateManager;
 import com.hyphenate.EMCallBack;
-import com.hyphenate.EMError;
 import com.hyphenate.chat.EMClient;
 import com.orhanobut.logger.Logger;
 import com.tamic.novate.NovateResponse;
 import com.tamic.novate.util.SPUtils;
 import com.tbruyelle.rxpermissions.RxPermissions;
 
-import org.greenrobot.eventbus.EventBus;
 import org.greenrobot.eventbus.Subscribe;
 import org.greenrobot.eventbus.ThreadMode;
 
@@ -106,6 +100,7 @@ public class MainActivity extends AppBaseActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        AutoUtils.setSize(this, false, 750, 1334);
         setContentView(R.layout.activity_main);
         ButterKnife.bind(this);
         AutoUtils.auto(this);
@@ -121,6 +116,10 @@ public class MainActivity extends AppBaseActivity {
         initSelfInfo();
         setTranslucentStatus(true);
         Intent intent = getIntent();
+        startActivityFromShare(intent);
+    }
+
+    private void startActivityFromShare(Intent intent) {
         String action = intent.getAction();
         if (Intent.ACTION_VIEW.equals(action)) {
             Uri uri = intent.getData();
@@ -326,6 +325,8 @@ public class MainActivity extends AppBaseActivity {
             newMsg();
             mLayoutChat.performClick();
         }
+
+        startActivityFromShare(intent);
     }
 
     /**
@@ -429,4 +430,5 @@ public class MainActivity extends AppBaseActivity {
     protected void onDestroy() {
         super.onDestroy();
     }
+
 }

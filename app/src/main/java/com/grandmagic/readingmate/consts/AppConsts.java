@@ -10,4 +10,7 @@ public class AppConsts {
     //1.跳转图书详情页;2.跳转评论详情页;
     public static String BOOK_DETAIL = "book_detail";
     public static String COMMENT_DETAIL = "comment_detail";
+
+    public static String share_url = "http://www.huishiclub.com/appshare/index.html?";
+
 }
