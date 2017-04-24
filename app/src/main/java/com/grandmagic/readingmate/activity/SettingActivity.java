@@ -11,6 +11,7 @@ import android.widget.TextView;
 import com.grandmagic.readingmate.R;
 import com.grandmagic.readingmate.base.AppBaseActivity;
 import com.grandmagic.readingmate.base.AppBaseResponseCallBack;
+import com.grandmagic.readingmate.consts.AppConsts;
 import com.grandmagic.readingmate.event.LogoutEvent;
 import com.grandmagic.readingmate.model.LoginModel;
 import com.grandmagic.readingmate.ui.CleanCacheDlg;
@@ -55,7 +56,6 @@ public class SettingActivity extends AppBaseActivity {
 
     private SharePopUpWindow mSharePopUpWindow;
 
-    public static final String APP_URL = "http://a.app.qq.com/o/simple.jsp?pkgname=com.grandmagic.edustore";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -150,8 +150,8 @@ public class SettingActivity extends AppBaseActivity {
                 cleanCacheDlg.show();
                 break;
             case R.id.iv_share_app:
-                mSharePopUpWindow.setData("大术读家", "分享阅读。获取海量图书资源，打造阅读圈子，纸书阅读新体验", R.drawable.iv_no_book,
-                        APP_URL, "#大术读家#一款阅读交友软件，寻找和你兴趣一致的好友，一起读书吧！");
+                mSharePopUpWindow.setData("大术读家", "分享阅读。获取海量图书资源，打造阅读圈子，纸书阅读新体验", R.drawable.logo,
+                        AppConsts.APP_URL, "#大术读家#一款阅读交友软件，寻找和你兴趣一致的好友，一起读书吧！");
                 mSharePopUpWindow.show();
                 break;
 
