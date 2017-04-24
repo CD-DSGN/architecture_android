@@ -27,15 +27,19 @@ import com.bumptech.glide.request.animation.GlideAnimation;
 import com.bumptech.glide.request.target.SimpleTarget;
 import com.grandmagic.readingmate.R;
 import com.grandmagic.readingmate.activity.MainActivity;
+import com.grandmagic.readingmate.base.AppBaseResponseCallBack;
 import com.grandmagic.readingmate.bean.db.Contacts;
 import com.grandmagic.readingmate.bean.db.InviteMessage;
+import com.grandmagic.readingmate.bean.response.OtherInfoResponse;
 import com.grandmagic.readingmate.db.DBHelper;
 import com.grandmagic.readingmate.db.InviteMessageDao;
+import com.grandmagic.readingmate.model.ContactModel;
 import com.grandmagic.readingmate.utils.DateUtil;
 import com.grandmagic.readingmate.utils.GlideCircleTransform;
 import com.grandmagic.readingmate.utils.IMHelper;
 import com.hyphenate.chat.EMMessage;
 import com.hyphenate.chat.EMTextMessageBody;
+import com.tamic.novate.NovateResponse;
 import com.tamic.novate.util.Environment;
 
 import java.util.List;
@@ -278,12 +282,19 @@ public class IMNotifier {
      *
      * @param mInviteMessage
      */
-    public void newInvaiteMsg(InviteMessage mInviteMessage) {
+    public void newInvaiteMsg(final InviteMessage mInviteMessage) {
         InviteMessageDao mInviteDao = DBHelper.getInviteDao(mAppContext);
         mInviteDao.insertOrReplace(mInviteMessage);//每次收到新的好友请求保存到表里
         DBHelper.close();
         vibrateAndPlayTone(null);
-        sendInviteNotification(mInviteMessage);
+        new ContactModel(mAppContext).getOtherUserInfo(mInviteMessage.getFrom(), new AppBaseResponseCallBack<NovateResponse<OtherInfoResponse>>(mAppContext) {
+            @Override
+            public void onSuccee(NovateResponse<OtherInfoResponse> response) {
+                mInviteMessage.setFrom(response.getData().getUser_name());
+                mInviteMessage.setAvatar(response.getData().getAvatar_url().getLarge());
+                sendInviteNotification(mInviteMessage);
+            }
+        });
     }
 
     /**
@@ -291,7 +302,50 @@ public class IMNotifier {
      *
      * @param msg
      */
-    private void sendInviteNotification(InviteMessage msg) {
+    private void sendInviteNotification(final InviteMessage msg) {
+        Observable.just(Environment.BASEULR_PRODUCTION+msg.getAvatar())
+                .flatMap(new Func1<String, Observable<BitmapRequestBuilder<String, Bitmap>>>() {
+                    @Override
+                    public Observable<BitmapRequestBuilder<String, Bitmap>> call(String mS) {
+                        BitmapRequestBuilder<String, Bitmap> mTransform = Glide.with(mAppContext).load(mS).asBitmap().transform(new GlideCircleTransform(mAppContext));
+                        return Observable.just(mTransform);
+                    }
+                }).observeOn(AndroidSchedulers.mainThread())
+                .subscribe(new Subscriber<BitmapRequestBuilder<String, Bitmap>>() {
+                    @Override
+                    public void onCompleted() {
+
+                    }
+
+                    @Override
+                    public void onError(Throwable e) {
+                        showInviteNotifi(msg,null);
+
+                    }
+
+                    @Override
+                    public void onNext(BitmapRequestBuilder<String, Bitmap> mStringBitmapBitmapRequestBuilder) {
+                        mStringBitmapBitmapRequestBuilder.into(new SimpleTarget<Bitmap>() {
+                            @Override
+                            public void onResourceReady(Bitmap resource, GlideAnimation<? super Bitmap> glideAnimation) {
+                                Log.e(TAG, "onResourceReady: ");
+                                showInviteNotifi(msg,resource);
+                            }
+
+                            @Override
+                            public void onLoadFailed(Exception e, Drawable errorDrawable) {
+                                super.onLoadFailed(e, errorDrawable);
+                                showInviteNotifi(msg, null);
+                            }
+                        });
+
+                    }
+                });
+
+
+    }
+
+    private void showInviteNotifi(InviteMessage msg, Bitmap mResource) {
         PackageManager mPackageManager = mAppContext.getPackageManager();
         String appname = (String) mPackageManager.getApplicationLabel(mAppContext.getApplicationInfo());
         String contenttitle = appname;
@@ -301,6 +355,7 @@ public class IMNotifier {
                 .setContentTitle("验证消息")
 //                .setContentInfo(msg.getFrom()+msg.getStatus().name())
                 .setAutoCancel(true);
+        mBuilder.setLargeIcon(mResource);
         if (msg.getStatus().equals(InviteMessage.InviteMesageStatus.BEAGREED)) {
             mBuilder.setContentText(msg.getFrom() + "同意了你的好友请求")
                     .setTicker(msg.getFrom() + "同意了你的好友请求");
@@ -312,14 +367,6 @@ public class IMNotifier {
             PendingIntent mPendingIntent = PendingIntent.getActivities(mAppContext, 0, makerequestIntentStack(), PendingIntent.FLAG_CANCEL_CURRENT);
             mBuilder.setContentIntent(mPendingIntent);
         }
-//        Intent msgIntent = mAppContext.getPackageManager().getLaunchIntentForPackage(packName);
-//        PendingIntent mPendingIntent = PendingIntent.getActivity(mAppContext, notifyID, msgIntent, PendingIntent.FLAG_UPDATE_CURRENT);
-//        mBuilder.setContentTitle(contenttitle);
-//        mBuilder.setTicker(msg.getFrom());
-//        if (msg.getStatus() == InviteMessage.InviteMesageStatus.BEINVITEED) {
-//            mBuilder.setContentText(msg.getReason());
-//        }
-//        mBuilder.setContentIntent(mPendingIntent);
         Notification mNotification = mBuilder.build();
         mNotificationManager.notify(foregroundNotifyID, mNotification);
     }

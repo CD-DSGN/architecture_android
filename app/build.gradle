@@ -60,7 +60,7 @@ android {
 
 
 greendao {
-    schemaVersion 14
+    schemaVersion 15
     daoPackage 'com.grandmagic.readingmate.db'
     targetGenDir 'src/main/java'
 }

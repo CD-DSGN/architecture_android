@@ -32,6 +32,7 @@ public class InviteMessage {
     private String groupName;
     private String groupInviter;
     private int isread;
+    private String avatar;
     @Id
     private Long id;
 
@@ -56,9 +57,10 @@ public class InviteMessage {
         this.id = id;
     }
 
-    @Generated(hash = 1631714425)
+    @Generated(hash = 512305832)
     public InviteMessage(String from, long time, String reason, InviteMesageStatus status,
-            String groupId, String groupName, String groupInviter, int isread, Long id) {
+            String groupId, String groupName, String groupInviter, int isread, String avatar,
+            Long id) {
         this.from = from;
         this.time = time;
         this.reason = reason;
@@ -67,6 +69,7 @@ public class InviteMessage {
         this.groupName = groupName;
         this.groupInviter = groupInviter;
         this.isread = isread;
+        this.avatar = avatar;
         this.id = id;
     }
 
@@ -74,8 +77,14 @@ public class InviteMessage {
     public InviteMessage() {
     }
 
-    
 
+    public String getAvatar() {
+        return avatar;
+    }
+
+    public void setAvatar(String mAvatar) {
+        avatar = mAvatar;
+    }
 
     public String getFrom() {
         return from;
