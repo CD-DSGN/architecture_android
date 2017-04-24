@@ -281,7 +281,11 @@
         <activity android:name=".activity.BigImageActivity"
             android:theme="@style/fullsrceen"
             >
+
         </activity>
+        <activity android:name=".activity.InformationImproveActivity"
+                  android:theme="@style/notitle"
+            />
     </application>
 
 </manifest>

@@ -22,7 +22,7 @@ public class SearchBookAdapter extends CommonAdapter<BookSearchResponse.SearchRe
 
     @Override
     protected void convert(ViewHolder holder, final BookSearchResponse.SearchResultBean data, int position) {
-        holder.setText(R.id.bookname, "《"+data.getBook_name()+"》");
+        holder.setText(R.id.bookname,data.getBook_name());
         holder.setText(R.id.timeOrauthor, data.getAuthor());
         holder.getConvertView().setOnClickListener(new View.OnClickListener() {
             @Override

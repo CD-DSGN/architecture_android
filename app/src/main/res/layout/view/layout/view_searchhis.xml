@@ -28,12 +28,11 @@
         android:layout_marginLeft="14px"
         android:layout_toLeftOf="@+id/timeOrauthor"
         android:layout_toRightOf="@+id/iv_searchlist"
-        android:maxLines="1"
+
         android:textColor="@color/white"
         android:textSize="28px"
         android:layout_below="@id/dashline_search"
         tools:text="《C+"
-
         />
 
     <TextView
@@ -43,12 +42,12 @@
         android:layout_alignParentRight="true"
         android:layout_centerVertical="true"
         android:layout_marginBottom="22px"
-        android:layout_marginLeft="14px"
+        android:layout_marginLeft="40px"
         android:layout_toRightOf="@+id/iv_searchlist"
         android:ellipsize="end"
         android:gravity="right"
         android:maxLines="1"
-        android:maxWidth="300px"
+        android:maxWidth="252px"
         android:text="2016-12-13"
         android:layout_below="@id/dashline_search"
         android:textColor="#e6ffff"

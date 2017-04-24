@@ -82,7 +82,7 @@ public class SplashActivity extends AppBaseActivity {
 
         ObjectAnimator mScaleX = ObjectAnimator.ofFloat(mLogo, "scaleX", 0, 1f).setDuration(800);
         ObjectAnimator mScaleY = ObjectAnimator.ofFloat(mLogo, "scaleY", 0, 1f).setDuration(800);
-        ObjectAnimator mAlpha = ObjectAnimator.ofFloat(mLogo, "alpha", 1f, 0).setDuration(1500);
+        ObjectAnimator mAlpha = ObjectAnimator.ofFloat(mLogo, "alpha", 1f, 0.3f).setDuration(1500);
         ObjectAnimator mTranslationY = ObjectAnimator.ofFloat(mLogo, "y",  0).setDuration(1500);
         AnimatorSet mAnimatorSet = new AnimatorSet();
 

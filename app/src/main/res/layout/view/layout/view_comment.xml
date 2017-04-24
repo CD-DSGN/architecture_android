@@ -7,6 +7,7 @@
     android:layout_alignParentBottom="true"
     android:background="#f8f8f8"
     android:focusable="true"
+    xmlns:tools="http://schemas.android.com/tools"
     android:focusableInTouchMode="true"
     android:orientation="vertical"
     android:paddingLeft="20px"
@@ -72,6 +73,7 @@
         android:layout_marginBottom="10px"
         android:layout_marginTop="10px"
         android:visibility="gone"
+        tools:visibility="visible"
         >
 
         <TextView
@@ -79,6 +81,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="评分："
+            android:layout_centerVertical="true"
             android:textColor="@color/text_green"
 
             />
@@ -87,12 +90,13 @@
             xmlns:app="http://schemas.android.com/apk/res-auto"
             android:id="@+id/ratingbar"
             android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
+            android:layout_height="50px"
             android:layout_alignParentRight="true"
             android:layout_marginRight="20px"
             android:layout_toRightOf="@id/tv1"
             app:isIndicator="false"
             app:starDistance="30px"
+            android:layout_centerVertical="true"
             app:starEmpty="@drawable/star_empty"
             app:starFill="@drawable/ic_star_green"
             app:starHeight="40px"
@@ -105,6 +109,7 @@
             android:layout_height="wrap_content"
             android:layout_alignParentRight="true"
             android:text="0分"
+            android:textSize="@dimen/textsize_28px"
             android:textColor="@color/text_green"
             />
     </RelativeLayout>
@@ -119,5 +124,6 @@
         android:text="发表"
         android:textColor="@color/text_sumbit"
         android:textSize="26px"
+        tools:visibility="visible"
         android:visibility="gone"/>
 </LinearLayout>
