@@ -11,11 +11,12 @@
 
     <ImageView
         android:id="@+id/back"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
+        android:layout_width="50px"
+        android:layout_height="50px"
         android:layout_marginLeft="26px"
         android:src="@drawable/ic_back_gray"
         android:layout_centerVertical="true"
+        android:padding="10px"
         />
 
     <TextView
