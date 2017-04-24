@@ -1,11 +1,15 @@
 package com.grandmagic.readingmate.activity;
 
 import android.Manifest;
+import android.animation.Animator;
 import android.animation.AnimatorSet;
 import android.animation.ObjectAnimator;
+import android.animation.ValueAnimator;
 import android.content.Intent;
+import android.graphics.Rect;
 import android.os.Bundle;
 import android.os.CountDownTimer;
+import android.os.Handler;
 import android.util.Log;
 import android.widget.ImageView;
 import android.widget.RelativeLayout;
@@ -38,7 +42,7 @@ public class SplashActivity extends AppBaseActivity {
     public static final int TYPE_TO_MAIN = 1;
     public static final int TYPE_TO_GUIDE = 2;
     public static final int TYPE_TO_LOGIN = 3;
-    public static final int DEFAULT_TIME = 2000;
+    public static final int DEFAULT_TIME = 2300;
     @BindView(R.id.activity_splash)
     RelativeLayout mActivitySplash;
     @BindView(R.id.logo)
@@ -52,7 +56,7 @@ public class SplashActivity extends AppBaseActivity {
         AutoUtils.setSize(this, false, 750, 1334);
         setContentView(R.layout.activity_splash);
         ButterKnife.bind(this);
-        initview();
+
         checkfrist();
     }
 
@@ -75,12 +79,26 @@ public class SplashActivity extends AppBaseActivity {
         });
     }
     private void initview() {
-        ObjectAnimator mScaleX = ObjectAnimator.ofFloat(mLogo, "scaleX", 0, 1f);
-        ObjectAnimator mScaleY = ObjectAnimator.ofFloat(mLogo, "scaleY", 0, 1f);
+        int[] location=new int[2];
+        mLogo.getLocationOnScreen(location);
+        Rect mRect=new Rect();
+        mLogo.getLocalVisibleRect(mRect);
+        ObjectAnimator mScaleX = ObjectAnimator.ofFloat(mLogo, "scaleX", 0, 1f).setDuration(800);
+        ObjectAnimator mScaleY = ObjectAnimator.ofFloat(mLogo, "scaleY", 0, 1f).setDuration(800);
+        ObjectAnimator mAlpha = ObjectAnimator.ofFloat(mLogo, "alpha", 1f, 0).setDuration(1500);
+        ObjectAnimator mTranslationY = ObjectAnimator.ofFloat(mLogo, "y",  0).setDuration(1500);
         AnimatorSet mAnimatorSet = new AnimatorSet();
-        mAnimatorSet.setDuration(600);
-        mAnimatorSet.playTogether(mScaleX, mScaleY);
+
+        mAnimatorSet.play(mScaleX).with(mScaleY);
+        mAnimatorSet.play(mTranslationY).with(mAlpha).after(mScaleY);
         mAnimatorSet.start();
+
+
+
+
+
+
+
         mCountDownTimer.start();
         start = System.currentTimeMillis();
     }
@@ -165,6 +183,13 @@ public class SplashActivity extends AppBaseActivity {
     @Override
     protected void onResume() {
         super.onResume();
+
         EventBus.getDefault().unregister(this);
+    }
+
+    @Override
+    public void onWindowFocusChanged(boolean hasFocus) {
+        super.onWindowFocusChanged(hasFocus);
+        if (hasFocus)   initview();
     }
 }
