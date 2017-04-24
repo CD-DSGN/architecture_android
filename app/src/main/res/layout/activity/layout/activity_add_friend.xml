@@ -56,7 +56,7 @@
         <RelativeLayout
             android:id="@+id/rela_friend"
             android:layout_width="710px"
-            android:layout_height="410px"
+            android:layout_height="380px"
             android:visibility="gone"
             tools:visibility="visible"
            >
@@ -114,6 +114,7 @@
                     android:layout_marginLeft="5px"
                     android:layout_toRightOf="@+id/iv_addfriend"
                     android:text="加为读友"
+                    android:textSize="@dimen/textsize_28px"
                     android:layout_centerVertical="true"
                     />
             </RelativeLayout>

@@ -15,7 +15,7 @@
     <RelativeLayout
         android:id="@+id/rela_friend"
         android:layout_width="710px"
-        android:layout_height="410px"
+        android:layout_height="470px"
         android:visibility="visible">
 
         <ImageView

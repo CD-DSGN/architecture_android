@@ -222,7 +222,7 @@ public class AddFriendActivity extends AppBaseActivity {
         for (SearchUserResponse.CollectionBean coll : mCollectionbook) {
             TextView mTextView = new TextView(this);
             mTextView.setText(coll.getBook_name());
-            mTextView.setMaxLines(2);
+            mTextView.setMaxLines(1);
             LinearLayout.LayoutParams mParams = new LinearLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.WRAP_CONTENT);
             mParams.setMargins(0,20,0,20);
             mTextView.setLayoutParams(mParams);

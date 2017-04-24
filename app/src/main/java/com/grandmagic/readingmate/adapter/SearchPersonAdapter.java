@@ -6,6 +6,7 @@ import android.os.Bundle;
 import android.text.TextUtils;
 import android.util.TypedValue;
 import android.view.View;
+import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
@@ -78,6 +79,10 @@ public class SearchPersonAdapter extends CommonAdapter<SearchPersonResponse.Info
         for (SearchPersonResponse.InfoBean.CollectionBean coll : data.getCollection()) {
             TextView mTextView = new TextView(mContext);
             mTextView.setText(coll.getBook_name());
+            mTextView.setMaxLines(1);
+            LinearLayout.LayoutParams mParams = new LinearLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.WRAP_CONTENT);
+            mParams.setMargins(0,15,0,15);
+            mTextView.setLayoutParams(mParams);
             mTextView.setTextSize(TypedValue.COMPLEX_UNIT_PX,28);
             if (coll.getIs_both_enjoy() == 1) {
                 hassamebook = true;
