@@ -79,10 +79,7 @@ public class SplashActivity extends AppBaseActivity {
         });
     }
     private void initview() {
-        int[] location=new int[2];
-        mLogo.getLocationOnScreen(location);
-        Rect mRect=new Rect();
-        mLogo.getLocalVisibleRect(mRect);
+
         ObjectAnimator mScaleX = ObjectAnimator.ofFloat(mLogo, "scaleX", 0, 1f).setDuration(800);
         ObjectAnimator mScaleY = ObjectAnimator.ofFloat(mLogo, "scaleY", 0, 1f).setDuration(800);
         ObjectAnimator mAlpha = ObjectAnimator.ofFloat(mLogo, "alpha", 1f, 0).setDuration(1500);
@@ -92,13 +89,6 @@ public class SplashActivity extends AppBaseActivity {
         mAnimatorSet.play(mScaleX).with(mScaleY);
         mAnimatorSet.play(mTranslationY).with(mAlpha).after(mScaleY);
         mAnimatorSet.start();
-
-
-
-
-
-
-
         mCountDownTimer.start();
         start = System.currentTimeMillis();
     }

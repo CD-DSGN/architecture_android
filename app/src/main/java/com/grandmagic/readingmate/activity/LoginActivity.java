@@ -21,9 +21,13 @@ import com.grandmagic.readingmate.R;
 import com.grandmagic.readingmate.adapter.CommonPagerAdapter;
 import com.grandmagic.readingmate.base.AppBaseActivity;
 import com.grandmagic.readingmate.base.AppBaseResponseCallBack;
+import com.grandmagic.readingmate.bean.db.Contacts;
 import com.grandmagic.readingmate.bean.request.LoginRequestBean;
 import com.grandmagic.readingmate.bean.request.RegisterRequestBean;
 import com.grandmagic.readingmate.bean.response.LoginResponseBean;
+import com.grandmagic.readingmate.db.ContactsDao;
+import com.grandmagic.readingmate.db.DBHelper;
+import com.grandmagic.readingmate.model.ContactModel;
 import com.grandmagic.readingmate.model.LoginModel;
 import com.grandmagic.readingmate.model.RegisterModel;
 import com.grandmagic.readingmate.model.VerifyModel;
@@ -31,6 +35,8 @@ import com.grandmagic.readingmate.utils.AutoUtils;
 import com.grandmagic.readingmate.utils.DensityUtil;
 import com.grandmagic.readingmate.utils.InputMethodUtils;
 import com.grandmagic.readingmate.utils.KitUtils;
+import com.hyphenate.chat.EMClient;
+import com.tamic.novate.Throwable;
 import com.tamic.novate.util.SPUtils;
 import com.grandmagic.readingmate.utils.ViewUtils;
 import com.tamic.novate.NovateResponse;
@@ -217,13 +223,44 @@ public class LoginActivity extends AppBaseActivity implements View.OnClickListen
                 SPUtils.getInstance().putString(LoginActivity.this, SPUtils.IM_NAME,response.getData().getUsername());
                 SPUtils.getInstance().putString(LoginActivity.this, SPUtils.IM_PWD,response.getData().getPassword());
                 SPUtils.getInstance().saveToken(LoginActivity.this, token);
+                getUserContactAndToMain();
+            }
+        }).login();
+    }
+
+    /**
+     * 获取用户的联系人，然后跳转到主页
+     */
+    private void getUserContactAndToMain() {
+        new ContactModel(this).getAllFriendFromServer(new AppBaseResponseCallBack<NovateResponse<List<Contacts>>>(this) {
+            @Override
+            public void onSuccee(NovateResponse<List<Contacts>> response) {
+                List<Contacts> mData = response.getData();
+                ContactsDao mContactsDao = DBHelper.getContactsDao(LoginActivity.this);
+                for (Contacts mContacts : mData) {
+                    mContactsDao.insertOrReplace(mContacts);
+                }
+                DBHelper.close();
+                EMClient.getInstance().chatManager().loadAllConversations();
+                EMClient.getInstance().groupManager().loadAllGroups();
                 //跳转到首页
                 Intent intent = new Intent(LoginActivity.this, MainActivity.class);
                 InputMethodUtils.hide(LoginActivity.this);
                 startActivity(intent);
                 finish();
             }
-        }).login();
+
+            @Override
+            public void onError(Throwable e) {
+                super.onError(e);
+                //跳转到首页
+                Intent intent = new Intent(LoginActivity.this, MainActivity.class);
+                InputMethodUtils.hide(LoginActivity.this);
+                startActivity(intent);
+                finish();
+            }
+        });
+
     }
 
     private void register() {

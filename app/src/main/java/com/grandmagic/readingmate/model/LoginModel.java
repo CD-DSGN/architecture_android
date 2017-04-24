@@ -7,15 +7,23 @@ import android.text.TextUtils;
 import com.google.gson.Gson;
 import com.grandmagic.readingmate.R;
 import com.grandmagic.readingmate.activity.LoginActivity;
+import com.grandmagic.readingmate.activity.SplashActivity;
 import com.grandmagic.readingmate.base.AppBaseResponseCallBack;
+import com.grandmagic.readingmate.bean.db.Contacts;
 import com.grandmagic.readingmate.bean.request.LoginRequestBean;
 import com.grandmagic.readingmate.consts.ApiInterface;
+import com.grandmagic.readingmate.db.ContactsDao;
+import com.grandmagic.readingmate.db.DBHelper;
 import com.grandmagic.readingmate.utils.KitUtils;
+import com.hyphenate.chat.EMClient;
+import com.tamic.novate.NovateResponse;
+import com.tamic.novate.Throwable;
 import com.tamic.novate.util.SPUtils;
 import com.grandmagic.readingmate.utils.ViewUtils;
 import com.tamic.novate.Novate;
 
 import java.util.HashMap;
+import java.util.List;
 
 /**
  * Created by lps on 2017/2/7.
