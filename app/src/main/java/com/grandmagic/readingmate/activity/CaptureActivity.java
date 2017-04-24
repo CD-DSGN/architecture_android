@@ -384,8 +384,19 @@ public class CaptureActivity extends com.xys.libzxing.zxing.activity.CaptureActi
         return 0;
     }
 
-    @OnClick(R.id.tv_scan_again)
-    public void onClick() {
+    @OnClick({R.id.tv_scan_again,R.id.iv_capture_left_arrow})
+    public void onClick(View v) {
+        switch (v.getId()) {
+            case R.id.tv_scan_again:
+                scanAgain();
+                break;
+            case R.id.iv_capture_left_arrow:
+                finish();
+                break;
+        }
+    }
+
+    private void scanAgain() {
         mCaptureContainer.setBackgroundResource(0);
         mTvScanAgain.setVisibility(View.INVISIBLE);
         mTvErrorMsg.setVisibility(View.INVISIBLE);
@@ -395,7 +406,5 @@ public class CaptureActivity extends com.xys.libzxing.zxing.activity.CaptureActi
         mCaptureScanLine.setVisibility(View.VISIBLE);
         startScan();
         restartPreviewAfterDelay(10);
-
-
     }
 }
