@@ -4,10 +4,11 @@
               android:layout_width="match_parent"
               android:layout_height="match_parent"
               android:orientation="vertical"
-
+android:background="@color/white"
               tools:context="com.grandmagic.readingmate.fragment.ChatFragment">
 
     <RelativeLayout
+        android:background="@color/white"
         android:layout_width="match_parent"
         android:layout_height="118px">
 
@@ -22,12 +23,13 @@
 
         <ImageView
             android:id="@+id/add_friend"
-            android:layout_width="36px"
-            android:layout_height="36px"
+            android:layout_width="60px"
+            android:layout_height="60px"
             android:layout_alignParentRight="true"
             android:layout_centerVertical="true"
             android:layout_marginRight="20px"
             android:src="@drawable/iv_plus"
+            android:padding="10px"
             />
     </RelativeLayout>
 
@@ -96,6 +98,7 @@
                 android:id="@+id/recyclerview"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
+                android:background="@color/white"
                 >
 
             </com.refreshlab.PullLoadMoreRecyclerView>

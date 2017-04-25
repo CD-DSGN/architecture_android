@@ -14,11 +14,11 @@
         >
 
         <android.support.design.widget.AppBarLayout
+            android:id="@+id/appbarlayout"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:background="@android:color/transparent"
             app:elevation="0dp"
-            android:id="@+id/appbarlayout"
             >
 
 
@@ -26,27 +26,29 @@
                 xmlns:app="http://schemas.android.com/apk/res-auto"
                 android:layout_width="match_parent"
                 android:layout_height="118px"
-                android:paddingTop="30px"
                 android:background="@color/white"
+                android:paddingTop="30px"
                 app:layout_scrollFlags="scroll|enterAlways"
                 >
 
                 <ImageView
                     android:id="@+id/iv_search"
-                    android:layout_width="34px"
-                    android:layout_height="34px"
+                    android:layout_width="55px"
+                    android:layout_height="55px"
                     android:layout_centerVertical="true"
                     android:layout_marginLeft="62px"
+                    android:padding="10px"
                     android:src="@drawable/ic_search_small"
                     />
 
                 <ImageView
                     android:id="@+id/iv_camera"
-                    android:layout_width="40px"
-                    android:layout_height="32px"
+                    android:layout_width="60px"
+                    android:layout_height="52px"
                     android:layout_alignParentRight="true"
                     android:layout_centerVertical="true"
                     android:layout_marginRight="62px"
+                    android:padding="10px"
                     android:src="@drawable/ic_camera_small"
                     />
 
