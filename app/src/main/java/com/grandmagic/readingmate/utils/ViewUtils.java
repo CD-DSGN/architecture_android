@@ -10,8 +10,21 @@ import com.grandmagic.readingmate.base.AppBaseApplication;
  */
 
 public class ViewUtils {
+    public static String oldMsg = "";
+    public static long time;
+
+
     public static void showToast(String str) {
-        Toast.makeText(AppBaseApplication.ctx, str, Toast.LENGTH_SHORT).show();
+        if (!str.equals(oldMsg)) {
+            Toast.makeText(AppBaseApplication.ctx, str, Toast.LENGTH_SHORT).show();
+            time = System.currentTimeMillis();
+        }else{
+            if (System.currentTimeMillis() - time > 2000) {
+                Toast.makeText(AppBaseApplication.ctx, str, Toast.LENGTH_SHORT).show();
+                time = System.currentTimeMillis();
+            }
+        }
+        oldMsg = str;
     }
 
     public static void safeShowDialog(Dialog dialog) {

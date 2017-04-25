@@ -5,6 +5,7 @@ import android.app.ProgressDialog;
 import android.content.Context;
 
 import com.grandmagic.readingmate.consts.ApiErrorConsts;
+import com.grandmagic.readingmate.consts.AppConsts;
 import com.grandmagic.readingmate.event.ConnectStateEvent;
 import com.grandmagic.readingmate.utils.ViewUtils;
 import com.hyphenate.EMError;
@@ -87,14 +88,17 @@ public abstract class AppBaseResponseCallBack<T> implements Novate.ResponseCallB
                 EventBus.getDefault().post(new ConnectStateEvent(EMError.USER_LOGIN_ANOTHER_DEVICE));
             } else if (throwable instanceof HttpException
                     || throwable instanceof java.net.SocketTimeoutException
-                    || throwable instanceof ServerException
                     || throwable instanceof ConnectException
                     || throwable instanceof  javax.net.ssl.SSLHandshakeException
                     || throwable instanceof  java.security.cert.CertPathValidatorException) {
-                if (e.getCode() != ApiErrorConsts.NO_UPDATE) {
                     ViewUtils.showToast(e.getMessage() + "");
+            } else if (throwable instanceof ServerException) {
+                for (int code : AppConsts.show_error_msg) {
+                    if (e.getCode() == code) {
+                        ViewUtils.showToast(e.getMessage() + "");
+                        break;
+                    }
                 }
-
             } else {
                 if (Environment.getEnviroment() != Environment.ENVIRONMENT_PRODUCTION) {
                     ViewUtils.showToast(e.getMessage() + "");
