@@ -114,7 +114,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginLeft="30px"
-                android:src="@drawable/select_gender"
+                android:background="@drawable/select_gender"
                 />
 
         </LinearLayout>
@@ -147,18 +147,18 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginLeft="30px"
-                android:src="@drawable/select_gender"
+                android:background="@drawable/select_gender"
                 />
 
         </LinearLayout>
     </RelativeLayout>
 
-    <TextView
+    <Button
         android:layout_width="626px"
         android:layout_height="82px"
         android:layout_gravity="center_horizontal"
         android:layout_marginTop="126px"
-        android:background="@drawable/shape_round_white"
+        android:background="@drawable/selector_shape_round_white"
         android:gravity="center"
         android:text="完善资料"
         android:textColor="@color/text_green"

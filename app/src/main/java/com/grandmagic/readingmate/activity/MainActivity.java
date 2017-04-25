@@ -59,6 +59,7 @@ import butterknife.OnClick;
 import rx.functions.Action1;
 
 public class MainActivity extends AppBaseActivity {
+    public static final int REQUEST_ADDINFO=998;
     @BindView(R.id.contentframe)
     FrameLayout mContentframe;
     @BindView(R.id.layout_home)
@@ -152,13 +153,15 @@ public class MainActivity extends AppBaseActivity {
     /**
      * 获取自己在环信的信息
      */
+    int i=0;//最多重试2次
     private void initSelfInfo() {
+        i++;
+
         new SearchUserModel(this).searchUser(SPUtils.getInstance().getString(this, SPUtils.INFO_NAME), new AppBaseResponseCallBack<NovateResponse<SearchUserResponse>>(this) {
             @Override
             public void onSuccee(NovateResponse<SearchUserResponse> response) {
                 SearchUserResponse responseData = response.getData();
                 if (responseData != null) {
-
                     Contacts mContacts = new Contacts();
                     mContacts.setAvatar_url(responseData.getAvatar_url().getLarge());
                     mContacts.setUser_id(Integer.valueOf(responseData.getUser_id()));
@@ -168,6 +171,11 @@ public class MainActivity extends AppBaseActivity {
                     ContactsDao mContactsDao = DBHelper.getContactsDao(MainActivity.this);
                     mContactsDao.insertOrReplace(mContacts);
                     DBHelper.close();
+                }
+                if (i<2&&TextUtils.isEmpty(responseData.getUser_name())||(responseData.getGender()!=1&&responseData.getGender()!=2))
+                {
+                    Intent mAddInfoIntent = new Intent(MainActivity.this, InformationImproveActivity.class);
+                    startActivityForResult(mAddInfoIntent,REQUEST_ADDINFO);
                 }
             }
         });
@@ -431,4 +439,11 @@ public class MainActivity extends AppBaseActivity {
         super.onDestroy();
     }
 
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+        if (requestCode==REQUEST_ADDINFO){
+           initSelfInfo();
+        }
+    }
 }

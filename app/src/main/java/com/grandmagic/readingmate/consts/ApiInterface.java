@@ -52,5 +52,6 @@ public class ApiInterface {
     public static final String REPLY_ADD = "reply/commentreply"; //增加回复
     public static final String REPLY_DEL= "reply/deletereply"; //删除回复
     public static final String REPLY_LIKE = "reply/thumbupreplycomment"; //点赞
+    public static final String ADD_INFOREGISTER = "userinfo/addinforegister"; //完善资料
 
 }

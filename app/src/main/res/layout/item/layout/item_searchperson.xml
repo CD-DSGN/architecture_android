@@ -34,7 +34,7 @@
             android:layout_below="@id/avatar"
             android:layout_marginTop="20px"
             android:layout_toRightOf="@+id/gender"
-            android:textSize="@dimen/textsize_32px"
+            android:textSize="@dimen/textsize_24px"
             android:maxWidth="180px"
             android:textColor="#181e1d"
             tools:text="张山张山张山张山张山张山张山"

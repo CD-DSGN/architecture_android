@@ -109,7 +109,7 @@ public class SearchFragment extends AppBaseFragment implements SearchPersonAdapt
         mTitle.setTextSize(TypedValue.COMPLEX_UNIT_PX, 36);
         mTitle.setTextColor(Color.WHITE);
         mTitle.setText("以书会友");
-        mBack.setVisibility(View.GONE);
+        mBack.setVisibility(View.VISIBLE);
         AutoUtils.autoTextSize(mTitle);
         mTitleMore.setImageResource(R.drawable.ic_location);
         mAnimaview.setImageAssetsFolder("images/");//为有图片资源的动画设置路径
@@ -206,7 +206,7 @@ public class SearchFragment extends AppBaseFragment implements SearchPersonAdapt
                 mAnimaview.setVisibility(View.GONE);
                 mBtnLocation.setVisibility(View.GONE);
                 mTvStatus.setVisibility(View.GONE);
-                mTitleMore.setVisibility(View.VISIBLE);
+                mBack.setVisibility(View.VISIBLE);
                 mTitle.setTextColor(getResources().getColor(R.color.text_black));
                 mRootview.setBackgroundColor(getResources().getColor(R.color.white));
                 pagecount = response.getData().getPage();
@@ -226,10 +226,10 @@ public class SearchFragment extends AppBaseFragment implements SearchPersonAdapt
         });
     }
 
-    @OnClick({R.id.title_more, R.id.btn_location})
+    @OnClick({R.id.back, R.id.btn_location})
     public void onClick(View view) {
         switch (view.getId()) {
-            case R.id.title_more:
+            case R.id.back:
                 Log.e(TAG, "onClick() called with: view = [" + view + "]");
                 reset();
                 break;
@@ -265,7 +265,7 @@ public class SearchFragment extends AppBaseFragment implements SearchPersonAdapt
         mAnimaview.setVisibility(View.GONE);
         mBtnLocation.setVisibility(View.VISIBLE);
         mTvStatus.setVisibility(View.GONE);
-        mTitleMore.setVisibility(View.GONE);
+        mBack.setVisibility(View.GONE);
         mIvSearch.setVisibility(View.VISIBLE);
         mRootview.setBackgroundColor(getResources().getColor(R.color.search_green));
         mTitle.setTextColor(getResources().getColor(R.color.white));
