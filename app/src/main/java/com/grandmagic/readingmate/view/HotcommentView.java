@@ -76,6 +76,7 @@ public class HotcommentView extends FrameLayout implements BookCommentsAdapter.A
             @Override
             public void onError(Throwable e) {
                 super.onError(e);
+                mAdapter.refresh();
               mRecyclerview.setPullLoadMoreCompleted();
             }
         });
