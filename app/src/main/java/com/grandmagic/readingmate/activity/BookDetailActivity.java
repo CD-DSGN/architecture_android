@@ -70,7 +70,7 @@ public class BookDetailActivity extends AppBaseActivity implements View.OnLayout
     @BindView(R.id.his_score)
     TextView mHisScore;
     @BindView(R.id.submit)
-    Button mSubmit;
+    TextView mSubmit;
     @BindView(R.id.bottomlayout)
     LinearLayout mBottomlayout;
     @BindView(R.id.bookname)

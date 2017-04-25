@@ -32,15 +32,18 @@
         <EditText
             android:id="@+id/et_comment"
             android:layout_width="0dp"
-            android:layout_height="87px"
+            android:layout_height="75px"
             android:layout_marginBottom="5px"
             android:layout_marginTop="5px"
             android:layout_weight="1"
             android:background="@drawable/bg_chat_reciver"
             android:gravity="start"
             android:hint="写评论"
-            android:paddingLeft="20px"
+            android:paddingLeft="40px"
+            android:paddingTop="25px"
             android:textColor="#999999"
+            android:layout_marginLeft="20px"
+            android:layout_marginRight="20px"
             android:textSize="24px"
             />
 
@@ -55,13 +58,16 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:src="@drawable/ic_share"
+                android:layout_gravity="center_vertical"
+                android:layout_marginRight="10px"
                 />
 
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="分享"
-                android:textSize="30px"
+                android:layout_gravity="center_vertical"
+                android:textSize="@dimen/textsize_24px"
                 />
         </LinearLayout>
     </LinearLayout>
@@ -114,7 +120,7 @@
             />
     </RelativeLayout>
 
-    <Button
+    <TextView
         android:id="@+id/submit"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
@@ -122,8 +128,12 @@
         android:layout_marginBottom="10px"
         android:background="@drawable/shape_round_gray"
         android:text="发表"
+     android:paddingTop="15px"
+        android:paddingBottom="15px"
+        android:paddingLeft="20px"
+        android:paddingRight="20px"
         android:textColor="@color/text_sumbit"
-        android:textSize="26px"
+        android:textSize="@dimen/textsize_32px"
         tools:visibility="visible"
         android:visibility="gone"/>
 </LinearLayout>
