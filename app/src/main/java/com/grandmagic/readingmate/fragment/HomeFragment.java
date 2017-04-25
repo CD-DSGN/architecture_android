@@ -283,8 +283,24 @@ public class HomeFragment extends AppBaseFragment implements HomeBookAdapter.Cli
     @Override
     public void onHiddenChanged(boolean hidden) {
         setSystemBarColor(hidden);
+        //解决分享的时候loading无法消除的问题
+        if (!hidden) {
+            if (mPopupWindow != null) {
+                mPopupWindow.dismissPorgressDlg();
+            }
+        }
     }
-@Override
+
+    //解决分享的时候loading无法消除的问题
+    @Override
+    public void onResume() {
+        super.onResume();
+        if (mPopupWindow != null) {
+            mPopupWindow.dismissPorgressDlg();
+        }
+    }
+
+    @Override
     public void setSystemBarColor(boolean hidden) {
         if (!hidden)
             ((MainActivity) mContext).setSystemBarColor(isEmpty ? R.color.text_green : android.R.color.white);

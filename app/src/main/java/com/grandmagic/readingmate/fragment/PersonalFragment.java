@@ -7,7 +7,6 @@ import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v7.widget.RecyclerView;
 import android.text.TextUtils;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -38,7 +37,6 @@ import com.grandmagic.readingmate.utils.AutoUtils;
 import com.grandmagic.readingmate.utils.ImageLoader;
 import com.grandmagic.readingmate.utils.KitUtils;
 import com.grandmagic.readingmate.utils.Page;
-import com.grandmagic.readingmate.utils.ViewUtils;
 import com.refreshlab.PullLoadMoreRecyclerView;
 import com.tamic.novate.NovateResponse;
 import com.tamic.novate.Throwable;
@@ -307,11 +305,19 @@ public class PersonalFragment extends AppBaseFragment implements MyCommentAdapte
         if (NEED_REFRESH) {
             mUserInfoModel.getUserInfo();
         }
+
+        if (mMAdapter.mSharePopUpWindow != null) {
+            mMAdapter.mSharePopUpWindow.dismissPorgressDlg();
+        }
+
     }
 
     @Override
     public void onHiddenChanged(boolean hidden) {
         setSystemBarColor(hidden);
+        if (mMAdapter.mSharePopUpWindow != null) {
+            mMAdapter.mSharePopUpWindow.dismissPorgressDlg();
+        }
     }
 
     @Override

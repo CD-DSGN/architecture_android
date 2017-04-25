@@ -130,6 +130,15 @@ public class SettingActivity extends AppBaseActivity {
         startActivity(intent);
     }
 
+
+    @Override
+    protected void onResume() {
+        super.onResume();
+        if (mSharePopUpWindow != null) {
+            mSharePopUpWindow.dismissPorgressDlg();
+        }
+    }
+
     @OnClick({R.id.logout, R.id.back, R.id.switch_setting_push, R.id.rl_clean_cache, R.id.iv_share_app})
     public void onClick(View view) {
         switch (view.getId()) {

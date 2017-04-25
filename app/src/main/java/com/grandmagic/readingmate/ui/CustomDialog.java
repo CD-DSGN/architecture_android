@@ -86,7 +86,7 @@ public class CustomDialog extends Dialog {
 
     private void initView() {
         //跟踪字数变化
-        mNumHint.setText(max_num + "/" + max_num);
+        mNumHint.setText(0 + "/" + max_num);
         messageEt.addTextChangedListener(new TextWatcher() {
             private CharSequence temp;
             private int selectionStart;

@@ -231,4 +231,11 @@ public class CollectionActivity extends AppBaseActivity {
         }
     }
 
+    @Override
+    protected void onResume() {
+        super.onResume();
+        if (mMyCollectBookAdapter != null && mMyCollectBookAdapter.mSharePopUpWindow != null) {
+            mMyCollectBookAdapter.mSharePopUpWindow.dismissPorgressDlg();
+        }
+    }
 }

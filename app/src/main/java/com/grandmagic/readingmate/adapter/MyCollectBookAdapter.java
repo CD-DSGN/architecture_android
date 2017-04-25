@@ -22,6 +22,7 @@ import java.util.List;
 
 public class MyCollectBookAdapter extends CommonAdapter<DisplayBook.InfoBean> {
     OnitemDeleteListener mOnitemDeleteListener;
+    public SharePopUpWindow mSharePopUpWindow;
 
     public MyCollectBookAdapter(Context context, List datas, OnitemDeleteListener onitemDeleteListener) {
         super(context, R.layout.item_vp_book_details, datas);
@@ -100,16 +101,15 @@ public class MyCollectBookAdapter extends CommonAdapter<DisplayBook.InfoBean> {
 
             final DisplayBook.InfoBean book = book_info;
             holder.setOnClickListener(R.id.tv_share_book, new View.OnClickListener() {
-                private SharePopUpWindow sharePopUpWindow;
                 @Override
                 public void onClick(View v) {
-                    if (sharePopUpWindow == null) {
-                        sharePopUpWindow = new SharePopUpWindow(mContext);
+                    if (mSharePopUpWindow == null) {
+                        mSharePopUpWindow = new SharePopUpWindow(mContext);
                     }
 
-                    sharePopUpWindow.setBookData(book.getBook_name(), book.getBook_id(),
+                    mSharePopUpWindow.setBookData(book.getBook_name(), book.getBook_id(),
                             book.getSynopsis(), book.getPhoto(), book.getTotal_score());
-                    sharePopUpWindow.show();
+                    mSharePopUpWindow.show();
                 }
             });
 
