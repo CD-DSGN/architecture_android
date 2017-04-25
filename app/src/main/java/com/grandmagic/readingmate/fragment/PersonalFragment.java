@@ -334,8 +334,8 @@ public class PersonalFragment extends AppBaseFragment implements MyCommentAdapte
             mIcFragPersonalMale.setVisibility(View.VISIBLE);
             mIcFragPersonalFemale.setVisibility(View.GONE);
         } else {  //未设置
-            mIcFragPersonalFemale.setVisibility(View.VISIBLE);
-            mIcFragPersonalMale.setVisibility(View.VISIBLE);
+            mIcFragPersonalFemale.setVisibility(View.GONE);
+            mIcFragPersonalMale.setVisibility(View.GONE);
         }
     }
 

@@ -75,7 +75,7 @@
                 android:layout_height="86px"
                 android:background="@drawable/bg_search"
                 android:gravity="center"
-                android:text="@string/search"
+                android:text="搜书"
                 android:textColor="#fefeff"
                 android:textSize="30px"
                 />

@@ -4,6 +4,7 @@ import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.StaggeredGridLayoutManager;
+import android.util.Log;
 
 /**
  * Created by WuXiaolong
@@ -37,7 +38,7 @@ public class RecyclerViewOnScroll extends RecyclerView.OnScrollListener {
             LinearLayoutManager linearLayoutManager = ((LinearLayoutManager) layoutManager);
             firstItem = linearLayoutManager.findFirstCompletelyVisibleItemPosition();
             lastItem = linearLayoutManager.findLastCompletelyVisibleItemPosition();
-            if (lastItem == -1) lastItem = linearLayoutManager.findLastVisibleItemPosition();
+            if (lastItem != -1) lastItem = linearLayoutManager.findLastVisibleItemPosition();
         } else if (layoutManager instanceof StaggeredGridLayoutManager) {
             StaggeredGridLayoutManager staggeredGridLayoutManager = ((StaggeredGridLayoutManager) layoutManager);
             // since may lead to the final item has more than one StaggeredGridLayoutManager the particularity of the so here that is an array
@@ -53,12 +54,14 @@ public class RecyclerViewOnScroll extends RecyclerView.OnScrollListener {
         } else {
             mPullLoadMoreRecyclerView.setSwipeRefreshEnable(false);
         }
+        Log.e("PullloadMore","onScrolled:"+recyclerView.canScrollVertically(1) );
         if (mPullLoadMoreRecyclerView.getPushRefreshEnable()
                 && !mPullLoadMoreRecyclerView.isRefresh()
                 && mPullLoadMoreRecyclerView.isHasMore()
-                && (lastItem == totalItemCount - 1)
+                &&!recyclerView.canScrollVertically(1)
                 && !mPullLoadMoreRecyclerView.isLoadMore()
-                && (dx > 0 || dy > 0)) {
+                && (dx > 0 || dy > 0)
+                ) {
             mPullLoadMoreRecyclerView.setIsLoadMore(true);
             mPullLoadMoreRecyclerView.loadMore();
         }

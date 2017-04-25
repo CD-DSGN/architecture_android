@@ -3,6 +3,7 @@ package com.refreshlab;
 import android.animation.Animator;
 import android.animation.AnimatorListenerAdapter;
 import android.content.Context;
+import android.os.Handler;
 import android.support.v4.content.ContextCompat;
 import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.widget.DefaultItemAnimator;
@@ -76,7 +77,6 @@ public class PullLoadMoreRecyclerView extends LinearLayout {
         mFooterView.setVisibility(View.GONE);
 
         this.addView(view);
-
     }
 
 
@@ -229,25 +229,15 @@ public class PullLoadMoreRecyclerView extends LinearLayout {
     }
 
     public void loadMore() {
-        Log.d("zhang:","loadmore deep");
+        Log.d("zhang:", "loadmore deep");
         if (mPullLoadMoreListener != null && hasMore) {
-            mFooterView.animate()
-                    .translationY(0)
-                    .setDuration(300)
-                    .setInterpolator(new AccelerateDecelerateInterpolator())
-                    .setListener(new AnimatorListenerAdapter() {
-                        @Override
-                        public void onAnimationStart(Animator animation) {
-                            if (isLoadMore) {
-                                mFooterView.setVisibility(View.VISIBLE);
-                                Log.e("zhang:", "loadmore visible");
-                            }else{
-                                mFooterView.setVisibility(View.GONE);
-                                Log.e("zhang:", "loadmore gone");
-                            }
-                        }
-                    })
-                    .start();
+            if (isLoadMore) {
+                mFooterView.setVisibility(View.VISIBLE);
+                Log.e("zhang:", "loadmore visible");
+            } else {
+                mFooterView.setVisibility(View.GONE);
+                Log.e("zhang:", "loadmore gone");
+            }
             invalidate();
             mPullLoadMoreListener.onLoadMore();
 
@@ -256,16 +246,23 @@ public class PullLoadMoreRecyclerView extends LinearLayout {
 
 
     public void setPullLoadMoreCompleted() {
-        isRefresh = false;
-        setRefreshing(false);
+        new Handler().postDelayed(new Runnable() {
+            @Override
+            public void run() {
+                isRefresh = false;
+                setRefreshing(false);
 
-        isLoadMore = false;
-        mFooterView.animate()
-                .translationY(mFooterView.getHeight())
-                .setDuration(300)
-                .setInterpolator(new AccelerateDecelerateInterpolator())
-                .start();
-        Log.e("zhang:", "setPullLoadMoreCompleted");
+                isLoadMore = false;
+//                mFooterView.animate()
+//                        .translationY(mFooterView.getHeight())
+//                        .setDuration(300)
+//                        .setInterpolator(new AccelerateDecelerateInterpolator())
+//                        .start();
+                mFooterView.setVisibility(GONE);
+                Log.e("zhang:", "setPullLoadMoreCompleted");
+
+            }
+        },500);
 
     }
 

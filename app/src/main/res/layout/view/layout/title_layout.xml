@@ -36,7 +36,7 @@
         android:src="@drawable/title_more"
         android:layout_alignParentRight="true"
         android:layout_centerVertical="true"
-        android:layout_marginRight="20px"
+        android:layout_marginRight="40px"
         android:id="@+id/title_more"
         android:visibility="gone"
         android:padding="5px"

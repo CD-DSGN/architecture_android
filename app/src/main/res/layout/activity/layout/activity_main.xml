@@ -75,9 +75,8 @@
                 android:textColor="#666666"
                 android:layout_below="@+id/iv_chat"
                 android:textSize="@dimen/textsize_28px"
-
-                android:layout_alignRight="@+id/iv_chat"
-                android:layout_alignEnd="@+id/iv_chat"/>
+android:layout_centerHorizontal="true"
+             />
 
             <TextView
                 android:id="@+id/unredmsg"
