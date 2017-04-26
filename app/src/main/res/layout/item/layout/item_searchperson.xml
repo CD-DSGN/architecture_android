@@ -8,14 +8,14 @@
     android:layout_marginLeft="20px"
     android:layout_marginTop="15px"
     app:cardBackgroundColor="@color/white"
-    app:cardElevation="3dp"
-    app:cardMaxElevation="6dp"
+    app:cardCornerRadius="4dp"
     >
 
     <RelativeLayout
         android:id="@+id/rela_friend"
-        android:layout_width="710px"
+        android:layout_width="714px"
         android:layout_height="470px"
+
         android:visibility="visible">
 
         <ImageView

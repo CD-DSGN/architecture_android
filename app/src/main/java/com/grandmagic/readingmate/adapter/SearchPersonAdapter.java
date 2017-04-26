@@ -36,7 +36,7 @@ public class SearchPersonAdapter extends CommonAdapter<SearchPersonResponse.Info
 
     @Override
     protected void convert(ViewHolder holder, final SearchPersonResponse.InfoBean data, final int position) {
-        if (data==null)return;
+        if (data == null) return;
         holder.setText(R.id.name, data.getUser_name());
         ImageLoader.loadCircleImage(mContext, Environment.BASEULR_PRODUCTION + data.getAvatar_url().getLarge(),
                 (ImageView) holder.getView(R.id.avatar));
@@ -44,12 +44,12 @@ public class SearchPersonAdapter extends CommonAdapter<SearchPersonResponse.Info
         boolean hassamebook = isHassamebook(holder, data);
         holder.setVisible(R.id.rela_sameInterest, hassamebook);
         holder.setVisible(R.id.text1, false);
-        holder.setImageResource(R.id.gender,data.getGender()==1?R.drawable.iv_male:R.drawable.iv_female);
+        holder.setImageResource(R.id.gender, data.getGender() == 1 ? R.drawable.iv_male : R.drawable.iv_female);
         holder.setOnClickListener(R.id.rela_addfriend, new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 if (mListener != null) {
-                    mListener.addfriend(data.getUser_id(),position);
+                    mListener.addfriend(data.getUser_id(), position);
                 }
             }
         });
@@ -81,9 +81,9 @@ public class SearchPersonAdapter extends CommonAdapter<SearchPersonResponse.Info
             mTextView.setText(coll.getBook_name());
             mTextView.setMaxLines(1);
             LinearLayout.LayoutParams mParams = new LinearLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.WRAP_CONTENT);
-            mParams.setMargins(0,15,0,15);
+            mParams.setMargins(0, 15, 0, 15);
             mTextView.setLayoutParams(mParams);
-            mTextView.setTextSize(TypedValue.COMPLEX_UNIT_PX,28);
+            mTextView.setTextSize(TypedValue.COMPLEX_UNIT_PX, 28);
             if (coll.getIs_both_enjoy() == 1) {
                 hassamebook = true;
                 mTextView.setTextColor(mContext.getResources().getColor(R.color.text_green));
@@ -93,11 +93,12 @@ public class SearchPersonAdapter extends CommonAdapter<SearchPersonResponse.Info
             AutoUtils.auto(mTextView);
             mLayout.addView(mTextView);
         }
+        holder.setBackgroundRes(R.id.rela_friend, hassamebook ? R.drawable.ripple_green_stoken : R.drawable.ripple_white_stoken);
         return hassamebook;
     }
 
     public interface AdapterListener {
-        void addfriend(int mUser_id,int pos);
+        void addfriend(int mUser_id, int pos);
     }
 
     AdapterListener mListener;

@@ -15,4 +15,5 @@
     <color name="gray_select">#99191921</color>
     <color name="gray_noselect">#99999999</color>
     <color name="ripple">#64ffda</color>
+    <color name="grey">#b4f9e0</color>
 </resources>

@@ -46,6 +46,7 @@ import com.orhanobut.logger.Logger;
 import com.tamic.novate.NovateResponse;
 import com.tamic.novate.util.SPUtils;
 import com.tbruyelle.rxpermissions.RxPermissions;
+import com.tencent.bugly.crashreport.CrashReport;
 
 import org.greenrobot.eventbus.Subscribe;
 import org.greenrobot.eventbus.ThreadMode;
@@ -171,6 +172,7 @@ public class MainActivity extends AppBaseActivity {
                     ContactsDao mContactsDao = DBHelper.getContactsDao(MainActivity.this);
                     mContactsDao.insertOrReplace(mContacts);
                     DBHelper.close();
+                    CrashReport.setUserId(response.getData().getUser_name());
                 }
                 if (i<2&&TextUtils.isEmpty(responseData.getUser_name())||(responseData.getGender()!=1&&responseData.getGender()!=2))
                 {

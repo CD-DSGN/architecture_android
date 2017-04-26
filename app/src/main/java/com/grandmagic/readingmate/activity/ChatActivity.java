@@ -330,7 +330,7 @@ public class ChatActivity extends AppBaseActivity implements EMMessageListener, 
                 mMessagerecyclerview.scrollToPosition(mMessageList.size() - 1);
 
             }
-        },100);
+        },200);
         initrefreshlayout();
     }
 
