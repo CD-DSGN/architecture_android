@@ -13,6 +13,10 @@ import android.view.WindowManager;
 import android.widget.PopupWindow;
 import android.widget.Toast;
 
+import com.bumptech.glide.Glide;
+import com.bumptech.glide.load.resource.drawable.GlideDrawable;
+import com.bumptech.glide.request.RequestListener;
+import com.bumptech.glide.request.target.Target;
 import com.grandmagic.readingmate.R;
 import com.grandmagic.readingmate.base.AppBaseApplication;
 import com.grandmagic.readingmate.consts.AppConsts;
@@ -40,6 +44,8 @@ public class SharePopUpWindow extends PopupWindow {
     private UMShareAPI mShareAPI;
 
     ProgressDialog mProgressDialog;
+
+    private boolean img_exit = false;
 
     public SharePopUpWindow(Context context) {
         mContext = context;
@@ -165,6 +171,7 @@ public class SharePopUpWindow extends PopupWindow {
         if (mProgressDialog != null) {
             ViewUtils.safeCloseDialog(mProgressDialog);
         }
+        this.dismiss();
     }
 
 
@@ -223,19 +230,19 @@ public class SharePopUpWindow extends PopupWindow {
 
     //分享图书
     public ShareAction setBookData(String book_name, String book_id, String book_cotent, String book_cover, String rate) {
-        if (!TextUtils.isEmpty(book_cover)) {
-            return setData(book_name, "读家评分:"+ rate + "\n" + book_cotent, KitUtils.getAbsoluteUrl(book_cover), getShareUrl(book_id, 0), "#大术读家#");
+        if (isImageExist(book_cover)) {
+            return setData(book_name, "读家评分:"+ rate + "\n" + book_cotent, KitUtils.getAbsoluteUrl(book_cover), getShareUrl(book_id, 0), "大术读家");
         }else{
-            return setData(book_name, "读家评分:"+ rate + "\n" + book_cotent, R.mipmap.logo6, getShareUrl(book_id, 0), "#大术读家#");
+            return setData(book_name, "读家评分:"+ rate + "\n" + book_cotent, R.drawable.logo_rect, getShareUrl(book_id, 0), "大术读家");
         }
     }
 
     //分享评论
     public ShareAction setCommentData(String book_name, String comment_id, String comment_cotent, String book_cover, String rate) {
-        if (!TextUtils.isEmpty(book_cover)) {
-            return setData(book_name, "读家评分:"+ rate + "\n" + comment_cotent, KitUtils.getAbsoluteUrl(book_cover), getShareUrl(comment_id, 1), "#读家评论#");
+        if (isImageExist(book_cover)) {
+            return setData(book_name, "读家评分:"+ rate + "\n" + comment_cotent, KitUtils.getAbsoluteUrl(book_cover), getShareUrl(comment_id, 1), "读家评论");
         }else{
-            return setData(book_name, "读家评分:"+ rate + "\n" + comment_cotent, R.mipmap.logo6, getShareUrl(comment_id, 1), "#读家评论#");
+            return setData(book_name, "读家评分:"+ rate + "\n" + comment_cotent, R.drawable.logo_rect, getShareUrl(comment_id, 1), "读家评论");
         }
     }
 
@@ -251,6 +258,30 @@ public class SharePopUpWindow extends PopupWindow {
         }
     }
 
+
+    public boolean isImageExist(String url) {  //相对路径
+        if (TextUtils.isEmpty(url)) {
+            return false;
+        }
+
+        String absolute_url = KitUtils.getAbsoluteUrl(url);
+
+
+        Glide.with(mContext).load(absolute_url).listener(new RequestListener<String, GlideDrawable>() {
+            @Override
+            public boolean onException(Exception e, String model, Target<GlideDrawable> target, boolean isFirstResource) {
+                img_exit = false;
+                return false;
+            }
+
+            @Override
+            public boolean onResourceReady(GlideDrawable resource, String model, Target<GlideDrawable> target, boolean isFromMemoryCache, boolean isFirstResource) {
+                img_exit = true;
+                return false;
+            }
+        });
+        return img_exit;
+    }
 }
 
 
