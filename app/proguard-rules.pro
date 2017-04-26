@@ -67,11 +67,6 @@
 }
 
 
-
-
-
-
-
 #百度地图
 -dontwarn com.baidu.**
 -keep class com.baidu.**{*;}
@@ -285,3 +280,12 @@ public static java.lang.String TABLENAME;
 -keep class com.grandmagic.readingmate.bean.** { *; }
 -keep class com.tamic.** {*;}
 -keep class com.refreshlab.** {*;}
+
+
+#butterknife混淆
+  -keep class butterknife.** { *; }
+  -dontwarn butterknife.internal.**
+  -keep class **$$ViewBinder { *; }
+  -keepclasseswithmembernames class * { @butterknife.* <fields>;}
+  -keepclasseswithmembernames class * { @butterknife.* <methods>;}
+
