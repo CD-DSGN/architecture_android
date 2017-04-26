@@ -1,6 +1,13 @@
 apply plugin: 'com.android.application'
 apply plugin: 'org.greenrobot.greendao'
 apply plugin: 'com.jakewharton.butterknife'
+apply plugin: 'bugly'
+
+bugly {
+    appId = "4381145a25"
+    appKey = "af3a8fe6-8ed5-4343-9207-fe434429f1bd"
+}
+
 def keystorePropertiesFile=rootProject.file("local.properties")
 def properties=new Properties();
 properties.load(new FileInputStream(keystorePropertiesFile))
