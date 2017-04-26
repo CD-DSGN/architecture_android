@@ -1,10 +1,7 @@
 package com.grandmagic.readingmate.activity;
 
 import android.content.Intent;
-import android.graphics.Color;
 import android.os.Bundle;
-import android.support.v7.widget.LinearLayoutManager;
-import android.support.v7.widget.RecyclerView;
 import android.text.Editable;
 import android.text.TextWatcher;
 import android.util.TypedValue;
@@ -17,7 +14,6 @@ import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import com.grandmagic.readingmate.R;
 import com.grandmagic.readingmate.adapter.SearchBookAdapter;
@@ -37,6 +33,7 @@ import java.util.List;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
+import butterknife.OnClick;
 
 
 //搜索页面
@@ -100,7 +97,7 @@ public class SearchActivity extends AppBaseActivity {
             mTextView.setText(s);
 //            mTextView.setTextColor(Color.parseColor("#e6ffff"));
             mTextView.setTextSize(TypedValue.COMPLEX_UNIT_PX, 28);
-            mTextView.setPadding(10,10,10,10);
+            mTextView.setPadding(10, 10, 10, 10);
             mTextView.setBackgroundResource(R.drawable.shape_round_white);
             LinearLayout.LayoutParams mParams = new LinearLayout.LayoutParams(ViewGroup.LayoutParams.WRAP_CONTENT, ViewGroup.LayoutParams.WRAP_CONTENT);
             mParams.setMargins(20, 20, 20, 20);
@@ -110,7 +107,7 @@ public class SearchActivity extends AppBaseActivity {
                 @Override
                 public void onClick(View v) {
                     mEtSearch.setText(s);
-                    keyword=s;
+                    keyword = s;
                     search(currpage);
                 }
             });
@@ -126,8 +123,9 @@ public class SearchActivity extends AppBaseActivity {
         mRecyclerviewBook.setAdapter(mAdapter);
         initRefresh();
     }
+
     private void initRefresh() {
-      mRecyclerviewBook.setPullRefreshEnable(false);
+        mRecyclerviewBook.setPullRefreshEnable(false);
         mRecyclerviewBook.setOnPullLoadMoreListener(new PullLoadMoreRecyclerView.PullLoadMoreListener() {
             @Override
             public void onRefresh() {
@@ -181,13 +179,14 @@ public class SearchActivity extends AppBaseActivity {
      *
      * @param mCurrpage 页码
      */
-    int pagecount=1,currpage=1;
+    int pagecount = 1, currpage = 1;
+
     private void search(final int mCurrpage) {
-        mModel.searchBook(keyword,mCurrpage, new AppBaseResponseCallBack<NovateResponse<BookSearchResponse>>(this) {
+        mModel.searchBook(keyword, mCurrpage, new AppBaseResponseCallBack<NovateResponse<BookSearchResponse>>(this) {
             @Override
             public void onSuccee(NovateResponse<BookSearchResponse> response) {
-               if (mCurrpage==1)bookListData.clear();
-                pagecount=response.getData().getPageCount();
+                if (mCurrpage == 1) bookListData.clear();
+                pagecount = response.getData().getPageCount();
                 bookListData.addAll(response.getData().getSearch_result());
                 mAdapter.refreshData(bookListData);
                 List<BookSearchResponse.ScanRecordBean> mScanList = response.getData().getScan_record();
@@ -214,7 +213,7 @@ public class SearchActivity extends AppBaseActivity {
             View mView = LayoutInflater.from(this).inflate(R.layout.view_searchhis, null);
             TextView nameview = (TextView) mView.findViewById(R.id.bookname);
             TextView timeview = (TextView) mView.findViewById(R.id.timeOrauthor);
-            nameview.setText("《"+scan.getBook_name()+"》");
+            nameview.setText("《" + scan.getBook_name() + "》");
             timeview.setText(scan.getScan_time());
             mView.setOnClickListener(new View.OnClickListener() {
                 @Override
@@ -227,5 +226,10 @@ public class SearchActivity extends AppBaseActivity {
             AutoUtils.auto(mView);
             mLinScanhis.addView(mView);
         }
+    }
+
+    @OnClick(R.id.cancle)
+    public void onViewClicked() {
+        finish();
     }
 }

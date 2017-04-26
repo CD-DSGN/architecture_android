@@ -9,35 +9,58 @@
     tools:context="com.grandmagic.readingmate.activity.SearchActivity">
 
     <RelativeLayout
-        android:layout_width="720px"
-        android:layout_height="90px"
-        android:layout_gravity="center_horizontal"
-        android:layout_marginTop="90px"
-        android:background="@drawable/bg_white_green_board">
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="190px">
 
-        <ImageView
-            android:id="@+id/iv_search"
-            android:layout_width="35px"
-            android:layout_height="35px"
-            android:layout_centerVertical="true"
-            android:layout_marginLeft="52px"
-            android:src="@drawable/ic_search"
-            />
+        <RelativeLayout
+            android:id="@+id/rela_search"
+            android:layout_width="720px"
+            android:layout_height="90px"
+            android:layout_gravity="center_horizontal"
+            android:layout_marginLeft="20px"
+            android:layout_toLeftOf="@+id/cancle"
+            android:background="@drawable/bg_white_green_board">
 
-        <EditText
-            android:id="@+id/et_search"
-            android:layout_width="698px"
-            android:layout_height="68px"
+            <ImageView
+                android:id="@+id/iv_search"
+                android:layout_width="35px"
+                android:layout_height="35px"
+                android:layout_centerVertical="true"
+                android:layout_marginLeft="52px"
+                android:src="@drawable/ic_search"
+                />
+
+            <EditText
+                android:id="@+id/et_search"
+                android:layout_width="match_parent"
+                android:layout_height="68px"
+                android:layout_centerVertical="true"
+                android:layout_toRightOf="@+id/iv_search"
+                android:background="@null"
+                android:hint="关键字搜索"
+                android:imeOptions="actionSearch"
+                android:paddingLeft="24px"
+                android:singleLine="true"
+                android:textColor="#999999"
+                android:textColorHint="#999999"
+                android:textSize="@dimen/textsize_28px"
+
+                />
+
+        </RelativeLayout>
+
+        <TextView
+            android:id="@+id/cancle"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentRight="true"
             android:layout_centerVertical="true"
-            android:layout_toRightOf="@+id/iv_search"
-            android:background="@null"
-            android:hint="关键字搜索"
-            android:singleLine="true"
-            android:imeOptions="actionSearch"
-            android:paddingLeft="24px"
-            android:textColor="#999999"
-            android:textColorHint="#999999"
-            android:textSize="22px"
+            android:layout_marginLeft="20px"
+            android:layout_marginRight="20px"
+            android:text="@string/cancel"
+            android:textColor="@color/white"
+            android:textSize="@dimen/textsize_36px"
             />
     </RelativeLayout>
 
