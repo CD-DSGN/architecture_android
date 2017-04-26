@@ -230,7 +230,7 @@ public class SharePopUpWindow extends PopupWindow {
         if (!TextUtils.isEmpty(book_cover)) {
             return setData(book_name, "读家评分:"+ rate + "\n" + book_cotent, KitUtils.getAbsoluteUrl(book_cover), getShareUrl(book_id, 0), "#大术读家#");
         }else{
-            return setData(book_name, "读家评分:"+ rate + "\n" + book_cotent, R.drawable.iv_no_book, getShareUrl(book_id, 0), "#大术读家#");
+            return setData(book_name, "读家评分:"+ rate + "\n" + book_cotent, R.drawable.logo, getShareUrl(book_id, 0), "#大术读家#");
         }
     }
 
@@ -239,7 +239,7 @@ public class SharePopUpWindow extends PopupWindow {
         if (!TextUtils.isEmpty(book_cover)) {
             return setData(book_name, "读家评分:"+ rate + "\n" + comment_cotent, KitUtils.getAbsoluteUrl(book_cover), getShareUrl(comment_id, 1), "#读家评论#");
         }else{
-            return setData(book_name, "读家评分:"+ rate + "\n" + comment_cotent, R.drawable.iv_no_book, getShareUrl(comment_id, 1), "#读家评论#");
+            return setData(book_name, "读家评分:"+ rate + "\n" + comment_cotent, R.drawable.logo, getShareUrl(comment_id, 1), "#读家评论#");
         }
     }
 

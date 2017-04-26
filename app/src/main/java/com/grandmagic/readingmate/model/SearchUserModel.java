@@ -2,23 +2,18 @@ package com.grandmagic.readingmate.model;
 
 import android.content.Context;
 import android.util.Log;
-import android.widget.Toast;
 
 import com.google.gson.Gson;
 import com.grandmagic.readingmate.base.AppBaseResponseCallBack;
 import com.grandmagic.readingmate.bean.request.UserInfoRequest;
 import com.grandmagic.readingmate.consts.ApiInterface;
+import com.grandmagic.readingmate.utils.ViewUtils;
 import com.hyphenate.chat.EMClient;
 import com.hyphenate.exceptions.HyphenateException;
-import com.tamic.novate.util.SPUtils;
 import com.tamic.novate.Novate;
 import com.tamic.novate.util.Environment;
 
-import org.json.JSONException;
 import org.json.JSONObject;
-
-import java.util.HashMap;
-import java.util.Map;
 
 /**
  * Created by lps on 2017/3/6.
@@ -66,7 +61,8 @@ public class SearchUserModel {
             EMClient.getInstance().contactManager().addContact(user_id2, message);
         } catch (HyphenateException mE) {
             Log.d(TAG, "requestAddFriend() called with: user_id2 = [" + user_id2 + "], message = [" + message + "], mBack = [" + mBack + "]");
-            Toast.makeText(mContext, mE.getMessage(), Toast.LENGTH_SHORT).show();
+
+            ViewUtils.showToast(mE.getMessage());
         }
         mNovate.executeJson(ApiInterface.REQUEST_ADD, mJSONObject.toString(), mBack);
     }

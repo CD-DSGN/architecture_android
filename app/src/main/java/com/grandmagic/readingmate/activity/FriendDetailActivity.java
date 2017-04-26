@@ -3,9 +3,6 @@ package com.grandmagic.readingmate.activity;
 import android.content.Intent;
 import android.graphics.drawable.BitmapDrawable;
 import android.os.Bundle;
-import android.support.design.widget.AppBarLayout;
-import android.support.design.widget.CollapsingToolbarLayout;
-import android.support.design.widget.CoordinatorLayout;
 import android.support.design.widget.FloatingActionButton;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
@@ -18,7 +15,6 @@ import android.view.WindowManager;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.PopupWindow;
-import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -41,6 +37,7 @@ import com.grandmagic.readingmate.ui.CustomDialog;
 import com.grandmagic.readingmate.utils.AutoUtils;
 import com.grandmagic.readingmate.utils.ImageLoader;
 import com.grandmagic.readingmate.utils.InputMethodUtils;
+import com.grandmagic.readingmate.utils.ViewUtils;
 import com.refreshlab.PullLoadMoreRecyclerView;
 import com.tamic.novate.NovateResponse;
 import com.tamic.novate.Throwable;
@@ -218,8 +215,7 @@ public class FriendDetailActivity extends AppBaseActivity {
                     commentcurrpage++;
                     loadComment(commentcurrpage);
                 } else {
-
-                    Toast.makeText(FriendDetailActivity.this, "NOMORE", Toast.LENGTH_SHORT).show();
+                    ViewUtils.showToast("NOMORE");
                     mRecyclerview.setPullLoadMoreCompleted();
                 }
             }
