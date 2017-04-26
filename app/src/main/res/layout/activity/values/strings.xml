@@ -110,5 +110,7 @@
     <string name="add_friend_request">好友申请</string>
     <string name="no_reply_yet">还没有人回复过，抢沙发吧</string>
     <string name="no_book_we_will_try">暂未发现此书资源\n(读家会努力获取该资源)</string>
+    <string name="install_sina_client">请先安装新浪客户端</string>
+    <string name="install_wx_client">请先安装微信客户端</string>
 
 </resources>

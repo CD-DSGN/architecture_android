@@ -30,7 +30,9 @@ android {
             signingConfig signingConfigs.release
         }
         release {
-            signingConfig signingConfigs.release //测试
+            signingConfig signingConfigs.release
+            minifyEnabled true
+            zipAlignEnabled true
             proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
         }
     }
@@ -92,7 +94,7 @@ dependencies {
     //从相册选择图片
     compile 'com.yuyh.imgsel:library:1.3.7'
     //    播放动画的库
-    compile 'com.airbnb.android:lottie:1.5.3'
+    compile 'com.airbnb.android:lottie:2.0.0-beta4'
     compile project(':Pushlib')
     compile 'com.android.support:multidex:1.0.0'
     compile 'com.github.chrisbanes:PhotoView:2.0.0'

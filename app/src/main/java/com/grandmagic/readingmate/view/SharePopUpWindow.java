@@ -14,12 +14,14 @@ import android.widget.PopupWindow;
 import android.widget.Toast;
 
 import com.grandmagic.readingmate.R;
+import com.grandmagic.readingmate.base.AppBaseApplication;
 import com.grandmagic.readingmate.consts.AppConsts;
 import com.grandmagic.readingmate.utils.AutoUtils;
 import com.grandmagic.readingmate.utils.KitUtils;
 import com.grandmagic.readingmate.utils.ViewUtils;
 import com.orhanobut.logger.Logger;
 import com.umeng.socialize.ShareAction;
+import com.umeng.socialize.UMShareAPI;
 import com.umeng.socialize.UMShareListener;
 import com.umeng.socialize.bean.SHARE_MEDIA;
 import com.umeng.socialize.media.UMImage;
@@ -35,6 +37,7 @@ public class SharePopUpWindow extends PopupWindow {
     private UMShareListener umShareListener; //默认一个回调监听
     private ShareAction mShareAction;
     private ShareAction mShareActionDefault;
+    private UMShareAPI mShareAPI;
 
     ProgressDialog mProgressDialog;
 
@@ -46,6 +49,8 @@ public class SharePopUpWindow extends PopupWindow {
         this.setContentView(mpopview);
         this.setHeight(ViewGroup.LayoutParams.WRAP_CONTENT);
         this.setWidth(ViewGroup.LayoutParams.MATCH_PARENT);
+
+        mShareAPI = UMShareAPI.get(AppBaseApplication.ctx);
 
         this.setBackgroundDrawable(new BitmapDrawable());
         this.setClippingEnabled(true);
@@ -99,21 +104,15 @@ public class SharePopUpWindow extends PopupWindow {
         mShareActionDefault.setCallback(umShareListener);
 
 
-//        final UMImage imagelocal; //测试
-//        imagelocal = new UMImage(mContext, R.drawable.logo);
-//        imagelocal.setThumb(new UMImage(mContext, R.drawable.logo));
-//        final UMWeb web = new UMWeb("http://www.baidu.com");
-//        web.setThumb(imagelocal);
         View ll = mpopview.findViewById(R.id.ll_share_sina);
         ll.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+//                if (!mShareAPI.isInstall(mActivity, SHARE_MEDIA.SINA)) {
+//                    ViewUtils.showToast(mContext.getString(R.string.install_sina_client));
+//                    return;
+//                }
                 mShareActionDefault.setPlatform(SHARE_MEDIA.SINA).share();
-//                new ShareAction(mActivity).setPlatform(SHARE_MEDIA.SINA)
-//                        .withText("hello")
-//                        .withMedia(web)
-//                        .setCallback(umShareListener)
-//                        .share();
                 if (!mProgressDialog.isShowing()) {
                     mProgressDialog.show();
                 }
@@ -124,12 +123,11 @@ public class SharePopUpWindow extends PopupWindow {
         ll_wx.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                if (!mShareAPI.isInstall(mActivity, SHARE_MEDIA.SINA)) {
+                    ViewUtils.showToast(mContext.getString(R.string.install_wx_client));
+                    return;
+                }
 
-//                new ShareAction(mActivity).setPlatform(SHARE_MEDIA.WEIXIN)
-//                        .withText("hello")
-//                        .withMedia(web)
-//                        .setCallback(umShareListener)
-//                        .share();
                 mShareActionDefault.setPlatform(SHARE_MEDIA.WEIXIN).share();
                 if (!mProgressDialog.isShowing()) {
                     mProgressDialog.show();
@@ -141,12 +139,10 @@ public class SharePopUpWindow extends PopupWindow {
         ll_friends_circle.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-
-//                new ShareAction(mActivity).setPlatform(SHARE_MEDIA.WEIXIN_CIRCLE)
-//                        .withText("hello")
-//                        .withMedia(web)
-//                        .setCallback(umShareListener)
-//                        .share();
+                if (!mShareAPI.isInstall(mActivity, SHARE_MEDIA.SINA)) {
+                    ViewUtils.showToast(mContext.getString(R.string.install_wx_client));
+                    return;
+                }
                 mShareActionDefault.setPlatform(SHARE_MEDIA.WEIXIN_CIRCLE).share();
                 if (!mProgressDialog.isShowing()) {
                     mProgressDialog.show();
@@ -230,7 +226,7 @@ public class SharePopUpWindow extends PopupWindow {
         if (!TextUtils.isEmpty(book_cover)) {
             return setData(book_name, "读家评分:"+ rate + "\n" + book_cotent, KitUtils.getAbsoluteUrl(book_cover), getShareUrl(book_id, 0), "#大术读家#");
         }else{
-            return setData(book_name, "读家评分:"+ rate + "\n" + book_cotent, R.drawable.logo, getShareUrl(book_id, 0), "#大术读家#");
+            return setData(book_name, "读家评分:"+ rate + "\n" + book_cotent, R.mipmap.logo6, getShareUrl(book_id, 0), "#大术读家#");
         }
     }
 
@@ -239,7 +235,7 @@ public class SharePopUpWindow extends PopupWindow {
         if (!TextUtils.isEmpty(book_cover)) {
             return setData(book_name, "读家评分:"+ rate + "\n" + comment_cotent, KitUtils.getAbsoluteUrl(book_cover), getShareUrl(comment_id, 1), "#读家评论#");
         }else{
-            return setData(book_name, "读家评分:"+ rate + "\n" + comment_cotent, R.drawable.logo, getShareUrl(comment_id, 1), "#读家评论#");
+            return setData(book_name, "读家评分:"+ rate + "\n" + comment_cotent, R.mipmap.logo6, getShareUrl(comment_id, 1), "#读家评论#");
         }
     }
 
