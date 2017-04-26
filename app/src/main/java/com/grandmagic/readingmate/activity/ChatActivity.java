@@ -293,7 +293,7 @@ public class ChatActivity extends AppBaseActivity implements EMMessageListener, 
 
             @Override
             public void onProgress(int mI, String mS) {
-                EventBus.getDefault().post(new RefreshMsgAdapterEvent());
+            EventBus.getDefault().post(new RefreshMsgAdapterEvent());
                 Log.e(TAG, "onProgress() called with: mI = [" + mI + "], mS = [" + mS + "]");
             }
         });
@@ -313,9 +313,7 @@ public class ChatActivity extends AppBaseActivity implements EMMessageListener, 
         mTitleMore.setVisibility(View.VISIBLE);
         mTitlelayout.setBackgroundResource(R.color.white);
         mTitle.setText(chat_name);
-        LinearLayoutManager mLinearLayoutManager = new LinearLayoutManager(this);
-        mLinearLayoutManager.setStackFromEnd(true);
-        mMessagerecyclerview.setLayoutManager(mLinearLayoutManager);
+        mMessagerecyclerview.setLayoutManager(new LinearLayoutManager(this));
         mAdapter = new MultiItemTypeAdapter(this, mMessageList);
         mAdapter.addItemViewDelegate(new MessageTextSendDelagate(this).setChatClickListener(this));
         mAdapter.addItemViewDelegate(new MessageTextRecDelagate(this).setChatClickListener(this));
@@ -325,8 +323,14 @@ public class ChatActivity extends AppBaseActivity implements EMMessageListener, 
         mAdapter.addItemViewDelegate(new MessageVoiceSendDelagate(this).setChatClickListener(this));
         mAdapter.addItemViewDelegate(new MessageLocationDelagate(this).setChatClickListener(this));
         mMessagerecyclerview.setAdapter(mAdapter);
-        if (mMessageList != null && mMessageList.size() > 0)
-            mMessagerecyclerview.scrollToPosition(mMessageList.size() - 1);
+        new Handler().postDelayed(new Runnable() {
+            @Override
+            public void run() {
+                if (mMessageList!=null&&mMessageList.size()>0)
+                mMessagerecyclerview.scrollToPosition(mMessageList.size() - 1);
+
+            }
+        },200);
         initrefreshlayout();
     }
 
@@ -357,7 +361,7 @@ public class ChatActivity extends AppBaseActivity implements EMMessageListener, 
         mConversation = EMClient.getInstance().chatManager().getConversation(toChatUserName, EMConversation.EMConversationType.Chat, true);
         if (mConversation == null) return;
         mConversation.markAllMessagesAsRead();
-        List<EMMessage> msgs = mConversation.getAllMessages();
+         List<EMMessage> msgs = mConversation.getAllMessages();
         int msgCount = msgs != null ? msgs.size() : 0;
         int pagesize = DEFAULT_PAGESIZE;//默认最左加载最近的20条。其他通过用户下拉刷新获取
         if (msgCount < mConversation.getAllMsgCount() && msgCount < pagesize) {
@@ -427,7 +431,7 @@ public class ChatActivity extends AppBaseActivity implements EMMessageListener, 
                 .build();
         // 跳转到图片选择器
         ImgSelActivity.startActivity(this, mConfig, REQUEST_SELIMG);
-        mConfig = null;
+        mConfig=null;
     }
 
     /**
@@ -561,7 +565,6 @@ public class ChatActivity extends AppBaseActivity implements EMMessageListener, 
     public void contactDeleted(ContactDeletedEvent mEvent) {
         isfriend = false;
     }
-
     @Subscribe(threadMode = ThreadMode.MAIN)
     public void refreshAdapter(RefreshMsgAdapterEvent mEvent) {
         mAdapter.notifyDataSetChanged();
