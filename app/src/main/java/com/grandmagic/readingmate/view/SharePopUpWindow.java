@@ -275,7 +275,7 @@ public class SharePopUpWindow extends PopupWindow {
         if (content.length() > MAX_LEN) {
             str += "...";
         }
-        str += "(来自大术读家:" + share_url + ")";
+        str += "(来自大术读家:" + share_url;
         return str;
     }
 
@@ -289,7 +289,7 @@ public class SharePopUpWindow extends PopupWindow {
         if (content.length() > MAX_LEN) {
             str += "...";
         }
-        str += "(来自大术读家:" + share_url + ")";
+        str += "(来自大术读家:" + share_url;
         return str;
     }
 
@@ -320,6 +320,7 @@ public class SharePopUpWindow extends PopupWindow {
 
 
     public boolean isImageExist(String url) {  //相对路径
+        img_exit = false;
         if (TextUtils.isEmpty(url)) {
             return false;
         }
