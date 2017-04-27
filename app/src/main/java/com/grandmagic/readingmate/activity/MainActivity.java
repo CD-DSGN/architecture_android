@@ -106,7 +106,6 @@ public class MainActivity extends AppBaseActivity {
         setContentView(R.layout.activity_main);
         ButterKnife.bind(this);
         AutoUtils.auto(this);
-
         initdata();
         new RxPermissions(this).request(Manifest.permission.WRITE_EXTERNAL_STORAGE).subscribe(new Action1<Boolean>() {
             @Override

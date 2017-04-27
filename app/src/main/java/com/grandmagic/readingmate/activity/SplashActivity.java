@@ -101,6 +101,8 @@ public class SplashActivity extends AppBaseActivity {
     private void checklogin() {
         isLogin = SPUtils.getInstance().isLogin(this);
         if (isLogin) {
+            EMClient.getInstance().groupManager().loadAllGroups();
+            EMClient.getInstance().chatManager().loadAllConversations();
 //            保存一份联系人信息
             mType=TYPE_TO_MAIN;
             new ContactModel(this).getAllFriendFromServer(new AppBaseResponseCallBack<NovateResponse<List<Contacts>>>(this) {

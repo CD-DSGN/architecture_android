@@ -313,6 +313,8 @@ public class ChatActivity extends AppBaseActivity implements EMMessageListener, 
         mTitleMore.setVisibility(View.VISIBLE);
         mTitlelayout.setBackgroundResource(R.color.white);
         mTitle.setText(chat_name);
+        LinearLayoutManager mLinearLayoutManager = new LinearLayoutManager(this);
+        mLinearLayoutManager.setStackFromEnd(true);
         mMessagerecyclerview.setLayoutManager(new LinearLayoutManager(this));
         mAdapter = new MultiItemTypeAdapter(this, mMessageList);
         mAdapter.addItemViewDelegate(new MessageTextSendDelagate(this).setChatClickListener(this));
@@ -358,6 +360,7 @@ public class ChatActivity extends AppBaseActivity implements EMMessageListener, 
      */
     private void conversationInit() {
         //这里需要传三个参数的。一个参数的方法有时候会返回null
+        EMClient.getInstance().chatManager().loadAllConversations();
         mConversation = EMClient.getInstance().chatManager().getConversation(toChatUserName, EMConversation.EMConversationType.Chat, true);
         if (mConversation == null) return;
         mConversation.markAllMessagesAsRead();
@@ -374,6 +377,7 @@ public class ChatActivity extends AppBaseActivity implements EMMessageListener, 
         } else if (msgs != null) {
             mMessageList.addAll(msgs);
         }
+        Log.e(TAG, "conversationInit: "+mMessageList.size() );
     }
 
 
