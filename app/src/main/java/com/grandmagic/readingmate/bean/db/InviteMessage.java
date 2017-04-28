@@ -41,7 +41,7 @@ public class InviteMessage {
     }
 
     public void setIsread(int mIsread) {
-        isread = mIsread;
+        isread = mIsread;//1为未读。0为已读
     }
 
     public InviteMessage(String from, long time, String reason,

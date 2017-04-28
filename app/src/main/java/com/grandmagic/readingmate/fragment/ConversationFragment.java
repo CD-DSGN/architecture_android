@@ -13,11 +13,15 @@ import com.grandmagic.readingmate.activity.ChatActivity;
 import com.grandmagic.readingmate.activity.FriendDetailActivity;
 import com.grandmagic.readingmate.bean.db.Contacts;
 import com.grandmagic.readingmate.bean.response.PersonInfo;
+import com.grandmagic.readingmate.event.ContactDeletedEvent;
 import com.grandmagic.readingmate.utils.IMHelper;
 import com.hyphenate.chat.EMMessage;
 import com.hyphenate.easeui.ui.EaseChatFragment;
 import com.hyphenate.easeui.widget.chatrow.EaseCustomChatRowProvider;
 import com.hyphenate.exceptions.HyphenateException;
+
+import org.greenrobot.eventbus.Subscribe;
+import org.greenrobot.eventbus.ThreadMode;
 
 import static com.grandmagic.readingmate.activity.ChatActivity.REQUEST_DETAIL;
 
@@ -32,10 +36,18 @@ import static com.grandmagic.readingmate.activity.ChatActivity.REQUEST_DETAIL;
 
 public class ConversationFragment extends EaseChatFragment implements EaseChatFragment.EaseChatFragmentHelper {
 
+    private boolean isfriend = true;
+
     @Override
     public void onActivityCreated(Bundle savedInstanceState) {
         super.onActivityCreated(savedInstanceState);
         setChatFragmentListener(this);
+        checkfriend();
+    }
+
+    private void checkfriend() {
+        Contacts mUserInfo = IMHelper.getInstance().getUserInfo(toChatUsername);
+        isfriend = mUserInfo != null;
     }
 
     /**
@@ -70,7 +82,7 @@ public class ConversationFragment extends EaseChatFragment implements EaseChatFr
         PersonInfo mInf = new PersonInfo();
         mInf.setUser_id(mContacts.getUser_id() + "");
         mInf.setAvatar(mContacts.getAvatar_url().getLarge());
-//        mInf.setFriend(isfriend);
+        mInf.setFriend(isfriend);
         mInf.setNickname(mContacts.getUser_name());
         mInf.setClientid(mContacts.getClientid());
         mInf.setGender(gender);
@@ -97,7 +109,7 @@ public class ConversationFragment extends EaseChatFragment implements EaseChatFr
      */
     @Override
     public boolean onMessageBubbleClick(EMMessage message) {
-        if ("card".equals(message.getStringAttribute("type",""))) {
+        if ("card".equals(message.getStringAttribute("type", ""))) {
             Intent mIntent = new Intent(getActivity(), FriendDetailActivity.class);
             Bundle mBundle = new Bundle();
             PersonInfo mPersonInfo = new PersonInfo();
@@ -152,4 +164,11 @@ public class ConversationFragment extends EaseChatFragment implements EaseChatFr
         return null;
     }
 
+    /**
+     * 被删除
+     */
+    @Subscribe(threadMode = ThreadMode.MAIN)
+    public void contactDeleted(ContactDeletedEvent mEvent) {
+        isfriend = false;
+    }
 }

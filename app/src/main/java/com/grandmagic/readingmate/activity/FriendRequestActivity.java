@@ -9,6 +9,7 @@ import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import com.grandmagic.readingmate.R;
+import com.grandmagic.readingmate.adapter.DefaultEmptyAdapter;
 import com.grandmagic.readingmate.adapter.RequestListAdapter;
 import com.grandmagic.readingmate.base.AppBaseActivity;
 import com.grandmagic.readingmate.base.AppBaseResponseCallBack;
@@ -18,10 +19,12 @@ import com.grandmagic.readingmate.bean.response.RequestListResponse;
 import com.grandmagic.readingmate.db.DBHelper;
 import com.grandmagic.readingmate.db.InviteMessageDao;
 import com.grandmagic.readingmate.model.ContactModel;
+import com.grandmagic.readingmate.utils.AutoUtils;
 import com.hyphenate.chat.EMClient;
 import com.hyphenate.chat.EMMessage;
 import com.hyphenate.exceptions.HyphenateException;
 import com.tamic.novate.NovateResponse;
+import com.tamic.novate.Throwable;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -48,6 +51,7 @@ public class FriendRequestActivity extends AppBaseActivity implements RequestLis
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_friend_request);
+        AutoUtils.auto(this);
         ButterKnife.bind(this);
         setTranslucentStatus(true);
         initview();
@@ -55,14 +59,15 @@ public class FriendRequestActivity extends AppBaseActivity implements RequestLis
     }
 
     RequestListAdapter mAdapter;
-
+DefaultEmptyAdapter mEmptyAdapter;
     private void initview() {
         mContext = this;
         mTitle.setText("新好友");
         mRecyclerview.setLayoutManager(new LinearLayoutManager(mContext));
         mAdapter = new RequestListAdapter(mContext, mListResponses);
         mAdapter.setStateListener(this);
-        mRecyclerview.setAdapter(mAdapter);
+        mEmptyAdapter=new DefaultEmptyAdapter(mAdapter,this);
+        mRecyclerview.setAdapter(mEmptyAdapter);
     }
 
     private void loadDataFromServer() {
@@ -79,7 +84,13 @@ public class FriendRequestActivity extends AppBaseActivity implements RequestLis
             @Override
             public void onSuccee(NovateResponse<List<RequestListResponse>> response) {
                 mListResponses.addAll(response.getData());
-                mAdapter.setdata(mListResponses);
+                mEmptyAdapter.refresh();
+            }
+
+            @Override
+            public void onError(Throwable e) {
+                super.onError(e);
+                mEmptyAdapter.refresh();
             }
         });
     }
@@ -106,7 +117,7 @@ public class FriendRequestActivity extends AppBaseActivity implements RequestLis
                     mE.printStackTrace();
                 }
                 mListResponses.remove(mPosition);
-                mAdapter.setdata(mListResponses);
+                mEmptyAdapter.refresh();
                 //添加好友时候将对方添加到自己的本地数据库
                 Contacts mContacts = new Contacts();
                 mContacts.setUser_id(Integer.valueOf(data.getUser_id()));
@@ -139,7 +150,7 @@ public class FriendRequestActivity extends AppBaseActivity implements RequestLis
                     mE.printStackTrace();
                 }
                 mListResponses.remove(mPosition);
-                mAdapter.setdata(mListResponses);
+                mEmptyAdapter.refresh();
             }
         });
     }

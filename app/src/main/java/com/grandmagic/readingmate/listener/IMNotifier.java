@@ -389,7 +389,7 @@ public class IMNotifier {
     private Intent[] makechatIntentStack() {
         Intent[] intents = new Intent[2];
         intents[0] = Intent.makeRestartActivityTask(new ComponentName(mAppContext, com.grandmagic.readingmate.activity.MainActivity.class));
-        intents[1] = new Intent(mAppContext, com.grandmagic.readingmate.activity.ChatActivity.class);
+        intents[1] = new Intent(mAppContext, com.grandmagic.readingmate.activity.EaseChatActivity.class);
         return intents;
     }
 }

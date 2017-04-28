@@ -211,7 +211,7 @@ public class FriendActivity extends AppBaseActivity implements ContactItemDelaga
         mInflate.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                startActivity(new Intent(FriendActivity.this,FriendRequestActivity.class));
+                startActivityForResult(new Intent(FriendActivity.this,FriendRequestActivity.class),REQUEST_NEWFRIEND);
             }
         });
         unredNewfriendTextview = (TextView) mInflate.findViewById(R.id.textView2);

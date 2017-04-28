@@ -112,8 +112,8 @@ public final class EaseUI {
             EMClient.getInstance().init(context, options);
         }
         
-        initNotifier();
-        registerMessageListener();
+//        initNotifier();
+//        registerMessageListener();
         
         if(settingsProvider == null){
             settingsProvider = new DefaultSettingsProvider();

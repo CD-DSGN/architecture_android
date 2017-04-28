@@ -8,12 +8,16 @@ import android.os.Bundle;
 import com.grandmagic.readingmate.R;
 import com.grandmagic.readingmate.base.AppBaseActivity;
 import com.grandmagic.readingmate.bean.response.PersonInfo;
+import com.grandmagic.readingmate.event.ContactDeletedEvent;
 import com.grandmagic.readingmate.fragment.ConversationFragment;
 import com.hyphenate.chat.EMMessage;
 import com.hyphenate.easeui.EaseConstant;
 import com.hyphenate.easeui.ui.EaseChatFragment;
 import com.hyphenate.easeui.widget.chatrow.EaseChatRowText;
 import com.hyphenate.exceptions.HyphenateException;
+
+import org.greenrobot.eventbus.Subscribe;
+import org.greenrobot.eventbus.ThreadMode;
 
 public class EaseChatActivity extends AppBaseActivity {
     public static final String CHAT_NAME = "chat_name";
@@ -50,26 +54,5 @@ public class EaseChatActivity extends AppBaseActivity {
         args.putString(CHAT_NAME,chat_name);
         mEaseChatFragment.setArguments(args);
         getSupportFragmentManager().beginTransaction().add(R.id.chatfram, mEaseChatFragment).commit();
-    }
-
-
-    public void cardmsgclick(EMMessage mChatMessage) {
-        Intent mIntent = new Intent(this, FriendDetailActivity.class);
-        Bundle mBundle = new Bundle();
-        PersonInfo mPersonInfo = new PersonInfo();
-        try {
-            mPersonInfo.setAvatar(mChatMessage.getStringAttribute("avatar"));
-            mPersonInfo.setNickname(mChatMessage.getStringAttribute("nickname"));
-            mPersonInfo.setClientid(mChatMessage.getStringAttribute("clientid"));
-            mPersonInfo.setUser_id(mChatMessage.getStringAttribute("userid"));
-            mPersonInfo.setGender(mChatMessage.getIntAttribute("gender"));
-            mPersonInfo.setSignature(mChatMessage.getStringAttribute("signature"));
-
-            mBundle.putParcelable(FriendDetailActivity.PERSON_INFO, mPersonInfo);
-            mIntent.putExtras(mBundle);
-            startActivity(mIntent);
-        } catch (HyphenateException mE) {
-            mE.printStackTrace();
-        }
     }
 }

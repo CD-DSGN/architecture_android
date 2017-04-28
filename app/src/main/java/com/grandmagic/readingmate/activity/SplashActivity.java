@@ -56,7 +56,7 @@ public class SplashActivity extends AppBaseActivity {
         AutoUtils.setSize(this, false, 750, 1334);
         setContentView(R.layout.activity_splash);
         ButterKnife.bind(this);
-
+       initview();
         checkfrist();
     }
 
@@ -79,7 +79,7 @@ public class SplashActivity extends AppBaseActivity {
         });
     }
     private void initview() {
-
+initServerImage();
         ObjectAnimator mScaleX = ObjectAnimator.ofFloat(mLogo, "scaleX", 0, 1f).setDuration(800);
         ObjectAnimator mScaleY = ObjectAnimator.ofFloat(mLogo, "scaleY", 0, 1f).setDuration(800);
         ObjectAnimator mAlpha = ObjectAnimator.ofFloat(mLogo, "alpha", 1f, 0.3f).setDuration(1500);
@@ -92,6 +92,11 @@ public class SplashActivity extends AppBaseActivity {
         mCountDownTimer.start();
         start = System.currentTimeMillis();
     }
+
+    private void initServerImage() {
+
+    }
+
     /**
      * 检测登陆状态，未登录则进入登陆，否则进入主页
      */
@@ -179,9 +184,4 @@ public class SplashActivity extends AppBaseActivity {
         EventBus.getDefault().unregister(this);
     }
 
-    @Override
-    public void onWindowFocusChanged(boolean hasFocus) {
-        super.onWindowFocusChanged(hasFocus);
-        if (hasFocus)   initview();
-    }
 }
