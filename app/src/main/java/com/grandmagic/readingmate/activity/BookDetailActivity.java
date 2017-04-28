@@ -117,6 +117,8 @@ public class BookDetailActivity extends AppBaseActivity implements View.OnLayout
     RelativeLayout mActivityView;
     @BindView(R.id.rl_collect_person)
     RelativeLayout mRlCollectPerson;
+    @BindView(R.id.commentnum)
+    TextView mCommentnum;
 
 
     private String book_id;
@@ -191,6 +193,7 @@ public class BookDetailActivity extends AppBaseActivity implements View.OnLayout
 
         mRecentView = new HotcommentView(this, HotcommentView.COMMENT_TIME, mModel, book_id);
         mHotView = new HotcommentView(this, HotcommentView.COMMENT_LIKE, mModel, book_id);
+        mRecentView.addNumView(mCommentnum);
         mViews.add(mRecentView);
         mViews.add(mHotView);
         mTitle.setText("图书详情");
@@ -282,7 +285,7 @@ public class BookDetailActivity extends AppBaseActivity implements View.OnLayout
             int collect_num = Integer.valueOf(s.getCollect_count());
             if (collect_num <= 0) {
                 mRlCollectPerson.setVisibility(View.GONE);
-            }else{
+            } else {
                 mRlCollectPerson.setVisibility(View.VISIBLE);
             }
         } catch (NumberFormatException e) {

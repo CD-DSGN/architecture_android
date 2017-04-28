@@ -7,6 +7,7 @@ import android.util.AttributeSet;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.FrameLayout;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import com.grandmagic.readingmate.R;
@@ -45,6 +46,7 @@ public class HotcommentView extends FrameLayout implements BookCommentsAdapter.A
     PullLoadMoreRecyclerView mRecyclerview;
 
     private Context mContext;
+    private TextView mCommentnum;
 
 
     public HotcommentView(Context context, String flag, BookModel mModel, String mBook_id) {
@@ -66,6 +68,7 @@ public class HotcommentView extends FrameLayout implements BookCommentsAdapter.A
                 currpage=mCurrpage;
                 if (mCurrpage==1)mList.clear();
                 pagecount = response.getData().getPageCount();
+                if (mCommentnum!=null&&response.getData().getTotal_num()>0)mCommentnum.setText("共计"+response.getData().getTotal_num()+"条评论");
                 List<BookCommentResponse.CommentsBean> mComments = response.getData().getComments();
                 if (mComments != null && !mComments.isEmpty())
                     mList.addAll(mComments);
@@ -146,5 +149,10 @@ public class HotcommentView extends FrameLayout implements BookCommentsAdapter.A
 
             }
         });
+    }
+
+    public void addNumView(TextView mCommentnum) {
+
+        this.mCommentnum = mCommentnum;
     }
 }

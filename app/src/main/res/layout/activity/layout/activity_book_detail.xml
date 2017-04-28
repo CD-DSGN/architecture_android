@@ -82,9 +82,19 @@
                         android:id="@+id/collectionNum"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:layout_alignParentRight="true"
+                       android:layout_toLeftOf="@+id/right_arrow"
                         android:layout_centerVertical="true"
                         tools:text="100"
+                        android:textSize="@dimen/textsize_24px"
+                        />
+                    <ImageView
+                        android:id="@+id/right_arrow"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:src="@drawable/right_arrow"
+                        android:layout_marginLeft="5px"
+                        android:layout_centerVertical="true"
+                        android:layout_alignParentRight="true"
                         />
                 </RelativeLayout>
             </LinearLayout>
@@ -99,7 +109,9 @@
             android:orientation="vertical"
             app:layout_behavior="@string/appbar_scrolling_view_behavior"
             >
-
+<RelativeLayout
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content">
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="50px"
@@ -162,6 +174,17 @@
                 </LinearLayout>
 
             </LinearLayout>
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentRight="true"
+        android:textSize="@dimen/textsize_24px"
+        android:textColor="@color/text_gray"
+        android:id="@+id/commentnum"
+        android:layout_marginRight="20px"
+        android:layout_marginTop="5px"
+        />
+</RelativeLayout>
 
             <android.support.v4.view.ViewPager
                 android:id="@+id/viewpager"
