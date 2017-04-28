@@ -15,3 +15,13 @@
 /Pushlib/*
 /Pushlib/*.iml
 /app/proguard-rules.pro
+/easeui/.settings
+/easeui/ic_launcher-web.png
+/easeui/LICENSE
+/easeui/build
+/easeui/simpledemo
+/easeui/.classpath
+/easeui/.project
+/easeui/AndroidManifest.xml
+/easeui/build.xml
+/easeui/easeui.iml

@@ -13,6 +13,7 @@ import android.os.Handler;
 import android.provider.MediaStore;
 import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v4.widget.SwipeRefreshLayout.OnRefreshListener;
+import android.text.TextUtils;
 import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.MotionEvent;
@@ -66,10 +67,12 @@ import java.util.List;
  * you can see ChatActivity in demo for your reference
  */
 public class EaseChatFragment extends EaseBaseFragment implements EMMessageListener {
+    public static final String CHAT_NAME = "chat_name";
     protected static final String TAG = "EaseChatFragment";
     protected static final int REQUEST_CODE_MAP = 1;
     protected static final int REQUEST_CODE_CAMERA = 2;
     protected static final int REQUEST_CODE_LOCAL = 3;
+    String chatName;
 
     /**
      * params to fragment
@@ -125,6 +128,7 @@ public class EaseChatFragment extends EaseBaseFragment implements EMMessageListe
         // userId you are chat with or group id
         toChatUsername = fragmentArgs.getString(EaseConstant.EXTRA_USER_ID);
         gender = fragmentArgs.getInt("gender", 3);
+        chatName = fragmentArgs.getString(CHAT_NAME, "");
         super.onActivityCreated(savedInstanceState);
     }
 
@@ -181,7 +185,7 @@ public class EaseChatFragment extends EaseBaseFragment implements EMMessageListe
     }
 
     protected void setUpView() {
-        titleBar.setTitle(toChatUsername);
+        titleBar.setTitle(TextUtils.isEmpty(chatName)?toChatUsername:chatName);
         if (chatType == EaseConstant.CHATTYPE_SINGLE) {
             // set title
             if (EaseUserUtils.getUserInfo(toChatUsername) != null) {
@@ -190,7 +194,7 @@ public class EaseChatFragment extends EaseBaseFragment implements EMMessageListe
                     titleBar.setTitle(user.getNick());
                 }
             }
-            titleBar.setRightImageResource(R.drawable.ease_mm_title_remove);
+//            titleBar.setRightImageResource(R.drawable.ease_mm_title_remove);
         } else {
             titleBar.setRightImageResource(R.drawable.ease_to_group_details_normal);
             if (chatType == EaseConstant.CHATTYPE_GROUP) {
@@ -1102,15 +1106,11 @@ public class EaseChatFragment extends EaseBaseFragment implements EMMessageListe
 
         /**
          * on avatar clicked
-         *
-         * @param username
          */
         void onAvatarClick(String username);
 
         /**
          * on avatar long pressed
-         *
-         * @param username
          */
         void onAvatarLongClick(String username);
 
@@ -1126,18 +1126,9 @@ public class EaseChatFragment extends EaseBaseFragment implements EMMessageListe
 
         /**
          * on extend menu item clicked, return true if you want to override
-         *
-         * @param view
-         * @param itemId
-         * @return
          */
         boolean onExtendMenuItemClick(int itemId, View view);
 
-        /**
-         * on set custom chat row provider
-         *
-         * @return
-         */
         EaseCustomChatRowProvider onSetCustomChatRowProvider();
     }
 

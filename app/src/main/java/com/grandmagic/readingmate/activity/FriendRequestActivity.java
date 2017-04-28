@@ -58,7 +58,7 @@ public class FriendRequestActivity extends AppBaseActivity implements RequestLis
 
     private void initview() {
         mContext = this;
-        mTitle.setText("新阅友");
+        mTitle.setText("新好友");
         mRecyclerview.setLayoutManager(new LinearLayoutManager(mContext));
         mAdapter = new RequestListAdapter(mContext, mListResponses);
         mAdapter.setStateListener(this);
