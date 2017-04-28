@@ -1,8 +1,6 @@
 package com.grandmagic.readingmate.utils;
 
 import java.text.SimpleDateFormat;
-import java.util.Calendar;
-import java.util.Date;
 import java.util.Locale;
 
 /**
@@ -64,6 +62,23 @@ public class DateUtil {
         SimpleDateFormat simpleDateFormat = new SimpleDateFormat(DEFAULT_PATTERN, Locale.getDefault());
         return simpleDateFormat.format(time1);
     }
+
+    //没有直接返回null
+    public static String timeTodate1(String time) {
+        long time1 = 0;
+        if (time != null && time.length() == 10) {//unix日期是10位，java是13位。需要补齐
+            try {
+                time1 = Long.parseLong(time) * 1000;
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+        } else {
+            return null;
+        }
+        SimpleDateFormat simpleDateFormat = new SimpleDateFormat(DEFAULT_PATTERN, Locale.getDefault());
+        return simpleDateFormat.format(time1);
+    }
+
 
     /**
      * 时间转换
