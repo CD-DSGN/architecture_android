@@ -289,3 +289,9 @@ public static java.lang.String TABLENAME;
   -keepclasseswithmembernames class * { @butterknife.* <fields>;}
   -keepclasseswithmembernames class * { @butterknife.* <methods>;}
 
+-keepclasseswithmembernames class * {
+    native <methods>;
+}
+
+
+

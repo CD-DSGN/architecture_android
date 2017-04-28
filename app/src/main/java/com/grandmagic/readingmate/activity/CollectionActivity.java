@@ -12,10 +12,12 @@ import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import com.grandmagic.readingmate.R;
+import com.grandmagic.readingmate.adapter.DefaultEmptyAdapter;
 import com.grandmagic.readingmate.adapter.MyCollectBookAdapter;
 import com.grandmagic.readingmate.base.AppBaseActivity;
 import com.grandmagic.readingmate.base.AppBaseResponseCallBack;
 import com.grandmagic.readingmate.bean.response.DisplayBook;
+import com.grandmagic.readingmate.event.BookStateEvent;
 import com.grandmagic.readingmate.model.BookModel;
 import com.grandmagic.readingmate.utils.AutoUtils;
 import com.grandmagic.readingmate.utils.Page;
@@ -23,6 +25,8 @@ import com.grandmagic.readingmate.utils.ViewUtils;
 import com.tamic.novate.NovateResponse;
 import com.tamic.novate.Throwable;
 import com.zhy.adapter.recyclerview.MultiItemTypeAdapter;
+
+import org.greenrobot.eventbus.EventBus;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -58,6 +62,8 @@ public class CollectionActivity extends AppBaseActivity {
 
 
     private MyCollectBookAdapter mMyCollectBookAdapter;
+    private DefaultEmptyAdapter mDefaultEmptyAdapter;
+
 
     public static final int PAGE_SIZE = 6;
     private int cur_position = 0;
@@ -81,6 +87,7 @@ public class CollectionActivity extends AppBaseActivity {
         mCallBack = new AppBaseResponseCallBack<NovateResponse<DisplayBook>>(this, true) {
             @Override
             public void onSuccee(NovateResponse<DisplayBook> response) {
+                mDefaultEmptyAdapter.refresh();
                 DisplayBook displayBook = response.getData();
                 if (displayBook != null) {
                     mTotalNum = displayBook.getTotal_num();
@@ -98,6 +105,7 @@ public class CollectionActivity extends AppBaseActivity {
             @Override
             public void onError(Throwable e) {
                 super.onError(e);
+                mDefaultEmptyAdapter.refresh();
                 mGoToNextPage = false;
             }
         };
@@ -106,6 +114,7 @@ public class CollectionActivity extends AppBaseActivity {
     }
 
     private void initView() {
+
         if (mOnitemDeleteListener == null) {
             mOnitemDeleteListener= new MyCollectBookAdapter.OnitemDeleteListener() {
                 @Override
@@ -115,6 +124,7 @@ public class CollectionActivity extends AppBaseActivity {
                         @Override
                         public void onSuccee(NovateResponse<Object> response) {
                             //删除图书成功，更改本地数据,更新分页信息
+                            EventBus.getDefault().post(new BookStateEvent(BookStateEvent.STATE_DELETE, mDeleteBookID));
                             DisplayBook.InfoBean infoBean;
                             for (int i = 0 ; i < mBookList.size(); i++) {
                                 infoBean = mBookList.get(i);
@@ -146,7 +156,12 @@ public class CollectionActivity extends AppBaseActivity {
             mMyCollectBookAdapter = new MyCollectBookAdapter(this, mBookList, mOnitemDeleteListener);
         }
 
-        mRvCollectBooks.setAdapter(mMyCollectBookAdapter);
+        if (mDefaultEmptyAdapter == null) {
+            mDefaultEmptyAdapter = new DefaultEmptyAdapter(mMyCollectBookAdapter, this);
+            mDefaultEmptyAdapter.setEmptyViewTextview(this.getString(R.string.no_collect_book));
+        }
+
+        mRvCollectBooks.setAdapter(mDefaultEmptyAdapter);
 
         mRvCollectBooks.setOnFlingListener(new RecyclerView.OnFlingListener() {
             @Override
