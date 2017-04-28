@@ -17,6 +17,7 @@ import com.grandmagic.readingmate.utils.IMHelper;
 import com.hyphenate.chat.EMMessage;
 import com.hyphenate.easeui.ui.EaseChatFragment;
 import com.hyphenate.easeui.widget.chatrow.EaseCustomChatRowProvider;
+import com.hyphenate.exceptions.HyphenateException;
 
 import static com.grandmagic.readingmate.activity.ChatActivity.REQUEST_DETAIL;
 
@@ -96,6 +97,26 @@ public class ConversationFragment extends EaseChatFragment implements EaseChatFr
      */
     @Override
     public boolean onMessageBubbleClick(EMMessage message) {
+        if ("card".equals(message.getStringAttribute("type",""))) {
+            Intent mIntent = new Intent(getActivity(), FriendDetailActivity.class);
+            Bundle mBundle = new Bundle();
+            PersonInfo mPersonInfo = new PersonInfo();
+            try {
+                mPersonInfo.setAvatar(message.getStringAttribute("avatar"));
+                mPersonInfo.setNickname(message.getStringAttribute("nickname"));
+                mPersonInfo.setClientid(message.getStringAttribute("clientid"));
+                mPersonInfo.setUser_id(message.getStringAttribute("userid"));
+                mPersonInfo.setGender(message.getIntAttribute("gender"));
+                mPersonInfo.setSignature(message.getStringAttribute("signature"));
+
+                mBundle.putParcelable(FriendDetailActivity.PERSON_INFO, mPersonInfo);
+                mIntent.putExtras(mBundle);
+                getActivity().startActivity(mIntent);
+                return true;
+            } catch (HyphenateException mE) {
+                mE.printStackTrace();
+            }
+        }
         return false;
     }
 

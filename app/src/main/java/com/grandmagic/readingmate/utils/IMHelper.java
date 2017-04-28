@@ -16,6 +16,9 @@ import com.grandmagic.readingmate.listener.IMNotifier;
 import com.grandmagic.readingmate.listener.IMSettingsProvider;
 import com.hyphenate.chat.EMClient;
 import com.hyphenate.chat.EMMessage;
+import com.hyphenate.easeui.controller.EaseUI;
+import com.hyphenate.easeui.domain.EaseUser;
+import com.tamic.novate.util.Environment;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -58,8 +61,27 @@ public class IMHelper {
         EMClient.getInstance().contactManager().setContactListener(new IMContactListener(appContext));//好友请求监听
         mIMNotifier = new IMNotifier();
         mIMNotifier.init(appContext);
+        setUserProfileProvider();
     }
 
+    private void setUserProfileProvider() {
+        EaseUI.getInstance().setUserProfileProvider(new EaseUI.EaseUserProfileProvider() {
+            @Override
+            public EaseUser getUser(String username) {
+                return getEaseUserInfo(username);
+            }
+        });
+    }
+    public EaseUser getEaseUserInfo(String mUsernam) {
+        EaseUser mUser=new EaseUser(mUsernam);
+        ContactsDao mContactsDao = DBHelper.getContactsDao(mAppContext);
+        if (mUsernam==null)return null;
+        Contacts mContacts = mContactsDao.queryBuilder().whereOr(ContactsDao.Properties.User_id.eq(mUsernam),ContactsDao.Properties.User_name.eq(mUsernam)).build().unique();
+        DBHelper.close();
+        mUser.setAvatar(Environment.BASEULR_PRODUCTION+mContacts.getAvatar_url().getLarge());
+        mUser.setNickname(mContacts.getUser_name());
+        return mUser;
+    }
 
     /**
      * 从本地数据库查询好友信息
