@@ -107,7 +107,7 @@ public class SplashActivity extends AppBaseActivity {
         mNovate.executeGet(ApiInterface.GET_HOLIDAYPHOTO, new AppBaseResponseCallBack<NovateResponse<SplashResponse>>(this) {
             @Override
             public void onSuccee(NovateResponse<SplashResponse> response) {
-                Glide.with(SplashActivity.this).load(Environment.BASEULR_PRODUCTION + response.getData().get(0).getPhoto())
+                Glide.with(SplashActivity.this).load(Environment.BASEULR_PRODUCTION + response.getData().getPhoto())
                         .into(new SimpleTarget<GlideDrawable>() {
                             @Override
                             public void onResourceReady(GlideDrawable resource, GlideAnimation<? super GlideDrawable> glideAnimation) {
