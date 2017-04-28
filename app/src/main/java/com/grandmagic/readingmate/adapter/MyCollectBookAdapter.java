@@ -73,7 +73,10 @@ public class MyCollectBookAdapter extends CommonAdapter<DisplayBook.InfoBean> {
 
             String str_time = "";
             try {
-                str_time = DateUtil.timeTodate(book_info.getPub_date());
+                str_time = DateUtil.timeTodate1(book_info.getPub_date());
+                if (str_time == null) {
+                    str_time = "";
+                }
             } catch (Exception e) {
                 e.printStackTrace();
             }

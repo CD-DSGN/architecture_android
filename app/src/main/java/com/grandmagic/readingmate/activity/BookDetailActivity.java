@@ -6,7 +6,6 @@ import android.support.v4.view.ViewPager;
 import android.text.TextUtils;
 import android.util.TypedValue;
 import android.view.View;
-import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
@@ -95,8 +94,7 @@ public class BookDetailActivity extends AppBaseActivity implements View.OnLayout
     RelativeLayout mRelaRating;
     @BindView(R.id.about)
     TextView mAbout;
-    @BindView(R.id.iv_collect)
-    ImageView mIvCollect;
+
     @BindView(R.id.tv2)
     TextView mTv2;
     @BindView(R.id.lin_collection)
@@ -117,6 +115,8 @@ public class BookDetailActivity extends AppBaseActivity implements View.OnLayout
     ViewPager mViewpager;
     @BindView(R.id.activityView)
     RelativeLayout mActivityView;
+    @BindView(R.id.rl_collect_person)
+    RelativeLayout mRlCollectPerson;
 
 
     private String book_id;
@@ -277,6 +277,19 @@ public class BookDetailActivity extends AppBaseActivity implements View.OnLayout
         } catch (NumberFormatException mE) {
             mE.printStackTrace();
         }
+
+        try {
+            int collect_num = Integer.valueOf(s.getCollect_count());
+            if (collect_num <= 0) {
+                mRlCollectPerson.setVisibility(View.GONE);
+            }else{
+                mRlCollectPerson.setVisibility(View.VISIBLE);
+            }
+        } catch (NumberFormatException e) {
+            e.printStackTrace();
+            mRlCollectPerson.setVisibility(View.GONE);
+        }
+
         ImageLoader.loadBookImg(this, Environment.getUrl() + s.getPhoto(), mIvConver);
         setCollectView(s.getCollect_user());
         mTotalScore.setScore(Float.valueOf(s.getTotal_score()));
@@ -285,7 +298,7 @@ public class BookDetailActivity extends AppBaseActivity implements View.OnLayout
         mBottomlayout.setVisibility(s.getIs_follow() == 1 ? View.VISIBLE : View.GONE);
     }
 
-    @OnClick({R.id.back, R.id.submit, R.id.tv_last, R.id.tv_hot, R.id.coll_more, R.id.lin_share,R.id.lin_collection})
+    @OnClick({R.id.back, R.id.submit, R.id.tv_last, R.id.tv_hot, R.id.coll_more, R.id.lin_share, R.id.lin_collection})
     public void onClick(View view) {
         switch (view.getId()) {
             case R.id.back:

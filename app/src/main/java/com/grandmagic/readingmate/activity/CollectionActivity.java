@@ -84,7 +84,7 @@ public class CollectionActivity extends AppBaseActivity {
     }
 
     private void loadData() {
-        mCallBack = new AppBaseResponseCallBack<NovateResponse<DisplayBook>>(this, true) {
+        mCallBack = new AppBaseResponseCallBack<NovateResponse<DisplayBook>>(this, false) {
             @Override
             public void onSuccee(NovateResponse<DisplayBook> response) {
                 mDefaultEmptyAdapter.refresh();
@@ -134,7 +134,10 @@ public class CollectionActivity extends AppBaseActivity {
                                             cur_position --;
                                         }
                                         mPage.delete(i);
-                                        mMyCollectBookAdapter.notifyDataSetChanged();
+//                                        mMyCollectBookAdapter.notifyItemRemoved(i);
+//                                        mMyCollectBookAdapter.notifyran
+
+                                        mDefaultEmptyAdapter.notifyDataSetChanged();
                                         CollectionActivity.this.smoothScrollToPosition(cur_position);
                                         break;
                                     }
