@@ -19,7 +19,7 @@
             android:layout_width="72px"
             android:layout_height="72px"
             android:layout_centerVertical="true"
-            android:src="@drawable/logo"
+            android:src="@drawable/app_logo"
             />
 
         <TextView
@@ -93,7 +93,7 @@
             android:layout_height="72px"
             android:layout_centerVertical="true"
             android:layout_marginLeft="24px"
-            android:src="@drawable/logo"
+            android:src="@drawable/app_logo"
             />
 
         <TextView

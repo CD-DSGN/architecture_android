@@ -8,6 +8,7 @@ import android.widget.ImageView;
 
 import com.grandmagic.readingmate.R;
 import com.grandmagic.readingmate.activity.ChatActivity;
+import com.grandmagic.readingmate.activity.EaseChatActivity;
 import com.grandmagic.readingmate.base.AppBaseResponseCallBack;
 import com.grandmagic.readingmate.bean.db.Contacts;
 import com.grandmagic.readingmate.model.ContactModel;
@@ -57,10 +58,10 @@ private int remarkPosition=-1;
         holder.getConvertView().setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Intent mIntent = new Intent(mContext, ChatActivity.class);
-                mIntent.putExtra(ChatActivity.CHAT_NAME, mContacts.getUser_name());
-                mIntent.putExtra(ChatActivity.CHAT_IM_NAME, mContacts.getUser_id() + "");
-                mIntent.putExtra(ChatActivity.GENDER, mContacts.getGender());
+                Intent mIntent = new Intent(mContext, EaseChatActivity.class);
+                mIntent.putExtra(EaseChatActivity.CHAT_NAME, mContacts.getUser_name());
+                mIntent.putExtra(EaseChatActivity.CHAT_IM_NAME, mContacts.getUser_id() + "");
+                mIntent.putExtra(EaseChatActivity.GENDER, mContacts.getGender());
                 mContext.startActivity(mIntent);
             }
         });

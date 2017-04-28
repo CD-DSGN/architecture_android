@@ -24,7 +24,7 @@
             android:layout_height="212px"
             android:layout_marginLeft="46px"
             android:layout_marginTop="36px"
-            tools:src="@drawable/logo"
+            tools:src="@drawable/app_logo"
             />
 
         <TextView

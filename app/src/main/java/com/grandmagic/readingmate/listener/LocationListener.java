@@ -123,8 +123,5 @@ public class LocationListener implements BDLocationListener {
         mLocationHandler.sendMessage(mMessage);
     }
 
-    @Override
-    public void onConnectHotSpotMessage(String mS, int mI) {
 
-    }
 }

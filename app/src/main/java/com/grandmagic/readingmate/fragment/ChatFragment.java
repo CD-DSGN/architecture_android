@@ -21,6 +21,7 @@ import android.widget.Toast;
 import com.grandmagic.readingmate.R;
 import com.grandmagic.readingmate.activity.AddFriendActivity;
 import com.grandmagic.readingmate.activity.ChatActivity;
+import com.grandmagic.readingmate.activity.EaseChatActivity;
 import com.grandmagic.readingmate.activity.FriendActivity;
 import com.grandmagic.readingmate.activity.MainActivity;
 import com.grandmagic.readingmate.adapter.DefaultEmptyAdapter;
@@ -296,8 +297,8 @@ int unreadmsgCount;//未读消息
     @Override
     public void onitemclick(EMMessage mLastMessage, String mFinalUsername, int position) {
 
-        Intent mIntent = new Intent(mContext, ChatActivity.class);
-        mIntent.putExtra(ChatActivity.CHAT_IM_NAME, mLastMessage.direct() == EMMessage.Direct.SEND ?
+        Intent mIntent = new Intent(mContext, EaseChatActivity.class);
+        mIntent.putExtra(EaseChatActivity.CHAT_IM_NAME, mLastMessage.direct() == EMMessage.Direct.SEND ?
                 mLastMessage.getTo() : mLastMessage.getFrom());
         ContactsDao mContactsDao = DBHelper.getContactsDao(mContext);
         Contacts mUnique=null;
@@ -306,8 +307,8 @@ int unreadmsgCount;//未读消息
             DBHelper.close();
         }
         if (mUnique != null){
-            mIntent.putExtra(ChatActivity.GENDER, mUnique.getGender());
-            mIntent.putExtra(ChatActivity.CHAT_NAME, mUnique.getUser_name());
+            mIntent.putExtra(EaseChatActivity.GENDER, mUnique.getGender());
+            mIntent.putExtra(EaseChatActivity.CHAT_NAME, mUnique.getUser_name());
             mConversations.get(position).markAllMessagesAsRead();
         onrefreshConversation();
         ((MainActivity) mContext).startActivityForResult(mIntent, REQUEST_READMSG);}else {

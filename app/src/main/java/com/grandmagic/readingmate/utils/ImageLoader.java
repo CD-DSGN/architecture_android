@@ -5,6 +5,8 @@ import android.widget.ImageView;
 
 import com.bumptech.glide.Glide;
 import com.grandmagic.readingmate.R;
+import com.hyphenate.easeui.utils.GlideCircleTransform;
+import com.hyphenate.easeui.utils.GlideRoundTransform;
 
 /**
  * Created by zhangmengqi on 2017/1/22.
@@ -19,8 +21,8 @@ public class ImageLoader {
      * @param target   展示的imageview
      */
     public static void loadImage(Context mContext, String url, ImageView target) {
-        Glide.with(mContext).load(url).placeholder(R.drawable.logo)
-                .error(R.drawable.logo).into(target);
+        Glide.with(mContext).load(url).placeholder(R.drawable.app_logo)
+                .error(R.drawable.app_logo).into(target);
     }
 
     /**
@@ -43,8 +45,8 @@ public class ImageLoader {
     public static void loadRoundImage(Context mContext, String url, ImageView target) {
         Glide.with(mContext).load(url)
                 .transform(new GlideRoundTransform(mContext))
-                .placeholder(R.drawable.logo)
-                .error(R.drawable.logo)
+                .placeholder(R.drawable.app_logo)
+                .error(R.drawable.app_logo)
                 .into(target);
     }
 
@@ -59,8 +61,8 @@ public class ImageLoader {
     public static void loadRoundImage(Context mContext, String url, ImageView target, float round) {
         Glide.with(mContext).load(url)
                 .transform(new GlideRoundTransform(mContext, round))
-                .placeholder(R.drawable.logo)
-                .error(R.drawable.logo)
+                .placeholder(R.drawable.app_logo)
+                .error(R.drawable.app_logo)
                 .into(target);
     }
 
@@ -74,8 +76,8 @@ public class ImageLoader {
     public static void loadCircleImage(Context mContext, String url, ImageView target) {
         Glide.with(mContext).load(url)
                 .transform(new GlideCircleTransform(mContext))
-                .placeholder(R.drawable.logo)
-                .error(R.drawable.logo)
+                .placeholder(R.drawable.app_logo)
+                .error(R.drawable.app_logo)
                 .into(target);
     }
 

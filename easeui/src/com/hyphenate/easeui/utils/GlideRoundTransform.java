@@ -1,4 +1,4 @@
-package com.grandmagic.readingmate.utils;
+package com.hyphenate.easeui.utils;
 
 import android.content.Context;
 import android.graphics.Bitmap;

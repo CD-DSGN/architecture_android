@@ -14,7 +14,7 @@
         android:layout_height="56px"
         android:scaleType="fitXY"
         android:layout_marginRight="20px"
-        android:src="@drawable/logo"/>
+        android:src="@drawable/app_logo"/>
 
     <LinearLayout
         android:id="@+id/ll_info_reply"

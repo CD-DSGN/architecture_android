@@ -4,7 +4,6 @@ import android.Manifest;
 import android.content.Context;
 import android.content.Intent;
 import android.graphics.Color;
-import android.graphics.drawable.Drawable;
 import android.os.Bundle;
 import android.os.Handler;
 import android.support.v4.widget.SwipeRefreshLayout;
@@ -44,7 +43,6 @@ import com.grandmagic.readingmate.db.ChatDraftBoxDao;
 import com.grandmagic.readingmate.db.DBHelper;
 import com.grandmagic.readingmate.event.ContactDeletedEvent;
 import com.grandmagic.readingmate.event.FriendDeleteEvent;
-import com.grandmagic.readingmate.event.RefreshHotCommentEvent;
 import com.grandmagic.readingmate.event.RefreshMsgAdapterEvent;
 import com.grandmagic.readingmate.listener.VoicePlayClickListener;
 import com.grandmagic.readingmate.utils.AutoUtils;
@@ -403,7 +401,7 @@ public class ChatActivity extends AppBaseActivity implements EMMessageListener, 
         ImageLoader mLoader = new ImageLoader() {
             @Override
             public void displayImage(Context context, String path, final ImageView imageView) {
-                Glide.with(context).load(path).placeholder(R.drawable.logo).into(new ImageViewTarget<GlideDrawable>(imageView) {
+                Glide.with(context).load(path).placeholder(R.drawable.app_logo).into(new ImageViewTarget<GlideDrawable>(imageView) {
                     @Override
                     protected void setResource(GlideDrawable resource) {
                         imageView.setImageDrawable(resource);

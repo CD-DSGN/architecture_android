@@ -18,10 +18,8 @@ import android.os.Build;
 import android.os.Vibrator;
 import android.support.v4.app.NotificationCompat;
 import android.util.Log;
-import android.widget.RemoteViews;
 
 import com.bumptech.glide.BitmapRequestBuilder;
-import com.bumptech.glide.BitmapTypeRequest;
 import com.bumptech.glide.Glide;
 import com.bumptech.glide.request.animation.GlideAnimation;
 import com.bumptech.glide.request.target.SimpleTarget;
@@ -34,8 +32,7 @@ import com.grandmagic.readingmate.bean.response.OtherInfoResponse;
 import com.grandmagic.readingmate.db.DBHelper;
 import com.grandmagic.readingmate.db.InviteMessageDao;
 import com.grandmagic.readingmate.model.ContactModel;
-import com.grandmagic.readingmate.utils.DateUtil;
-import com.grandmagic.readingmate.utils.GlideCircleTransform;
+import com.hyphenate.easeui.utils.GlideCircleTransform;
 import com.grandmagic.readingmate.utils.IMHelper;
 import com.hyphenate.chat.EMMessage;
 import com.hyphenate.chat.EMTextMessageBody;
@@ -176,7 +173,7 @@ public class IMNotifier {
         NotificationCompat.Builder mBuilder = new NotificationCompat.Builder(mAppContext)
                 .setWhen(System.currentTimeMillis())
                 .setColor(mAppContext.getResources().getColor(R.color.text_green))
-                .setSmallIcon(R.drawable.logo)
+                .setSmallIcon(R.drawable.app_logo)
                 .setLargeIcon(mResource)
                 .setAutoCancel(true);
         Intent msgIntent = new Intent(mAppContext, MainActivity.class);

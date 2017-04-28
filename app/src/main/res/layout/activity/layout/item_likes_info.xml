@@ -19,7 +19,7 @@
         android:layout_width="100px"
         android:layout_height="100px"
         android:layout_marginTop="26px"
-        android:src="@drawable/logo"
+        android:src="@drawable/app_logo"
         />
 
     <TextView

@@ -14,6 +14,7 @@ import com.grandmagic.readingmate.push.IUmengNotificationClickHandler;
 import com.grandmagic.readingmate.utils.IMHelper;
 import com.hyphenate.chat.EMClient;
 import com.hyphenate.chat.EMOptions;
+import com.hyphenate.easeui.controller.EaseUI;
 import com.squareup.leakcanary.LeakCanary;
 import com.tamic.novate.util.SPUtils;
 import com.tencent.bugly.crashreport.CrashReport;
@@ -113,7 +114,8 @@ public class AppBaseApplication extends Application {
         EMOptions mEMOptions = new EMOptions();
         mEMOptions.setAcceptInvitationAlways(false);// 默认添加好友时，是不需要验证的，改成需要验证
 
-        EMClient.getInstance().init(this, mEMOptions);
+//        EMClient.getInstance().init(this, mEMOptions);
+        EaseUI.getInstance().init(this,mEMOptions);
         //在做打包混淆时，关闭debug模式，避免消耗不必要的资源
         EMClient.getInstance().setDebugMode(true);
         IMHelper.getInstance().init(this);

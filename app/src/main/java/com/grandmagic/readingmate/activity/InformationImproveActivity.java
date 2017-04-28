@@ -14,7 +14,6 @@ import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import com.bumptech.glide.Glide;
 import com.bumptech.glide.load.resource.drawable.GlideDrawable;
@@ -25,7 +24,6 @@ import com.grandmagic.readingmate.base.AppBaseResponseCallBack;
 import com.grandmagic.readingmate.model.InfoImproveModel;
 import com.grandmagic.readingmate.utils.AutoUtils;
 import com.grandmagic.readingmate.utils.KitUtils;
-import com.tamic.novate.Novate;
 import com.tamic.novate.NovateResponse;
 import com.yuyh.library.imgsel.ImageLoader;
 import com.yuyh.library.imgsel.ImgSelActivity;
@@ -183,7 +181,7 @@ public class InformationImproveActivity extends AppBaseActivity {
         ImageLoader mLoader = new ImageLoader() {
             @Override
             public void displayImage(Context context, String path, final ImageView imageView) {
-                Glide.with(context).load(path).placeholder(R.drawable.logo).into(new ImageViewTarget<GlideDrawable>(imageView) {
+                Glide.with(context).load(path).placeholder(R.drawable.app_logo).into(new ImageViewTarget<GlideDrawable>(imageView) {
                     @Override
                     protected void setResource(GlideDrawable resource) {
                         imageView.setImageDrawable(resource);

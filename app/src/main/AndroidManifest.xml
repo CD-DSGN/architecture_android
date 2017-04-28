@@ -287,6 +287,9 @@
         <activity android:name=".activity.InformationImproveActivity"
                   android:theme="@style/notitle"
             />
+       <activity android:name="com.hyphenate.easeui.ui.EaseBaiduMapActivity"/>
+        <activity android:name=".activity.EaseChatActivity" android:theme="@style/notitle"/>
+        <activity android:name="com.hyphenate.easeui.ui.EaseShowBigImageActivity"/>
     </application>
 
 </manifest>

@@ -288,4 +288,16 @@ public static java.lang.String TABLENAME;
   -keep class **$$ViewBinder { *; }
   -keepclasseswithmembernames class * { @butterknife.* <fields>;}
   -keepclasseswithmembernames class * { @butterknife.* <methods>;}
-
+#httpclient (org.apache.http.legacy.jar)
+-dontwarn android.net.compatibility.**
+-dontwarn android.net.http.**
+-dontwarn com.android.internal.http.multipart.**
+-dontwarn org.apache.commons.**
+-dontwarn org.apache.http.**
+-dontwarn org.apache.http.protocol.**
+-keep class android.net.compatibility.**{*;}
+#-keep class android.net.http.**{*;}
+-keep class com.android.internal.http.multipart.**{*;}
+-keep class org.apache.commons.**{*;}
+-keep class org.apache.org.**{*;}
+-keep class org.apache.harmony.**{*;}

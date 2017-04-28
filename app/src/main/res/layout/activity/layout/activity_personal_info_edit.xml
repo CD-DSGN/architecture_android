@@ -37,7 +37,7 @@
             android:layout_height="90px"
             android:layout_alignParentRight="true"
             android:layout_marginRight="66px"
-            android:src ="@drawable/logo"/>
+            android:src ="@drawable/app_logo"/>
 
         <ImageView
             android:layout_width="match_parent"
