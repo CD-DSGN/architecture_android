@@ -192,8 +192,18 @@
     -keep class com.linkedin.** { *; }
     -keepattributes Signature
 #    环信
+-dontwarn  com.easemob.**
+-keep class com.easemob.** {*;}
+-keep class org.xmlpull.** {*;}
+-keep class com.hyphenate.* {*;}
+-keep class com.hyphenate.chat.** {*;}
+-keep class org.jivesoftware.** {*;}
+-keep class org.apache.** {*;}
+#如果使用easeui库，需要这么写
+-keep class com.hyphenate.easeui.utils.EaseSmileUtils {*;}
 -keep class com.hyphenate.** {*;}
 -dontwarn  com.hyphenate.**
+-keep class com.superrtc.** {*;}
 #okhttp3.x
 -dontwarn com.squareup.okhttp3.**
 -keep class com.squareup.okhttp3.** { *;}
@@ -294,17 +304,3 @@ public static java.lang.String TABLENAME;
 }
 
 
-
-#httpclient (org.apache.http.legacy.jar)
--dontwarn android.net.compatibility.**
--dontwarn android.net.http.**
--dontwarn com.android.internal.http.multipart.**
--dontwarn org.apache.commons.**
--dontwarn org.apache.http.**
--dontwarn org.apache.http.protocol.**
--keep class android.net.compatibility.**{*;}
-#-keep class android.net.http.**{*;}
--keep class com.android.internal.http.multipart.**{*;}
--keep class org.apache.commons.**{*;}
--keep class org.apache.org.**{*;}
--keep class org.apache.harmony.**{*;}

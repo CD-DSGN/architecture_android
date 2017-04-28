@@ -53,5 +53,6 @@ public class ApiInterface {
     public static final String REPLY_DEL= "reply/deletereply"; //删除回复
     public static final String REPLY_LIKE = "reply/thumbupreplycomment"; //点赞
     public static final String ADD_INFOREGISTER = "userinfo/addinforegister"; //完善资料
+    public static final String GET_HOLIDAYPHOTO = "getimage/getholidaysphoto"; //获取启动页图片
 
 }
