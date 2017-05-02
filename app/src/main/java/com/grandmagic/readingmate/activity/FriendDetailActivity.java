@@ -268,7 +268,7 @@ public class FriendDetailActivity extends AppBaseActivity {
         });
     }
 
-    @OnClick({R.id.recommend, R.id.iv_sendmsg})
+    @OnClick({R.id.recommend, R.id.iv_sendmsg,R.id.fab})
     public void onClick(View view) {
         switch (view.getId()) {
 
