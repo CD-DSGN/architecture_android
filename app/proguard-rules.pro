@@ -70,6 +70,7 @@
 #百度地图
 -dontwarn com.baidu.**
 -keep class com.baidu.**{*;}
+-keep class vi.com.gdi.bgl.android.**{*;}
 #umeng统计
 -keepclassmembers class * {
    public <init> (org.json.JSONObject);
