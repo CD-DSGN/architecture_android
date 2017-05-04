@@ -11,6 +11,7 @@ import com.grandmagic.readingmate.db.ChatDraftBoxDao;
 import com.grandmagic.readingmate.db.DBHelper;
 import com.grandmagic.readingmate.utils.IMHelper;
 import com.grandmagic.readingmate.utils.ImageLoader;
+import com.grandmagic.readingmate.utils.KitUtils;
 import com.hyphenate.chat.EMConversation;
 import com.hyphenate.chat.EMMessage;
 import com.hyphenate.chat.EMTextMessageBody;
@@ -84,7 +85,7 @@ public class RecentConversationDelagate implements ItemViewDelegate<EMConversati
                         Environment.BASEULR_PRODUCTION + mUserInfo.getAvatar_url().getLarge(),
                         (ImageView) holder.getView(R.id.avatar)
                 );
-                holder.setText(R.id.name, mUserInfo.getUser_name() == null ? mUserInfo.getUser_id() + "" : mUserInfo.getUser_name());
+                holder.setText(R.id.name, KitUtils.unicodeDecode(mUserInfo.getUser_name() == null ? mUserInfo.getUser_id() + "" : mUserInfo.getUser_name()));
             }
             final String finalUsername = mUserInfo == null ? "" : mUserInfo.getUser_id()+"";
             holder.getConvertView().setOnClickListener(new View.OnClickListener() {

@@ -37,6 +37,7 @@ import com.grandmagic.readingmate.ui.CustomDialog;
 import com.grandmagic.readingmate.utils.AutoUtils;
 import com.grandmagic.readingmate.utils.ImageLoader;
 import com.grandmagic.readingmate.utils.InputMethodUtils;
+import com.grandmagic.readingmate.utils.KitUtils;
 import com.grandmagic.readingmate.utils.ViewUtils;
 import com.refreshlab.PullLoadMoreRecyclerView;
 import com.tamic.novate.NovateResponse;
@@ -182,8 +183,8 @@ public class FriendDetailActivity extends AppBaseActivity {
 
     private void initSimplePersonInfo(PersonInfo mPersonInfo) {
         ImageLoader.loadCircleImage(this, Environment.BASEULR_PRODUCTION + mPersonInfo.getAvatar(), mAvatar);
-        mName.setText(mPersonInfo.getNickname());
-        mClientid.setText(mPersonInfo.getSignature());
+        mName.setText(KitUtils.unicodeDecode(mPersonInfo.getNickname()));
+        mClientid.setText(KitUtils.unicodeDecode(mPersonInfo.getSignature()));
         isFriend = ContactModel.isFriend(this, mPersonInfo.getUser_id());
         if (isFriend) {//是否已经是好友关系
             mFab.hide();

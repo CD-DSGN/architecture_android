@@ -14,6 +14,7 @@ import com.grandmagic.readingmate.bean.db.Contacts;
 import com.grandmagic.readingmate.model.ContactModel;
 import com.grandmagic.readingmate.ui.CustomDialog;
 import com.grandmagic.readingmate.utils.ImageLoader;
+import com.grandmagic.readingmate.utils.KitUtils;
 import com.tamic.novate.NovateResponse;
 import com.tamic.novate.util.Environment;
 import com.zhy.adapter.recyclerview.base.ItemViewDelegate;
@@ -45,7 +46,7 @@ private int remarkPosition=-1;
     @Override
     public void convert(ViewHolder holder, final Contacts mContacts, final int position) {
         holder.setVisible(R.id.dashline, mContacts.isNeedline());
-        holder.setText(R.id.name, TextUtils.isEmpty(mContacts.getRemark())?mContacts.getUser_name():mContacts.getRemark());
+        holder.setText(R.id.name, KitUtils.unicodeDecode( TextUtils.isEmpty(mContacts.getRemark())?mContacts.getUser_name():mContacts.getRemark()));
         ImageLoader.loadCircleImage(mContext, Environment.BASEULR_PRODUCTION + mContacts.getAvatar_url().getLarge(),
                 (ImageView) holder.getView(R.id.avatar));
         holder.setOnClickListener(R.id.notename, new View.OnClickListener() {

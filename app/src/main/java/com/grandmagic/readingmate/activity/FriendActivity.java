@@ -125,7 +125,7 @@ public class FriendActivity extends AppBaseActivity implements ContactItemDelaga
                 pySb.append(Pinyin.toPinyin(dataName.charAt(j)));
             }
             data.setPyName(pySb.toString());//转化后的拼音
-            String letter = pySb.length() > 0 ? pySb.substring(0, 1) : "#";//首字母
+            String letter = pySb.length() > 0 ? pySb.substring(0, 1).matches("[A-Za-z]")?pySb.substring(0,1):"#" : "#";//首字母
             if (letter.matches("[A-Za-z]")) {
                 data.setLetter(letter);
             } else {

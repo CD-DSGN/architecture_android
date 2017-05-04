@@ -17,6 +17,7 @@ import com.grandmagic.readingmate.bean.response.PersonInfo;
 import com.grandmagic.readingmate.bean.response.SearchPersonResponse;
 import com.grandmagic.readingmate.utils.AutoUtils;
 import com.grandmagic.readingmate.utils.ImageLoader;
+import com.grandmagic.readingmate.utils.KitUtils;
 import com.tamic.novate.util.Environment;
 import com.zhy.adapter.recyclerview.base.ViewHolder;
 
@@ -37,7 +38,7 @@ public class SearchPersonAdapter extends CommonAdapter<SearchPersonResponse.Info
     @Override
     protected void convert(ViewHolder holder, final SearchPersonResponse.InfoBean data, final int position) {
         if (data == null) return;
-        holder.setText(R.id.name, data.getUser_name());
+        holder.setText(R.id.name, KitUtils.unicodeDecode(data.getUser_name()));
         ImageLoader.loadCircleImage(mContext, Environment.BASEULR_PRODUCTION + data.getAvatar_url().getLarge(),
                 (ImageView) holder.getView(R.id.avatar));
         holder.setVisible(R.id.rela_addfriend, data.getIs_friend() != 1);

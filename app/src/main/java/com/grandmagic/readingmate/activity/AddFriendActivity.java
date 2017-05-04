@@ -23,6 +23,7 @@ import com.grandmagic.readingmate.ui.CustomDialog;
 import com.grandmagic.readingmate.utils.AutoUtils;
 import com.grandmagic.readingmate.utils.ImageLoader;
 import com.grandmagic.readingmate.utils.InputMethodUtils;
+import com.grandmagic.readingmate.utils.KitUtils;
 import com.tamic.novate.NovateResponse;
 import com.tamic.novate.Throwable;
 import com.tamic.novate.util.Environment;
@@ -139,7 +140,7 @@ public class AddFriendActivity extends AppBaseActivity {
     private void setUserView(SearchUserResponse mSearchUserResponse) {
         mRelaFriend.setVisibility(View.VISIBLE);
         ImageLoader.loadCircleImage(this, Environment.BASEULR_PRODUCTION + mSearchUserResponse.getAvatar_url().getLarge(), mAvatar);
-        mName.setText(mSearchUserResponse.getUser_name());
+        mName.setText(KitUtils.unicodeDecode(mSearchUserResponse.getUser_name()));
         mUser_id = mSearchUserResponse.getUser_id();
         mRelaAddfriend.setVisibility(mSearchUserResponse.getIs_friend() == NOFRIEND ? View.GONE : View.VISIBLE);
         setCollectionbook(mSearchUserResponse.getCollection());

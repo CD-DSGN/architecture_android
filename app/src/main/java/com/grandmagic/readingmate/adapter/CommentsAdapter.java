@@ -10,6 +10,7 @@ import com.grandmagic.readingmate.activity.CommentsActivity;
 import com.grandmagic.readingmate.bean.response.PersonCommentResponse;
 import com.grandmagic.readingmate.utils.DateUtil;
 import com.grandmagic.readingmate.utils.ImageLoader;
+import com.grandmagic.readingmate.utils.KitUtils;
 import com.tamic.novate.util.Environment;
 import com.zhy.adapter.recyclerview.base.ViewHolder;
 
@@ -31,11 +32,11 @@ public class CommentsAdapter extends CommonAdapter<PersonCommentResponse.Comment
     protected void convert(ViewHolder holder, final PersonCommentResponse.CommentInfoBean data, int position) {
         ImageLoader.loadRoundImage(mContext, Environment.BASEULR_PRODUCTION + this.mAvatar.getMid(), (ImageView) holder.getView(R.id.avatar));
         ImageLoader.loadRoundImage(mContext, Environment.BASEULR_PRODUCTION + data.getPhoto(), (ImageView) holder.getView(R.id.cover));
-        holder.setText(R.id.nickname, this.mUsername);
+        holder.setText(R.id.nickname, KitUtils.unicodeDecode(this.mUsername));
         holder.setText(R.id.bookname,data.getBook_name());
         holder.setText(R.id.time, DateUtil.timeTodate(data.getPub_time()));
         holder.setText(R.id.replynum, data.getReply_count() + "回复");
-        holder.setText(R.id.content, data.getContent());
+        holder.setText(R.id.content,KitUtils.unicodeDecode( data.getContent()));
         holder.setText(R.id.like_num, data.getLike_times());
         holder.setTextColor(R.id.like_num,data.getIs_thumb()==1?R.color.text_green:R.color.text_gray);
         holder.setImageResource(R.id.iv_like,data.getIs_thumb()==1?R.drawable.iv_like:R.drawable.iv_like_gray);

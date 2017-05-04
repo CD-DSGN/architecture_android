@@ -10,6 +10,7 @@ import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import com.hyphenate.easeui.R;
+import com.hyphenate.easeui.utils.EaseCommonUtils;
 
 /**
  * title bar
@@ -99,7 +100,7 @@ public class EaseTitleBar extends RelativeLayout{
     }
     
     public void setTitle(String title){
-        titleView.setText(title);
+        titleView.setText(EaseCommonUtils.unicodeDecode(title));
     }
     
     public void setBackgroundColor(int color){
