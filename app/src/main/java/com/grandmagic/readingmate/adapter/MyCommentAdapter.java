@@ -48,7 +48,7 @@ public class MyCommentAdapter extends CommonAdapter<PersonnalCommentResponseBean
         if (!TextUtils.isEmpty(mUrl)) {
             ImageLoader.loadCircleImage(mContext, KitUtils.getAbsoluteUrl(mUrl), (ImageView) holder.getView(R.id.avatar));
         }
-        holder.setText(R.id.nickname, mUsername);
+        holder.setText(R.id.nickname,KitUtils.unicodeDecode( mUsername));
         if (personnalCommentResponseBean != null) {
             String time = personnalCommentResponseBean.getPub_time();
             String time_str = "";
@@ -86,7 +86,7 @@ public class MyCommentAdapter extends CommonAdapter<PersonnalCommentResponseBean
                 ImageLoader.loadImage(mContext, KitUtils.getAbsoluteUrl(book_cover), (ImageView) holder.getView(R.id.cover));
             }
 
-            holder.setText(R.id.content, personnalCommentResponseBean.getContent());
+            holder.setText(R.id.content,KitUtils.unicodeDecode( personnalCommentResponseBean.getContent()));
 
             TextView tv_delete = holder.getView(R.id.delete);
             final PersonnalCommentResponseBean tmp = personnalCommentResponseBean;

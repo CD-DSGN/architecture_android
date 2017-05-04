@@ -118,11 +118,11 @@ public class PersonalInfoEditActivity extends AppBaseActivity {
 
     private void setView(UserInfoResponseBean userInfoResponseBean) {
         if (!TextUtils.isEmpty(userInfoResponseBean.getUser_name())) {
-            mTvNickname.setText(userInfoResponseBean.getUser_name());
+            mTvNickname.setText(KitUtils.unicodeDecode(userInfoResponseBean.getUser_name()));
         }
 
         if (!TextUtils.isEmpty(userInfoResponseBean.getSignature())) {
-            mTvSignature.setText(userInfoResponseBean.getSignature());
+            mTvSignature.setText(KitUtils.unicodeDecode(userInfoResponseBean.getSignature()));
         }
 
         setGenderView(userInfoResponseBean.getGender());

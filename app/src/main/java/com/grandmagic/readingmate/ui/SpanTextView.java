@@ -13,6 +13,8 @@ import android.text.style.ForegroundColorSpan;
 import android.util.AttributeSet;
 import android.view.MotionEvent;
 
+import com.grandmagic.readingmate.utils.KitUtils;
+
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
@@ -55,7 +57,7 @@ public class SpanTextView extends AppCompatTextView {
             /* 默认一个@的匹配规则 */
             setMatchRule(AiteRule);
         }
-        super.setText(setHighlight(text, getMatchRule()));
+        super.setText(setHighlight(KitUtils.unicodeDecode(text), getMatchRule()));
     }
 
     public void setText(String text, String append) {
@@ -63,7 +65,7 @@ public class SpanTextView extends AppCompatTextView {
             /* 默认一个@的匹配规则 */
             setMatchRule(AiteRule);
         }
-        super.setText(appendColorText(text, getMatchRule(), append));
+        super.setText(appendColorText(KitUtils.unicodeDecode(text), getMatchRule(), KitUtils.unicodeDecode(append)));
     }
 
 

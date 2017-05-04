@@ -139,11 +139,11 @@ public class PersonalFragment extends AppBaseFragment implements MyCommentAdapte
         }
 
         if (!TextUtils.isEmpty(mUserInfoResponseBean.getSignature())) {
-            mTvFragPersonalSignature.setText(mUserInfoResponseBean.getSignature());
+            mTvFragPersonalSignature.setText(KitUtils.unicodeDecode(mUserInfoResponseBean.getSignature()));
         }
 
         if (!TextUtils.isEmpty(mUserInfoResponseBean.getUser_name())) {
-            mTvFragPersonalNickname.setText(mUserInfoResponseBean.getUser_name());
+            mTvFragPersonalNickname.setText(KitUtils.unicodeDecode(mUserInfoResponseBean.getUser_name()));
         }
 
         setGenderView(mUserInfoResponseBean.getGender());

@@ -20,6 +20,7 @@ import com.grandmagic.readingmate.bean.response.NotificationCommentResponse;
 import com.grandmagic.readingmate.ui.ClickSpan;
 import com.grandmagic.readingmate.utils.DateUtil;
 import com.grandmagic.readingmate.utils.ImageLoader;
+import com.grandmagic.readingmate.utils.KitUtils;
 import com.tamic.novate.util.Environment;
 import com.zhy.adapter.recyclerview.base.ItemViewDelegate;
 import com.zhy.adapter.recyclerview.base.ViewHolder;
@@ -52,14 +53,14 @@ public class NotificationCommentDelagte implements ItemViewDelegate<Notification
 
     @Override
     public void convert(ViewHolder holder, final NotificationCommentResponse.InfoBean data, int position) {
-        holder.setText(R.id.nickname, data.getUser_name());
+        holder.setText(R.id.nickname, KitUtils.unicodeDecode(data.getUser_name()));
         holder.setText(R.id.time, DateUtil.timeTodate(data.getTime()));
         ImageLoader.loadRoundImage(mContext, Environment.BASEULR_PRODUCTION + data.getAvatar_url().getMid(),
                 (ImageView) holder.getView(R.id.avatar));
         TextView title = holder.getView(R.id.title);
         title.setText(getTitle(data));
         title.setMovementMethod(LinkMovementMethod.getInstance());
-        holder.setText(R.id.content, data.getReply_comment());
+        holder.setText(R.id.content, KitUtils.unicodeDecode(data.getReply_comment()));
         holder.setOnClickListener(R.id.content, new View.OnClickListener() {
             @Override
             public void onClick(View v) {

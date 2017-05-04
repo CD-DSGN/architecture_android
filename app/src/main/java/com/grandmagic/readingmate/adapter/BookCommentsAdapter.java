@@ -10,6 +10,7 @@ import com.grandmagic.readingmate.activity.CommentsActivity;
 import com.grandmagic.readingmate.bean.response.BookCommentResponse;
 import com.grandmagic.readingmate.utils.DateUtil;
 import com.grandmagic.readingmate.utils.ImageLoader;
+import com.grandmagic.readingmate.utils.KitUtils;
 import com.tamic.novate.util.Environment;
 import com.zhy.adapter.recyclerview.base.ViewHolder;
 
@@ -27,8 +28,8 @@ public class BookCommentsAdapter extends CommonAdapter<BookCommentResponse.Comme
     @Override
     protected void convert(ViewHolder holder, final BookCommentResponse.CommentsBean data, final int position) {
         ImageLoader.loadCircleImage(mContext, Environment.BASEULR_PRODUCTION + data.getAvatar().getMid(), (ImageView) holder.getView(R.id.iv_replay_header));
-        holder.setText(R.id.tv_nickname_reply, data.getUser_name());
-        holder.setText(R.id.tv_signature_reply, data.getContents());
+        holder.setText(R.id.tv_nickname_reply, KitUtils.unicodeDecode( data.getUser_name()));
+        holder.setText(R.id.tv_signature_reply, KitUtils.unicodeDecode(data.getContents()));
         holder.setText(R.id.like_num, data.getLike_times() + "");
         holder.setText(R.id.tv_time_replay, DateUtil.timeTodate(data.getPub_time()));
         holder.getView(R.id.ib_good).setSelected(data.getThumb_up().equals("1"));

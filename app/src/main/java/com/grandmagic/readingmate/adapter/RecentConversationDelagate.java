@@ -19,6 +19,8 @@ import com.tamic.novate.util.SPUtils;
 import com.zhy.adapter.recyclerview.base.ItemViewDelegate;
 import com.zhy.adapter.recyclerview.base.ViewHolder;
 
+import org.apache.commons.codec.StringEncoder;
+
 /**
  * Created by lps on 2017/2/22.
  * 最近会话列表的处理
@@ -41,6 +43,7 @@ public class RecentConversationDelagate implements ItemViewDelegate<EMConversati
     @Override
     public boolean isForViewType(EMConversation item, int position) {
         return item.getType() == EMConversation.EMConversationType.Chat;
+
     }
 
     @Override

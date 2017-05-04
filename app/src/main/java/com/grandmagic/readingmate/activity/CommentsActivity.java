@@ -207,7 +207,7 @@ public class CommentsActivity extends AppBaseActivity implements View.OnLayoutCh
             url = avatarUrlBean.getLarge();
         }
         ImageLoader.loadCircleImage(this, KitUtils.getAbsoluteUrl(url), mAvar);  //加载评论的头像
-        mNickName.setText(mCommentsDetailResponoseBean.getUser_name());
+        mNickName.setText(KitUtils.unicodeDecode(mCommentsDetailResponoseBean.getUser_name()));
         try {
             mTime.setText(DateUtil.timeTodate(mCommentsDetailResponoseBean.getPub_time() + ""));
         } catch (Exception e) {
@@ -216,7 +216,7 @@ public class CommentsActivity extends AppBaseActivity implements View.OnLayoutCh
 
         mBookName.setText(mCommentsDetailResponoseBean.getBook_name());
         mReplyNum.setText(mCommentsDetailResponoseBean.getReply_count() + "人回复");
-        mContent.setText(mCommentsDetailResponoseBean.getContent());
+        mContent.setText(KitUtils.unicodeDecode(mCommentsDetailResponoseBean.getContent()));
         String cover_url = mCommentsDetailResponoseBean.getPhoto();
         ImageLoader.loadImage(this, KitUtils.getAbsoluteUrl(cover_url), mCover);
         mLike_num = mCommentsDetailResponoseBean.getLike_times();
