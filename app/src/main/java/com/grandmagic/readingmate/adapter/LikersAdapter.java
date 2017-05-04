@@ -29,9 +29,9 @@ public class LikersAdapter extends CommonAdapter<LikersInfoResponseBean.InfoBean
         }
 
         ImageLoader.loadRoundImage(mContext, KitUtils.getAbsoluteUrl(url), (ImageView) holder.getView(R.id.avatar));
-        holder.setText(R.id.name, data.getUser_name());
+        holder.setText(R.id.name, KitUtils.unicodeDecode(data.getUser_name()));
         holder.setVisible(R.id.add_friend, data.getIs_friend() != 1);
-        holder.setText(R.id.signature, data.getSignature());
+        holder.setText(R.id.signature,KitUtils.unicodeDecode( data.getSignature()));
         holder.setOnClickListener(R.id.add_friend, new View.OnClickListener() {
             @Override
             public void onClick(View v) {

@@ -32,6 +32,7 @@ import com.grandmagic.readingmate.bean.response.OtherInfoResponse;
 import com.grandmagic.readingmate.db.DBHelper;
 import com.grandmagic.readingmate.db.InviteMessageDao;
 import com.grandmagic.readingmate.model.ContactModel;
+import com.grandmagic.readingmate.utils.KitUtils;
 import com.hyphenate.easeui.utils.GlideCircleTransform;
 import com.grandmagic.readingmate.utils.IMHelper;
 import com.hyphenate.chat.EMMessage;
@@ -179,8 +180,8 @@ public class IMNotifier {
         Intent msgIntent = new Intent(mAppContext, MainActivity.class);
         msgIntent.putExtra(IMMessageListenerApp.FLAG_NEWMESSAGE, IMMessageListenerApp.FLAG_NEWMESSAGE);
         PendingIntent mPendingIntent = PendingIntent.getActivity(mAppContext, notifyID, msgIntent, PendingIntent.FLAG_UPDATE_CURRENT);
-        mBuilder.setContentTitle(contenttitle);
-        mBuilder.setTicker(notifytxt);
+        mBuilder.setContentTitle(KitUtils.unicodeDecode(contenttitle));
+        mBuilder.setTicker(KitUtils.unicodeDecode(notifytxt));
         if (message.getType() == EMMessage.Type.TXT) {
             mBuilder.setContentText( ((EMTextMessageBody) message.getBody()).getMessage());
         } else if (message.getType() == EMMessage.Type.IMAGE) {

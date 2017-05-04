@@ -9,6 +9,7 @@ import com.grandmagic.readingmate.bean.response.BookFollowersResponse;
 import com.grandmagic.readingmate.model.ContactModel;
 import com.grandmagic.readingmate.model.SearchModel;
 import com.grandmagic.readingmate.utils.ImageLoader;
+import com.grandmagic.readingmate.utils.KitUtils;
 import com.tamic.novate.util.Environment;
 import com.zhy.adapter.recyclerview.base.ViewHolder;
 
@@ -29,9 +30,9 @@ public class CollectionAdapter extends CommonAdapter<BookFollowersResponse.InfoB
     @Override
     protected void convert(ViewHolder holder, BookFollowersResponse.InfoBean data, final int position) {
         ImageLoader.loadRoundImage(mContext, Environment.BASEULR_PRODUCTION + data.getAvatar_url().getMid(), (ImageView) holder.getView(R.id.avatar));
-        holder.setText(R.id.name, data.getUser_name());
+        holder.setText(R.id.name, KitUtils.unicodeDecode(data.getUser_name()));
         holder.setVisible(R.id.add_friend, data.getIs_friend() != 1);
-        holder.setText(R.id.signature, data.getSignature());
+        holder.setText(R.id.signature, KitUtils.unicodeDecode(data.getSignature()));
         holder.setOnClickListener(R.id.add_friend, new View.OnClickListener() {
             @Override
             public void onClick(View v) {

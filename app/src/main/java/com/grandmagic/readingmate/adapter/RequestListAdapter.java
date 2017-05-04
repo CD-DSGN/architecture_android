@@ -7,6 +7,7 @@ import android.widget.ImageView;
 import com.grandmagic.readingmate.R;
 import com.grandmagic.readingmate.bean.response.RequestListResponse;
 import com.grandmagic.readingmate.utils.ImageLoader;
+import com.grandmagic.readingmate.utils.KitUtils;
 import com.tamic.novate.util.Environment;
 import com.zhy.adapter.recyclerview.base.ViewHolder;
 
@@ -25,8 +26,8 @@ public class RequestListAdapter extends CommonAdapter<RequestListResponse> {
     @Override
     protected void convert(ViewHolder holder, final RequestListResponse data, final int position) {
         holder.setVisible(R.id.bottomline, position == mDatas.size() - 1);
-        holder.setText(R.id.name, data.getUser_name());
-        holder.setText(R.id.signature, data.getMessage());
+        holder.setText(R.id.name, KitUtils.unicodeDecode(data.getUser_name()));
+        holder.setText(R.id.signature, KitUtils.unicodeDecode(data.getMessage()));
         holder.setOnClickListener(R.id.state_todo, new View.OnClickListener() {
             @Override
             public void onClick(View v) {

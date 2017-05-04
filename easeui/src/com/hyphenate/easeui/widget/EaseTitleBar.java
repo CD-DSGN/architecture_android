@@ -70,7 +70,7 @@ public class EaseTitleBar extends RelativeLayout{
             if(null != background) {
                 titleLayout.setBackgroundDrawable(background);
             }
-            
+            rightLayout.setVisibility(GONE);
             ta.recycle();
         }
     }
