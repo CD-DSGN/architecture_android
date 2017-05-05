@@ -40,7 +40,7 @@ public class CommentDetailAdapter extends CommonAdapter<ReplyInfoResponseBean.In
             ImageLoader.loadCircleImage(mContext, KitUtils.getAbsoluteUrl(from_avar_url), fromAvar);
         }
 
-        holder.setText(R.id.tv_nickname_reply, data.getFrom_user_name());
+        holder.setText(R.id.tv_nickname_reply, KitUtils.unicodeDecode(data.getFrom_user_name()));
         StringBuilder content = new StringBuilder(data.getReply_content());
         if (!TextUtils.isEmpty(data.getTo_user_name())) {
             content.append("@" + data.getTo_user_name());
