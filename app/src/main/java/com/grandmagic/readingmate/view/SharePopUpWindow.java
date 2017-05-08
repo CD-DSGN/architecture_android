@@ -141,7 +141,7 @@ public class SharePopUpWindow extends PopupWindow {
         ll_wx.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                if (!mShareAPI.isInstall(mActivity, SHARE_MEDIA.SINA)) {
+                if (!mShareAPI.isInstall(mActivity, SHARE_MEDIA.WEIXIN)) {
                     ViewUtils.showToast(mContext.getString(R.string.install_wx_client));
                     return;
                 }
@@ -157,7 +157,7 @@ public class SharePopUpWindow extends PopupWindow {
         ll_friends_circle.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                if (!mShareAPI.isInstall(mActivity, SHARE_MEDIA.SINA)) {
+                if (!mShareAPI.isInstall(mActivity, SHARE_MEDIA.WEIXIN_CIRCLE)) {
                     ViewUtils.showToast(mContext.getString(R.string.install_wx_client));
                     return;
                 }
