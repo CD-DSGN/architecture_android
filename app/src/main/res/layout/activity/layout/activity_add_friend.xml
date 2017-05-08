@@ -56,7 +56,7 @@
         <RelativeLayout
             android:id="@+id/rela_friend"
             android:layout_width="710px"
-            android:layout_height="380px"
+            android:layout_height="420px"
             android:visibility="gone"
             tools:visibility="visible"
            >

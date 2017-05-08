@@ -3,7 +3,7 @@
 
     xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
-    android:layout_width="710px"
+    android:layout_width="match_parent"
     android:layout_height="152px"
     >
     <TextView
@@ -19,7 +19,7 @@
         />
 
     <RelativeLayout
-        android:layout_width="710px"
+        android:layout_width="match_parent"
         android:layout_height="152px"
         android:background="@color/white"
         android:paddingLeft="20px"

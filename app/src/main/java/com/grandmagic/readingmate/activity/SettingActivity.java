@@ -70,7 +70,7 @@ public class SettingActivity extends AppBaseActivity {
 
     private void initData() {
         mUserName = getIntent().getStringExtra(USR_NAME);
-        mTvSettingAccount.setText(mUserName);
+        mTvSettingAccount.setText(KitUtils.unicodeDecode(mUserName));
         //从sp获取手机号
         String tel = SPUtils.getInstance().getString(this, SPUtils.INFO_NAME);
         mTvSettingMobile.setText(tel);

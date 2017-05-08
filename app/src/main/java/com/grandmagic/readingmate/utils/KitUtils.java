@@ -82,6 +82,7 @@ public class KitUtils {
      */
     public static String unicodeDecode(String theString) {
         char aChar;
+        if (theString==null)return "";
         int len = theString.length();
         StringBuffer outBuffer = new StringBuffer(len);
         for (int x = 0; x < len;) {
